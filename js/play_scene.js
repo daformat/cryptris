@@ -121,8 +121,8 @@ function MessageColumn(type, container) {
 
     if (this.type === COLUMN_TYPE_3) {
         this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle('#000000'));
+                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE));
+                                                 //.setStrokeStyle('#000000'));
         this.column.addChild(this.shapeList[this.shapeList.length - 1]);
     } else {
         this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
@@ -199,8 +199,8 @@ function MessageColumn(type, container) {
             this.saveChild = this.shapeList;
             this.shapeList = [];
             this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle('#000000'));
+                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE));
+                                                 //.setStrokeStyle('#000000'));
             this.column.addChild(this.shapeList[this.shapeList.length - 1]);
         } else {
             if (newSquareNumber < 0) {
