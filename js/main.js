@@ -91,12 +91,12 @@ $(document).ready(function() {
     /**
      * Debug flag, turn it off to production version.
      */
-    CAAT.DEBUG = true;
+    CAAT.DEBUG = false;
 
     /**
      * Declare our main caat director.
      */
-    var director = new CAAT.Director().initialize($(window).width() - 10, $(window).height() - 10, 'main_scene').setClear(false);
+    var director = new CAAT.Director().initialize($(window).width(), $(window).height() - 5, 'main_scene').setClear(false);
 
     /**
      * Launch splash screen
