@@ -24,30 +24,19 @@ function createScenes(director) {
     currentGame.scenes['play_scene'] = createPlayScene(director);
 
     /**
-     * Define usefull variables.
-     */
-    var menu = currentGame.scenes['menu_scene'];
-    var menuScene = menu['scene'];
-
-    var play = currentGame.scenes['play_scene'];
-    var playScene = play['scene'];
-
-    /**
      * Link each scene together.
      */
-    menu['shortcutButton'].mouseClick = function(e) {
-        director.switchToScene(director.getSceneIndex(playScene), 0, 0, false);
+    currentGame.scenes['menu_scene']['shortcutButton'].mouseClick = function(e) {
+        director.switchToScene(director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
+    };
+
+    currentGame.scenes['play_scene']['back_button'].mouseClick = function(e) {
+        director.switchToScene(director.getSceneIndex(currentGame.scenes['menu_scene']['scene']), 0, 0, false);
     };
 
     /**
-     * Add each element to its scene.
+     * Define the framerate.
      */
-    menuScene.addChild(menu['mainTitle']);
-    menuScene.addChild(menu['playButton']);
-    menuScene.addChild(menu['creditButton']);
-    menuScene.addChild(menu['seeMoreButton']);
-    menuScene.addChild(menu['shortcutButton']);
-
     director.loop(60);
 };
 
