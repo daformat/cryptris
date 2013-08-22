@@ -6,16 +6,16 @@
  *     - menu_screen.js                                             *
  *     - play_scene.js                                              *
  *******************************************************************/
-function createBackButton(director) {
+function createBackButton(director, width, height, text, x, y, color) {
     var backButton = new CAAT.Actor().
-        setSize(120, 40).
-        centerAt(director.width - 70, director.height - 100);
+        setSize(width, height).
+        centerAt(x, y);
 
     backButton.paint = function(director, time) {
 
         var ctx = director.ctx;
 
-        ctx.fillStyle = this.pointed ? 'orange' : 'red';
+        ctx.fillStyle = this.pointed ? 'orange' : color;
         ctx.fillRect(0, 0, this.width, this.height);
 
         ctx.strokeStyle = this.pointed ? 'red' : 'black';
@@ -23,7 +23,7 @@ function createBackButton(director) {
 
         ctx.font = '30px sans-serif';
         ctx.fillStyle = 'black';
-        ctx.fillText('Back', 25, 30);
+        ctx.fillText(text, 25, 30);
     };
 
     return backButton;
@@ -88,7 +88,27 @@ function createPlayScene(director) {
     /**
      * Create each necessary button.
      */
-    resultScene['back_button'] = createBackButton(director, false);
+    resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
+
+    resultScene['up_button'] = createBackButton(director, 120, 40, "Up", director.width - 100, 150, "blue");
+    resultScene['down_button'] = createBackButton(director, 120, 40, "Down", director.width - 100, 250, "blue");
+    resultScene['left_button'] = createBackButton(director, 120, 40, "Left", director.width - 150, 200, "blue");
+    resultScene['right_button'] = createBackButton(director, 120, 40, "Right", director.width - 50, 200, "blue");
+
+
+
+    resultScene['up_button'].mouseClick = function(e) {
+        crypt_key.changeKeyType();
+    };
+    resultScene['down_button'].mouseClick = function(e) {
+        crypt_key.key_down();
+    };
+    resultScene['left_button'].mouseClick = function(e) {
+        crypt_key.rotateLeft();
+    };
+    resultScene['right_button'].mouseClick = function(e) {
+        crypt_key.rotateRight();
+    };
 
     /**
      * Add each element to its scene.
@@ -96,6 +116,10 @@ function createPlayScene(director) {
     resultScene['scene'].addChild(resultScene['game_box']);
     resultScene['scene'].addChild(resultScene['bottom_line']);
     resultScene['scene'].addChild(resultScene['back_button']);
+    resultScene['scene'].addChild(resultScene['up_button']);
+    resultScene['scene'].addChild(resultScene['down_button']);
+    resultScene['scene'].addChild(resultScene['left_button']);
+    resultScene['scene'].addChild(resultScene['right_button']);
 
     return resultScene;
 }

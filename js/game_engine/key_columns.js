@@ -188,6 +188,19 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
         }
     );
 
+    this.key_down = function() {
+        if (this.key_in_move === false) {
+            this.key_in_move = true;
+            for (var i = 0; i < this.columnList.length; ++i) {
+                var columnObject = this.columnList[i];
+                var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
+                columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1000).setCycle(false);
+                columnObject.column.addBehavior(columnObject.pb);
+                objects_in_move.push(true);
+            }
+        }
+    }
+
     var object = this;
     this.key_in_move = false;
     CAAT.registerKeyListener(function(key) {
@@ -200,15 +213,8 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
         if (key.getKeyCode() === CAAT.Keys.UP && key.getAction() === 'down') {
             object.changeKeyType();
         }
-        if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up' && object.key_in_move === false) {
-            object.key_in_move = true;
-            for (var i = 0; i < object.columnList.length; ++i) {
-                var columnObject = object.columnList[i];
-                var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
-                columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1000).setCycle(false);
-                columnObject.column.addBehavior(columnObject.pb);
-                objects_in_move.push(true);
-            }
+        if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+            object.key_down();
         }
     });
 }

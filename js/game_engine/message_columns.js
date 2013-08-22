@@ -26,7 +26,7 @@ function MessageColumn(type, container) {
             if (columnY > 0) {
                 this.shapeList[i].setLocation(0, i * SQUARE_HEIGHT);
             } else {
-                if (this.container.height - (i + 1) * SQUARE_HEIGHT >  this.container.y) {
+                if (this.container.height - i * SQUARE_HEIGHT >  this.container.y) {
                     this.shapeList[i].setLocation(0, this.container.height - (i + 1) * SQUARE_HEIGHT);
                 } else {
                     this.shapeList[i].setLocation(0, 0);
