@@ -23,7 +23,7 @@ function createBackButton(director, width, height, text, x, y, color) {
 
         ctx.font = '30px sans-serif';
         ctx.fillStyle = 'black';
-        ctx.fillText(text, 25, 30);
+        ctx.fillText(text, 10, this.height / 2 + 5);
     };
 
     return backButton;
@@ -90,10 +90,10 @@ function createPlayScene(director) {
      */
     resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
 
-    resultScene['up_button'] = createBackButton(director, 120, 40, "Up", director.width - 100, 150, "blue");
-    resultScene['down_button'] = createBackButton(director, 120, 40, "Down", director.width - 100, 250, "blue");
-    resultScene['left_button'] = createBackButton(director, 120, 40, "Left", director.width - 150, 200, "blue");
-    resultScene['right_button'] = createBackButton(director, 120, 40, "Right", director.width - 50, 200, "blue");
+    resultScene['up_button'] = createBackButton(director, 100, 100, "Up", director.width - 135, 70, "blue");
+    resultScene['down_button'] = createBackButton(director, 100, 100, "Down", director.width - 135, 330, "blue");
+    resultScene['left_button'] = createBackButton(director, 100, 100, "Left", director.width - 200, 200, "blue");
+    resultScene['right_button'] = createBackButton(director, 100, 100, "Right", director.width - 70, 200, "blue");
 
 
 
