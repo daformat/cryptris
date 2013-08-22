@@ -4,7 +4,7 @@ function KeyColumn(type, squareNumber, msgColumn, container) {
     this.container = container;
     this.is_active = true;
     this.pb = null;
-    this.object_in_move = false;
+    this.key_in_move = false;
 
     this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * SQUARE_HEIGHT);//.setFillStyle('#00FF00');
     this.container.addChild(this.column);
@@ -150,6 +150,19 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
         }
     }
 
+    this.keyDown = function() {
+        if (this.key_in_move === false) {
+            this.key_in_move = true;
+            for (var i = 0; i < this.columnList.length; ++i) {
+                var columnObject = this.columnList[i];
+                var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
+                columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1000).setCycle(false);
+                columnObject.column.addBehavior(columnObject.pb);
+                objects_in_move.push(true);
+            }
+        }
+    }
+
     var object = this;
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
@@ -188,21 +201,6 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
         }
     );
 
-    this.key_down = function() {
-        if (this.key_in_move === false) {
-            this.key_in_move = true;
-            for (var i = 0; i < this.columnList.length; ++i) {
-                var columnObject = this.columnList[i];
-                var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
-                columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1000).setCycle(false);
-                columnObject.column.addBehavior(columnObject.pb);
-                objects_in_move.push(true);
-            }
-        }
-    }
-
-    var object = this;
-    this.key_in_move = false;
     CAAT.registerKeyListener(function(key) {
         if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
             object.rotateLeft();
@@ -214,7 +212,7 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
             object.changeKeyType();
         }
         if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-            object.key_down();
+            object.keyDown();
         }
     });
 }

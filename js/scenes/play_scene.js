@@ -11,7 +11,7 @@ function createBackButton(director, width, height, text, x, y, color) {
         setSize(width, height).
         centerAt(x, y);
 
-    backButton.paint = function(director, time) {
+    backButton.paint = function(director) {
 
         var ctx = director.ctx;
 
@@ -89,19 +89,19 @@ function createPlayScene(director) {
      * Create each necessary button.
      */
     resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
-
     resultScene['up_button'] = createBackButton(director, 100, 100, "Up", director.width - 135, 70, "blue");
     resultScene['down_button'] = createBackButton(director, 100, 100, "Down", director.width - 135, 330, "blue");
     resultScene['left_button'] = createBackButton(director, 100, 100, "Left", director.width - 200, 200, "blue");
     resultScene['right_button'] = createBackButton(director, 100, 100, "Right", director.width - 70, 200, "blue");
 
-
-
+    /**
+     * If the button acts in this scene, we set its behavior.
+     */
     resultScene['up_button'].mouseClick = function(e) {
         crypt_key.changeKeyType();
     };
     resultScene['down_button'].mouseClick = function(e) {
-        crypt_key.key_down();
+        crypt_key.keyDown();
     };
     resultScene['left_button'].mouseClick = function(e) {
         crypt_key.rotateLeft();
