@@ -58,7 +58,8 @@ function createPlayScene(director) {
     /**
      * Generate my private and public keys.
      */
-     var key_info = getKeyInfo(current_length);
+     var key_info_t = getKeyInfo(current_length);
+     var key_info = key_info_t['private_key'];
 
     /**
      * Define a TEMPORARY message.
@@ -67,7 +68,7 @@ function createPlayScene(director) {
     for (var i = 0; i < current_length; ++i) {
         tmp_message.push(Math.floor(Math.random() * 3 - 1));
     }
-    var my_message = chiffre(current_length, tmp_message, key_info['public_key']);
+    var my_message = chiffre(current_length, tmp_message, key_info['key']);
 
     /**
      * Position relative of the game box to the screen. 
@@ -99,7 +100,7 @@ function createPlayScene(director) {
      * Create my message object.
      * This object inserts all necessary columns to gameBox.
      */
-    var message = new Message(current_length, my_message, bottomLine, gameBox);
+    var message = new Message(director, current_length, my_message, bottomLine, gameBox);
     message.createMessage();
 
     /**

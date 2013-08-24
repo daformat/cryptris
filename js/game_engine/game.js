@@ -8,9 +8,9 @@ function genSecretKey(dim) {
     var sk = null;
 
     var pre_key4 = [4, 1, -1, 0];
-    var pre_key8 = [7, 1, 1, -1, -1, 0, 0, 0, 0];
-    var pre_key12 = [8, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
-    var pre_key16 = [9, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
+    var pre_key8 = [4, 1, 1, -1, -1, 0, 0, 0, 0];
+    var pre_key12 = [4, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
+    var pre_key16 = [4, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
 
     /*
     var pre_key4 = [2, 1, -1, 0];
@@ -94,25 +94,46 @@ function getKeyInfo(dim) {
      */
     var result = {};
 
-    result['public_key'] = pk;
-    result['private_key'] = sk;
-    result['normal_key'] = [];
-    result['reverse_key'] = [];
-    result['number'] = [];
+    result['public_key'] = {};
+    result['public_key']['key'] = pk;
+    result['public_key']['normal_key'] = [];
+    result['public_key']['reverse_key'] = [];
+    result['public_key']['number'] = [];
+
+    result['private_key'] = {};
+    result['private_key']['key'] = pk;
+    result['private_key']['normal_key'] = [];
+    result['private_key']['reverse_key'] = [];
+    result['private_key']['number'] = [];
 
     for (var i = 0; i < pk.length; ++i) {
-        if (sk[i] > 0) {
-            result['normal_key'].push(COLUMN_TYPE_1);
-            result['reverse_key'].push(COLUMN_TYPE_2);
-            result['number'].push(sk[i]);
-        } else if (sk[i] < 0) {
-            result['normal_key'].push(COLUMN_TYPE_2);
-            result['reverse_key'].push(COLUMN_TYPE_1);
-            result['number'].push(-1 * sk[i]);
+        if (pk[i] > 0) {
+            result['public_key']['normal_key'].push(COLUMN_TYPE_1);
+            result['public_key']['reverse_key'].push(COLUMN_TYPE_2);
+            result['public_key']['number'].push(pk[i]);
+        } else if (pk[i] < 0) {
+            result['public_key']['normal_key'].push(COLUMN_TYPE_2);
+            result['public_key']['reverse_key'].push(COLUMN_TYPE_1);
+            result['public_key']['number'].push(-1 * pk[i]);
         } else {
-            result['normal_key'].push(COLUMN_TYPE_3);
-            result['reverse_key'].push(COLUMN_TYPE_3);
-            result['number'].push(sk[i]);
+            result['public_key']['normal_key'].push(COLUMN_TYPE_3);
+            result['public_key']['reverse_key'].push(COLUMN_TYPE_3);
+            result['public_key']['number'].push(pk[i]);
+        }
+
+
+        if (sk[i] > 0) {
+            result['private_key']['normal_key'].push(COLUMN_TYPE_1);
+            result['private_key']['reverse_key'].push(COLUMN_TYPE_2);
+            result['private_key']['number'].push(sk[i]);
+        } else if (sk[i] < 0) {
+            result['private_key']['normal_key'].push(COLUMN_TYPE_2);
+            result['private_key']['reverse_key'].push(COLUMN_TYPE_1);
+            result['private_key']['number'].push(-1 * sk[i]);
+        } else {
+            result['private_key']['normal_key'].push(COLUMN_TYPE_3);
+            result['private_key']['reverse_key'].push(COLUMN_TYPE_3);
+            result['private_key']['number'].push(sk[i]);
         }
     }
 

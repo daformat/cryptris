@@ -1,4 +1,4 @@
-function KeyColumn(type, squareNumber, msgColumn, container) {
+function KeyColumn(director, type, squareNumber, msgColumn, container) {
     this.type = type;
     this.shapeList = [];
     this.container = container;
@@ -8,10 +8,22 @@ function KeyColumn(type, squareNumber, msgColumn, container) {
 
     this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * SQUARE_HEIGHT);//.setFillStyle('#00FF00');
     this.container.addChild(this.column);
+    this.gradient = null;
 
+    this.computeGradient = function() {
+        if (this.type != COLUMN_TYPE_3) {
+            this.gradient = director.ctx.createLinearGradient(0, 0, SQUARE_WIDTH, 0);
+            this.gradient.addColorStop(0, ColorLeft[this.type]);
+            this.gradient.addColorStop(1, Color[this.type]);
+        } else {
+            this.gradient = null;
+        }
+    }
     for (var i = 0; i < squareNumber; ++i) {
+        this.computeGradient();
         this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setFillStyle(Color[this.type])
+                                                 //.setFillStyle(Color[this.type])
+                                                 .setFillStyle(this.gradient)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
                                                  .setStrokeStyle(StrokeColor[this.type]));
         this.column.addChild(this.shapeList[i]);
@@ -37,8 +49,9 @@ function KeyColumn(type, squareNumber, msgColumn, container) {
             this.type = COLUMN_TYPE_1;
         }
 
+        this.computeGradient();
         for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setFillStyle(Color[this.type]);
+            this.shapeList[i].setFillStyle(this.gradient).setStrokeStyle(StrokeColor[this.type]);
         }
     }
 
@@ -78,9 +91,9 @@ function Key(keyInfo, keyLength, msgColumn, container, bottomLine, director) {
 
         for (var i = 0; i < this.length; ++i) {
             if (this.type === KEY_TYPE_NORMAL) {
-                this.columnList.push(new KeyColumn(normal_key[i], number[i], msgColumn, container));
+                this.columnList.push(new KeyColumn(director, normal_key[i], number[i], msgColumn, container));
             } else if (this.type === KEY_TYPE_REVERSE) {
-                this.columnList.push(new KeyColumn(reverse_key[i], number[i], msgColumn, container));
+                this.columnList.push(new KeyColumn(director, reverse_key[i], number[i], msgColumn, container));
             }
             if (number[i] == 0) {
                 this.columnList[i].column.setSize(SQUARE_WIDTH, SQUARE_HEIGHT / 2);

@@ -1,4 +1,4 @@
-function MessageColumn(type, initialNumber, container) {
+function MessageColumn(director, type, initialNumber, container) {
     this.type = type;
     this.initialNumber = initialNumber;
     this.shapeList = [];
@@ -8,10 +8,22 @@ function MessageColumn(type, initialNumber, container) {
     this.saveChild = [];
 
     this.container.addChild(this.column);
+    this.gradient = null;
+
+    this.computeGradient = function() {
+        if (this.type != COLUMN_TYPE_3) {
+            this.gradient = director.ctx.createLinearGradient(0, 0, SQUARE_WIDTH, 0);
+            this.gradient.addColorStop(0, ColorLeft[this.type]);
+            this.gradient.addColorStop(1, Color[this.type]);
+        } else {
+            this.gradient = null;
+        }
+    }
 
     for (var i = 0; i < initialNumber; ++i) {
+        this.computeGradient();
         this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setFillStyle(Color[this.type])
+                                                 .setFillStyle(this.gradient)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
                                                  .setStrokeStyle(StrokeColor[this.type]));
         this.column.addChild(this.shapeList[this.shapeList.length - 1]);
@@ -41,8 +53,9 @@ function MessageColumn(type, initialNumber, container) {
     this.changeType = function(newType) {
     	this.type = newType;
     	this.fillColor = Color[newType];
+        this.computeGradient();
         for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setFillStyle(Color[this.type]);
+            this.shapeList[i].setFillStyle(this.gradient);
         }
     }
 
@@ -59,9 +72,10 @@ function MessageColumn(type, initialNumber, container) {
             this.changeType(type);
         }
         var referent = this.shapeList.length;
+        this.computeGradient();
         for (var i = referent; i < referent + numberSquare; ++i) {
             this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setFillStyle(Color[this.type])
+                                                 .setFillStyle(this.gradient)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
                                                  .setStrokeStyle(StrokeColor[this.type]));
             this.column.addChild(this.shapeList[i]);
@@ -89,7 +103,7 @@ function MessageColumn(type, initialNumber, container) {
     }
 }
 
-function Message(messageLength, message, bottomLine, container) {
+function Message(director, messageLength, message, bottomLine, container) {
     this.length = messageLength;
     this.message = message;
     this.columnList = [];
@@ -98,7 +112,7 @@ function Message(messageLength, message, bottomLine, container) {
 
     this.createMessage = function() {
         for (var i = 0; i < this.length; ++i) {
-            this.columnList.push(new MessageColumn(this.message['message_type'][i], this.message['message_number'][i], container));
+            this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container));
         }
         this.redraw();
         return this;
