@@ -6,6 +6,17 @@
  *     - menu_screen.js                                             *
  *     - play_scene.js                                              *
  *******************************************************************/
+
+/**
+ * This function create the button we use in this scene.
+ * @param director {CAAT.Director}
+ * @param width {number}
+ * @param height {number}
+ * @param text {string}
+ * @param x {number}
+ * @param y {number}
+ * @param color {string}
+ */
 function createBackButton(director, width, height, text, x, y, color) {
     var backButton = new CAAT.Actor().
         setSize(width, height).
@@ -29,6 +40,10 @@ function createBackButton(director, width, height, text, x, y, color) {
     return backButton;
 }
 
+/**
+ * This function all elements for the play scene.
+ * @param director {CAAT.Director}
+ */
 function createPlayScene(director) {
     /**
      * Create the dict to return.
@@ -36,9 +51,25 @@ function createPlayScene(director) {
     var resultScene = {};
 
     /**
+     * Define the current length of the message (and of the keys).
+     */
+    var current_length = 4 + Math.floor(Math.random() * 4) * 4;
+
+    /**
      * Define a TEMPORARY message.
      */
-    var my_message = [COLUMN_TYPE_1, COLUMN_TYPE_2, COLUMN_TYPE_3, COLUMN_TYPE_3, COLUMN_TYPE_2, COLUMN_TYPE_1];
+    var my_message = [];
+    for (var i = 0; i < current_length; ++i) {
+        var tmp_number = Math.floor(Math.random() * 3);
+
+        if (tmp_number == 0) {
+            my_message.push(COLUMN_TYPE_1);
+        } else if (tmp_number == 1) {
+            my_message.push(COLUMN_TYPE_2);
+        } else {
+            my_message.push(COLUMN_TYPE_3);
+        }
+    }
 
     /**
      * Position relative of the game box to the screen. 
@@ -77,7 +108,7 @@ function createPlayScene(director) {
      * Create my key object.
      * This object inserts all necessary columns to gameBox.
      */
-    crypt_key = new Key(6, message, gameBox, bottomLine, director);
+    crypt_key = new Key(current_length, message, gameBox, bottomLine, director);
     crypt_key.createKey();
 
     /**
