@@ -144,7 +144,7 @@ function Message(director, messageLength, message, bottomLine, container) {
 
     this.redraw = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(i * SQUARE_WIDTH, bottomLine.height);
+            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH), bottomLine.height);
         }
     }
 

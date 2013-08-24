@@ -1,5 +1,7 @@
 var SQUARE_WIDTH = 40;
 var SQUARE_HEIGHT = 20;
+var SPACE_WIDTH = 8;
+var SPACE_HEIGHT = 4
 
 var STROKE_COLOR = '#000000';
 var COLUMN_TYPE_1 = 'red';

@@ -106,7 +106,7 @@ function Key(keyInfo, keyLength, msgColumn, container, bottomLine, director) {
 
     this.redraw = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(i * SQUARE_WIDTH);
+            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH));
         }
     }
 
