@@ -7,16 +7,17 @@ function genSecretKey(dim) {
 
     var sk = null;
 
-    /*
     var pre_key4 = [4, 1, -1, 0];
     var pre_key8 = [7, 1, 1, -1, -1, 0, 0, 0, 0];
     var pre_key12 = [8, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
     var pre_key16 = [9, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
-    */
+
+    /*
     var pre_key4 = [2, 1, -1, 0];
     var pre_key8 = [2, 1, 1, -1, -1, 0, 0, 0, 0];
     var pre_key12 = [2, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
     var pre_key16 = [2, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
+*/
 
     if (dim === 4)
         sk = pre_key4;
@@ -100,18 +101,18 @@ function getKeyInfo(dim) {
     result['number'] = [];
 
     for (var i = 0; i < pk.length; ++i) {
-        if (pk[i] > 0) {
+        if (sk[i] > 0) {
             result['normal_key'].push(COLUMN_TYPE_1);
             result['reverse_key'].push(COLUMN_TYPE_2);
-            result['number'].push(pk[i]);
-        } else if (pk[i] < 0) {
+            result['number'].push(sk[i]);
+        } else if (sk[i] < 0) {
             result['normal_key'].push(COLUMN_TYPE_2);
             result['reverse_key'].push(COLUMN_TYPE_1);
-            result['number'].push(-1 * pk[i]);
+            result['number'].push(-1 * sk[i]);
         } else {
             result['normal_key'].push(COLUMN_TYPE_3);
             result['reverse_key'].push(COLUMN_TYPE_3);
-            result['number'].push(pk[i]);
+            result['number'].push(sk[i]);
         }
     }
 
