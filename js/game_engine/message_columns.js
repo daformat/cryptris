@@ -1,5 +1,6 @@
-function MessageColumn(type, container) {
+function MessageColumn(type, initialNumber, container) {
     this.type = type;
+    this.initialNumber = initialNumber;
     this.shapeList = [];
     this.container = container;
 
@@ -8,11 +9,13 @@ function MessageColumn(type, container) {
 
     this.container.addChild(this.column);
 
-    this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
+    for (var i = 0; i < initialNumber; ++i) {
+        this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
                                                  .setFillStyle(Color[this.type])
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
                                                  .setStrokeStyle(StrokeColor[this.type]));
-    this.column.addChild(this.shapeList[this.shapeList.length - 1]);
+        this.column.addChild(this.shapeList[this.shapeList.length - 1]);
+    }
 
     this.redraw = function(x, relativeY) {
         var columnY = this.container.height - relativeY - SQUARE_HEIGHT * this.shapeList.length;
@@ -86,16 +89,16 @@ function MessageColumn(type, container) {
     }
 }
 
-
-function Message(message, bottomLine, container) {
+function Message(messageLength, message, bottomLine, container) {
+    this.length = messageLength;
     this.message = message;
     this.columnList = [];
     this.bottomLine = bottomLine;
     this.container = container;
 
     this.createMessage = function() {
-        for (var i = 0; i < this.message.length; ++i) {
-            this.columnList.push(new MessageColumn(this.message[i], container));
+        for (var i = 0; i < this.length; ++i) {
+            this.columnList.push(new MessageColumn(this.message['message_type'][i], this.message['message_number'][i], container));
         }
         this.redraw();
         return this;

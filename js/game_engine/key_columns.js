@@ -55,109 +55,7 @@ function KeyColumn(type, squareNumber, msgColumn, container) {
     }
 }
 
-function genSecretKey(dim) {
-
-    var sk = null;
-
-    if (dim === 4)
-        sk = [4, 1, -1, 0];
-    else if (dim === 8)
-        sk = [7, 1, 1, -1, -1, 0, 0, 0, 0];
-    else if (dim === 12)
-        sk = [8, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
-    else if (dim === 16)
-        sk = [9, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
-
-
-    for (var a = 0; a < dim; ++a) {
-        var i = Math.floor(Math.random() * dim);
-        var j = Math.floor(Math.random() * dim);
-
-        var tmp = sk[i];
-        sk[i] = sk[j];
-        sk[j] = tmp;
-    }
-
-    return sk;
-}
-
-function rotate(dim, l, i) {
-    var new_l = [];
-
-    for (var a = i; a < dim; ++a) {
-        new_l.push(l[a]);
-    }
-    for (var a = 0; a < i; ++a) {
-        new_l.push(l[a]);
-    }
-
-    return new_l;
-}
-
-function sum(l1, l2) {
-    var sum_l = [];
-
-    for (var i = 0; i < l1.length; ++i) {
-        sum_l.push(l1[i] + l2[i]);
-    }
-
-    return sum_l;
-}
-
-function mult(a, l1) {
-    var mult_l = [];
-
-    for (var i = 0; i < l1.length; ++i) {
-        mult_l.push(a * l1[i]);
-    }
-    return mult_l;
-}
-
-function genPublicKey(dim, sk) {
-    var pk = sk;
-
-    for (var i = 1; i < dim; ++i) {
-        pk = sum(pk, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, sk, i)));
-    }
-
-    pk = rotate(dim, pk, Math.floor(Math.random() * dim));
-
-    return pk;
-}
-
-function getKeyInfo(dim) {
-    var sk = genSecretKey(dim);
-    var pk = genPublicKey(dim, sk);
-
-    /**
-     * Make to coincide inria's model with dc's model.
-     */
-    var result = {};
-
-    result['normal_key'] = [];
-    result['reverse_key'] = [];
-    result['number'] = [];
-
-    for (var i = 0; i < pk.length; ++i) {
-        if (pk[i] > 0) {
-            result['normal_key'].push(COLUMN_TYPE_1);
-            result['reverse_key'].push(COLUMN_TYPE_2);
-            result['number'].push(pk[i]);
-        } else if (pk[i] < 0) {
-            result['normal_key'].push(COLUMN_TYPE_2);
-            result['reverse_key'].push(COLUMN_TYPE_1);
-            result['number'].push(-1 * pk[i]);
-        } else {
-            result['normal_key'].push(COLUMN_TYPE_3);
-            result['reverse_key'].push(COLUMN_TYPE_3);
-            result['number'].push(pk[i]);
-        }
-    }
-
-    return result;
-}
-
-function Key(keyLength, msgColumn, container, bottomLine, director) {
+function Key(keyInfo, keyLength, msgColumn, container, bottomLine, director) {
     this.type = KEY_TYPE_NORMAL;
     this.length = keyLength;
     this.columnList = [];
@@ -165,10 +63,10 @@ function Key(keyLength, msgColumn, container, bottomLine, director) {
     this.container = container;
     this.bottomLine = bottomLine;
 
-    var key_info = getKeyInfo(this.length);
-    var normal_key = key_info['normal_key'];
-    var reverse_key = key_info['reverse_key'];
-    var number = key_info['number'];
+    this.keyInfo = keyInfo;
+    var normal_key = this.keyInfo['normal_key'];
+    var reverse_key = this.keyInfo['reverse_key'];
+    var number = this.keyInfo['number'];
 
 
     this.createKey = function() {
