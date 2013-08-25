@@ -46,11 +46,12 @@ function createScenes(director) {
  */
 function launchSplashScreen(director) {
     /**
-     * Splash Image assets
+     * Image assets
      */
     var imgs= [];
     imgs.push({id:'splash',   url: "img/splash/splash_digital_cuisine.png" });
     imgs.push({id:'spinner',  url: "img/splash/rueda.png" });
+    imgs.push({id:'bg', url: "img/fond-board.png"});
 
     /**
      * Clear the director.
@@ -58,7 +59,7 @@ function launchSplashScreen(director) {
     director.setClear(CAAT.Foundation.Director.CLEAR_DIRTY_RECTS);
 
     /**
-     * Display the splash image
+     * Preload our necessarly images and load the splash screens.
      */
     new CAAT.Module.Preloader.ImagePreloader().loadImages(
         imgs,

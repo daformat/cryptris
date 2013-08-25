@@ -75,7 +75,7 @@ function createPlayScene(director) {
      */
     var relativeX = 40;
     var relativeY = 10;
-    var sizeWidth = $(window).width() - 400;
+    var sizeWidth = current_length * (SPACE_WIDTH + SQUARE_WIDTH);
     var sizeHeight = $(window).height() - 40;
 
     /**
@@ -84,6 +84,7 @@ function createPlayScene(director) {
     resultScene['game_box'] = new CAAT.Foundation.ActorContainer()
                                         .setSize(sizeWidth, sizeHeight)
                                         .setFillStyle('rgb(199, 167, 192)')
+                                        .setStrokeStyle('#000000')
                                         .setLocation(relativeX, relativeY);
     var gameBox = resultScene['game_box'];
 
@@ -111,9 +112,17 @@ function createPlayScene(director) {
     crypt_key.createKey();
 
     /**
-     * Create the play scene, and set the background color.
+     * Create the play scene, and set the background Image (see main.js => Image assets").
      */
-    resultScene['scene'] = director.createScene().setFillStyle('rgb(144, 80, 131)');
+    resultScene['scene'] = director.createScene();
+
+    var bgImg = director.getImage('bg');
+    resultScene['scene'].addChild(
+        new CAAT.Foundation.Actor().
+                setBackgroundImage(bgImg, false).
+                setBounds((director.width - bgImg.width) / 2, (director.height - bgImg.height) / 2, director.width, director.height).
+                setImageTransformation(CAAT.Foundation.SpriteImage.NONE)
+    );
 
     /**
      * Create each necessary button.
