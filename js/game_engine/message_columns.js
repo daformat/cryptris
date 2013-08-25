@@ -30,21 +30,21 @@ function MessageColumn(director, type, initialNumber, container) {
     }
 
     this.redraw = function(x, relativeY) {
-        var columnY = this.container.height - relativeY - SQUARE_HEIGHT * this.shapeList.length;
+        var columnY = this.container.height - relativeY - SQUARE_HEIGHT * this.shapeList.length - BORDER_HEIGHT - (this.shapeList.length - 1) * SPACE_HEIGHT;
 
         if (columnY > 0) {
-            this.column.setLocation(x, this.container.height - relativeY - SQUARE_HEIGHT * this.shapeList.length);
+            this.column.setLocation(x, columnY);
         } else {
             this.column.setLocation(x, 0);
         }
         for (var i = 0; i < this.shapeList.length; ++i) {
             if (columnY > 0) {
-                this.shapeList[i].setLocation(0, i * SQUARE_HEIGHT);
+                this.shapeList[i].setLocation(0, i * (SQUARE_HEIGHT + SPACE_HEIGHT));
             } else {
-                if (this.container.height - i * SQUARE_HEIGHT >  this.container.y) {
-                    this.shapeList[i].setLocation(0, this.container.height - (i + 1) * SQUARE_HEIGHT);
+                if (this.container.height - BORDER_HEIGHT - i * (SQUARE_HEIGHT + SPACE_HEIGHT) >  this.container.y) {
+                    this.shapeList[i].setLocation(0, this.container.height - (BORDER_HEIGHT + SQUARE_HEIGHT) - i * (SQUARE_HEIGHT + SPACE_HEIGHT));
                 } else {
-                    this.shapeList[i].setLocation(0, 0);
+                    this.shapeList[i].setLocation(0, BORDER_HEIGHT);
                 }
             }
         }
@@ -144,7 +144,7 @@ function Message(director, messageLength, message, bottomLine, container) {
 
     this.redraw = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH), bottomLine.height);
+            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, bottomLine.height);
         }
     }
 

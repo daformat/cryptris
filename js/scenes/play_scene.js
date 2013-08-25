@@ -74,8 +74,8 @@ function createPlayScene(director) {
      * Position relative of the game box to the screen. 
      */
     var relativeX = 40;
-    var relativeY = 10;
-    var sizeWidth = current_length * (SPACE_WIDTH + SQUARE_WIDTH);
+    var relativeY = 30;
+    var sizeWidth = current_length * (SPACE_WIDTH + SQUARE_WIDTH) + SPACE_WIDTH;
     var sizeHeight = $(window).height() - 40;
 
     /**
@@ -83,10 +83,20 @@ function createPlayScene(director) {
      */
     resultScene['game_box'] = new CAAT.Foundation.ActorContainer()
                                         .setSize(sizeWidth, sizeHeight)
-                                        .setFillStyle('rgb(199, 167, 192)')
-                                        .setStrokeStyle('#000000')
+                                        .setFillStyle('rgba(0, 113, 187, 0.2)')
                                         .setLocation(relativeX, relativeY);
     var gameBox = resultScene['game_box'];
+    
+    /**
+     * Create each column and set their color.
+     */
+    for (var i = 0; i < current_length; ++i) {
+        var column = new CAAT.ShapeActor().setSize(SQUARE_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
+                                                 .setFillStyle('rgba(0, 113, 187, 0.2)')
+                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
+                                                 .setLocation(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, BORDER_HEIGHT);
+        gameBox.addChild(column);
+    }
 
     /**
      * Create a base line to our game box.
@@ -108,7 +118,7 @@ function createPlayScene(director) {
      * Create my key object.
      * This object inserts all necessary columns to gameBox.
      */
-    crypt_key = new Key(key_info, current_length, message, gameBox, bottomLine, director);
+    crypt_key = new Key(key_info, current_length, message, gameBox, director);
     crypt_key.createKey();
 
     /**

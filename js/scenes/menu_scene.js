@@ -115,7 +115,7 @@ function createMainTitle(director, relativeY) {
         ctx.font = '60px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillStyle = 'white';
-        ctx.fillText("TETRYPS", 0, 0);
+        ctx.fillText("CRYPTRIS", 0, 0);
     };
 
     return mainTitle;
