@@ -195,7 +195,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
                     if (object.msgColumn.columnList[i].type === COLUMN_TYPE_3)
                         relativeColumnY = column.height;
 
-                    enemyColumn.setLocation(column.x, column.y + relativeColumnY - enemy.height - BORDER_HEIGHT - SPACE_HEIGHT);
+                    enemyColumn.setLocation(column.x, column.y + relativeColumnY - enemy.height - SPACE_HEIGHT);
 
                     object.msgColumn.mergeColumns(i, object.columnList[i]);
                     objects_in_move.splice(0, 1);
