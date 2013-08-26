@@ -1,6 +1,8 @@
 body {
 	margin: 0px;
 	background-color: #000007;
+	min-height: 800px;
+	overflow: hidden;
 }
 
 #main_scene {
@@ -9,6 +11,7 @@ body {
 }
 
 #container {
+	text-align: center;
 	margin: 0px;
 	padding: 0px;
 }

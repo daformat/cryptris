@@ -75,6 +75,24 @@ function launchSplashScreen(director) {
 }
 
 /**
+ * Launch all resize functions when the event is fired.
+ */
+var resizeInProcess = false;
+function resize(director, newWidth, newHeight) {
+    if (resizeInProcess === false) {
+        resizeInProcess = true;
+
+        if (currentGame.scenes !== null) {
+            if (currentGame.scenes['menu_scene'] !== null) {
+                currentGame.scenes['menu_scene']['resize'](director, currentGame.scenes['menu_scene']);
+            }
+        }
+
+    }
+    resizeInProcess = false;
+}
+
+/**
  * Startup it all up when the document is ready.
  */
 $(document).ready(function() {
@@ -86,10 +104,16 @@ $(document).ready(function() {
     /**
      * Declare our main caat director.
      */
-    var director = new CAAT.Director().initialize($(window).width(), $(window).height() - 5, 'main_scene').setClear(false);
+    var director = new CAAT.Director().initialize($(document).width(), $(document).height(), 'main_scene').setClear(false);
 
     /**
      * Launch splash screen
      */
     launchSplashScreen(director);
+
+    /**
+     * Enable resize events.
+     */
+    director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
+
 });

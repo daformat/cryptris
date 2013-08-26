@@ -1,4 +1,14 @@
 /**
+ * Define information for each button.
+ */
+var infoPlayButton = new infoButton(0, -60, "Nouvelle partie", 150, 30, true, "black", "white", "royalblue");
+var infoCreditsButton = new infoButton(0, 0, "En savoir plus", 150, 30, true, "black", "white", "royalblue");
+var infoSeeMoreButton = new infoButton(0, 60, "Credits", 150, 30, true, "black", "white", "royalblue");
+var shortcutButton = new infoButton(0, 120, "ShortCut", 150, 30, true, "black", "white", "royalblue");
+
+var mainTitleRelativeY = -150;
+
+/**
  * Define a button class.
  */
 function infoButton (x, y, text, textX, textY, isFill, strokeColor, fillColor, hoverFillColor) {
@@ -122,6 +132,25 @@ function createMainTitle(director, relativeY) {
 }
 
 /**
+ * Function to resize the menu scene.
+ */
+function resizeMenuScene(director, menuScene) {
+    if (director.height > 400) {
+        menuScene['mainTitle'].centerAt(director.width / 2, director.height / 2 + mainTitleRelativeY);
+        menuScene['playButton'].centerAt(director.width / 2, director.height / 2 + infoPlayButton.y);
+        menuScene['creditButton'].centerAt(director.width / 2, director.height / 2 + infoCreditsButton.y);
+        menuScene['seeMoreButton'].centerAt(director.width / 2, director.height / 2 + infoSeeMoreButton.y);
+        menuScene['shortcutButton'].centerAt(director.width / 2, director.height / 2 + shortcutButton.y);
+    } else {
+        menuScene['mainTitle'].setLocation((director.width - menuScene['mainTitle'].width) / 2, 50);
+        menuScene['playButton'].setLocation((director.width - menuScene['playButton'].width) / 2, 100);
+        menuScene['creditButton'].setLocation((director.width - menuScene['creditButton'].width) / 2, 150);
+        menuScene['seeMoreButton'].setLocation((director.width - menuScene['seeMoreButton'].width) / 2, 200);
+        menuScene['shortcutButton'].setLocation((director.width - menuScene['shortcutButton'].width) / 2, 250);
+    }
+}
+
+/**
  * This function creates all necessary actors to display the menu screen.
  * @param director {CAAT.Director}
  */
@@ -140,15 +169,7 @@ function createMenuScene(director) {
     /**
      * Create the main title Actor.
      */
-    resultScene['mainTitle'] = createMainTitle(director, -150);
-
-    /**
-     * Define information for each button.
-     */
-    var infoPlayButton = new infoButton(0, -60, "Nouvelle partie", 150, 30, true, "black", "white", "royalblue");
-    var infoCreditsButton = new infoButton(0, 0, "En savoir plus", 150, 30, true, "black", "white", "royalblue");
-    var infoSeeMoreButton = new infoButton(0, 60, "Credits", 150, 30, true, "black", "white", "royalblue");
-    var shortcutButton = new infoButton(0, 120, "ShortCut", 150, 30, true, "black", "white", "royalblue");
+    resultScene['mainTitle'] = createMainTitle(director, mainTitleRelativeY);
 
     /**
      * Create each necessary button.
@@ -157,6 +178,10 @@ function createMenuScene(director) {
     resultScene['creditButton'] = createMenuButton(director, infoCreditsButton);
     resultScene['seeMoreButton'] = createMenuButton(director, infoSeeMoreButton);
 
+    /**
+     * Register our resize function.
+     */
+    resultScene['resize'] = resizeMenuScene;
 
     /**
      * Create a temporary button for test.
