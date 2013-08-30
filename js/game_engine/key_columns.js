@@ -6,7 +6,7 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
     this.pb = null;
     this.key_in_move = false;
 
-    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * SQUARE_HEIGHT);//.setFillStyle('#00FF00');
+    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT)).setLocation(0.5, BORDER_HEIGHT);//.setFillStyle('#00FF00');
     this.container.addChild(this.column);
     this.gradient = null;
 
@@ -19,6 +19,7 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
             this.gradient = null;
         }
     }
+
     for (var i = 0; i < squareNumber; ++i) {
         this.computeGradient();
         this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
@@ -30,9 +31,9 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
     }
 
     this.redraw = function(x) {
-        this.column.setLocation(x, 0);
+        this.column.setLocation(x, BORDER_HEIGHT);
         for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setLocation(0, BORDER_HEIGHT + i * (SQUARE_HEIGHT + SPACE_HEIGHT));
+            this.shapeList[i].setLocation(1.5, i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
         }
     }
 
@@ -173,10 +174,12 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
         }
     }
 
+    setInterval(this);
+
     var object = this;
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            for (var i = 0; i < object.msgColumn.columnList.length && objects_in_move.length > 0; ++i) {
+            for (var i = 0; objects_in_move.length > 0 && i < object.msgColumn.columnList.length; ++i) {
 
                 if (object.columnList[i].is_active === false) {
                     continue;
@@ -193,17 +196,17 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
 
                     var relativeColumnY = 0;
                     if (object.msgColumn.columnList[i].type === COLUMN_TYPE_3)
-                        relativeColumnY = column.height;
+                        relativeColumnY = column.height + (object.columnList[i].shapeList.length * SPACE_HEIGHT);
 
-                    enemyColumn.setLocation(column.x, column.y + relativeColumnY - enemy.height - SPACE_HEIGHT);
+                    enemyColumn.setLocation(column.x, column.y - enemyColumn.height);// - relativeColumnY);
 
                     object.msgColumn.mergeColumns(i, object.columnList[i]);
                     objects_in_move.splice(0, 1);
                     object.columnList[i].setInactive();
 
                     if (objects_in_move.length == 0) {
-                        crypt_key.createKey();
                         object.msgColumn.redraw();
+                        crypt_key.createKey();
                         object.msgColumn.clean();
                     }
                 }

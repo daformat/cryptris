@@ -88,7 +88,7 @@ function createPlayScene(director) {
     /**
      * Define the current length of the message (and of the keys).
      */
-    var current_length = 4 + Math.floor(Math.random() * 4) * 4;
+    var current_length = parseInt(getQuerystring("n", 8));
 
     /**
      * Generate my private and public keys.
@@ -126,7 +126,7 @@ function createPlayScene(director) {
      * Create each column and set their color.
      */
     for (var i = 0; i < current_length; ++i) {
-        var column = new CAAT.ShapeActor().setSize(SQUARE_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
+        var column = new CAAT.ShapeActor().setSize(SQUARE_WIDTH + 3, gameBox.height - 2 * BORDER_HEIGHT)
                                                  .setFillStyle('rgba(0, 113, 187, 0.2)')
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
                                                  .setLocation(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, BORDER_HEIGHT);
@@ -212,4 +212,16 @@ function createPlayScene(director) {
     resultScene['scene'].addChild(resultScene['right_button']);
 
     return resultScene;
+}
+
+
+function getQuerystring(key, default_) {
+  if (default_==null) default_=""; 
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href);
+  if(qs == null)
+    return default_;
+  else
+    return qs[1];
 }

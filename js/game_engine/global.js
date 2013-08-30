@@ -1,5 +1,5 @@
 var SQUARE_WIDTH = 40;
-var SQUARE_HEIGHT = 20;
+var SQUARE_HEIGHT = parseInt(getQuerystring("s", 20));
 var SPACE_WIDTH = 8;
 var SPACE_HEIGHT = 4;
 var BORDER_HEIGHT = 2 * SPACE_HEIGHT;
@@ -17,3 +17,14 @@ var KEY_TYPE_REVERSE = 1;
 
 var crypt_key = null;
 var objects_in_move = [];
+
+function getQuerystring(key, default_) {
+  if (default_==null) default_=""; 
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href);
+  if(qs == null)
+    return default_;
+  else
+    return qs[1];
+}

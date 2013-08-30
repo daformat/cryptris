@@ -7,27 +7,17 @@ function genSecretKey(dim) {
 
     var sk = null;
 
-    var pre_key4 = [4, 1, -1, 0];
-    var pre_key8 = [7, 1, 1, -1, -1, 0, 0, 0, 0];
-    var pre_key12 = [8, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
-    var pre_key16 = [9, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
+    var pre_key12 = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
+    var pre_key10 = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0];
+    var pre_key8 = [8, -3, 1, 0, -1, 0, -1, 1];
 
-    /*
-    var pre_key4 = [2, 1, -1, 0];
-    var pre_key8 = [2, 1, 1, -1, -1, 0, 0, 0, 0];
-    var pre_key12 = [2, 1, 1, 1, 1, -1, -1, -1, -1, 0, 0, 0];
-    var pre_key16 = [2, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0];
-*/
-
-    if (dim === 4)
-        sk = pre_key4;
-    else if (dim === 8)
+    if (dim === 8) {
         sk = pre_key8;
-    else if (dim === 12)
+    } else if (dim === 10) {
+        sk = pre_key10;
+    } else if (dim === 12) {
         sk = pre_key12;
-    else if (dim === 16)
-        sk = pre_key16;
-
+    }
 
     for (var a = 0; a < dim; ++a) {
         var i = Math.floor(Math.random() * dim);
@@ -76,7 +66,7 @@ function mult(a, l1) {
 function genPublicKey(dim, sk) {
     var pk = sk;
 
-    for (var i = 1; i < dim; ++i) {
+    for (var i = 1; i < dim / 2; ++i) {
         pk = sum(pk, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, sk, i)));
     }
 
@@ -143,7 +133,7 @@ function getKeyInfo(dim) {
 function chiffre(dim, message, pk) {
     var cipher = message;
 
-    for (var i = 1; i < dim; ++i) {
+    for (var i = 1; i < dim / 2; ++i) {
         cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, pk, i)));
     }
 

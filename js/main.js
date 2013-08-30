@@ -99,7 +99,7 @@ $(document).ready(function() {
     /**
      * Debug flag, turn it off to production version.
      */
-    CAAT.DEBUG = false;
+    CAAT.DEBUG = true;
 
     /**
      * Declare our main caat director.

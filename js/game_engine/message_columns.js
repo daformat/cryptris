@@ -4,7 +4,7 @@ function MessageColumn(director, type, initialNumber, container) {
     this.shapeList = [];
     this.container = container;
 
-    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, SQUARE_HEIGHT);
+    this.column = new CAAT.Foundation.ActorContainer();
     this.saveChild = [];
 
     this.container.addChild(this.column);
@@ -38,13 +38,14 @@ function MessageColumn(director, type, initialNumber, container) {
             this.column.setLocation(x, 0);
         }
         for (var i = 0; i < this.shapeList.length; ++i) {
+            this.shapeList[i].setSize(SQUARE_WIDTH, SQUARE_HEIGHT);
             if (columnY > 0) {
-                this.shapeList[i].setLocation(0, i * (SQUARE_HEIGHT + SPACE_HEIGHT));
+                this.shapeList[i].setLocation(1.5, i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
             } else {
                 if (this.container.height - BORDER_HEIGHT - i * (SQUARE_HEIGHT + SPACE_HEIGHT) >  this.container.y) {
-                    this.shapeList[i].setLocation(0, this.container.height - (BORDER_HEIGHT + SQUARE_HEIGHT) - i * (SQUARE_HEIGHT + SPACE_HEIGHT));
+                    this.shapeList[i].setLocation(1.5, this.container.height - (BORDER_HEIGHT + SQUARE_HEIGHT) - i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
                 } else {
-                    this.shapeList[i].setLocation(0, BORDER_HEIGHT);
+                    this.shapeList[i].setLocation(1.5, BORDER_HEIGHT);
                 }
             }
         }
@@ -77,7 +78,7 @@ function MessageColumn(director, type, initialNumber, container) {
             this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
                                                  .setFillStyle(this.gradient)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(StrokeColor[this.type]));
+                                                 .setStrokeStyle(StrokeColor[this.type]).setLocation(1.5,0.5 - SQUARE_HEIGHT - SPACE_HEIGHT));
             this.column.addChild(this.shapeList[i]);
         }
     }
@@ -89,7 +90,7 @@ function MessageColumn(director, type, initialNumber, container) {
             this.saveChild = this.shapeList;
             this.shapeList = [];
             this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE));
+                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE).setLocation(1.5, 0.5));
             this.column.addChild(this.shapeList[this.shapeList.length - 1]);
         } else {
             if (newSquareNumber < 0) {
@@ -143,6 +144,20 @@ function Message(director, messageLength, message, bottomLine, container) {
     }
 
     this.redraw = function() {
+        var max_column = this.columnList[0].shapeList.length;
+        for (var i = 1; i < this.columnList.length; ++i) {
+            if (this.columnList[i].shapeList.length > max_column) {
+                max_column = this.columnList[i].shapeList.length;
+            }
+        }
+
+        var newHeight = parseInt((container.height - 2 * BORDER_HEIGHT) / (9 + max_column) - SPACE_HEIGHT);
+        if (newHeight > 20) {
+            SQUARE_HEIGHT = 20;
+        } else {
+            SQUARE_HEIGHT = newHeight;
+        }
+
         for (var i = 0; i < this.columnList.length; ++i) {
             this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, bottomLine.height);
         }
