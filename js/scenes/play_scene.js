@@ -110,7 +110,7 @@ function createPlayScene(director) {
      */
     var relativeX = 40;
     var relativeY = 30;
-    var sizeWidth = current_length * (SPACE_WIDTH + SQUARE_WIDTH) + SPACE_WIDTH;
+    var sizeWidth = current_length * (SPACE_WIDTH + COLUMN_WIDTH) - SPACE_WIDTH + 2 * BORDER_WIDTH;
     var sizeHeight = $(window).height() - 100;
 
     /**
@@ -119,34 +119,26 @@ function createPlayScene(director) {
     resultScene['game_box'] = new CAAT.Foundation.ActorContainer()
                                         .setSize(sizeWidth, sizeHeight)
                                         .setFillStyle('rgba(0, 113, 187, 0.2)')
-                                        .setLocation(relativeX, relativeY);
+                                        .setLocation(relativeX, relativeY)
+                                        .enableEvents(false);
     var gameBox = resultScene['game_box'];
 
     /**
      * Create each column and set their color.
      */
     for (var i = 0; i < current_length; ++i) {
-        var column = new CAAT.ShapeActor().setSize(SQUARE_WIDTH + 3, gameBox.height - 2 * BORDER_HEIGHT)
+        var column = new CAAT.ShapeActor().setSize(COLUMN_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
                                                  .setFillStyle('rgba(0, 113, 187, 0.2)')
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setLocation(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, BORDER_HEIGHT);
+                                                 .setLocation(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH), BORDER_HEIGHT);
         gameBox.addChild(column);
     }
-
-    /**
-     * Create a base line to our game box.
-     */
-    resultScene['bottom_line'] = new CAAT.ShapeActor().setLocation(gameBox.x, gameBox.y + gameBox.height)
-                                                      .setSize(gameBox.width, 1)
-                                                      .setFillStyle('#000000')
-                                                      .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE);
-    var bottomLine = resultScene['bottom_line'];
 
     /**
      * Create my message object.
      * This object inserts all necessary columns to gameBox.
      */
-    var message = new Message(director, current_length, my_message, bottomLine, gameBox);
+    var message = new Message(director, current_length, my_message, gameBox);
     message.createMessage();
 
     /**
@@ -160,15 +152,6 @@ function createPlayScene(director) {
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */
     resultScene['scene'] = director.createScene();
-
-    var bgImg = director.getImage('bg');
-    resultScene['scene'].addChild(
-        new CAAT.Foundation.Actor().
-                setBackgroundImage(bgImg, false).
-                setBounds((director.width - bgImg.width) / 2, (director.height - bgImg.height) / 2, director.width, director.height).
-                setImageTransformation(CAAT.Foundation.SpriteImage.NONE)
-    );
-
 
     /**
      * Display our message for debug.
@@ -204,7 +187,6 @@ function createPlayScene(director) {
      * Add each element to its scene.
      */
     resultScene['scene'].addChild(resultScene['game_box']);
-    resultScene['scene'].addChild(resultScene['bottom_line']);
     resultScene['scene'].addChild(resultScene['back_button']);
     resultScene['scene'].addChild(resultScene['up_button']);
     resultScene['scene'].addChild(resultScene['down_button']);

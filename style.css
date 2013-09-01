@@ -6,6 +6,9 @@ body {
 }
 
 #main_scene {
+	background: url('img/fond-board.png');
+	background-repeat:no-repeat;
+	background-position:center; 
 	margin: 0px;
 	padding: 0px;
 }

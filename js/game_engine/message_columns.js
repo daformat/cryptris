@@ -1,7 +1,6 @@
 function MessageColumn(director, type, initialNumber, container) {
     this.type = type;
-    this.initialNumber = initialNumber;
-    this.shapeList = [];
+    this.squareNumber = initialNumber;
     this.container = container;
 
     this.column = new CAAT.Foundation.ActorContainer();
@@ -20,33 +19,45 @@ function MessageColumn(director, type, initialNumber, container) {
         }
     }
 
-    for (var i = 0; i < initialNumber; ++i) {
-        this.computeGradient();
-        this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setFillStyle(this.gradient)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(StrokeColor[this.type]));
-        this.column.addChild(this.shapeList[this.shapeList.length - 1]);
-    }
+    this.redraw = function(x) {
 
-    this.redraw = function(x, relativeY) {
-        var columnY = this.container.height - relativeY - SQUARE_HEIGHT * this.shapeList.length - BORDER_HEIGHT - (this.shapeList.length - 1) * SPACE_HEIGHT;
+        var columnY = this.container.height - SQUARE_HEIGHT * this.squareNumber - BORDER_HEIGHT - (this.squareNumber - 1) * SPACE_HEIGHT;
 
         if (columnY > 0) {
             this.column.setLocation(x, columnY);
         } else {
             this.column.setLocation(x, 0);
         }
-        for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setSize(SQUARE_WIDTH, SQUARE_HEIGHT);
-            if (columnY > 0) {
-                this.shapeList[i].setLocation(1.5, i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
-            } else {
-                if (this.container.height - BORDER_HEIGHT - i * (SQUARE_HEIGHT + SPACE_HEIGHT) >  this.container.y) {
-                    this.shapeList[i].setLocation(1.5, this.container.height - (BORDER_HEIGHT + SQUARE_HEIGHT) - i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
-                } else {
-                    this.shapeList[i].setLocation(1.5, BORDER_HEIGHT);
-                }
+
+        var squareNumber = this.squareNumber;
+        var type = this.type;
+        this.computeGradient();
+        var gradient = this.gradient;
+
+        if (this.type === COLUMN_TYPE_3) {
+            this.column.setSize(COLUMN_WIDTH, SQUARE_HEIGHT);
+            this.column.setLocation(x, this.container.height - SQUARE_HEIGHT - BORDER_HEIGHT);
+        } else {
+            this.column.setSize(COLUMN_WIDTH, this.squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
+        }
+        this.column.paint = function(director, time) {
+            if (this.isCached()) {
+                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+                return;
+            }
+
+            // Custom paint method.
+            for (var i = 0; i < squareNumber; ++i) {
+                var ctx = director.ctx;
+
+                var x = 1.5;
+                var y = 0.5 + i * (SQUARE_HEIGHT + SPACE_HEIGHT)
+
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = StrokeColor[type];
+                ctx.strokeRect(x, y, SQUARE_WIDTH, SQUARE_HEIGHT);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x + 0.5, y + 0.5, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1);
             }
         }
     }
@@ -55,60 +66,41 @@ function MessageColumn(director, type, initialNumber, container) {
     	this.type = newType;
     	this.fillColor = Color[newType];
         this.computeGradient();
-        for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setFillStyle(this.gradient);
+        this.redraw();
+    }
+
+    this.addSquares = function(squareNumber, type) {
+        if (squareNumber > 0) {
+            if (this.type === COLUMN_TYPE_3) {
+                this.type = type;
+                this.squareNumber = squareNumber;
+            } else {
+                this.squareNumber += squareNumber;
+            }
         }
     }
 
-    this.clean = function() {
-        for (var i = 0; i < this.saveChild.length; ++i) {
-            this.column.removeChild(this.saveChild[i]);
-        }
-    }
+    this.subSquares = function(squareNumber, type) {
+        newSquareNumber = this.squareNumber - squareNumber;
 
-    this.addSquares = function(numberSquare, type) {
-        if (numberSquare > 0 && this.type === COLUMN_TYPE_3) {
-            this.saveChild = this.shapeList;
-            this.shapeList = [];
-            this.changeType(type);
-        }
-        var referent = this.shapeList.length;
-        this.computeGradient();
-        for (var i = referent; i < referent + numberSquare; ++i) {
-            this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setFillStyle(this.gradient)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(StrokeColor[this.type]).setLocation(1.5,0.5 - SQUARE_HEIGHT - SPACE_HEIGHT));
-            this.column.addChild(this.shapeList[i]);
-        }
-    }
-
-    this.subSquares = function(numberSquare, type) {
-        newSquareNumber = this.shapeList.length - numberSquare;
         if (newSquareNumber === 0) {
             this.changeType(COLUMN_TYPE_3);
-            this.saveChild = this.shapeList;
-            this.shapeList = [];
-            this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE).setLocation(1.5, 0.5));
-            this.column.addChild(this.shapeList[this.shapeList.length - 1]);
+            this.squareNumber = 0;
         } else {
-            if (newSquareNumber < 0) {
-                newSquareNumber = newSquareNumber * (-1);
+            if (newSquareNumber > 0) {
+                this.squareNumber = newSquareNumber;
+            } else {
+                this.squareNumber = (-1) * newSquareNumber;
                 this.changeType(type);
             }
-            this.saveChild = this.shapeList;
-            this.shapeList = [];
-            this.addSquares(newSquareNumber, type);
         }
     }
 }
 
-function Message(director, messageLength, message, bottomLine, container) {
+function Message(director, messageLength, message, container) {
     this.length = messageLength;
     this.message = message;
     this.columnList = [];
-    this.bottomLine = bottomLine;
     this.container = container;
 
     this.createMessage = function() {
@@ -131,6 +123,7 @@ function Message(director, messageLength, message, bottomLine, container) {
                 this.subSquaresAtColumn(index, column.shapeList.length, column.type);
             }
         }
+        this.redraw();
     }
 
     this.subSquaresAtColumn = function(index, numberSquare, type) {
@@ -144,28 +137,23 @@ function Message(director, messageLength, message, bottomLine, container) {
     }
 
     this.redraw = function() {
-        var max_column = this.columnList[0].shapeList.length;
+        var max_column = this.columnList[0].squareNumber;
         for (var i = 1; i < this.columnList.length; ++i) {
-            if (this.columnList[i].shapeList.length > max_column) {
-                max_column = this.columnList[i].shapeList.length;
+            if (this.columnList[i].squareNumber > max_column) {
+                max_column = this.columnList[i].squareNumber;
             }
         }
 
         var newHeight = parseInt((container.height - 2 * BORDER_HEIGHT) / (9 + max_column) - SPACE_HEIGHT);
         if (newHeight > 20) {
             SQUARE_HEIGHT = 20;
-        } else {
+        }
+        else {
             SQUARE_HEIGHT = newHeight;
         }
 
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH, bottomLine.height);
-        }
-    }
-
-    this.clean = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].clean();
+            this.columnList[i].redraw(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH));
         }
     }
 }

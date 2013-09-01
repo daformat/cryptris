@@ -6,7 +6,7 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
     this.pb = null;
     this.key_in_move = false;
 
-    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT)).setLocation(0.5, BORDER_HEIGHT);//.setFillStyle('#00FF00');
+    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT)).setLocation(0.5, BORDER_HEIGHT);
     this.container.addChild(this.column);
     this.gradient = null;
 
@@ -22,18 +22,38 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
 
     for (var i = 0; i < squareNumber; ++i) {
         this.computeGradient();
-        this.shapeList.push(new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
-                                                 //.setFillStyle(Color[this.type])
-                                                 .setFillStyle(this.gradient)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(StrokeColor[this.type]));
-        this.column.addChild(this.shapeList[i]);
+        this.shapeList.push(0);
     }
 
     this.redraw = function(x) {
         this.column.setLocation(x, BORDER_HEIGHT);
-        for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setLocation(1.5, i * (SQUARE_HEIGHT + SPACE_HEIGHT) + 0.5);
+
+
+        var shapeList = this.shapeList;
+        var type = this.type;
+        var gradient = this.gradient;
+
+        this.column.setSize(COLUMN_WIDTH, this.shapeList.length * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
+
+        this.column.paint = function(director, time) {
+            if (this.isCached()) {
+                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+                return;
+            }
+
+            // Custom paint method.
+            for (var i = 0; i < shapeList.length; ++i) {
+                var ctx = director.ctx;
+
+                var x = 1.5;
+                var y = 0.5 + i * (SQUARE_HEIGHT + SPACE_HEIGHT)
+
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = StrokeColor[type];
+                ctx.strokeRect(x, y, SQUARE_WIDTH, SQUARE_HEIGHT);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x + 0.5, y + 0.5, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1);
+            }
         }
     }
 
@@ -51,9 +71,7 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
         }
 
         this.computeGradient();
-        for (var i = 0; i < this.shapeList.length; ++i) {
-            this.shapeList[i].setFillStyle(this.gradient).setStrokeStyle(StrokeColor[this.type]);
-        }
+        this.redraw();
     }
 
     this.setInactive = function() {
@@ -62,10 +80,8 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
 
 
     this.clean = function() {
-        for (var i = 0; i < this.saveChild.length; ++i) {
-            this.column.removeChild(this.saveChild[i]);
-        }
-        this.saveChild = [];
+        this.shapeList = [];
+        this.redraw();
     }
 }
 
@@ -106,7 +122,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
 
     this.redraw = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(i * (SQUARE_WIDTH + SPACE_WIDTH) + SPACE_WIDTH);
+            this.columnList[i].redraw(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH));
         }
     }
 
@@ -174,8 +190,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
         }
     }
 
-    setInterval(this);
-
     var object = this;
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
@@ -185,29 +199,24 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
                     continue;
                 }
 
-                var column = object.msgColumn.columnList[i].column;
+                var msgColumn = object.msgColumn.columnList[i].column;
 
-                var enemyColumn = object.columnList[i].column;
-                var enemy = enemyColumn.AABB;
+                var keyColumn = object.columnList[i].column;
 
-                if (enemy.y + enemy.height > column.y) {
+                if (keyColumn.y + keyColumn.height > msgColumn.y) {
 
                     object.columnList[i].stopMove();
 
-                    var relativeColumnY = 0;
-                    if (object.msgColumn.columnList[i].type === COLUMN_TYPE_3)
-                        relativeColumnY = column.height + (object.columnList[i].shapeList.length * SPACE_HEIGHT);
-
-                    enemyColumn.setLocation(column.x, column.y - enemyColumn.height);// - relativeColumnY);
-
+                    keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - SPACE_HEIGHT);
                     object.msgColumn.mergeColumns(i, object.columnList[i]);
+                    object.columnList[i].clean();
+
                     objects_in_move.splice(0, 1);
                     object.columnList[i].setInactive();
 
                     if (objects_in_move.length == 0) {
                         object.msgColumn.redraw();
                         crypt_key.createKey();
-                        object.msgColumn.clean();
                     }
                 }
             }
@@ -229,4 +238,3 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
         }
     });
 }
-

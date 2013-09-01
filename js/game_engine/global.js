@@ -1,8 +1,10 @@
 var SQUARE_WIDTH = 40;
+var COLUMN_WIDTH = SQUARE_WIDTH + 3;
 var SQUARE_HEIGHT = parseInt(getQuerystring("s", 20));
-var SPACE_WIDTH = 8;
+var SPACE_WIDTH = 4;
 var SPACE_HEIGHT = 4;
 var BORDER_HEIGHT = 2 * SPACE_HEIGHT;
+var BORDER_WIDTH = 8;
 
 var STROKE_COLOR = '#000000';
 var COLUMN_TYPE_1 = 'type1';
