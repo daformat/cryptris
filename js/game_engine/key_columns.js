@@ -1,6 +1,6 @@
 function KeyColumn(director, type, squareNumber, msgColumn, container) {
     this.type = type;
-    this.shapeList = [];
+    this.squareNumber = squareNumber;
     this.container = container;
     this.is_active = true;
     this.pb = null;
@@ -20,20 +20,17 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
         }
     }
 
-    for (var i = 0; i < squareNumber; ++i) {
-        this.computeGradient();
-        this.shapeList.push(0);
-    }
+    this.computeGradient();
 
     this.redraw = function(x) {
         this.column.setLocation(x, BORDER_HEIGHT);
 
 
-        var shapeList = this.shapeList;
+        var squareNumber = this.squareNumber;
         var type = this.type;
         var gradient = this.gradient;
 
-        this.column.setSize(COLUMN_WIDTH, this.shapeList.length * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
+        this.column.setSize(COLUMN_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
 
         this.column.paint = function(director, time) {
             if (this.isCached()) {
@@ -42,7 +39,7 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
             }
 
             // Custom paint method.
-            for (var i = 0; i < shapeList.length; ++i) {
+            for (var i = 0; i < squareNumber; ++i) {
                 var ctx = director.ctx;
 
                 var x = 1.5;
@@ -78,9 +75,8 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
         this.is_active = false;
     }
 
-
     this.clean = function() {
-        this.shapeList = [];
+        this.squareNumber = 0;
         this.redraw();
     }
 }
@@ -181,11 +177,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
         if (this.key_in_move === false) {
             this.key_in_move = true;
             for (var i = 0; i < this.columnList.length; ++i) {
-                var columnObject = this.columnList[i];
-                var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
-                columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1000).setCycle(false);
-                columnObject.column.addBehavior(columnObject.pb);
-                objects_in_move.push(true);
+                if (this.columnList[i].type !== COLUMN_TYPE_3) {
+                    var columnObject = this.columnList[i];
+                    var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
+                    columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1500).setCycle(false);
+                    columnObject.column.addBehavior(columnObject.pb);
+                    objects_in_move.push(true);
+                }
             }
         }
     }

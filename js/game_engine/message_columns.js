@@ -112,15 +112,12 @@ function Message(director, messageLength, message, container) {
     }
 
     this.mergeColumns = function(index, column) {
-        if (column.shapeList.length > 0) {
-            if (this.columnList[index].type === COLUMN_TYPE_3) {
-                this.addSquaresAtColumn(index, column.shapeList.length, column.type);
-            }
-            else if (this.columnList[index].type === column.type) {
-                this.addSquaresAtColumn(index, column.shapeList.length, column.type);
+        if (column.squareNumber > 0) {
+            if (this.columnList[index].type === COLUMN_TYPE_3 || this.columnList[index].type === column.type) {
+                this.addSquaresAtColumn(index, column.squareNumber, column.type);
             }
             else if (this.columnList[index].type !== column.type) {
-                this.subSquaresAtColumn(index, column.shapeList.length, column.type);
+                this.subSquaresAtColumn(index, column.squareNumber, column.type);
             }
         }
         this.redraw();
