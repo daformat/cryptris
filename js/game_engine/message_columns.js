@@ -1,5 +1,6 @@
-function MessageColumn(director, type, initialNumber, container) {
+function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.type = type;
+    this.boxOption = boxOption;
     this.squareNumber = initialNumber;
     this.container = container;
 
@@ -11,9 +12,9 @@ function MessageColumn(director, type, initialNumber, container) {
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
-            this.gradient = director.ctx.createLinearGradient(0, 0, SQUARE_WIDTH, 0);
-            this.gradient.addColorStop(0, ColorLeft[this.type]);
-            this.gradient.addColorStop(1, Color[this.type]);
+            this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
+            this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
         } else {
             this.gradient = null;
         }
@@ -21,7 +22,7 @@ function MessageColumn(director, type, initialNumber, container) {
 
     this.redraw = function(x) {
 
-        var columnY = this.container.height - SQUARE_HEIGHT * this.squareNumber - BORDER_HEIGHT - (this.squareNumber - 1) * SPACE_HEIGHT;
+        var columnY = this.container.height - this.boxOption.SQUARE_HEIGHT * this.squareNumber - this.boxOption.BORDER_HEIGHT - (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
 
         if (columnY > 0) {
             this.column.setLocation(x, columnY);
@@ -33,12 +34,13 @@ function MessageColumn(director, type, initialNumber, container) {
         var type = this.type;
         this.computeGradient();
         var gradient = this.gradient;
+        var boxOption = this.boxOption;
 
         if (this.type === COLUMN_TYPE_3) {
-            this.column.setSize(COLUMN_WIDTH, SQUARE_HEIGHT);
-            this.column.setLocation(x, this.container.height - SQUARE_HEIGHT - BORDER_HEIGHT);
+            this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SQUARE_HEIGHT);
+            this.column.setLocation(x, this.container.height - this.boxOption.SQUARE_HEIGHT - this.boxOption.BORDER_HEIGHT);
         } else {
-            this.column.setSize(COLUMN_WIDTH, this.squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
+            this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
         }
         this.column.paint = function(director, time) {
             if (this.isCached()) {
@@ -51,20 +53,20 @@ function MessageColumn(director, type, initialNumber, container) {
                 var ctx = director.ctx;
 
                 var x = 1.5;
-                var y = 0.5 + i * (SQUARE_HEIGHT + SPACE_HEIGHT)
+                var y = 0.5 + i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
 
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = StrokeColor[type];
-                ctx.strokeRect(x, y, SQUARE_WIDTH, SQUARE_HEIGHT);
+                ctx.strokeStyle = boxOption.StrokeColor[type];
+                ctx.strokeRect(x, y, boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1);
+                ctx.fillRect(x + 0.5, y + 0.5, boxOption.SQUARE_WIDTH - 1, boxOption.SQUARE_HEIGHT - 1);
             }
         }
     }
 
     this.changeType = function(newType) {
     	this.type = newType;
-    	this.fillColor = Color[newType];
+    	this.fillColor = this.boxOption.Color[newType];
         this.computeGradient();
         this.redraw();
     }
@@ -97,15 +99,16 @@ function MessageColumn(director, type, initialNumber, container) {
     }
 }
 
-function Message(director, messageLength, message, container) {
+function Message(director, messageLength, message, container, boxOption) {
     this.length = messageLength;
+    this.boxOption = boxOption;
     this.message = message;
     this.columnList = [];
     this.container = container;
 
     this.createMessage = function() {
         for (var i = 0; i < this.length; ++i) {
-            this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container));
+            this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container, this.boxOption));
         }
         this.redraw();
         return this;
@@ -141,16 +144,16 @@ function Message(director, messageLength, message, container) {
             }
         }
 
-        var newHeight = parseInt((container.height - 2 * BORDER_HEIGHT) / (9 + max_column) - SPACE_HEIGHT);
+        var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (9 + max_column) - this.boxOption.SPACE_HEIGHT);
         if (newHeight > 20) {
-            SQUARE_HEIGHT = 20;
+            this.boxOption.SQUARE_HEIGHT = 20;
         }
         else {
-            SQUARE_HEIGHT = newHeight;
+            this.boxOption.SQUARE_HEIGHT = newHeight;
         }
 
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH));
+            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
         }
     }
 }

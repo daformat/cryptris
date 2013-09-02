@@ -40,7 +40,7 @@ function createBackButton(director, width, height, text, x, y, color) {
     return backButton;
 }
 
-function display_debug_message(director, gameBox, current_length, message, container) {
+function display_debug_message(director, boxOption, gameBox, current_length, message, container) {
     for (var i = 0; i < current_length; ++i) {
 
         var type = null;
@@ -59,24 +59,24 @@ function display_debug_message(director, gameBox, current_length, message, conta
         }
 
         if (type != COLUMN_TYPE_3) {
-            gradient = director.ctx.createLinearGradient(0, 0, SQUARE_WIDTH, 0);
-            gradient.addColorStop(0, ColorLeft[type]);
-            gradient.addColorStop(1, Color[type]);
+            gradient = director.ctx.createLinearGradient(0, 0, boxOption.SQUARE_WIDTH, 0);
+            gradient.addColorStop(0, boxOption.ColorLeft[type]);
+            gradient.addColorStop(1, boxOption.Color[type]);
         }
 
         for (var j = 0; j < initialNumber; ++j) {
-            var shape = new CAAT.ShapeActor().setSize(SQUARE_WIDTH, SQUARE_HEIGHT)
+            var shape = new CAAT.ShapeActor().setSize(boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT)
                                                  .setFillStyle(gradient)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(StrokeColor[type])
-                                                 .setLocation(gameBox.x + i * (SPACE_WIDTH + SQUARE_WIDTH) + SPACE_WIDTH, gameBox.y + gameBox.height + 30);
+                                                 .setStrokeStyle(boxOption.StrokeColor[type])
+                                                 .setLocation(gameBox.x + i * (boxOption.SPACE_WIDTH + boxOption.SQUARE_WIDTH) + boxOption.SPACE_WIDTH, gameBox.y + gameBox.height + 30);
             container.addChild(shape);
         }
     }
 }
 
-function createGameBox(director, relativeX, relativeY, current_length, key_info, my_message) {
-    var sizeWidth = current_length * (SPACE_WIDTH + COLUMN_WIDTH) - SPACE_WIDTH + 2 * BORDER_WIDTH;
+function createGameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player) {
+    var sizeWidth = current_length * (boxOption.SPACE_WIDTH + boxOption.COLUMN_WIDTH) - boxOption.SPACE_WIDTH + 2 * boxOption.BORDER_WIDTH;
     var sizeHeight = $(window).height() - 100;
 
     /**
@@ -92,10 +92,10 @@ function createGameBox(director, relativeX, relativeY, current_length, key_info,
      * Create each column and set their color.
      */
     for (var i = 0; i < current_length; ++i) {
-        var column = new CAAT.ShapeActor().setSize(COLUMN_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
-                                                 .setFillStyle('rgba(0, 113, 187, 0.2)')
+        var column = new CAAT.ShapeActor().setSize(boxOption.COLUMN_WIDTH, gameBox.height - 2 * boxOption.BORDER_HEIGHT)
+                                                 .setFillStyle(boxOption.columnColor)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setLocation(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH), BORDER_HEIGHT);
+                                                 .setLocation(boxOption.BORDER_WIDTH + i * (boxOption.COLUMN_WIDTH + boxOption.SPACE_WIDTH), boxOption.BORDER_HEIGHT);
         gameBox.addChild(column);
     }
 
@@ -103,17 +103,17 @@ function createGameBox(director, relativeX, relativeY, current_length, key_info,
      * Create my message object.
      * This object inserts all necessary columns to gameBox.
      */
-    var message = new Message(director, current_length, my_message, gameBox);
+    var message = new Message(director, current_length, my_message, gameBox, boxOption);
     message.createMessage();
 
     /**
      * Create my key object.
      * This object inserts all necessary columns to gameBox.
      */
-    crypt_key = new Key(key_info, current_length, message, gameBox, director);
+    var crypt_key = new Key(key_info, current_length, message, gameBox, director, boxOption, player);
     crypt_key.createKey();
 
-    return gameBox;
+    return {'game_box' : gameBox, 'crypt_key' : crypt_key};
 }
 
 /**
@@ -135,7 +135,6 @@ function createPlayScene(director) {
      * Generate my private and public keys.
      */
      var key_info_t = getKeyInfo(current_length);
-     var key_info = key_info_t['private_key'];
 
     /**
      * Define a TEMPORARY message.
@@ -144,13 +143,18 @@ function createPlayScene(director) {
     for (var i = 0; i < current_length; ++i) {
         tmp_message.push(Math.floor(Math.random() * 3 - 1));
     }
-    var my_message = chiffre(current_length, tmp_message, key_info['key']);
+    var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
 
     /**
      * Position relative of the game box to the screen. 
      */
-    resultScene['game_box'] = createGameBox(director, 40, 30, current_length, key_info, my_message);
+    var gameBoxInfo = createGameBox(director, new GameBoxOption(), 40, 30, current_length, key_info_t['private_key'], my_message, true);
+    var crypt_key = gameBoxInfo['crypt_key'];
+    resultScene['game_box'] = gameBoxInfo['game_box'];
 
+    var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 80 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
+    resultScene['rival_box'] = rivalBoxInfo['game_box'];
+    crypt_key = rivalBoxInfo['crypt_key'];
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */
@@ -159,7 +163,7 @@ function createPlayScene(director) {
     /**
      * Display our message for debug.
      */
-    display_debug_message(director, resultScene['game_box'], current_length, tmp_message, resultScene['scene']);
+    display_debug_message(director, new GameBoxOption(), resultScene['game_box'], current_length, tmp_message, resultScene['scene']);
 
     /**
      * Create each necessary button.
@@ -190,6 +194,7 @@ function createPlayScene(director) {
      * Add each element to its scene.
      */
     resultScene['scene'].addChild(resultScene['game_box']);
+    resultScene['scene'].addChild(resultScene['rival_box']);
     resultScene['scene'].addChild(resultScene['back_button']);
     resultScene['scene'].addChild(resultScene['up_button']);
     resultScene['scene'].addChild(resultScene['down_button']);

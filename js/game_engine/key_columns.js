@@ -1,20 +1,21 @@
-function KeyColumn(director, type, squareNumber, msgColumn, container) {
+function KeyColumn(director, type, squareNumber, container, boxOption) {
     this.type = type;
+    this.boxOption = boxOption;
     this.squareNumber = squareNumber;
     this.container = container;
     this.is_active = true;
     this.pb = null;
     this.key_in_move = false;
 
-    this.column = new CAAT.Foundation.ActorContainer().setSize(SQUARE_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT)).setLocation(0.5, BORDER_HEIGHT);
+    this.column = new CAAT.Foundation.ActorContainer().setSize(this.boxOption.SQUARE_WIDTH, squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT)).setLocation(0.5, this.boxOption.BORDER_HEIGHT);
     this.container.addChild(this.column);
     this.gradient = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
-            this.gradient = director.ctx.createLinearGradient(0, 0, SQUARE_WIDTH, 0);
-            this.gradient.addColorStop(0, ColorLeft[this.type]);
-            this.gradient.addColorStop(1, Color[this.type]);
+            this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
+            this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
         } else {
             this.gradient = null;
         }
@@ -23,14 +24,15 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
     this.computeGradient();
 
     this.redraw = function(x) {
-        this.column.setLocation(x, BORDER_HEIGHT);
+        this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
 
 
         var squareNumber = this.squareNumber;
         var type = this.type;
         var gradient = this.gradient;
+        var boxOption = this.boxOption;
 
-        this.column.setSize(COLUMN_WIDTH, squareNumber * (SQUARE_HEIGHT + SPACE_HEIGHT) - SPACE_HEIGHT);
+        this.column.setSize(this.boxOption.COLUMN_WIDTH, squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
 
         this.column.paint = function(director, time) {
             if (this.isCached()) {
@@ -43,13 +45,13 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
                 var ctx = director.ctx;
 
                 var x = 1.5;
-                var y = 0.5 + i * (SQUARE_HEIGHT + SPACE_HEIGHT)
+                var y = 0.5 + i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
 
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = StrokeColor[type];
-                ctx.strokeRect(x, y, SQUARE_WIDTH, SQUARE_HEIGHT);
+                ctx.strokeStyle = boxOption.StrokeColor[type];
+                ctx.strokeRect(x, y, boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1);
+                ctx.fillRect(x + 0.5, y + 0.5, boxOption.SQUARE_WIDTH - 1, boxOption.SQUARE_HEIGHT - 1);
             }
         }
     }
@@ -81,17 +83,29 @@ function KeyColumn(director, type, squareNumber, msgColumn, container) {
     }
 }
 
-function Key(keyInfo, keyLength, msgColumn, container, director) {
+function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
+    this.player = player;
     this.type = KEY_TYPE_NORMAL;
     this.length = keyLength;
     this.columnList = [];
     this.msgColumn = msgColumn;
     this.container = container;
+    this.objects_in_move = [];
+    this.boxOption = boxOption;
 
     this.keyInfo = keyInfo;
-    var normal_key = this.keyInfo['normal_key'];
-    var reverse_key = this.keyInfo['reverse_key'];
-    var number = this.keyInfo['number'];
+    this.normal_key = [];
+    for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
+        this.normal_key.push(this.keyInfo['normal_key'][i]);
+    }
+    this.reverse_key = [];
+    for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
+        this.reverse_key.push(this.keyInfo['reverse_key'][i]);
+    }
+    this.number = [];
+    for (var i = 0; i < this.keyInfo['number'].length; ++i) {
+        this.number.push(this.keyInfo['number'][i]);
+    }
 
 
     this.createKey = function() {
@@ -103,12 +117,12 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
 
         for (var i = 0; i < this.length; ++i) {
             if (this.type === KEY_TYPE_NORMAL) {
-                this.columnList.push(new KeyColumn(director, normal_key[i], number[i], msgColumn, container));
+                this.columnList.push(new KeyColumn(director, this.normal_key[i], this.number[i], container, this.boxOption));
             } else if (this.type === KEY_TYPE_REVERSE) {
-                this.columnList.push(new KeyColumn(director, reverse_key[i], number[i], msgColumn, container));
+                this.columnList.push(new KeyColumn(director, this.reverse_key[i], this.number[i], container, this.boxOption));
             }
-            if (number[i] == 0) {
-                this.columnList[i].column.setSize(SQUARE_WIDTH, SQUARE_HEIGHT / 2);
+            if (this.number[i] == 0) {
+                this.columnList[i].column.setSize(this.boxOption.SQUARE_WIDTH, this.boxOption.SQUARE_HEIGHT / 2);
             }
         }
 
@@ -118,7 +132,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
 
     this.redraw = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH));
+            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
         }
     }
 
@@ -142,14 +156,14 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
             this.columnList.push(this.columnList[0]);
             this.columnList.splice(0, 1);
 
-            normal_key.push(normal_key[0]);
-            normal_key.splice(0,1);
+            this.normal_key.push(this.normal_key[0]);
+            this.normal_key.splice(0,1);
 
-            reverse_key.push(reverse_key[0]);
-            reverse_key.splice(0,1);
+            this.reverse_key.push(this.reverse_key[0]);
+            this.reverse_key.splice(0,1);
 
-            number.push(number[0]);
-            number.splice(0, 1);
+            this.number.push(this.number[0]);
+            this.number.splice(0, 1);
 
             this.redraw();
         }
@@ -160,14 +174,14 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
             this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
             this.columnList.splice(this.columnList.length - 1, 1);
 
-            normal_key.splice(0, 0, normal_key[normal_key.length - 1]);
-            normal_key.splice(normal_key.length - 1, 1);
+            this.normal_key.splice(0, 0, this.normal_key[this.normal_key.length - 1]);
+            this.normal_key.splice(this.normal_key.length - 1, 1);
 
-            reverse_key.splice(0, 0, reverse_key[reverse_key.length - 1]);
-            reverse_key.splice(reverse_key.length - 1, 1);
+            this.reverse_key.splice(0, 0, this.reverse_key[this.reverse_key.length - 1]);
+            this.reverse_key.splice(this.reverse_key.length - 1, 1);
 
-            number.splice(0, 0, number[number.length - 1]);
-            number.splice(number.length - 1, 1);
+            this.number.splice(0, 0, this.number[this.number.length - 1]);
+            this.number.splice(this.number.length - 1, 1);
 
             this.redraw();
         }
@@ -182,7 +196,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
                     var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
                     columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1500).setCycle(false);
                     columnObject.column.addBehavior(columnObject.pb);
-                    objects_in_move.push(true);
+                    this.objects_in_move.push(true);
                 }
             }
         }
@@ -191,7 +205,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
     var object = this;
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            for (var i = 0; objects_in_move.length > 0 && i < object.msgColumn.columnList.length; ++i) {
+            for (var i = 0; object.objects_in_move.length > 0 && i < object.msgColumn.columnList.length; ++i) {
 
                 if (object.columnList[i].is_active === false) {
                     continue;
@@ -205,34 +219,36 @@ function Key(keyInfo, keyLength, msgColumn, container, director) {
 
                     object.columnList[i].stopMove();
 
-                    keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - SPACE_HEIGHT);
+                    keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
                     object.msgColumn.mergeColumns(i, object.columnList[i]);
                     object.columnList[i].clean();
 
-                    objects_in_move.splice(0, 1);
+                    object.objects_in_move.splice(0, 1);
                     object.columnList[i].setInactive();
 
-                    if (objects_in_move.length == 0) {
+                    if (object.objects_in_move.length == 0) {
                         object.msgColumn.redraw();
-                        crypt_key.createKey();
+                        object.createKey();
                     }
                 }
             }
         }
     );
 
-    CAAT.registerKeyListener(function(key) {
-        if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
-            object.rotateLeft();
-        }
-        if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
-            object.rotateRight();
-        }
-        if (key.getKeyCode() === CAAT.Keys.UP && key.getAction() === 'down') {
-            object.changeKeyType();
-        }
-        if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-            object.keyDown();
-        }
-    });
+    if (this.player === true) {
+        CAAT.registerKeyListener(function(key) {
+            if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
+                object.rotateLeft();
+            }
+            if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
+                object.rotateRight();
+            }
+            if (key.getKeyCode() === CAAT.Keys.UP && key.getAction() === 'down') {
+                object.changeKeyType();
+            }
+            if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+                object.keyDown();
+            }
+        });
+    }
 }
