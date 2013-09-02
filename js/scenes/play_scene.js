@@ -75,6 +75,47 @@ function display_debug_message(director, gameBox, current_length, message, conta
     }
 }
 
+function createGameBox(director, relativeX, relativeY, current_length, key_info, my_message) {
+    var sizeWidth = current_length * (SPACE_WIDTH + COLUMN_WIDTH) - SPACE_WIDTH + 2 * BORDER_WIDTH;
+    var sizeHeight = $(window).height() - 100;
+
+    /**
+     * Create the game box.
+     */
+    var gameBox = new CAAT.Foundation.ActorContainer()
+                                    .setSize(sizeWidth, sizeHeight)
+                                    .setFillStyle('rgba(0, 113, 187, 0.2)')
+                                    .setLocation(relativeX, relativeY)
+                                    .enableEvents(false);
+
+    /**
+     * Create each column and set their color.
+     */
+    for (var i = 0; i < current_length; ++i) {
+        var column = new CAAT.ShapeActor().setSize(COLUMN_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
+                                                 .setFillStyle('rgba(0, 113, 187, 0.2)')
+                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
+                                                 .setLocation(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH), BORDER_HEIGHT);
+        gameBox.addChild(column);
+    }
+
+    /**
+     * Create my message object.
+     * This object inserts all necessary columns to gameBox.
+     */
+    var message = new Message(director, current_length, my_message, gameBox);
+    message.createMessage();
+
+    /**
+     * Create my key object.
+     * This object inserts all necessary columns to gameBox.
+     */
+    crypt_key = new Key(key_info, current_length, message, gameBox, director);
+    crypt_key.createKey();
+
+    return gameBox;
+}
+
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
@@ -108,45 +149,7 @@ function createPlayScene(director) {
     /**
      * Position relative of the game box to the screen. 
      */
-    var relativeX = 40;
-    var relativeY = 30;
-    var sizeWidth = current_length * (SPACE_WIDTH + COLUMN_WIDTH) - SPACE_WIDTH + 2 * BORDER_WIDTH;
-    var sizeHeight = $(window).height() - 100;
-
-    /**
-     * Create the game box.
-     */
-    resultScene['game_box'] = new CAAT.Foundation.ActorContainer()
-                                        .setSize(sizeWidth, sizeHeight)
-                                        .setFillStyle('rgba(0, 113, 187, 0.2)')
-                                        .setLocation(relativeX, relativeY)
-                                        .enableEvents(false);
-    var gameBox = resultScene['game_box'];
-
-    /**
-     * Create each column and set their color.
-     */
-    for (var i = 0; i < current_length; ++i) {
-        var column = new CAAT.ShapeActor().setSize(COLUMN_WIDTH, gameBox.height - 2 * BORDER_HEIGHT)
-                                                 .setFillStyle('rgba(0, 113, 187, 0.2)')
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setLocation(BORDER_WIDTH + i * (COLUMN_WIDTH + SPACE_WIDTH), BORDER_HEIGHT);
-        gameBox.addChild(column);
-    }
-
-    /**
-     * Create my message object.
-     * This object inserts all necessary columns to gameBox.
-     */
-    var message = new Message(director, current_length, my_message, gameBox);
-    message.createMessage();
-
-    /**
-     * Create my key object.
-     * This object inserts all necessary columns to gameBox.
-     */
-    crypt_key = new Key(key_info, current_length, message, gameBox, director);
-    crypt_key.createKey();
+    resultScene['game_box'] = createGameBox(director, 40, 30, current_length, key_info, my_message);
 
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
@@ -156,7 +159,7 @@ function createPlayScene(director) {
     /**
      * Display our message for debug.
      */
-    display_debug_message(director, gameBox, current_length, tmp_message, resultScene['scene']);
+    display_debug_message(director, resultScene['game_box'], current_length, tmp_message, resultScene['scene']);
 
     /**
      * Create each necessary button.
