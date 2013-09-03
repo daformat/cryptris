@@ -112,6 +112,7 @@ function createGameBox(director, boxOption, relativeX, relativeY, current_length
      */
     var crypt_key = new Key(key_info, current_length, message, gameBox, director, boxOption, player);
     crypt_key.createKey();
+    message.redraw();
 
     return {'game_box' : gameBox, 'crypt_key' : crypt_key};
 }

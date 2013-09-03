@@ -114,7 +114,11 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
         this.columnList = [];
         this.keyInMove = false;
 
+        this.boxOption.maxKeyNumber = 0;
         for (var i = 0; i < this.length; ++i) {
+            if (this.number[i] > this.boxOption.maxKeyNumber) {
+                this.boxOption.maxKeyNumber = this.number[i];
+            }
             if (this.type === KEY_TYPE_NORMAL) {
                 this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption));
             } else if (this.type === KEY_TYPE_REVERSE) {

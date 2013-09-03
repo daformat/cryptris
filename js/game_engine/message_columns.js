@@ -137,9 +137,8 @@ function Message(director, messageLength, message, container, boxOption) {
     }
 
     this.redraw = function() {
-        //Todo : Calculate the max key number;
         if (this.boxOption.objectsInMove.length === 0) {
-            var maxKeyNumber = 20;
+
             var max_column = this.columnList[0].squareNumber;
             for (var i = 1; i < this.columnList.length; ++i) {
                 if (this.columnList[i].squareNumber > max_column) {
@@ -147,11 +146,13 @@ function Message(director, messageLength, message, container, boxOption) {
                 }
             }
 
-            var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (maxKeyNumber + max_column)  - this.boxOption.SPACE_HEIGHT);
+            var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
             if (newHeight > 20) {
                 this.boxOption.SQUARE_HEIGHT = 20;
             }
-            else {
+            else if (newHeight < 1) {
+                this.boxOption.SQUARE_HEIGHT = 1;
+            } else {
                 this.boxOption.SQUARE_HEIGHT = newHeight;
             }
         }

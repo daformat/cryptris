@@ -20,6 +20,7 @@ function GameBoxOption() {
 	this.StrokeColor = { 'type2' : '#ffffff', 'type1' : '#00bbb2', 'empty' : null };
 	this.columnColor = 'rgba(0, 113, 187, 0.2)';
 	this.objectsInMove = [];
+	this.maxKeyNumber = 1;
 }
 
 function RivalBoxOption() {
@@ -36,6 +37,7 @@ function RivalBoxOption() {
 	this.StrokeColor = { 'type2' : '#ffffff', 'type1' : '#a360bb', 'empty' : null };
 	this.columnColor = 'rgba(187, 53, 0, 0.2)';
 	this.objectsInMove = [];
+	this.maxKeyNumber = 1;
 }
 
 function getQuerystring(key, default_) {
