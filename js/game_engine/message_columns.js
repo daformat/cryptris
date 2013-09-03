@@ -23,18 +23,12 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.redraw = function(x) {
 
         var columnY = this.container.height - this.boxOption.SQUARE_HEIGHT * this.squareNumber - this.boxOption.BORDER_HEIGHT - (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
-
         if (columnY > 0) {
             this.column.setLocation(x, columnY);
         } else {
-            this.column.setLocation(x, 0);
+            this.column.setLocation(x, this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
         }
 
-        var squareNumber = this.squareNumber;
-        var type = this.type;
-        this.computeGradient();
-        var gradient = this.gradient;
-        var boxOption = this.boxOption;
 
         if (this.type === COLUMN_TYPE_3) {
             this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SQUARE_HEIGHT);
@@ -42,6 +36,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         } else {
             this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
         }
+
+        this.computeGradient();
+        var object = this;
         this.column.paint = function(director, time) {
             if (this.isCached()) {
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -49,17 +46,26 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             }
 
             // Custom paint method.
-            for (var i = 0; i < squareNumber; ++i) {
+            for (var i = 0; i < object.squareNumber; ++i) {
                 var ctx = director.ctx;
 
                 var x = 1.5;
-                var y = 0.5 + i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
+                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
 
+                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    break;
+                }
+
+                if (columnY > 0) {
+                    object.boxOption.setDefaultColor();
+                } else {
+                    object.boxOption.setFullColor();
+                }
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = boxOption.StrokeColor[type];
-                ctx.strokeRect(x, y, boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, boxOption.SQUARE_WIDTH - 1, boxOption.SQUARE_HEIGHT - 1);
+                ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.gradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
         }
     }
