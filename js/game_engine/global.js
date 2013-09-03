@@ -19,6 +19,7 @@ function GameBoxOption() {
 	this.Color = { 'type2' : '#4f87bf', 'type1' : '#016db5', 'empty' : null };
 	this.StrokeColor = { 'type2' : '#ffffff', 'type1' : '#00bbb2', 'empty' : null };
 	this.columnColor = 'rgba(0, 113, 187, 0.2)';
+	this.objectsInMove = [];
 }
 
 function RivalBoxOption() {
@@ -34,6 +35,7 @@ function RivalBoxOption() {
 	this.Color = { 'type2' : '#9c9bc7', 'type1' : '#9835c3', 'empty' : null };
 	this.StrokeColor = { 'type2' : '#ffffff', 'type1' : '#a360bb', 'empty' : null };
 	this.columnColor = 'rgba(187, 53, 0, 0.2)';
+	this.objectsInMove = [];
 }
 
 function getQuerystring(key, default_) {

@@ -5,7 +5,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption) {
     this.container = container;
     this.is_active = true;
     this.pb = null;
-    this.key_in_move = false;
+    this.keyInMove = false;
 
     this.column = new CAAT.Foundation.ActorContainer().setSize(this.boxOption.SQUARE_WIDTH, squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT)).setLocation(0.5, this.boxOption.BORDER_HEIGHT);
     this.container.addChild(this.column);
@@ -90,17 +90,16 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     this.columnList = [];
     this.msgColumn = msgColumn;
     this.container = container;
-    this.objects_in_move = [];
     this.boxOption = boxOption;
 
     this.keyInfo = keyInfo;
-    this.normal_key = [];
+    this.normalKey = [];
     for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
-        this.normal_key.push(this.keyInfo['normal_key'][i]);
+        this.normalKey.push(this.keyInfo['normal_key'][i]);
     }
-    this.reverse_key = [];
-    for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
-        this.reverse_key.push(this.keyInfo['reverse_key'][i]);
+    this.reverseKey = [];
+    for (var i = 0; i < this.keyInfo['reverse_key'].length; ++i) {
+        this.reverseKey.push(this.keyInfo['reverse_key'][i]);
     }
     this.number = [];
     for (var i = 0; i < this.keyInfo['number'].length; ++i) {
@@ -113,13 +112,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
             this.container.removeChild(this.columnList[i].column);
         }
         this.columnList = [];
-        this.key_in_move = false;
+        this.keyInMove = false;
 
         for (var i = 0; i < this.length; ++i) {
             if (this.type === KEY_TYPE_NORMAL) {
-                this.columnList.push(new KeyColumn(director, this.normal_key[i], this.number[i], container, this.boxOption));
+                this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption));
             } else if (this.type === KEY_TYPE_REVERSE) {
-                this.columnList.push(new KeyColumn(director, this.reverse_key[i], this.number[i], container, this.boxOption));
+                this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption));
             }
             if (this.number[i] == 0) {
                 this.columnList[i].column.setSize(this.boxOption.SQUARE_WIDTH, this.boxOption.SQUARE_HEIGHT / 2);
@@ -137,7 +136,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.changeKeyType = function() {
-        if (this.key_in_move === false) {
+        if (this.keyInMove === false) {
             if (this.type === KEY_TYPE_NORMAL) {
                 this.type = KEY_TYPE_REVERSE;
             } else {
@@ -152,15 +151,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateLeft = function() {
-        if (this.key_in_move === false) {
+        if (this.keyInMove === false) {
             this.columnList.push(this.columnList[0]);
             this.columnList.splice(0, 1);
 
-            this.normal_key.push(this.normal_key[0]);
-            this.normal_key.splice(0,1);
+            this.normalKey.push(this.normalKey[0]);
+            this.normalKey.splice(0,1);
 
-            this.reverse_key.push(this.reverse_key[0]);
-            this.reverse_key.splice(0,1);
+            this.reverseKey.push(this.reverseKey[0]);
+            this.reverseKey.splice(0,1);
 
             this.number.push(this.number[0]);
             this.number.splice(0, 1);
@@ -170,15 +169,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateRight = function() {
-        if (this.key_in_move === false) {
+        if (this.keyInMove === false) {
             this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
             this.columnList.splice(this.columnList.length - 1, 1);
 
-            this.normal_key.splice(0, 0, this.normal_key[this.normal_key.length - 1]);
-            this.normal_key.splice(this.normal_key.length - 1, 1);
+            this.normalKey.splice(0, 0, this.normalKey[this.normalKey.length - 1]);
+            this.normalKey.splice(this.normalKey.length - 1, 1);
 
-            this.reverse_key.splice(0, 0, this.reverse_key[this.reverse_key.length - 1]);
-            this.reverse_key.splice(this.reverse_key.length - 1, 1);
+            this.reverseKey.splice(0, 0, this.reverseKey[this.reverseKey.length - 1]);
+            this.reverseKey.splice(this.reverseKey.length - 1, 1);
 
             this.number.splice(0, 0, this.number[this.number.length - 1]);
             this.number.splice(this.number.length - 1, 1);
@@ -188,15 +187,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.keyDown = function() {
-        if (this.key_in_move === false) {
-            this.key_in_move = true;
+        if (this.keyInMove === false) {
+            this.keyInMove = true;
             for (var i = 0; i < this.columnList.length; ++i) {
                 if (this.columnList[i].type !== COLUMN_TYPE_3) {
                     var columnObject = this.columnList[i];
                     var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
                     columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1500).setCycle(false);
                     columnObject.column.addBehavior(columnObject.pb);
-                    this.objects_in_move.push(true);
+                    this.boxOption.objectsInMove.push(true);
                 }
             }
         }
@@ -205,7 +204,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     var object = this;
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            for (var i = 0; object.objects_in_move.length > 0 && i < object.msgColumn.columnList.length; ++i) {
+            for (var i = 0; object.boxOption.objectsInMove.length > 0 && i < object.msgColumn.columnList.length; ++i) {
 
                 if (object.columnList[i].is_active === false) {
                     continue;
@@ -223,10 +222,10 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
                     object.msgColumn.mergeColumns(i, object.columnList[i]);
                     object.columnList[i].clean();
 
-                    object.objects_in_move.splice(0, 1);
+                    object.boxOption.objectsInMove.splice(0, 1);
                     object.columnList[i].setInactive();
 
-                    if (object.objects_in_move.length == 0) {
+                    if (object.boxOption.objectsInMove.length == 0) {
                         object.msgColumn.redraw();
                         object.createKey();
                     }
