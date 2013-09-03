@@ -7,7 +7,7 @@
  *     - play_scene.js                                              *
  *******************************************************************/
 
- var currentGame = new game();
+var currentGame = new game();
 
 /**
  * This function will be called to let you define new scenes that will be

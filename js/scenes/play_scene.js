@@ -114,8 +114,31 @@ function createGameBox(director, boxOption, relativeX, relativeY, current_length
     crypt_key.createKey();
     message.redraw();
 
-    return {'game_box' : gameBox, 'crypt_key' : crypt_key};
+    return {'game_box' : gameBox, 'crypt_key' : crypt_key, 'message' : message};
 }
+
+function handle_ia(director, rivalBoxInfo) {
+    var is_launched = false;
+
+    director.createTimer(this.container.time, Number.MAX_VALUE, null,
+        function(time, ttime, timerTask) {
+            var enumeration = [];
+            var message = rivalBoxInfo['message'];
+            var key = rivalBoxInfo['crypt_key'];
+
+            for (var i = 0; i < message.length; ++i) {
+                enumeration.push(-2);
+            }
+
+            if (message.boxOption.objectsInMove.length === 0) {
+                key.changeKeyType();
+                key.rotateLeft();
+                key.keyDown();
+            }
+        }
+    );
+}
+
 
 /**
  * This function all elements for the play scene.
@@ -155,7 +178,12 @@ function createPlayScene(director) {
 
     var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 80 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo['game_box'];
-    crypt_key = rivalBoxInfo['crypt_key'];
+
+    /*
+     * Call the IA script.
+     */
+    handle_ia(director, rivalBoxInfo);
+
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */

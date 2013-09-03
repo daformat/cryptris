@@ -5,9 +5,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.container = container;
 
     this.column = new CAAT.Foundation.ActorContainer();
-    this.saveChild = [];
-
     this.container.addChild(this.column);
+
     this.gradient = null;
 
     this.computeGradient = function() {
@@ -111,6 +110,14 @@ function Message(director, messageLength, message, container, boxOption) {
     this.message = message;
     this.columnList = [];
     this.container = container;
+
+    this.resetMessage = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            this.container.removeChild(this.columnList[i].column);
+        }
+        this.columnList = [];
+        this.createMessage();
+    }
 
     this.createMessage = function() {
         for (var i = 0; i < this.length; ++i) {
