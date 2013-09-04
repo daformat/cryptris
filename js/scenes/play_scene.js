@@ -113,32 +113,70 @@ function createGameBox(director, boxOption, relativeX, relativeY, current_length
     var crypt_key = new Key(key_info, current_length, message, gameBox, director, boxOption, player);
     crypt_key.createKey();
     message.redraw();
+    crypt_key.redraw();
 
     return {'game_box' : gameBox, 'crypt_key' : crypt_key, 'message' : message};
 }
 
-function handle_ia(director, rivalBoxInfo) {
+function handle_ia(playScene, rivalBoxInfo) {
     var is_launched = false;
+    var enumeration = [];
+    var current_enum = [];
+    var message = rivalBoxInfo['message'];
+    var key = rivalBoxInfo['crypt_key'];
+    var key_is_invert = false;
 
-    director.createTimer(this.container.time, Number.MAX_VALUE, null,
+    for (var i = 0; i < message.length; ++i) {
+        enumeration.push(-2);
+    }
+
+    for (var i = 0; i < enumeration.length; ++i) {
+        current_enum.push(enumeration[i]);
+    }
+
+    var index = 0;
+
+    playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            var enumeration = [];
-            var message = rivalBoxInfo['message'];
-            var key = rivalBoxInfo['crypt_key'];
 
-            for (var i = 0; i < message.length; ++i) {
-                enumeration.push(-2);
-            }
-
-            if (message.boxOption.objectsInMove.length === 0) {
-                key.changeKeyType();
-                key.rotateLeft();
-                key.keyDown();
+            if (index < message.length && message.boxOption.objectsInMove.length === 0) {
+                if (current_enum[index] < 0) {
+                    key.changeKeyType();
+                    key_is_invert = true;
+                    current_enum[index] = current_enum[index] * (-1);
+                    current_enum[index] = current_enum[index] - 1;
+                    key.keyDown();
+                }
+                else if (current_enum[index] > 0) {
+                    current_enum[index] = current_enum[index] - 1;
+                    key.keyDown();
+                } else {
+                    if (key_is_invert === true) {
+                        key.changeKeyType();
+                        key_is_invert = false;
+                    }
+                    key.rotateLeft();
+                    ++index;
+                }
+            } else if (index >= message.length) {
+                message.resetMessage(key);
+                for (var j = 0; j < enumeration.length; ++j) {
+                    if (enumeration[j] == 2) {
+                        enumeration[j] = -2;
+                    } else {
+                        enumeration[j] = enumeration[j] + 1;
+                        current_enum = [];
+                        for (var i = 0; i < enumeration.length; ++i) {
+                            current_enum.push(enumeration[i]);
+                        }
+                        index = 0;
+                        break;
+                    }
+                }
             }
         }
     );
 }
-
 
 /**
  * This function all elements for the play scene.
@@ -179,15 +217,16 @@ function createPlayScene(director) {
     var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 80 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo['game_box'];
 
-    /*
-     * Call the IA script.
-     */
-    handle_ia(director, rivalBoxInfo);
 
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */
     resultScene['scene'] = director.createScene();
+
+    /*
+     * Call the IA script.
+     */
+    handle_ia(resultScene['scene'], rivalBoxInfo);
 
     /**
      * Display our message for debug.

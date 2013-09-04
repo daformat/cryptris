@@ -3,11 +3,14 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.boxOption = boxOption;
     this.squareNumber = initialNumber;
     this.container = container;
+    this.blurSquareNumber = 0;
+    this.lastType = type;
 
     this.column = new CAAT.Foundation.ActorContainer();
     this.container.addChild(this.column);
 
     this.gradient = null;
+    this.blurGradient = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -19,7 +22,22 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
     }
 
-    this.redraw = function(x) {
+    this.computeBlurGradient = function() {
+        if (this.lastType != COLUMN_TYPE_3) {
+            this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.lastType]);
+            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.lastType]);
+        } else {
+            this.blurGradient = null;
+        }
+    }
+
+    this.redraw = function(x, hello) {
+
+        if (typeof hello !== 'undefined') {
+            alert(hello);
+        }
+
 
         var columnY = this.container.height - this.boxOption.SQUARE_HEIGHT * this.squareNumber - this.boxOption.BORDER_HEIGHT - (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
         if (columnY > 0) {
@@ -30,26 +48,30 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 
         if (this.type === COLUMN_TYPE_3) {
-            this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SQUARE_HEIGHT);
-            this.column.setLocation(x, this.container.height - this.boxOption.SQUARE_HEIGHT - this.boxOption.BORDER_HEIGHT);
+            this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SPACE_HEIGHT);
+            this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT);
         } else {
             this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
         }
 
         this.computeGradient();
+        this.computeBlurGradient();
         var object = this;
+
         this.column.paint = function(director, time) {
+
             if (this.isCached()) {
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
                 return;
             }
 
             // Custom paint method.
+            var ctx = director.ctx;
+            var x = 1.5;
+            ctx.lineWidth = 1;
             for (var i = 0; i < object.squareNumber; ++i) {
-                var ctx = director.ctx;
 
-                var x = 1.5;
-                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
+                var y = i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5;
 
                 if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
                     break;
@@ -60,46 +82,84 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
                 } else {
                     object.boxOption.setFullColor();
                 }
-                ctx.lineWidth = 1;
                 ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
                 ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = object.gradient;
                 ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
+
+            var relativeY = object.squareNumber > 0 ? 0 : 1;
+            for (var j = 1; j <= object.blurSquareNumber; ++j) {
+                var y = 0 - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    break;
+                }
+
+                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.lastType];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.blurGradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+            }
         }
+
     }
 
     this.changeType = function(newType) {
+        if (this.type === COLUMN_TYPE_3) {
+            if (newType === COLUMN_TYPE_1) {
+                this.lastType = COLUMN_TYPE_2;
+            } else {
+                this.lastType = COLUMN_TYPE_1;
+            }
+        } else {
+            this.lastType = this.type;
+        }
     	this.type = newType;
-    	this.fillColor = this.boxOption.Color[newType];
-        this.computeGradient();
-        this.redraw();
+        this.redraw(this.column.x);
     }
 
-    this.addSquares = function(squareNumber, type) {
-        if (squareNumber > 0) {
-            if (this.type === COLUMN_TYPE_3) {
-                this.type = type;
-                this.squareNumber = squareNumber;
-            } else {
-                this.squareNumber += squareNumber;
+    this.mergeColumns = function(column) {
+        if (column.squareNumber > 0) {
+            if (this.type === COLUMN_TYPE_3 || this.type === column.type) {
+                this.addSquares(column);
             }
+            else if (this.type !== column.type) {
+                this.subSquares(column);
+            }
+        }
+        this.redraw(this.column.x);
+    }
+
+    this.addSquares = function(column) {
+        if (column.squareNumber > 0) {
+            if (this.type === COLUMN_TYPE_3) {
+                this.changeType(column.type);
+                this.squareNumber = column.squareNumber;
+            } else {
+                this.squareNumber += column.squareNumber;
+            }
+            this.blurSquareNumber = 0;
         }
     }
 
-    this.subSquares = function(squareNumber, type) {
-        newSquareNumber = this.squareNumber - squareNumber;
+    this.subSquares = function(keyColumn) {
+        newSquareNumber = this.squareNumber - keyColumn.squareNumber;
 
-        if (newSquareNumber === 0) {
+        if (newSquareNumber < 0) {
+            keyColumn.pathContinue = true;
+            keyColumn.squareNumber = newSquareNumber * (-1);
+            keyColumn.redraw(keyColumn.column.x, keyColumn.column.y);
+            this.blurSquareNumber = this.squareNumber;
+            this.squareNumber = 0;
+            this.changeType(COLUMN_TYPE_3);
+        } else if (newSquareNumber === 0) {
             this.changeType(COLUMN_TYPE_3);
             this.squareNumber = 0;
+            this.blurSquareNumber = keyColumn.squareNumber;
         } else {
-            if (newSquareNumber > 0) {
-                this.squareNumber = newSquareNumber;
-            } else {
-                this.squareNumber = (-1) * newSquareNumber;
-                this.changeType(type);
-            }
+            this.squareNumber = newSquareNumber;
+            this.blurSquareNumber = keyColumn.squareNumber;
         }
     }
 }
@@ -111,12 +171,13 @@ function Message(director, messageLength, message, container, boxOption) {
     this.columnList = [];
     this.container = container;
 
-    this.resetMessage = function() {
+    this.resetMessage = function(key) {
         for (var i = 0; i < this.columnList.length; ++i) {
             this.container.removeChild(this.columnList[i].column);
         }
         this.columnList = [];
         this.createMessage();
+        key.reAssignColumns();
     }
 
     this.createMessage = function() {
@@ -124,28 +185,6 @@ function Message(director, messageLength, message, container, boxOption) {
             this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container, this.boxOption));
         }
         this.redraw();
-        return this;
-    }
-
-    this.mergeColumns = function(index, column) {
-        if (column.squareNumber > 0) {
-            if (this.columnList[index].type === COLUMN_TYPE_3 || this.columnList[index].type === column.type) {
-                this.addSquaresAtColumn(index, column.squareNumber, column.type);
-            }
-            else if (this.columnList[index].type !== column.type) {
-                this.subSquaresAtColumn(index, column.squareNumber, column.type);
-            }
-        }
-        this.redraw();
-    }
-
-    this.subSquaresAtColumn = function(index, numberSquare, type) {
-        this.columnList[index].subSquares(numberSquare, type);
-        return this;
-    }
-
-    this.addSquaresAtColumn = function(index, numberSquare, type) {
-        this.columnList[index].addSquares(numberSquare, type);
         return this;
     }
 

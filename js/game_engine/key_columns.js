@@ -1,14 +1,21 @@
-function KeyColumn(director, type, squareNumber, container, boxOption) {
+function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn) {
     this.type = type;
     this.boxOption = boxOption;
     this.squareNumber = squareNumber;
     this.container = container;
-    this.is_active = true;
+    this.isActive = true;
     this.pb = null;
+    this.msgColumn = msgColumn;
     this.keyInMove = false;
+    this.pathContinue = false;
 
-    this.column = new CAAT.Foundation.ActorContainer().setSize(this.boxOption.SQUARE_WIDTH, squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT)).setLocation(0.5, this.boxOption.BORDER_HEIGHT);
+    this.column = new CAAT.Foundation.ActorContainer();
     this.container.addChild(this.column);
+
+    if (this.squareNumber === 0) {
+        this.column.setSize(this.boxOption.SQUARE_WIDTH, this.boxOption.SQUARE_HEIGHT / 2);
+    }
+
     this.gradient = null;
 
     this.computeGradient = function() {
@@ -23,17 +30,13 @@ function KeyColumn(director, type, squareNumber, container, boxOption) {
 
     this.computeGradient();
 
-    this.redraw = function(x) {
-        this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
+    this.redraw = function(x, y) {
+        y = typeof y !== 'undefined' ? y : this.boxOption.BORDER_HEIGHT;
+        this.column.setLocation(x, y);
 
+        this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
 
-        var squareNumber = this.squareNumber;
-        var type = this.type;
-        var gradient = this.gradient;
-        var boxOption = this.boxOption;
-
-        this.column.setSize(this.boxOption.COLUMN_WIDTH, squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
-
+        var object = this;
         this.column.paint = function(director, time) {
             if (this.isCached()) {
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -41,17 +44,17 @@ function KeyColumn(director, type, squareNumber, container, boxOption) {
             }
 
             // Custom paint method.
-            for (var i = 0; i < squareNumber; ++i) {
+            for (var i = 0; i < object.squareNumber; ++i) {
                 var ctx = director.ctx;
 
                 var x = 1.5;
-                var y = 0.5 + i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
+                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
 
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = boxOption.StrokeColor[type];
-                ctx.strokeRect(x, y, boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, boxOption.SQUARE_WIDTH - 1, boxOption.SQUARE_HEIGHT - 1);
+                ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.gradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
         }
     }
@@ -74,13 +77,71 @@ function KeyColumn(director, type, squareNumber, container, boxOption) {
     }
 
     this.setInactive = function() {
-        this.is_active = false;
+        this.isActive = false;
     }
 
     this.clean = function() {
         this.squareNumber = 0;
         this.redraw();
     }
+
+    this.keyDown = function() {
+
+        if (this.type !== COLUMN_TYPE_3) {
+            this.keyInMove = true;
+            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.column.y + this.container.height);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", 2500)).setCycle(false);
+            this.column.addBehavior(this.pb);
+            this.boxOption.objectsInMove.push(true);
+        }
+    }
+
+    var object = this;
+    director.createTimer(this.container.time, Number.MAX_VALUE, null,
+        function(time, ttime, timerTask) {
+
+            if (object.keyInMove === true && object.isActive === true) {
+
+                var msgColumn = object.msgColumn.column;
+
+                var keyColumn = object.column;
+
+                if (keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
+
+                    object.stopMove();
+
+                    keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
+                    object.msgColumn.mergeColumns(object);
+
+
+                    if (object.pathContinue === true) {
+                        object.pathContinue = false;
+                        object.keyDown();
+                    } else {
+                        object.clean();
+                        object.setInactive();
+                    }
+
+                    object.boxOption.objectsInMove.splice(0, 1);
+                    if (object.boxOption.objectsInMove.length === 0) {
+                        object.boxOption.keyNeedToUpdate = true;
+                    }
+                }
+            }
+        }
+    );
+
+}
+
+function getSecondString(key, default_) {
+  if (default_==null) default_=""; 
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href);
+  if(qs == null)
+    return default_;
+  else
+    return qs[1];
 }
 
 function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
@@ -120,12 +181,9 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
                 this.boxOption.maxKeyNumber = this.number[i];
             }
             if (this.type === KEY_TYPE_NORMAL) {
-                this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption));
+                this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
             } else if (this.type === KEY_TYPE_REVERSE) {
-                this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption));
-            }
-            if (this.number[i] == 0) {
-                this.columnList[i].column.setSize(this.boxOption.SQUARE_WIDTH, this.boxOption.SQUARE_HEIGHT / 2);
+                this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
             }
         }
 
@@ -168,6 +226,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
             this.number.push(this.number[0]);
             this.number.splice(0, 1);
 
+            this.reAssignColumns();
             this.redraw();
         }
     }
@@ -186,7 +245,14 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
             this.number.splice(0, 0, this.number[this.number.length - 1]);
             this.number.splice(this.number.length - 1, 1);
 
+            this.reAssignColumns();
             this.redraw();
+        }
+    }
+
+    this.reAssignColumns = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            this.columnList[i].msgColumn = this.msgColumn.columnList[i];
         }
     }
 
@@ -194,49 +260,26 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
         if (this.keyInMove === false) {
             this.keyInMove = true;
             for (var i = 0; i < this.columnList.length; ++i) {
-                if (this.columnList[i].type !== COLUMN_TYPE_3) {
-                    var columnObject = this.columnList[i];
-                    var path =  new CAAT.LinearPath().setInitialPosition(columnObject.column.x, columnObject.column.y).setFinalPosition(columnObject.column.x, columnObject.container.height);
-                    columnObject.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(columnObject.column.time, 1500).setCycle(false);
-                    columnObject.column.addBehavior(columnObject.pb);
-                    this.boxOption.objectsInMove.push(true);
-                }
+                this.columnList[i].keyDown();
             }
         }
     }
 
     var object = this;
+
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            for (var i = 0; object.boxOption.objectsInMove.length > 0 && i < object.msgColumn.columnList.length; ++i) {
-
-                if (object.columnList[i].is_active === false) {
-                    continue;
+            if (object.boxOption.keyNeedToUpdate === true) {
+                object.boxOption.keyNeedToUpdate = false;
+                for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
+                    object.msgColumn.columnList[k].blurSquareNumber = 0;
                 }
-
-                var msgColumn = object.msgColumn.columnList[i].column;
-
-                var keyColumn = object.columnList[i].column;
-
-                if (keyColumn.y + keyColumn.height > msgColumn.y) {
-
-                    object.columnList[i].stopMove();
-
-                    keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
-                    object.msgColumn.mergeColumns(i, object.columnList[i]);
-                    object.columnList[i].clean();
-
-                    object.boxOption.objectsInMove.splice(0, 1);
-                    object.columnList[i].setInactive();
-
-                    if (object.boxOption.objectsInMove.length == 0) {
-                        object.msgColumn.redraw();
-                        object.createKey();
-                    }
-                }
+                object.msgColumn.redraw();
+                object.createKey();
             }
         }
     );
+
 
     if (this.player === true) {
         CAAT.registerKeyListener(function(key) {
