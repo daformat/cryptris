@@ -201,6 +201,7 @@ function Message(director, messageLength, message, container, boxOption) {
     this.message = message;
     this.columnList = [];
     this.container = container;
+    this.resolved = false;
 
     this.resetMessage = function(key) {
         for (var i = 0; i < this.columnList.length; ++i) {
@@ -244,4 +245,17 @@ function Message(director, messageLength, message, container, boxOption) {
             this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
         }
     }
+
+    this.isResolved = function() {
+        var tmpResolved = true;
+
+        for (var i = 0; i < this.columnList.length; ++i) {
+            if (this.columnList[i].squareNumber > 1) {
+                tmpResolved = false;
+            }
+        }
+
+        this.resolved = tmpResolved;
+    }
+
 }

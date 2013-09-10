@@ -211,7 +211,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.changeKeyType = function() {
-        if (this.keyInMove === false) {
+        if (this.keyInMove === false && this.msgColumn.resolved === false) {
             if (this.type === KEY_TYPE_NORMAL) {
                 this.type = KEY_TYPE_REVERSE;
             } else {
@@ -226,7 +226,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateLeft = function() {
-        if (this.keyInMove === false) {
+        if (this.keyInMove === false && this.msgColumn.resolved === false) {
             this.columnList.push(this.columnList[0]);
             this.columnList.splice(0, 1);
 
@@ -245,7 +245,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateRight = function() {
-        if (this.keyInMove === false) {
+        if (this.keyInMove === false && this.msgColumn.resolved === false) {
             this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
             this.columnList.splice(this.columnList.length - 1, 1);
 
@@ -270,7 +270,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.keyDown = function() {
-        if (this.keyInMove === false) {
+        if (this.keyInMove === false && this.msgColumn.resolved === false) {
             this.keyInMove = true;
             for (var i = 0; i < this.columnList.length; ++i) {
                 this.columnList[i].keyDown();
@@ -290,6 +290,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
                 }
                 object.msgColumn.redraw();
                 object.createKey();
+                object.msgColumn.isResolved();
             }
         }
     );

@@ -29,6 +29,7 @@ function GameBoxOption() {
 	this.objectsInMove = [];
 	this.maxKeyNumber = 1;
 	this.keyNeedToUpdate = false;
+	this.endResolved = null;
 
 	this.setDefaultColor = function() {
 		this.StrokeColor = this.defaultStrokeColor;
@@ -62,6 +63,7 @@ function RivalBoxOption() {
 	this.objectsInMove = [];
 	this.maxKeyNumber = 1;
 	this.keyNeedToUpdate = false;
+	this.endResolved = null;
 
 	this.setDefaultColor = function() {
 		this.StrokeColor = this.defaultStrokeColor;

@@ -135,13 +135,11 @@ function handle_ia(playScene, rivalBoxInfo) {
 
     var message = rivalBoxInfo['message'];
     var key = rivalBoxInfo['crypt_key'];
-    var key_is_invert = false;
 
     var actionToDo = ACTION_UNKNOWN;
 
     for (var i = 0; i < key.length; ++i) {
-        move.push(-2);
-        prepare_move.push(-2);
+        move.push(0);
     }
     var index = 0;
 
@@ -154,9 +152,9 @@ function handle_ia(playScene, rivalBoxInfo) {
     playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            console.log(move);
-            if (key.boxOption.objectsInMove.length === 0) {
+            if (key.msgColumn.resolved === false && key.keyInMove === false) {
 
+                console.log(move);
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
@@ -165,11 +163,11 @@ function handle_ia(playScene, rivalBoxInfo) {
                         if (keyIsInvert !== true) {
                             actionToDo = ACTION_INVERT;
                         }
-                        else if (prepare_move[index] !== 0) {
+                        else if (move[index] !== -2) {
                             actionToDo = ACTION_DOWN;
-                            prepare_move[index] = prepare_move[index] + 1;
-                        } else if (prepare_move[index] === 0) {
-                            if (index < prepare_move.length - 1) {
+                            move[index] = move[index] - 1;
+                        } else if (move[index] === -2) {
+                            if (index < move.length - 1) {
                                 ++index;
                                 actionToDo = ACTION_RIGHT;
                             } else {
@@ -289,7 +287,7 @@ function createPlayScene(director) {
     /**
      * Position relative of the game box to the screen. 
      */
-    var gameBoxInfo = createGameBox(director, new GameBoxOption(), 40, 30, current_length, key_info_t['private_key'], my_message, true);
+    var gameBoxInfo = createGameBox(director, new GameBoxOption(), 40, 30, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
     var crypt_key = gameBoxInfo['crypt_key'];
     resultScene['game_box'] = gameBoxInfo['game_box'];
 
@@ -348,6 +346,67 @@ function createPlayScene(director) {
      * Call the IA script.
      */
     handle_ia(resultScene['scene'], rivalBoxInfo);
+
+
+    resultScene['scene'].createTimer(this.container.time, Number.MAX_VALUE, null,
+        function(time, ttime, timerTask) {
+            var rivalMessage = rivalBoxInfo['message'];
+            var rivalBox = rivalBoxInfo['game_box'];
+
+            var gameMessage = gameBoxInfo['message'];
+            var gameBox = gameBoxInfo['game_box'];
+
+            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
+                rivalMessage.boxOption.endResolved = time;
+
+                var winScreen = new CAAT.Actor().
+                        setSize(rivalBox.width, rivalBox.height).
+                        setLocation(0, 0);
+
+                winScreen.paint = function(director) {
+
+                    var ctx = director.ctx;
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.fillRect(0, 0, this.width, this.height);
+
+                    ctx.strokeStyle = 'rgb(0, 0, 0)';
+                    ctx.strokeRect(0, 0, this.width, this.height);
+
+                    ctx.font = '30px sans-serif';
+                    ctx.fillStyle = 'black';
+                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
+                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
+                };
+                rivalBox.addChild(winScreen);
+            }
+            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
+                gameMessage.boxOption.endResolved = time;
+
+                var winScreen = new CAAT.Actor().
+                        setSize(gameBox.width, gameBox.height).
+                        setLocation(0, 0);
+
+                winScreen.paint = function(director) {
+
+                    var ctx = director.ctx;
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.fillRect(0, 0, this.width, this.height);
+
+                    ctx.strokeStyle = 'rgb(0, 0, 0)';
+                    ctx.strokeRect(0, 0, this.width, this.height);
+
+                    ctx.font = '30px sans-serif';
+                    ctx.fillStyle = 'black';
+                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
+                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
+                };
+                gameBox.addChild(winScreen);
+            }
+        }
+    );
+
     return resultScene;
 }
 
