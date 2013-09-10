@@ -17,6 +17,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     }
 
     this.gradient = null;
+    this.blurGradient = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -28,6 +29,17 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         }
     }
 
+    this.computeBlurGradient = function() {
+        if (this.type != COLUMN_TYPE_3) {
+            this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
+            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
+        } else {
+            this.blurGradient = null;
+        }
+    }
+
+    this.computeBlurGradient();
     this.computeGradient();
 
     this.redraw = function(x, y) {
@@ -42,12 +54,13 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
                 return;
             }
-
+             
+            var ctx = director.ctx;
+            var x = 1.5;
+            
             // Custom paint method.
             for (var i = 0; i < object.squareNumber; ++i) {
-                var ctx = director.ctx;
 
-                var x = 1.5;
                 var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
 
                 ctx.lineWidth = 1;
@@ -273,6 +286,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
                 object.boxOption.keyNeedToUpdate = false;
                 for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
                     object.msgColumn.columnList[k].blurSquareNumber = 0;
+                    object.msgColumn.columnList[k].keySquareNumber = 0;
                 }
                 object.msgColumn.redraw();
                 object.createKey();

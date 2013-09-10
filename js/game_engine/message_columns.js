@@ -12,6 +12,10 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.gradient = null;
     this.blurGradient = null;
 
+    this.keyType = COLUMN_TYPE_3;
+    this.keyBlurGradient = null;
+    this.keySquareNumber = 0;
+
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
@@ -32,12 +36,17 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
     }
 
-    this.redraw = function(x, hello) {
-
-        if (typeof hello !== 'undefined') {
-            alert(hello);
+    this.computeKeyBlurGradient = function() {
+        if (this.keyType != COLUMN_TYPE_3) {
+            this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
+            this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
+        } else {
+            this.keyBlurGradient = null;
         }
+    }
 
+    this.redraw = function(x) {
 
         var columnY = this.container.height - this.boxOption.SQUARE_HEIGHT * this.squareNumber - this.boxOption.BORDER_HEIGHT - (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
         if (columnY > 0) {
@@ -56,6 +65,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
         this.computeGradient();
         this.computeBlurGradient();
+        this.computeKeyBlurGradient();
         var object = this;
 
         this.column.paint = function(director, time) {
@@ -89,7 +99,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             }
 
             var relativeY = object.squareNumber > 0 ? 0 : 1;
-            for (var j = 1; j <= object.blurSquareNumber; ++j) {
+            var j = 1;
+            for (j = 1; j <= object.blurSquareNumber; ++j) {
                 var y = 0 - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
                 if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
@@ -99,6 +110,20 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
                 ctx.strokeStyle = object.boxOption.blurStrokeColor[object.lastType];
                 ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = object.blurGradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+            }
+
+
+            for (k = 0; k < object.keySquareNumber; ++k) {
+                var y = 0 - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    break;
+                }
+
+                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.keyBlurGradient;
                 ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
         }
@@ -147,6 +172,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
 
         if (newSquareNumber < 0) {
+            this.keySquareNumber = this.squareNumber;
+            this.keyType = keyColumn.type;
             keyColumn.pathContinue = true;
             keyColumn.squareNumber = newSquareNumber * (-1);
             keyColumn.redraw(keyColumn.column.x, keyColumn.column.y);
@@ -157,7 +184,11 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.changeType(COLUMN_TYPE_3);
             this.squareNumber = 0;
             this.blurSquareNumber = keyColumn.squareNumber;
+            this.keySquareNumber = keyColumn.squareNumber;
+            this.keyType = keyColumn.type;
         } else {
+            this.keySquareNumber = keyColumn.squareNumber;
+            this.keyType = keyColumn.type;
             this.squareNumber = newSquareNumber;
             this.blurSquareNumber = keyColumn.squareNumber;
         }

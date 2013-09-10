@@ -119,59 +119,138 @@ function createGameBox(director, boxOption, relativeX, relativeY, current_length
 }
 
 function handle_ia(playScene, rivalBoxInfo) {
-    var is_launched = false;
-    var enumeration = [];
-    var current_enum = [];
+
+    var prepare_move = [];
+    var move = [];
+
+    var current_time = 0;
+    var WAITING_TIME = 250;
+
+    var ACTION_UNKNOWN = -1;
+    var ACTION_LEFT = 0;
+    var ACTION_RIGHT = 1;
+    var ACTION_DOWN = 2;
+    var ACTION_INVERT = 3;
+    var ACTION_AFTER_DOWN = 4;
+
     var message = rivalBoxInfo['message'];
     var key = rivalBoxInfo['crypt_key'];
     var key_is_invert = false;
 
-    for (var i = 0; i < message.length; ++i) {
-        enumeration.push(-2);
-    }
+    var actionToDo = ACTION_UNKNOWN;
 
-    for (var i = 0; i < enumeration.length; ++i) {
-        current_enum.push(enumeration[i]);
+    for (var i = 0; i < key.length; ++i) {
+        move.push(-2);
+        prepare_move.push(-2);
     }
-
     var index = 0;
+
+    var keyIsInvert = false;
+    var moveIsPrepared = false;
+
+    var alignColumn = false;
+    var progress = true;
 
     playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            if (index < message.length && message.boxOption.objectsInMove.length === 0) {
-                if (current_enum[index] < 0) {
-                    key.changeKeyType();
-                    key_is_invert = true;
-                    current_enum[index] = current_enum[index] * (-1);
-                    current_enum[index] = current_enum[index] - 1;
-                    key.keyDown();
-                }
-                else if (current_enum[index] > 0) {
-                    current_enum[index] = current_enum[index] - 1;
-                    key.keyDown();
-                } else {
-                    if (key_is_invert === true) {
-                        key.changeKeyType();
-                        key_is_invert = false;
-                    }
-                    key.rotateLeft();
-                    ++index;
-                }
-            } else if (index >= message.length) {
-                message.resetMessage(key);
-                for (var j = 0; j < enumeration.length; ++j) {
-                    if (enumeration[j] == 2) {
-                        enumeration[j] = -2;
-                    } else {
-                        enumeration[j] = enumeration[j] + 1;
-                        current_enum = [];
-                        for (var i = 0; i < enumeration.length; ++i) {
-                            current_enum.push(enumeration[i]);
+            console.log(move);
+            if (key.boxOption.objectsInMove.length === 0) {
+
+                /**
+                 * TO PRECISE : We apply -2 key at all columns of the message.
+                 */
+                if (actionToDo === ACTION_UNKNOWN && moveIsPrepared !== true) {
+                    if (actionToDo === ACTION_UNKNOWN) {
+                        if (keyIsInvert !== true) {
+                            actionToDo = ACTION_INVERT;
                         }
-                        index = 0;
-                        break;
+                        else if (prepare_move[index] !== 0) {
+                            actionToDo = ACTION_DOWN;
+                            prepare_move[index] = prepare_move[index] + 1;
+                        } else if (prepare_move[index] === 0) {
+                            if (index < prepare_move.length - 1) {
+                                ++index;
+                                actionToDo = ACTION_RIGHT;
+                            } else {
+                                moveIsPrepared = true;
+                                actionToDo = ACTION_UNKNOWN;
+                                progress = true;
+                                index = move.length - 1;
+                            }
+                        }
                     }
+                    current_time = time;
+                }
+
+                else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {
+                    
+                    if (progress === true) {
+                        if (actionToDo === ACTION_UNKNOWN) {
+                            if (index !== move.length - 1) {
+                                actionToDo = ACTION_RIGHT;
+                                ++index;
+                            } else {
+                                if (keyIsInvert === true) {
+                                    actionToDo = ACTION_INVERT;
+                                } else if (move[index] !== 2) {
+                                    actionToDo = ACTION_DOWN;
+                                    move[index] = move[index] + 1;
+                                } else if (move[index] === 2) {
+                                    actionToDo = ACTION_UNKNOWN;
+                                    progress = false;
+                                    align_column = true;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if (actionToDo === ACTION_UNKNOWN) {
+                            if (align_column === true) {
+                                if (keyIsInvert !== true) {
+                                    actionToDo = ACTION_INVERT;
+                                } else if (move[index] !== -2) {
+                                    actionToDo = ACTION_DOWN;
+                                    move[index] = move[index] - 1;
+                                } else if (move[index] === -2) {
+                                    actionToDo = ACTION_LEFT;
+                                    align_column = false;
+                                    --index;
+                                }
+                            } else {
+                                if (move[index] === 2) {
+                                    align_column = true;
+                                } else {
+                                    if (keyIsInvert === true) {
+                                        actionToDo = ACTION_INVERT;
+                                    } else {
+                                        actionToDo = ACTION_DOWN;
+                                        move[index] = move[index] + 1;
+                                        progress = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    current_time = time;
+
+                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT) {
+                    key.rotateRight();
+                    actionToDo = ACTION_UNKNOWN;
+                    current_time = time;
+                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_LEFT) {
+                    key.rotateLeft();
+                    actionToDo = ACTION_UNKNOWN;
+                    current_time = time;
+                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN) {
+                    key.keyDown();
+                    actionToDo = ACTION_UNKNOWN;
+                    current_time = time;
+                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT) {
+                    key.changeKeyType();
+                    keyIsInvert = !keyIsInvert;
+                    actionToDo = ACTION_UNKNOWN;
+                    current_time = time;
                 }
             }
         }
@@ -223,10 +302,6 @@ function createPlayScene(director) {
      */
     resultScene['scene'] = director.createScene();
 
-    /*
-     * Call the IA script.
-     */
-    handle_ia(resultScene['scene'], rivalBoxInfo);
 
     /**
      * Display our message for debug.
@@ -269,6 +344,10 @@ function createPlayScene(director) {
     resultScene['scene'].addChild(resultScene['left_button']);
     resultScene['scene'].addChild(resultScene['right_button']);
 
+    /*
+     * Call the IA script.
+     */
+    handle_ia(resultScene['scene'], rivalBoxInfo);
     return resultScene;
 }
 
