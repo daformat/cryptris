@@ -5,18 +5,12 @@ function game() {
 
 function genSecretKey(dim) {
 
-    var sk = null;
+    var sk = [];
 
-    var pre_key12 = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
-    var pre_key10 = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0];
-    var pre_key8 = [8, -3, 1, 0, -1, 0, -1, 1];
+    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
 
-    if (dim === 8) {
-        sk = pre_key8;
-    } else if (dim === 10) {
-        sk = pre_key10;
-    } else if (dim === 12) {
-        sk = pre_key12;
+    for (var i = 0; i < dim; ++i) {
+        sk.push(pre_key[i]);
     }
 
     for (var a = 0; a < dim; ++a) {
