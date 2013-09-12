@@ -284,13 +284,27 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
         function(time, ttime, timerTask) {
             if (object.boxOption.keyNeedToUpdate === true) {
                 object.boxOption.keyNeedToUpdate = false;
+                var needToUpdateAgain = false;
                 for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
+                    if (object.msgColumn.columnList[k].blockToDestroy !== null) {
+                        if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false) {
+                            object.msgColumn.columnList[k].container.removeChild(object.msgColumn.columnList[k].blockToDestroy.column);
+                            object.msgColumn.columnList[k].blockToDestroy = null;
+                        } else {
+                            needToUpdateAgain = true;
+                        }
+                    }
                     object.msgColumn.columnList[k].blurSquareNumber = 0;
                     object.msgColumn.columnList[k].keySquareNumber = 0;
                 }
-                object.msgColumn.redraw();
-                object.createKey();
-                object.msgColumn.isResolved();
+
+                if (needToUpdateAgain === true) {
+                    object.boxOption.keyNeedToUpdate = true;
+                } else {
+                    object.msgColumn.redraw();
+                    object.createKey();
+                    object.msgColumn.isResolved();
+                }
             }
         }
     );
@@ -304,7 +318,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
             if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
                 object.rotateRight();
             }
-            if (key.getKeyCode() === CAAT.Keys.UP && key.getAction() === 'down') {
+            if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
                 object.changeKeyType();
             }
             if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {

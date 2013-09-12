@@ -1,5 +1,97 @@
+function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption) {
+    this.director = director;
+    this.x = x;
+    this.y = y;
+    this.squareNumber = squareNumber;
+    this.keyNumber = keyNumber;
+    this.msgNumber = msgNumber;
+    this.container = container;
+    this.boxOption = boxOption;
+    this.column = new CAAT.Foundation.ActorContainer();
+    this.container.addChild(this.column);
+
+    this.msgType = msgType;
+    this.keyType = keyType;
+    this.blurGradient = null;
+    this.keyBlurGradient = null;
+    this.isVisible = true;
+
+    this.computeBlurGradient = function() {
+        if (this.msgType != COLUMN_TYPE_3) {
+            this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
+            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
+        } else {
+            this.blurGradient = null;
+        }
+    }
+
+    this.computeKeyBlurGradient = function() {
+        if (this.keyType != COLUMN_TYPE_3) {
+            this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
+            this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
+            this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
+        } else {
+            this.keyBlurGradient = null;
+        }
+    }
+
+    this.redraw = function() {
+        var columnY = this.y - ((this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT));
+        this.column.setLocation(this.x, columnY).setSize(this.boxOption.SQUARE_WIDTH, (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT));
+
+        this.computeBlurGradient();
+        this.computeKeyBlurGradient();
+
+        var object = this;
+        var beginTime = $.now();
+        this.column.paint = function(director, time) {
+
+            var relativeY = object.squareNumber > 0 ? 0 : 1;
+            var j = 1;
+            var ctx = director.ctx;
+            var x = 1.5;
+            ctx.lineWidth = 1;
+            if ($.now() - beginTime <= 1000) {
+                ctx.globalAlpha = 1 - ($.now() - beginTime) / 1000;
+            } else {
+                ctx.globalAlpha = 0;
+                object.isVisible = false;
+            }
+            console.log(time);
+            for (j = 1; j <= object.msgNumber; ++j) {
+                var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    break;
+                }
+
+                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.lastType];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.blurGradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+            }
+
+
+            for (k = 0; k < object.keyNumber; ++k) {
+                var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    break;
+                }
+
+                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                ctx.fillStyle = object.keyBlurGradient;
+                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+            }
+        }
+    }
+}
+
 function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.type = type;
+    this.director = director;
     this.boxOption = boxOption;
     this.squareNumber = initialNumber;
     this.container = container;
@@ -15,6 +107,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.keyType = COLUMN_TYPE_3;
     this.keyBlurGradient = null;
     this.keySquareNumber = 0;
+    this.blockToDestroy = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -23,26 +116,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
         } else {
             this.gradient = null;
-        }
-    }
-
-    this.computeBlurGradient = function() {
-        if (this.lastType != COLUMN_TYPE_3) {
-            this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.lastType]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.lastType]);
-        } else {
-            this.blurGradient = null;
-        }
-    }
-
-    this.computeKeyBlurGradient = function() {
-        if (this.keyType != COLUMN_TYPE_3) {
-            this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
-            this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
-        } else {
-            this.keyBlurGradient = null;
         }
     }
 
@@ -64,8 +137,13 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
 
         this.computeGradient();
-        this.computeBlurGradient();
-        this.computeKeyBlurGradient();
+        if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
+            this.blockToDestroy = new blockToDestroy(this.director, this.lastType, this.keyType, this.column.x, this.column.y, this.squareNumber, this.keySquareNumber, this.blurSquareNumber, this.container, this.boxOption);
+            this.blockToDestroy.redraw();
+            this.blurSquareNumber = 0;
+            this.keySquareNumber = 0;
+        }
+
         var object = this;
 
         this.column.paint = function(director, time) {
@@ -95,35 +173,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
                 ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
                 ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = object.gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-            }
-
-            var relativeY = object.squareNumber > 0 ? 0 : 1;
-            var j = 1;
-            for (j = 1; j <= object.blurSquareNumber; ++j) {
-                var y = 0 - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
-
-                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                    break;
-                }
-
-                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.lastType];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.blurGradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-            }
-
-
-            for (k = 0; k < object.keySquareNumber; ++k) {
-                var y = 0 - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
-
-                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                    break;
-                }
-
-                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.keyBlurGradient;
                 ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
         }

@@ -15,6 +15,8 @@ function GameBoxOption() {
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
 	this.BORDER_WIDTH = 8;
 
+	this.paused = false;
+
 	this.ColorLeft = { 'type2' : 'rgba(138, 155, 199, 1)', 'type1' : 'rgba(31, 151, 195, 1)', 'empty' : null };
 	this.Color = { 'type2' : 'rgba(79, 135, 191, 1)', 'type1' : 'rgba(1, 109, 181, 1)', 'empty' : null };
 	this.blurColorLeft = { 'type2' : 'rgba(138, 155, 199, 0.5)', 'type1' : 'rgba(31, 151, 195, 0.5)', 'empty' : null };
@@ -48,6 +50,8 @@ function RivalBoxOption() {
 	this.SPACE_HEIGHT = 4;
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
 	this.BORDER_WIDTH = 8;
+	
+	this.paused = false;
 
 	this.ColorLeft = { 'type2' : 'rgba(200, 200, 191, 1)', 'type1' : 'rgba(157, 109, 181, 1)', 'empty' : null };
 	this.Color = { 'type2' : 'rgba(156, 155, 199, 1)', 'type1' : 'rgba(152, 53, 195, 1)', 'empty' : null };

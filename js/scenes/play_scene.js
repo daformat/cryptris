@@ -350,6 +350,8 @@ function createPlayScene(director) {
 
     resultScene['scene'].createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            resultScene['scene'].setPaused(rivalBoxInfo['message'].boxOption.paused);
+
             var rivalMessage = rivalBoxInfo['message'];
             var rivalBox = rivalBoxInfo['game_box'];
 
