@@ -164,7 +164,7 @@ function createMenuScene(director) {
     /**
      * Create the menu scene, and set the background color.
      */
-    resultScene['scene'] = director.createScene().setFillStyle('rgb(53, 92, 149)');
+    resultScene['scene'] = director.createScene();
 
     /**
      * Create the main title Actor.

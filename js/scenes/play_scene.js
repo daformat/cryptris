@@ -307,11 +307,9 @@ function createPlayScene(director) {
 
     pad.mouseDown = function(e) {
         var theta = Math.PI / 4;
-        var x = e.x;
-        var y = e.y;
         var x2 = (e.x - pad.width / 2) * Math.cos(theta) + (e.y - pad.height / 2) * Math.sin(theta);
         var y2 = (e.y - pad.height / 2) * Math.cos(theta) - (e.x - pad.width / 2) * Math.sin(theta);        
-        if ((x - pad.width / 2) * (x - pad.width / 2) + (y - pad.height / 2) * (y - pad.height / 2) <= 70 * 70) {
+        if (x2 * x2 + y2 * y2 <= 70 * 70) {
 
             if (x2 < 0 && y2 > 0) {
                 pad.setBackgroundImage(director.getImage('pad-left'));
