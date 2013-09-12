@@ -51,7 +51,12 @@ function launchSplashScreen(director) {
     var imgs= [];
     imgs.push({id:'splash',   url: "img/splash/splash_digital_cuisine.png" });
     imgs.push({id:'spinner',  url: "img/splash/rueda.png" });
-    imgs.push({id:'bg', url: "img/fond-board.png"});
+    imgs.push({id:'logo-board', url: "img/assets/board-assets_03.png"});
+    imgs.push({id:'pad-untouched', url: "img/assets/board-assets_35.png"});
+    imgs.push({id:'pad-left', url: "img/assets/board-assets_25.png"});
+    imgs.push({id:'pad-right', url: "img/assets/board-assets_29.png"});
+    imgs.push({id:'pad-up', url: "img/assets/board-assets_34.png"});
+    imgs.push({id:'pad-down', url: "img/assets/board-assets_27.png"});
 
     /**
      * Clear the director.

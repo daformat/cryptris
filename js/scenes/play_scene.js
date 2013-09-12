@@ -291,7 +291,52 @@ function createPlayScene(director) {
     var crypt_key = gameBoxInfo['crypt_key'];
     resultScene['game_box'] = gameBoxInfo['game_box'];
 
-    var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 80 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
+
+    var padPositionY = 100;
+    if (resultScene['game_box'].height / 2 - 300 > 100) {
+        padPositionY = resultScene['game_box'].height / 2 - 300;
+    }
+    var cryptrisLogo = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('logo-board')).
+                            setLocation(resultScene['game_box'].width + 50, padPositionY).
+                            setSize(240, 110);
+
+    var pad = new CAAT.Actor().setSize(155, 152)
+                    .setBackgroundImage(director.getImage('pad-untouched'))
+                    .setLocation(cryptrisLogo.x + 45, cryptrisLogo.y + cryptrisLogo.height + 20);
+
+    pad.mouseDown = function(e) {
+        var theta = Math.PI / 4;
+        var x = e.x;
+        var y = e.y;
+        var x2 = (e.x - pad.width / 2) * Math.cos(theta) + (e.y - pad.height / 2) * Math.sin(theta);
+        var y2 = (e.y - pad.height / 2) * Math.cos(theta) - (e.x - pad.width / 2) * Math.sin(theta);        
+        if ((x - pad.width / 2) * (x - pad.width / 2) + (y - pad.height / 2) * (y - pad.height / 2) <= 70 * 70) {
+
+            if (x2 < 0 && y2 > 0) {
+                pad.setBackgroundImage(director.getImage('pad-left'));
+                crypt_key.rotateLeft();
+            }
+            if (x2 > 0 && y2 < 0) {
+                pad.setBackgroundImage(director.getImage('pad-right'));
+                crypt_key.rotateRight();
+            }
+            if (x2 > 0 && y2 > 0) {
+                pad.setBackgroundImage(director.getImage('pad-down'));
+                crypt_key.keyDown();
+            }
+            if (x2 < 0 && y2 < 0) {
+                pad.setBackgroundImage(director.getImage('pad-up'));
+                crypt_key.changeKeyType();
+            }
+        }
+    }
+
+    pad.mouseUp = function(mouseEvent) {
+        pad.setBackgroundImage(director.getImage('pad-untouched'));
+    }
+
+    var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 300 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo['game_box'];
 
 
@@ -310,37 +355,17 @@ function createPlayScene(director) {
      * Create each necessary button.
      */
     resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
-    resultScene['up_button'] = createBackButton(director, 100, 100, "Up", director.width - 135, 70, "blue");
-    resultScene['down_button'] = createBackButton(director, 100, 100, "Down", director.width - 135, 330, "blue");
-    resultScene['left_button'] = createBackButton(director, 100, 100, "Left", director.width - 200, 200, "blue");
-    resultScene['right_button'] = createBackButton(director, 100, 100, "Right", director.width - 70, 200, "blue");
-
-    /**
-     * If the button acts in this scene, we set its behavior.
-     */
-    resultScene['up_button'].mouseClick = function(e) {
-        crypt_key.changeKeyType();
-    };
-    resultScene['down_button'].mouseClick = function(e) {
-        crypt_key.keyDown();
-    };
-    resultScene['left_button'].mouseClick = function(e) {
-        crypt_key.rotateLeft();
-    };
-    resultScene['right_button'].mouseClick = function(e) {
-        crypt_key.rotateRight();
-    };
 
     /**
      * Add each element to its scene.
      */
     resultScene['scene'].addChild(resultScene['game_box']);
     resultScene['scene'].addChild(resultScene['rival_box']);
+    resultScene['scene'].addChild(cryptrisLogo);
+    resultScene['scene'].addChild(pad);
+    /*
     resultScene['scene'].addChild(resultScene['back_button']);
-    resultScene['scene'].addChild(resultScene['up_button']);
-    resultScene['scene'].addChild(resultScene['down_button']);
-    resultScene['scene'].addChild(resultScene['left_button']);
-    resultScene['scene'].addChild(resultScene['right_button']);
+    */
 
     /*
      * Call the IA script.
