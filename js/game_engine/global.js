@@ -19,10 +19,10 @@ function GameBoxOption() {
 
 	this.ColorLeft = { 'type2' : 'rgba(138, 155, 199, 1)', 'type1' : 'rgba(31, 151, 195, 1)', 'empty' : null };
 	this.Color = { 'type2' : 'rgba(79, 135, 191, 1)', 'type1' : 'rgba(1, 109, 181, 1)', 'empty' : null };
-	this.blurColorLeft = { 'type2' : 'rgba(138, 155, 199, 0.5)', 'type1' : 'rgba(31, 151, 195, 0.5)', 'empty' : null };
-	this.blurColor = { 'type2' : 'rgba(79, 135, 191, 0.5)', 'type1' : 'rgba(1, 109, 181, 0.5)', 'empty' : null };
+	this.blurColorLeft = { 'type2' : 'rgba(138, 155, 199, 1)', 'type1' : 'rgba(31, 151, 195, 1)', 'empty' : null };
+	this.blurColor = { 'type2' : 'rgba(79, 135, 191, 1)', 'type1' : 'rgba(1, 109, 181, 1)', 'empty' : null };
 	this.StrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(0, 187, 178, 1)', 'empty' : null };
-	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 0.5)', 'type1' : 'rgba(0, 187, 178, 0.5)', 'empty' : null };
+	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(0, 187, 178, 1)', 'empty' : null };
 
 	this.defaultStrokeColor = { 'type2' : '#ffffff', 'type1' : '#00bbb2', 'empty' : null };
 	this.fullStrokeColor = { 'type2' : '#555555', 'type1' : '#0077a2', 'empty' : null };
@@ -61,7 +61,7 @@ function RivalBoxOption() {
 	this.StrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
 	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 0.5)', 'type1' : 'rgba(163, 96, 187, 0.5)', 'empty' : null };
 	this.defaultStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
-	this.fullStrokeColor = { 'type2' : 'rgba(255, 255, 255, 0.5)', 'type1' : 'rgba(163, 96, 187, 0.5)', 'empty' : null };
+	this.fullStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
 
 	this.columnColor = 'rgba(187, 53, 0, 0.2)';
 	this.objectsInMove = [];

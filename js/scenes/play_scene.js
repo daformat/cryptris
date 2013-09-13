@@ -113,7 +113,7 @@ function createGameBox(director, boxOption, relativeX, relativeY, current_length
     var crypt_key = new Key(key_info, current_length, message, gameBox, director, boxOption, player);
     crypt_key.createKey();
     message.redraw();
-    crypt_key.redraw();
+    crypt_key.firstRedraw();
 
     return {'game_box' : gameBox, 'crypt_key' : crypt_key, 'message' : message};
 }
@@ -153,8 +153,6 @@ function handle_ia(playScene, rivalBoxInfo) {
         function(time, ttime, timerTask) {
 
             if (key.msgColumn.resolved === false && key.keyInMove === false) {
-
-                console.log(move);
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
@@ -329,6 +327,38 @@ function createPlayScene(director) {
             }
         }
     }
+
+
+    CAAT.registerKeyListener(function(key) {
+        if (key.getKeyCode() === CAAT.Keys.LEFT) {
+            if (key.getAction() === 'down') {
+                pad.setBackgroundImage(director.getImage('pad-left'));
+            } else if (key.getAction() === 'up') {
+                pad.setBackgroundImage(director.getImage('pad-untouched'));
+            }
+        }
+        if (key.getKeyCode() === CAAT.Keys.RIGHT) {
+            if (key.getAction() === 'down') {
+                pad.setBackgroundImage(director.getImage('pad-right'));
+            } else if (key.getAction() === 'up') {
+                pad.setBackgroundImage(director.getImage('pad-untouched'));
+            }
+        }
+        if (key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) {
+            if (key.getAction() === 'down') {
+                pad.setBackgroundImage(director.getImage('pad-up'));
+            } else if (key.getAction() === 'up') {
+                pad.setBackgroundImage(director.getImage('pad-untouched'));
+            }
+        }
+        if (key.getKeyCode() === CAAT.Keys.DOWN) {
+            if (key.getAction() === 'down') {
+                pad.setBackgroundImage(director.getImage('pad-down'));
+            } else if (key.getAction() === 'up') {
+                pad.setBackgroundImage(director.getImage('pad-untouched'));
+            }
+        }
+    });
 
     pad.mouseUp = function(mouseEvent) {
         pad.setBackgroundImage(director.getImage('pad-untouched'));

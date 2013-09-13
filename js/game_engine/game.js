@@ -7,7 +7,7 @@ function genSecretKey(dim) {
 
     var sk = [];
 
-    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
+    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1, 0, 2, 1, 0, 1, -1, -1, 4, 2, 1, -2, 0, 0, 0, 3, -3, -2, 0];
 
     for (var i = 0; i < dim; ++i) {
         sk.push(pre_key[i]);

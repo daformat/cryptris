@@ -7,6 +7,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.pb = null;
     this.msgColumn = msgColumn;
     this.keyInMove = false;
+    this.keyFirstMove = false;
     this.pathContinue = false;
 
     this.column = new CAAT.Foundation.ActorContainer();
@@ -72,6 +73,64 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         }
     }
 
+    this.firstRedraw = function(x) {
+        y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
+        this.column.setLocation(x, y);
+
+        this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
+
+        var object = this;
+        this.column.paint = function(director, time) {
+            if (this.isCached()) {
+                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+                return;
+            }
+             
+            var ctx = director.ctx;
+            var x = 1.5;
+            
+            // Custom paint method.
+            for (var i = 0; i < object.squareNumber; ++i) {
+
+                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
+
+                if (object.column.y + y >= object.boxOption.BORDER_HEIGHT) {
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                    ctx.fillStyle = object.gradient;
+                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+                } else if (object.column.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) {
+
+                    var diffNewHeight = 0;
+                    while (object.column.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) {
+                        ++diffNewHeight;
+                    }
+                    var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
+                    y = y + diffNewHeight;
+
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, newHeight);
+                    ctx.fillStyle = object.gradient;
+                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
+                }
+            }
+        }
+    }
+
+    this.firstMove = function() {
+        this.keyFirstMove = true;
+        var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
+        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 500)).setCycle(false);
+
+        var object = this;
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; }, 'behaviorApplied' : null};
+
+        pb.addListener(behaviorListener);
+        this.column.addBehavior(pb);
+    }
+
     this.stopMove = function() {
         if (this.pb !== null) {
             this.pb.setOutOfFrameTime();
@@ -103,7 +162,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         if (this.type !== COLUMN_TYPE_3) {
             this.keyInMove = true;
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.column.y + this.container.height);
-            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", 2500)).setCycle(false);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", 1750)).setCycle(false);
             this.column.addBehavior(this.pb);
             this.boxOption.objectsInMove.push(true);
         }
@@ -113,7 +172,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            if (object.keyInMove === true && object.isActive === true) {
+            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
 
                 var msgColumn = object.msgColumn.column;
 
@@ -165,6 +224,8 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     this.msgColumn = msgColumn;
     this.container = container;
     this.boxOption = boxOption;
+    this.keyInMove = false;
+    this.keyFirstMove = false;
 
     this.keyInfo = keyInfo;
     this.normalKey = [];
@@ -180,13 +241,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
         this.number.push(this.keyInfo['number'][i]);
     }
 
-
     this.createKey = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
             this.container.removeChild(this.columnList[i].column);
         }
         this.columnList = [];
         this.keyInMove = false;
+        this.keyFirstMove = true;
 
         this.boxOption.maxKeyNumber = 0;
         for (var i = 0; i < this.length; ++i) {
@@ -200,8 +261,17 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
             }
         }
 
-        this.redraw();
+        this.firstRedraw();
         return this;
+    }
+
+    this.firstRedraw = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            this.columnList[i].firstRedraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+        }
+        for (var i = 0; i < this.columnList.length; ++i) {
+            this.columnList[i].firstMove();
+        }
     }
 
     this.redraw = function() {
@@ -211,7 +281,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.changeKeyType = function() {
-        if (this.keyInMove === false && this.msgColumn.resolved === false) {
+        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
             if (this.type === KEY_TYPE_NORMAL) {
                 this.type = KEY_TYPE_REVERSE;
             } else {
@@ -226,7 +296,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateLeft = function() {
-        if (this.keyInMove === false && this.msgColumn.resolved === false) {
+        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
             this.columnList.push(this.columnList[0]);
             this.columnList.splice(0, 1);
 
@@ -245,7 +315,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.rotateRight = function() {
-        if (this.keyInMove === false && this.msgColumn.resolved === false) {
+        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
             this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
             this.columnList.splice(this.columnList.length - 1, 1);
 
@@ -270,7 +340,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     }
 
     this.keyDown = function() {
-        if (this.keyInMove === false && this.msgColumn.resolved === false) {
+        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
             this.keyInMove = true;
             for (var i = 0; i < this.columnList.length; ++i) {
                 this.columnList[i].keyDown();
@@ -282,7 +352,18 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            if (object.boxOption.keyNeedToUpdate === true) {
+            if (object.keyFirstMove === true) {
+                var newKeyFirstMove = false;
+                for (var i = 0; i < object.columnList.length; ++i) {
+                    if (object.columnList[i].keyFirstMove === true) {
+                        newKeyFirstMove = true;
+                    }
+                }
+                object.keyFirstMove = newKeyFirstMove;
+            }
+
+
+            if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
                 object.boxOption.keyNeedToUpdate = false;
                 var needToUpdateAgain = false;
                 for (var k = 0; k < object.msgColumn.columnList.length; ++k) {

@@ -52,13 +52,13 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
             var ctx = director.ctx;
             var x = 1.5;
             ctx.lineWidth = 1;
-            if ($.now() - beginTime <= 1000) {
-                ctx.globalAlpha = 1 - ($.now() - beginTime) / 1000;
+            if ($.now() - beginTime <= 250) {
+                ctx.globalAlpha = 1 - ($.now() - beginTime) / 250;
             } else {
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
             }
-            console.log(time);
+            
             for (j = 1; j <= object.msgNumber; ++j) {
                 var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
