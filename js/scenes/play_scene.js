@@ -299,9 +299,17 @@ function createPlayScene(director) {
                             setLocation(resultScene['game_box'].width + 50, padPositionY).
                             setSize(240, 110);
 
+    var pauseButton = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('pause-up')).
+                            setLocation(cryptrisLogo.x + 70, cryptrisLogo.y + cryptrisLogo.height + 20);
+
+    var helpButton = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('help-up')).
+                            setLocation(pauseButton.x + pauseButton.width + 20, pauseButton.y);
+
     var pad = new CAAT.Actor().setSize(155, 152)
                     .setBackgroundImage(director.getImage('pad-untouched'))
-                    .setLocation(cryptrisLogo.x + 45, cryptrisLogo.y + cryptrisLogo.height + 20);
+                    .setLocation(cryptrisLogo.x + 45, pauseButton.y + pauseButton.height + 20);
 
     pad.mouseDown = function(e) {
         var theta = Math.PI / 4;
@@ -327,7 +335,6 @@ function createPlayScene(director) {
             }
         }
     }
-
 
     CAAT.registerKeyListener(function(key) {
         if (key.getKeyCode() === CAAT.Keys.LEFT) {
@@ -367,11 +374,50 @@ function createPlayScene(director) {
     var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 300 + resultScene['game_box'].width, 30, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo['game_box'];
 
-
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */
     resultScene['scene'] = director.createScene();
+
+
+    /**
+     * Add a paused behavior on pause button.
+     */
+     var isPauseDown = false;
+     var pauseX = pauseButton.x;
+     var pauseY = pauseButton.y;
+     pauseButton.mouseDown = function(mouseEvent) {
+        if (isPauseDown === false) {
+            pauseButton.setBackgroundImage(director.getImage('pause-down')).setLocation(pauseX, pauseY + 3);
+            isPauseDown = true;
+        } else {
+            pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseX, pauseY);
+            isPauseDown = false;
+        }
+     }
+     pauseButton.mouseUp = function(mouseEvent) {
+        if (isPauseDown === false) {
+            resultScene['scene'].setPaused(false);
+        } else {
+            resultScene['scene'].setPaused(true);
+        }
+     }
+
+     /**
+      * Add a behavior for help button (to upgrade).
+      */
+    var isHelpDown = false;
+    var helpX = helpButton.x;
+    var helpY = helpButton.y;
+    helpButton.mouseDown = function(mouseEvent) {
+        if (isHelpDown === false) {
+            helpButton.setBackgroundImage(director.getImage('help-down')).setLocation(helpX, helpY + 3);
+            isHelpDown = true;
+        } else {
+            helpButton.setBackgroundImage(director.getImage('help-up')).setLocation(helpX, helpY);
+            isHelpDown = false;
+        }
+    }
 
 
     /**
@@ -391,6 +437,8 @@ function createPlayScene(director) {
     resultScene['scene'].addChild(resultScene['rival_box']);
     resultScene['scene'].addChild(cryptrisLogo);
     resultScene['scene'].addChild(pad);
+    resultScene['scene'].addChild(pauseButton);
+    resultScene['scene'].addChild(helpButton);
     /*
     resultScene['scene'].addChild(resultScene['back_button']);
     */

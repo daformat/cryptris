@@ -58,7 +58,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
             }
-            
+
             for (j = 1; j <= object.msgNumber; ++j) {
                 var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
@@ -303,8 +303,6 @@ function Message(director, messageLength, message, container, boxOption) {
                 tmpResolved = false;
             }
         }
-
         this.resolved = tmpResolved;
     }
-
 }

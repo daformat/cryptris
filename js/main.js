@@ -57,6 +57,10 @@ function launchSplashScreen(director) {
     imgs.push({id:'pad-right', url: "img/assets/board-assets_29.png"});
     imgs.push({id:'pad-up', url: "img/assets/board-assets_34.png"});
     imgs.push({id:'pad-down', url: "img/assets/board-assets_27.png"});
+    imgs.push({id:'pause-up', url: "img/assets/board-assets_11.png"});
+    imgs.push({id:'pause-down', url: "img/assets/board-assets_16.png"});
+    imgs.push({id:'help-up', url: "img/assets/board-assets_13.png"});
+    imgs.push({id:'help-down', url: "img/assets/board-assets_18.png"});
 
     /**
      * Clear the director.
