@@ -61,6 +61,7 @@ function launchSplashScreen(director) {
     imgs.push({id:'pause-down', url: "img/assets/board-assets_16.png"});
     imgs.push({id:'help-up', url: "img/assets/board-assets_13.png"});
     imgs.push({id:'help-down', url: "img/assets/board-assets_18.png"});
+    imgs.push({id:'timer', url: "img/assets/board-assets_07.png"});
 
     /**
      * Clear the director.
