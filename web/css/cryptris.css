@@ -38,8 +38,28 @@ a{
 .cryptris-logo-large{
 	width: 100%;
 	max-width: 1090px;
-	margin-top: 5%;
+	margin-top: 2%;
+	margin-bottom: -50px;
+	padding-top:60px;
 }
+
+.logo-digital-cuisine-medium{
+	margin: 2% 0;
+}
+
+.logo-inria{
+	position: absolute;
+	top: 30px;
+	right: 35px;
+	width: 20%;
+	max-width: 157px;
+}
+
+.logo-inria-medium{
+	width: 100%;
+}
+
+/* Menu */
 .main-menu{
 	color: #0071bb;
 	font-size: 31px;
@@ -56,7 +76,7 @@ a{
 }
 
 .main-menu li{
-		padding: 10px 0;
+		padding: 5px 0;
 		margin: 2px 0;
 }
 .main-menu li a{
