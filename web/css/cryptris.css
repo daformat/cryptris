@@ -1,0 +1,84 @@
+html, body { 
+  margin:0;
+  padding:0;
+  font-family: 'Geo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+ul{
+	list-style-type: none
+}
+
+a{
+	color: inherit;
+	text-decoration: none;
+}
+
+.wrapper{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: auto;
+}
+
+
+.bg-circuits{
+	background: url(../img/bg-circuits.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+}
+
+/*
+	Home screen
+*/
+
+.cryptris-logo-large{
+	width: 100%;
+	max-width: 1090px;
+	margin-top: 5%;
+}
+.main-menu{
+	color: #0071bb;
+	font-size: 31px;
+	fon-weight: 400;
+	background: #000;
+	background: rgba(0,0,0,0.3);
+	display: inline-block;
+	border-top: 2px solid #eee;
+	border-bottom: 2px solid #eee;
+	padding: 10px 0;
+	width: 80%;
+	max-width: 450px;
+	text-transform: uppercase;
+}
+
+.main-menu li{
+		padding: 10px 0;
+		margin: 2px 0;
+}
+.main-menu li a{
+	width: 100%;
+	display:inline-block;
+}
+
+.main-menu .arrow{
+	font-size: 20px;
+	margin: 0.5em;
+	color: #0071bb;
+	text-shadow: none;
+	visibility: hidden;
+	line-height: 10px;
+}
+
+.main-menu .active .arrow, .main-menu li:hover .arrow{
+	visibility: visible;
+}
+
+.main-menu .active, .main-menu li:hover{
+	color: #fff;
+	background-color: #000;
+	text-shadow: 0px 0px 10px #00f3ff;
+}
