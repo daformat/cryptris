@@ -180,3 +180,14 @@ h1, h2, h3, h4, h5, h6{
 	max-width: 700px;
 	width: 80%;
 }
+.credits-logos img{
+	margin: 15px 20px;
+}
+
+.btn-close{
+	position: absolute;
+	right: 35px;
+	top: 30px;
+	width: 39px;
+	height: 38px;
+}
