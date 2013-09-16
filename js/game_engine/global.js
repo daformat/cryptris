@@ -42,6 +42,7 @@ function GameBoxOption() {
 	}
 
 	this.numberColor = "#00e770";
+	this.numberGrow = "#00FF9D";
 }
 
 function RivalBoxOption() {
@@ -79,6 +80,7 @@ function RivalBoxOption() {
 		this.StrokeColor = this.fullStrokeColor;
 	}
 	this.numberColor = "#d30088";
+	this.numberGrow = "#fc56fc";
 }
 
 function getQuerystring(key, default_) {

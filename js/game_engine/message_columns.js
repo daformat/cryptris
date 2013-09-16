@@ -146,7 +146,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = 5;
-            ctx.shadowColor = '#00FF9D';
+            ctx.shadowColor = object.boxOption.numberGrow;
 
             ctx.font = '15px Inconsolata';
             ctx.fillStyle = object.boxOption.numberColor;
@@ -162,7 +162,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             ctx.shadowBlur = 5;
             ctx.shadowColor = '#00FF9D';
 
-            ctx.font = '13px Inconsolata';
+            ctx.font = '12px Inconsolata';
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
 
