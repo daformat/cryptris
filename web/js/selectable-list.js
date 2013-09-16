@@ -1,10 +1,8 @@
 $(function(){
 
-	$(".selectable li").hover(function(){
+	$(".selectable li").mouseenter(function(){
 		$('.selectable li').removeClass('active');
 		$(this).addClass('active');
-	}, function(){
-		/* No action required */
 	})
 
 	$(document).keydown(function(e){
@@ -14,11 +12,14 @@ $(function(){
 		    $choices.eq(($choices.index($selected) - 1) % $choices.length).addClass("active");
 	      return false;
 	    }
-	    else if (e.keyCode == 40) { //down 
+	    else if (e.keyCode == 40) { // down 
 	      var $selected = $('.selectable li.active').removeClass('active');
 				var $choices = $selected.parent().children();
 		    $choices.eq(($choices.index($selected) + 1) % $choices.length).addClass("active");	       
 	    }
-
+			else if (e.keyCode == 13 || e.keyCode == 32) { // enter || space
+				window.location = $('.selectable li.active a').attr('href');
+		    
+			}
 	});
 });
