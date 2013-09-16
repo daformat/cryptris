@@ -1,0 +1,182 @@
+/*
+
+	Cryptris.css
+	------------
+	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
+	@lastmod 2013-09-16
+
+*/
+
+html, body { 
+  margin:0;
+  padding:0;
+  font-family: 'Geo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+	text-shadow: 0 0 1px rgba(100,100,255,0.5);
+	background: #000;
+}
+
+ul{
+	list-style-type: none
+}
+
+a{
+	color: #5eded3;
+	text-decoration: none;
+}
+
+
+h1, h2, h3, h4, h5, h6{
+	color: #0071bb;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+/*
+	General stuff
+*/
+
+.wrapper{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: auto;
+}
+
+
+.bg-circuits{
+	background: url(../img/bg-circuits.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+  color: #eee;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+/*
+	Home screen
+*/
+
+/* Logos */
+
+.cryptris-logo-large{
+	width: 100%;
+	max-width: 1090px;
+	margin-top: 2%;
+	margin-bottom: -50px;
+	padding-top:60px;
+}
+
+.logo-digital-cuisine-medium{
+	margin: 2% 0;
+}
+
+.logo-inria{
+	position: absolute;
+	top: 30px;
+	right: 35px;
+	width: 20%;
+	max-width: 157px;
+}
+
+.logo-inria-medium{
+	width: 100%;
+}
+
+/* Menu */
+
+.main-menu{
+	color: #0071bb;
+	font-size: 31px;
+	fon-weight: 400;
+	background: #000;
+	background: rgba(0,0,0,0.3);
+	display: inline-block;
+	border-top: 2px solid #eee;
+	border-bottom: 2px solid #eee;
+	padding: 10px 0;
+	width: 80%;
+	max-width: 450px;
+	text-transform: uppercase;
+}
+
+.main-menu a{
+	color: inherit;
+}
+.main-menu li{
+		padding: 5px 0;
+		margin: 2px 0;
+}
+.main-menu li a{
+	width: 100%;
+	display:inline-block;
+}
+
+.main-menu .arrow{
+	font-size: 20px;
+	margin: 0.5em;
+	color: #0071bb;
+	text-shadow: none;
+	visibility: hidden;
+	line-height: 10px;
+}
+
+.main-menu .active .arrow, .main-menu li:hover .arrow{
+	visibility: visible;
+}
+
+.main-menu .active, .main-menu li:hover{
+	color: #fff;
+	background-color: #000;
+	text-shadow: 0px 0px 10px #00f3ff;
+}
+
+/*
+	Scrollable content with gradient
+*/
+
+.overflow-gradient-top{
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	height: 70px;
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ); /* IE6-8 */
+}
+
+.overflow-gradient-bottom{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 70px;
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-8 */
+}
+
+/*
+	Credits, about
+*/
+
+.text-content{
+	margin: 40px 10% 160px;
+	display: inline-block;
+	max-width: 700px;
+	width: 80%;
+}
