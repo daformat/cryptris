@@ -40,41 +40,6 @@ function createBackButton(director, width, height, text, x, y, color) {
     return backButton;
 }
 
-function display_debug_message(director, boxOption, gameBox, current_length, message, container) {
-    for (var i = 0; i < current_length; ++i) {
-
-        var type = null;
-        var initialNumber = 0;
-        var gradient = null;
-
-        if (message[i] == -1) {
-            type = COLUMN_TYPE_2;
-            initialNumber = 1;
-        } else if (message[i] == 0) {
-            type = COLUMN_TYPE_3;
-            initialNumber = 0;
-        } else {
-            type = COLUMN_TYPE_1;
-            initialNumber = 1;
-        }
-
-        if (type != COLUMN_TYPE_3) {
-            gradient = director.ctx.createLinearGradient(0, 0, boxOption.SQUARE_WIDTH, 0);
-            gradient.addColorStop(0, boxOption.ColorLeft[type]);
-            gradient.addColorStop(1, boxOption.Color[type]);
-        }
-
-        for (var j = 0; j < initialNumber; ++j) {
-            var shape = new CAAT.ShapeActor().setSize(boxOption.SQUARE_WIDTH, boxOption.SQUARE_HEIGHT)
-                                                 .setFillStyle(gradient)
-                                                 .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setStrokeStyle(boxOption.StrokeColor[type])
-                                                 .setLocation(gameBox.x + i * (boxOption.SPACE_WIDTH + boxOption.SQUARE_WIDTH) + boxOption.SPACE_WIDTH, gameBox.y + gameBox.height + 30);
-            container.addChild(shape);
-        }
-    }
-}
-
 function createGameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player) {
     var sizeWidth = current_length * (boxOption.SPACE_WIDTH + boxOption.COLUMN_WIDTH) - boxOption.SPACE_WIDTH + 2 * boxOption.BORDER_WIDTH;
     var sizeHeight = $(window).height() - relativeY - 100;
@@ -255,8 +220,15 @@ function handle_ia(playScene, rivalBoxInfo) {
 
 function convertTimeToString(time) {
     var timeInSecond = Math.floor(time / 1000);
-    var minute = Math.floor(timeInSecond / 60);
-    var second = timeInSecond % 60;
+    var hour = Math.floor(timeInSecond / 3600);
+    var minuteInSecond = timeInSecond % 3600;
+    var minute = Math.floor(minuteInSecond / 60);
+    var second = minuteInSecond % 60;
+
+    var hourString = "" + hour;
+    if (hour < 10) {
+        hourString = "0" + hourString;
+    }
 
     var minuteString = "" + minute;
     if (minute < 10) {
@@ -268,7 +240,23 @@ function convertTimeToString(time) {
         secondString = "0" + secondString;
     }
 
-    return minuteString + ":" + secondString;
+    return hourString + ":" + minuteString + ":" + secondString;
+}
+
+function setTextTimerPain(timerText, text) {
+    timerText.paint = function(director) {
+
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '22px Quantico';
+        ctx.fillStyle = 'white';
+        ctx.fillText(text, 0, 0);
+    }
 }
 
 /**
@@ -308,6 +296,50 @@ function createPlayScene(director) {
     resultScene['game_box'] = gameBoxInfo['game_box'];
 
 
+    var leftPlayerName = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('left-board')).
+                            setLocation(resultScene['game_box'].x - 12, resultScene['game_box'].y - director.getImage('left-board').height - 10);
+
+    var centerPlayerName = new CAAT.Foundation.ActorContainer().
+                            setSize(175, director.getImage('center-board').height).
+                            setBackgroundImage(director.getImage('center-board'), false).
+                            setLocation(leftPlayerName.x + leftPlayerName.width, leftPlayerName.y);
+
+    centerPlayerName.paint = function(director) {
+        var ctx = director.ctx;
+        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+    }
+
+    var playerNameText = new CAAT.Foundation.Actor().
+                            setSize(175, director.getImage('center-board').height).
+                            setLocation(0, 0);
+
+
+    playerNameText.paint = function(director) {
+
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '22px Quantico';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.fillText(currentGame.username, this.width / 2, this.height / 2 + 7);
+    }
+
+    centerPlayerName.addChild(playerNameText);
+
+    var rightPlayerName = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('right-board')).
+                            setLocation(centerPlayerName.x + centerPlayerName.width, centerPlayerName.y);
+
+
+
     var padPositionY = 200;
     if (resultScene['game_box'].height / 2 - 300 > 200) {
         padPositionY = resultScene['game_box'].height / 2 - 300;
@@ -317,21 +349,34 @@ function createPlayScene(director) {
                             setLocation(resultScene['game_box'].x + resultScene['game_box'].width + 10, padPositionY).
                             setSize(240, 110);
 
-    var timer = new CAAT.Foundation.ActorContainer().
-                            setBackgroundImage(director.getImage('timer')).
-                            setLocation(cryptrisLogo.x + 50, cryptrisLogo.y + cryptrisLogo.height + 20);
+    var leftTimer = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('left-board')).
+                            setLocation(cryptrisLogo.x + 35, cryptrisLogo.y + cryptrisLogo.height + 20);
 
-    var timerText = new CAAT.Foundation.UI.TextActor().
-                        setText('00:00').
-                        setFont("22px Quantico").
-                        setOutline(true).
-                        setOutlineColor('rgba(79, 135, 191, 1)').
-                        centerAt(timer.width / 2, timer.height / 2);
-    timer.addChild(timerText);
+
+    var centerTimer = new CAAT.Foundation.ActorContainer().
+                            setSize(105, director.getImage('center-board').height).
+                            setBackgroundImage(director.getImage('center-board'), false).
+                            setLocation(leftTimer.x + leftTimer.width, leftTimer.y);
+
+    centerTimer.paint = function(director) {
+        var ctx = director.ctx;
+        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+    }
+
+    var timerText = new CAAT.Foundation.Actor().
+                            setLocation(0, centerTimer.height / 2 + 8);
+    centerTimer.addChild(timerText);
+
+    var rightTimer = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('right-board')).
+                            setLocation(centerTimer.x + centerTimer.width, centerTimer.y);
 
     var pauseButton = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('pause-up')).
-                            setLocation(cryptrisLogo.x + 65, timer.y + timer.height + 40);
+                            setLocation(cryptrisLogo.x + 65, centerTimer.y + centerTimer.height + 40);
 
     var helpButton = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('help-up')).
@@ -404,6 +449,52 @@ function createPlayScene(director) {
     var rivalBoxInfo = createGameBox(director, new RivalBoxOption(), 300 + resultScene['game_box'].width, 80, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo['game_box'];
 
+
+
+    var rightIAName = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('right-board')).
+                            setLocation(resultScene['rival_box'].x + resultScene['rival_box'].width - director.getImage('right-board').width + 12, resultScene['game_box'].y - director.getImage('left-board').height - 10);
+
+    var centerIAName = new CAAT.Foundation.ActorContainer().
+                            setSize(175, director.getImage('center-board').height).
+                            setBackgroundImage(director.getImage('center-board'), false).
+                            setLocation(rightIAName.x - 175, rightIAName.y);
+
+    centerIAName.paint = function(director) {
+        var ctx = director.ctx;
+        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+    }
+
+
+    var iaNameText = new CAAT.Foundation.Actor().
+                            setSize(175, director.getImage('center-board').height).
+                            setLocation(0, 0);
+
+
+    iaNameText.paint = function(director) {
+
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '22px Quantico';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.fillText(currentGame.ianame, this.width / 2, this.height / 2 + 7);
+    }
+
+    centerIAName.addChild(iaNameText);
+
+
+    var leftIAName = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('left-board')).
+                            setLocation(centerIAName.x - director.getImage('left-board').width, centerIAName.y);
+
     /**
      * Create the play scene, and set the background Image (see main.js => Image assets").
      */
@@ -449,12 +540,6 @@ function createPlayScene(director) {
         }
     }
 
-
-    /**
-     * Display our message for debug.
-     */
-    display_debug_message(director, new GameBoxOption(), resultScene['game_box'], current_length, tmp_message, resultScene['scene']);
-
     /**
      * Create each necessary button.
      */
@@ -469,7 +554,15 @@ function createPlayScene(director) {
     resultScene['scene'].addChild(pad);
     resultScene['scene'].addChild(pauseButton);
     resultScene['scene'].addChild(helpButton);
-    resultScene['scene'].addChild(timer);
+    resultScene['scene'].addChild(leftTimer);
+    resultScene['scene'].addChild(centerTimer);
+    resultScene['scene'].addChild(rightTimer);
+    resultScene['scene'].addChild(leftPlayerName);
+    resultScene['scene'].addChild(centerPlayerName);
+    resultScene['scene'].addChild(rightPlayerName);
+    resultScene['scene'].addChild(rightIAName);
+    resultScene['scene'].addChild(centerIAName);
+    resultScene['scene'].addChild(leftIAName);
     /*
     resultScene['scene'].addChild(resultScene['back_button']);
     */
@@ -486,7 +579,7 @@ function createPlayScene(director) {
             /**
              * Update the timer value.
              */
-             timerText.setText(convertTimeToString(time));
+            setTextTimerPain(timerText, convertTimeToString(time));
 
             var rivalMessage = rivalBoxInfo['message'];
             var rivalBox = rivalBoxInfo['game_box'];

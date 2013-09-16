@@ -1,6 +1,7 @@
 function game() {
-	this.username = null;
+	this.username = "MATHIEU";
 	this.scenes = null;
+    this.ianame = "RJ-45";
 }
 
 function genSecretKey(dim) {

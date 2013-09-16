@@ -17,10 +17,10 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.isVisible = true;
 
     this.computeBlurGradient = function() {
-        if (this.msgType != COLUMN_TYPE_3) {
+        if (this.keyType != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
+            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
+            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
         } else {
             this.blurGradient = null;
         }
@@ -66,7 +66,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     break;
                 }
 
-                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.lastType];
+                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
                 ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
                 ctx.fillStyle = object.blurGradient;
                 ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
@@ -101,6 +101,11 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.column = new CAAT.Foundation.ActorContainer();
     this.container.addChild(this.column);
 
+    this.displayValueHexa = new CAAT.Foundation.ActorContainer();
+    this.container.addChild(this.displayValueHexa);
+    this.displayValue = new CAAT.Foundation.ActorContainer();
+    this.container.addChild(this.displayValue);
+
     this.gradient = null;
     this.blurGradient = null;
 
@@ -120,6 +125,49 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 
     this.redraw = function(x) {
+
+        var object = this;
+        /**
+         * Set message display.
+         */
+        this.displayValueHexa.setLocation(x, this.container.height + 20).setSize(this.boxOption.SQUARE_WIDTH, 15);
+        this.displayValue.setLocation(x, this.displayValueHexa.y + this.displayValueHexa.height).setSize(this.boxOption.SQUARE_WIDTH, 15);
+
+
+        var signe = "";
+        if (this.type === COLUMN_TYPE_1) {
+            signe = "-"
+        }
+
+        this.displayValueHexa.paint = function(director) {
+
+            var ctx = director.ctx;
+
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = '#00FF9D';
+
+            ctx.font = '15px Inconsolata';
+            ctx.fillStyle = object.boxOption.numberColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(signe + "0x" + object.squareNumber.toString(16).toUpperCase(), this.width / 2, 5);
+        }
+        this.displayValue.paint = function(director) {
+
+            var ctx = director.ctx;
+
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = '#00FF9D';
+
+            ctx.font = '13px Inconsolata';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+
+            ctx.fillText("(" + signe + object.squareNumber + ")", this.width / 2, 5);
+        }
 
         var columnY = this.container.height - this.boxOption.SQUARE_HEIGHT * this.squareNumber - this.boxOption.BORDER_HEIGHT - (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
         if (columnY > 0) {
@@ -143,8 +191,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         }
-
-        var object = this;
 
         this.column.paint = function(director, time) {
 
