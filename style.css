@@ -11,6 +11,7 @@ body {
 	background-position:center; 
 	margin: 0px;
 	padding: 0px;
+	display: inline-block;
 }
 
 #container {
