@@ -62,6 +62,9 @@ function launchSplashScreen(director) {
     imgs.push({id:'help-up', url: "img/assets/board-assets_13.png"});
     imgs.push({id:'help-down', url: "img/assets/board-assets_18.png"});
     imgs.push({id:'timer', url: "img/assets/board-assets_07.png"});
+    imgs.push({id:'left-board', url: "img/assets/left-board-assets_07.png"});
+    imgs.push({id:'right-board', url: "img/assets/right-board-assets_07.png"});
+    imgs.push({id:'center-board', url: "img/assets/center-board-assets_07.png"});
 
     /**
      * Clear the director.
@@ -114,7 +117,7 @@ $(document).ready(function() {
     /**
      * Declare our main caat director.
      */
-    var director = new CAAT.Director().initialize($(document).width(), $(document).height(), 'main_scene').setClear(false);
+    var director = new CAAT.Director().initialize($(document).width(), $(document).height(), document.getElementById("main_scene")).setClear(false);
 
     /**
      * Launch splash screen

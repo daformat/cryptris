@@ -122,7 +122,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.firstMove = function() {
         this.keyFirstMove = true;
         var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
-        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 500)).setCycle(false);
+        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
 
         var object = this;
         var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; }, 'behaviorApplied' : null};
