@@ -18,8 +18,9 @@ $(function(){
 		    $choices.eq(($choices.index($selected) + 1) % $choices.length).addClass("active");	       
 	    }
 			else if (e.keyCode == 13 || e.keyCode == 32) { // enter || space
-				window.location = $('.selectable li.active a').attr('href');
-		    
+				var $a = $('.selectable li.active a');
+				window.location = $a.attr('href');
+				$a.click();
 			}
 	});
 });
