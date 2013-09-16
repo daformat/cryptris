@@ -166,6 +166,7 @@ h3 { margin-bottom: -10px; }
 .main-menu li{
 		padding: 5px 0;
 		margin: 2px 0;
+		transition: all 0.25s ease;
 }
 .main-menu li a{
 	width: 100%;
@@ -178,11 +179,15 @@ h3 { margin-bottom: -10px; }
 	color: #0091bb;
 	text-shadow: none;
 	visibility: hidden;
+	opacity: 0;
 	line-height: 10px;
+	transition: all 0.25s ease;
+
 }
 
 .main-menu .active .arrow, .main-menu li:hover .arrow{
 	visibility: visible;
+	opacity: 1;
 }
 
 .main-menu .active, .main-menu li:hover{
@@ -298,7 +303,7 @@ h3 { margin-bottom: -10px; }
 	resize: none;
 
 	transition: border-color 0.35s ease, box-shadow 0.45s ease;
- 
+
 }
 
 .share textarea.warning{
