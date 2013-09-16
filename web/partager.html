@@ -14,6 +14,10 @@
       <script src="js/respond.min.js"></script>
     <![endif]-->
 
+    <script src="vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/count-characters-left.js"></script>
+
+
     <link href='http://fonts.googleapis.com/css?family=Geo|Inconsolata|Quantico:400,700' rel='stylesheet' type='text/css'>
 
   </head>
@@ -25,7 +29,7 @@
         <h2>Partagez le jeu</h2>
         <p>Proposez à vos amis de déchiffrer votre message, commencez par le saisir ci-dessous, il sera ensuite chiffré </p>
 
-        <form>
+        <form id="share">
             <fieldset><textarea></textarea></fieldset>
             <div class="characters-left"><span class="count lcd">140</span> Caractères restants</div>
             <input type="reset" value="Annuler" class="button red"><input type="submit" value="Suivant" class="button blue">
