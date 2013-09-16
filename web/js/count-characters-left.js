@@ -3,9 +3,10 @@ $(function(){
 	var $counter = $(".characters-left .count");
 
 	var countCharactersLeft = function(){
+		console.log("counting characters left")
 		setTimeout(function() { //make sure the value was updated
 			$textarea.change();
-		}, 0);
+		}, 40);
 	};
 
 	var updateCount = function(n){
@@ -20,25 +21,18 @@ $(function(){
 		}
 	};
 
-	$textarea.keydown(function(){
-		countCharactersLeft();
-	});
+	// asign event handlers
+	$textarea.keydown(countCharactersLeft);
+	$textarea.on('paste', countCharactersLeft);
+	$textarea.on('cut', countCharactersLeft);
+	$(document).keydown(countCharactersLeft);
 
-	$textarea.on('paste', function(){
-		countCharactersLeft();
-	});
-
-	$textarea.on('cut', function(){
-		countCharactersLeft();
-	});
-
-	$('.button').click(function(){
-		countCharactersLeft();
-	});
+	$('.button').click(countCharactersLeft);
 
 	$textarea.change(function(){
 		var $t = $(this);
 		var v = $t.val();
 		updateCount(140-v.length);
 	});
+
 })
