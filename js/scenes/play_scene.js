@@ -117,7 +117,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            if (key.msgColumn.resolved === false && key.keyInMove === false) {
+            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */

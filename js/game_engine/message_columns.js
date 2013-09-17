@@ -9,6 +9,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.boxOption = boxOption;
     this.column = new CAAT.Foundation.ActorContainer();
     this.container.addChild(this.column);
+    this.isMsgContaminated = false;
 
     this.msgType = msgType;
     this.keyType = keyType;
@@ -17,10 +18,10 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.isVisible = true;
 
     this.computeBlurGradient = function() {
-        if (this.keyType != COLUMN_TYPE_3) {
+        if (this.msgType != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
+            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
+            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
         } else {
             this.blurGradient = null;
         }
@@ -51,25 +52,60 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
             var j = 1;
             var ctx = director.ctx;
             var x = 1.5;
+
+            var clearTime = 250;
+
             ctx.lineWidth = 1;
-            if ($.now() - beginTime <= 250) {
-                ctx.globalAlpha = 1 - ($.now() - beginTime) / 250;
+
+            if ($.now() - beginTime <= clearTime) {
+                ctx.globalAlpha = 1;
+                for (j = 1; j <= object.msgNumber; ++j) {
+                    var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                        break;
+                    }
+
+                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                    ctx.fillStyle = object.keyBlurGradient;
+                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+                }
+
+                ctx.globalAlpha = 1 - ($.now() - beginTime) / clearTime;
+
+                for (j = 1; j <= object.msgNumber; ++j) {
+                    var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                        break;
+                    }
+
+                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                    ctx.fillStyle = object.blurGradient;
+                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+                }
+                ctx.globalAlpha = 1;
+            } else if ($.now() - beginTime <= 2 * clearTime) {
+
+                ctx.globalAlpha = 1 - ($.now() - beginTime - clearTime) / clearTime;
+                for (j = 1; j <= object.msgNumber; ++j) {
+                    var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                        break;
+                    }
+
+                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                    ctx.fillStyle = object.keyBlurGradient;
+                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+                }
+
             } else {
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
-            }
-
-            for (j = 1; j <= object.msgNumber; ++j) {
-                var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
-
-                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                    break;
-                }
-
-                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.blurGradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
 
 
