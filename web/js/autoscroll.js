@@ -18,13 +18,16 @@ $(function(){
 			    var pos = $scroll.scrollTop();
 			    $scroll.scrollTop(++pos);
 
-    			if($scroll[0].scrollHeight - $scroll.scrollTop() == $scroll.outerHeight()) clearInterval(i);
+    			if($scroll[0].scrollHeight - $scroll.scrollTop() == $scroll.outerHeight()) {
+    				clearInterval(i);
+    				$("#spacer").remove();
+    			}
 
 			}, 20);
 	}
 
 	var $scroll = $('.autoscrolling');		
-	$scroll.prepend('<div style="height:'+($( window ).height()-160)+'px"></div>');
+	$scroll.prepend('<div id="spacer" style="height:'+($( window ).height()-160)+'px"></div>');
 	$scroll.append('<div style="height:'+($( window ).height()/4)+'px"></div>');
 
 	/*
