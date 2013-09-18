@@ -303,6 +303,7 @@ h3 { margin-bottom: -10px; }
 	resize: none;
 
 	transition: border-color 0.35s ease, box-shadow 0.45s ease;
+	overflow-y: auto;
 
 }
 
