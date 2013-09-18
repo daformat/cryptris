@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6{
 
 h3 { margin-bottom: -10px; }
 
-img { border: none;}
+img { border: none: ;}
 /*
 	General stuff
 */
@@ -72,13 +72,13 @@ img { border: none;}
 	border: none;
 	color: #eee;
 	text-transform: uppercase;
-	-webkit-font-smoothing: antialiased;
 	border-bottom: 3px solid #002e4d;
 	cursor: pointer;
 	position: relative;
 	transition: border 0.15s ease-in, top 0.15s ease-in ;
 	margin: 1em;
 	top: 0px;
+	-webkit-font-smoothing: antialiased;
 }
 
 .button:active{
