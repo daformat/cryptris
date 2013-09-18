@@ -105,10 +105,15 @@ function resize(director, newWidth, newHeight) {
     resizeInProcess = false;
 }
 
+function objectTest() {
+    this.test = "coucou";
+}
+
 /**
  * Startup it all up when the document is ready.
  */
 $(document).ready(function() {
+
     /**
      * Debug flag, turn it off to production version.
      */
@@ -128,5 +133,9 @@ $(document).ready(function() {
      * Enable resize events.
      */
     director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
+
+    varKey = new objectTest();
+    varKey.test = null;
+    varKey = null;
 
 });
