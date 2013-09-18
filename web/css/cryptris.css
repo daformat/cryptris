@@ -379,15 +379,12 @@ img { border: none;}
 	background-color: #e5e5e5;
 	width: 860px;
 	height: 278px;
-	position: absolute;
-	top: 50%;
-	margin-top: -139px;
-	left: 50%;
-	margin-left: -430px;
 	box-shadow: 5px 10px 0 rgba(0,0,0, 0.3);
 	color: #284c63;
 	text-shadow: none;
 	line-height: 30px;
+	display: inline-block;
+	position: relative;
 }
 
 .dialog.with-avatar{
