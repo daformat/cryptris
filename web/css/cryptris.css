@@ -52,6 +52,9 @@ img { border: none;}
 	display: table;
 }
 
+.wrapper.block{
+	display: block;
+}
 
 .bg-circuits{
 	background: url(../img/bg-circuits.png) center no-repeat;
