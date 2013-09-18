@@ -357,6 +357,59 @@ img { border: none;}
 }
 
 /*
+	New login screen
+*/
+.logo-inria-pixelated{
+	margin: -20px;
+	margin-bottom: 80px;
+}
+
+.new-login label{
+	display: block;
+	font-size: 27px;
+}
+
+.new-login fieldset{
+	display: inline-block;
+	padding: 10px 0;
+	margin: 10px;
+	border: 0;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	width: 80%;
+	max-width: 430px;
+}
+
+.new-login .button{
+	margin: 0 -0.5em 0 0.5em;
+	padding: 8px 20px;
+}
+.new-login input[type=text]{
+	background: none;
+	border: none;
+	color: #fff;
+	font-family: "Geo", sans-serif;
+	font-size: 33px;
+	text-transform: uppercase;
+	width: 75%;
+}
+.new-login input[type=text]:focus{
+	outline: none;
+}
+
+.new-login .arrow{
+	margin: 0.5em 0.5em .5em -0.5em
+}
+.inrios{
+	position: absolute;
+	bottom: 10px;
+	text-align: center;
+	width: 100%;
+	margin: 40px 0;
+	font-size: 33px;
+}
+/*
+	Prompt and cursor
 */
 
 .prompt{
