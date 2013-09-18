@@ -1,0 +1,3 @@
+$(function(){
+	$('#login-name').focus();
+})
