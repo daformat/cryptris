@@ -49,6 +49,7 @@ img { border: none;}
 	height: 100%;
 	text-align: center;
 	overflow-y: auto;
+	display: table;
 }
 
 
@@ -137,6 +138,11 @@ img { border: none;}
 	line-height: 10px;
 		font-size: 20px;
 
+}
+
+.vertical-centering{
+  display:table-cell;
+  vertical-align:middle;
 }
 
 /*
@@ -356,7 +362,6 @@ img { border: none;}
 .prompt{
 	font-size: 33px;
 	text-transform: uppercase;
-	margin-top: 25%;
 }
 
 .prompt .arrow{
