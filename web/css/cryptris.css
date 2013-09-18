@@ -367,6 +367,7 @@ img { border: none;}
 .new-login label{
 	display: block;
 	font-size: 27px;
+	color: #0091bb;
 }
 
 .new-login fieldset{
