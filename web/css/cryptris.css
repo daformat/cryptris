@@ -152,9 +152,9 @@ img { border: none;}
 /* Logos */
 
 .cryptris-logo-large{
-	width: 100%;
+	width: 80%;
 	max-width: 1090px;
-	margin-top: 2%;
+	margin-top: 0%;
 	margin-bottom: -50px;
 	padding-top:60px;
 }
