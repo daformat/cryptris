@@ -477,6 +477,11 @@ ul{
 	padding: 8px 42px;
 }
 
+.dialog em{
+	font-style: normal;
+	color: #0071bb;
+}
+
 .dialog .controls{
 	position: absolute;
 	bottom: 0;
