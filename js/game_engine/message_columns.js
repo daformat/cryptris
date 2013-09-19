@@ -353,16 +353,29 @@ function Message(director, messageLength, message, container, boxOption) {
                 }
             }
 
-            var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
-            if (newHeight > 20) {
-                this.boxOption.SQUARE_HEIGHT = 20;
-                this.boxOption.SPACE_HEIGHT = 4;
-            }
-            else if (newHeight < 1) {
-                this.boxOption.SQUARE_HEIGHT = 1;
+            if (this.boxOption.SPACE_HEIGHT === 4) {
+                var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
+                if (newHeight > 20) {
+                    this.boxOption.SQUARE_HEIGHT = 20;
+                    this.boxOption.SPACE_HEIGHT = 4;
+                }
+                else if (newHeight <= 1) {
+                    this.boxOption.SQUARE_HEIGHT = 1;
+                    this.boxOption.SPACE_HEIGHT = 2;
+                } else {
+                    this.boxOption.SQUARE_HEIGHT = newHeight;
+                }
             } else {
-                this.boxOption.SQUARE_HEIGHT = newHeight;
+                this.boxOption.SPACE_HEIGHT = 4;
+                var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
+
+                if (newHeight <= 1) {
+                    this.boxOption.SPACE_HEIGHT = 2;
+                } else {
+                    this.boxOption.SQUARE_HEIGHT = newHeight;
+                }
             }
+
         }
 
         for (var i = 0; i < this.columnList.length; ++i) {
