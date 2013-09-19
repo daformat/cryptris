@@ -63,8 +63,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
             ctx.lineWidth = 1;
 
-            if ($.now() - beginTime <= clearTime) {
-                ctx.globalAlpha = 1;
+            if ($.now() - beginTime <= 2 * clearTime) {
+                ctx.globalAlpha = 1 - ($.now() - beginTime) / (clearTime * 2);
                 for (j = 1; j <= object.msgNumber; ++j) {
                     var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
@@ -78,27 +78,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
 
-                ctx.globalAlpha = 1 - ($.now() - beginTime) / clearTime;
-
-                for (j = 1; j <= object.msgNumber; ++j) {
-                    var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
-
-                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                        break;
-                    }
-
-                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                    ctx.fillStyle = object.blurGradient;
-                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-                }
-                ctx.globalAlpha = 1;
-
-            } else if ($.now() - beginTime <= 2 * clearTime) {
-
-                ctx.globalAlpha = 1 - ($.now() - beginTime - clearTime) / clearTime;
-                for (j = 1; j <= object.msgNumber; ++j) {
-                    var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+                for (k = 0; k < object.keyNumber; ++k) {
+                    var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
                     if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
                         break;
@@ -110,23 +91,25 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
 
+                if ($.now() - beginTime <= clearTime) {
+                    ctx.globalAlpha = 1 - ($.now() - beginTime) / clearTime;
+
+                    for (j = 1; j <= object.msgNumber; ++j) {
+                        var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
+
+                        if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                            break;
+                        }
+
+                        ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
+                        ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+                        ctx.fillStyle = object.blurGradient;
+                        ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+                    }
+                }
             } else {
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
-            }
-
-
-            for (k = 0; k < object.keyNumber; ++k) {
-                var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
-
-                if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                    break;
-                }
-
-                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.keyBlurGradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
         }
     }
