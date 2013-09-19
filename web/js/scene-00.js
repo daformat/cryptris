@@ -5,20 +5,23 @@ $(function(){
 
 	// First prompt
 	$('.prompt .content').text('');
-	$('.prompt .content').typeLetterByLetter("Tu es stagiaire dans une équipe de recherche Inria", 20);
-
-	// Second prompt
 	setTimeout(function(){
-		$('.prompt .content').text('');
-		$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 20);
+		$('.prompt .content').typeLetterByLetter("Tu es stagiaire dans une équipe de recherche Inria", 20);
 
-		// Switch to institute
+		// Second prompt
 		setTimeout(function(){
-			switchWrapper('.bg-institut');
+			$('.prompt .content').text('');
+			setTimeout(function(){
+				$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 20);
+
+				// Switch to institute
+				setTimeout(function(){
+					switchWrapper('.bg-institut');
+				}, readingDelay);
+			}, 2000)
 		}, readingDelay);
-
-	}, readingDelay);
-
+		
+	}, 3000);
 });
 
 function switchWrapper(sel){
