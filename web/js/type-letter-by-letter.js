@@ -25,6 +25,8 @@
 				typeAnother($e, text, speed);
 			else
 				setTimeout(function(){typeAnother($e, text, speed)}, speed);
+		} else {
+			console.log('fin du texte');
 		}
 
 	}
