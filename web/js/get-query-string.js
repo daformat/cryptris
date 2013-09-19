@@ -1,4 +1,4 @@
-function getQuerystring(key, default_) {
+function getQueryString(key, default_) {
   if (default_==null) default_=""; 
   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
