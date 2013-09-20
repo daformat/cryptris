@@ -6,22 +6,22 @@ $(function(){
 	// First prompt
 	$('.prompt .content').text('');
 	setTimeout(function(){
-		$('.prompt .content').typeLetterByLetter("Tu es stagiaire dans une équipe de recherche Inria", 20);
-
+		$('.prompt .content').typeLetterByLetter("Tu es stagiaire dans une équipe de recherche Inria", 60, function(){
 		// Second prompt
-		setTimeout(function(){
-			$('.prompt .content').text('');
 			setTimeout(function(){
-				$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 20);
-
-				// Switch to institute
+				$('.prompt .content').text('');
 				setTimeout(function(){
-					switchWrapper('.bg-institut');
-				}, readingDelay);
-			}, 2000)
-		}, readingDelay);
-		
-	}, 3000);
+					$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60);
+
+					// Switch to institute
+					setTimeout(function(){
+						switchWrapper('.bg-institut');
+					}, readingDelay);
+				}, 2000)
+			}, readingDelay);
+
+		});
+	}, 3000);			
 });
 
 function switchWrapper(sel){

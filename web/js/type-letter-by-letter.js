@@ -1,12 +1,15 @@
 (function($){
 
-	var tag, n, s, nn;
+	var tag, n, s, nn, _callback;
 
-	$.fn.typeLetterByLetter = function(text, speed){
+	$.fn.typeLetterByLetter = function(text, speed, callback){
 		s = $('<div>').append(text).text().length;
 		tag = false;
 		n = 0;
 		typeAnother(this, text, speed);
+
+		_callback = callback;
+
 		return this;
 	}
 
@@ -25,10 +28,9 @@
 				typeAnother($e, text, speed);
 			else
 				setTimeout(function(){typeAnother($e, text, speed)}, speed);
-		} else {
-			console.log('fin du texte');
+		} else { 
+			if(_callback && typeof(_callback === "function" )) _callback();
 		}
-
 	}
 
 }(jQuery));
