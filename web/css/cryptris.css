@@ -327,6 +327,7 @@ ul{
 	border: 10px solid rgba(0, 150, 237, 0.2);
 
 	border-radius: 3px;
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
 	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
 
 	width: 80%;
@@ -346,12 +347,14 @@ ul{
 
 	transition: border-color 0.35s ease, box-shadow 0.45s ease;
 	overflow-y: auto;
+	-webkit-appearance: none;
 
 }
 
 .share textarea.warning{
 	border-color: rgb(156, 5, 0);
 	border-color: rgba(255, 55, 50, 0.5);
+	-webkit-box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
 	box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
 
 }
