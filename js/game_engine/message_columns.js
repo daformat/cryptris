@@ -315,6 +315,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.squareNumber = newSquareNumber;
             this.blurSquareNumber = keyColumn.squareNumber;
         }
+        keyColumn = null;
     }
 }
 
@@ -345,6 +346,9 @@ function Message(director, messageLength, message, container, boxOption) {
 
     this.redraw = function() {
         if (this.boxOption.objectsInMove.length === 0) {
+
+            this.boxOption.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
+            this.boxOption.COLUMN_WIDTH = DEFAULT_COLUMN_WIDTH;
 
             var max_column = this.columnList[0].squareNumber;
             for (var i = 1; i < this.columnList.length; ++i) {

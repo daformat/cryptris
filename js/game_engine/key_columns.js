@@ -169,7 +169,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     }
 
     var object = this;
-    director.createTimer(this.container.time, Number.MAX_VALUE, null,
+    this.myTimer = director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
             if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
@@ -199,6 +199,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                         object.boxOption.keyNeedToUpdate = true;
                     }
                 }
+                keyColumn = null;
             }
         }
     );
@@ -244,7 +245,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
     this.createKey = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
             this.container.removeChild(this.columnList[i].column);
+            this.columnList[i].myTimer.cancel();
+            this.columnList[i].myTimer = null;
+            /*this.columnList[i].deleteObject();
+            this.columnList[i].deleteObject = null;*/
+            this.columnList[i] = null;
         }
+        //this.columnList = null;
         this.columnList = [];
         this.keyInMove = false;
         this.keyFirstMove = true;
