@@ -3,7 +3,7 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-16
+	@lastmod 2013-09-20
 
 */
 
@@ -104,6 +104,8 @@ ul{
 	margin: 1em;
 	top: 0px;
 	-webkit-font-smoothing: antialiased;
+	-webkit-appearance: none;
+	border-radius: 0px;
 }
 
 .button:active{

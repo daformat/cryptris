@@ -11,12 +11,12 @@ $(function(){
 			setTimeout(function(){
 				$('.prompt .content').text('');
 				setTimeout(function(){
-					$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60);
-
-					// Switch to institute
-					setTimeout(function(){
-						switchWrapper('.bg-institut');
-					}, readingDelay);
+					$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60, function(){
+						// Switch to institute
+						setTimeout(function(){
+							switchWrapper('.bg-institut');
+						}, readingDelay);						
+					});
 				}, 2000)
 			}, readingDelay);
 
