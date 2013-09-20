@@ -55,6 +55,8 @@ ul{
 	text-align: center;
 	overflow-y: auto;
 	display: table;
+  min-height: 700px;
+
 }
 
 .wrapper.block{
