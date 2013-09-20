@@ -395,6 +395,7 @@ ul{
 	margin: 0 -0.5em 0 0.5em;
 	padding: 8px 20px;
 }
+
 .new-login input[type=text]{
 	background: none;
 	border: none;
@@ -402,8 +403,11 @@ ul{
 	font-family: "Geo", sans-serif;
 	font-size: 33px;
 	text-transform: uppercase;
-	width: 75%;
+	width: 75%; /*	width: 68%; */
+	margin: 0;
+	padding: 0;
 }
+
 .new-login input[type=text]:focus{
 	outline: none;
 }
