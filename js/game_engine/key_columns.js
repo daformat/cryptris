@@ -81,7 +81,8 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
         var object = this;
         this.column.paint = function(director, time) {
-            if (this.isCached()) {
+            if (this.isCached()) 
+            {
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
                 return;
             }
@@ -94,14 +95,16 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
                 var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
 
-                if (object.column.y + y >= object.boxOption.BORDER_HEIGHT) {
+                if (object.column.y + y >= object.boxOption.BORDER_HEIGHT) 
+                {
                     ctx.lineWidth = 1;
                     ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
                     ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
                     ctx.fillStyle = object.gradient;
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-                } else if (object.column.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) {
-
+                } 
+                else if (object.column.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) 
+                {
                     var diffNewHeight = 0;
                     while (object.column.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) {
                         ++diffNewHeight;

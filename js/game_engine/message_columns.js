@@ -52,6 +52,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
         var object = this;
         var beginTime = $.now();
+	    
         this.column.paint = function(director, time) {
 
             var relativeY = object.squareNumber > 0 ? 0 : 1;
@@ -65,36 +66,43 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
             if ($.now() - beginTime <= 2 * clearTime) {
                 ctx.globalAlpha = 1 - ($.now() - beginTime) / (clearTime * 2);
-                for (j = 1; j <= object.msgNumber; ++j) {
+
+	            // -- Disappearing key blocks
+	            // Set drawing styles before the loop                                                                               
+	            ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+	            ctx.fillStyle = object.keyBlurGradient;
+	            
+                for (j = 1; j <= object.msgNumber; ++j)
+                {
                     var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
                     if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
                         break;
                     }
 
-                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                    ctx.fillStyle = object.keyBlurGradient;
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);                    
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
-
-                for (k = 0; k < object.keyNumber; ++k) {
+	            
+	            // -- Disappearing message blocks
+                for (k = 0; k < object.keyNumber; ++k) 
+                {
                     var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
                     if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
                         break;
                     }
-
-                    ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                    ctx.fillStyle = object.keyBlurGradient;
+                    
+                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);                    
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
 
-                if ($.now() - beginTime <= clearTime) {
+                if ($.now() - beginTime <= clearTime) 
+                {      
                     ctx.globalAlpha = 1 - ($.now() - beginTime) / clearTime;
 
-                    for (j = 1; j <= object.msgNumber; ++j) {
+                    for (j = 1; j <= object.msgNumber; ++j)
+                    {
                         var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
                         if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {

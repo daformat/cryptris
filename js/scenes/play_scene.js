@@ -222,7 +222,13 @@ function createPlayScene(director) {
     /**
      * Create the play scene.
      */
-    resultScene['scene'] = director.createScene();
+    var scene = director.createScene();
+	scene.activate = function() {
+		//director.setClear(false);
+	}
+	resultScene.scene = scene;
+	 
+	
 
     /**
      * Define the current length of the message (and of the keys).

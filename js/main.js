@@ -37,7 +37,7 @@ function createScenes(director) {
     /**
      * Define the framerate.
      */
-    director.loop(60);
+    CAAT.loop(60);
 };
 
 /**
@@ -128,8 +128,35 @@ $(document).ready(function() {
      * Declare our main caat director.
      */
 
-    var director = new CAAT.Director().initialize($(document).width(), $(document).height(), document.getElementById("main_scene")).setClear(false);
+    var onScreenCanvas  = $('.main_scene'),
+	    offScreenCanvas = $('<canvas>').addClass('main_scene').css('display', 'none').insertAfter(onScreenCanvas);
 
+	var director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
+	
+	director.addHandlers(offScreenCanvas[0]);
+	
+	director.onRenderStart = function() {
+		offScreenCanvas.attr({
+			width: director.width,
+			height: director.height
+		});
+		
+		director.ctx = offScreenCanvas[0].getContext('2d');
+		director.ctx.save();
+		director.ctx.clearRect(0, 0, director.width, director.height);
+	};
+	
+	director.onRenderEnd = function() {
+		var tmpCanvas = onScreenCanvas.css('display', 'none');
+		onScreenCanvas = offScreenCanvas.css('display', 'inline-block');
+		offScreenCanvas = tmpCanvas;
+		
+		director.ctx.restore();
+		director.ctx = offScreenCanvas[0].getContext('2d');
+	};	
+	
+	
+	
     /**
      * Launch splash screen
      */

@@ -60,24 +60,29 @@ function createSplashScene(director, showtime, sceneCreationCallback) {
      * Load the images and set the callback to call after splash screen.
      */
     scene.loadedImage = function(count, images) {
-
-        if (!images || count === images.length) {
+        if (!images || count === images.length) 
+        {
 
             /**
              * Calculate the remaining time display. 
              */
             var difftime = new Date().getTime() - time;
-            if (difftime < showtime) {
+            if (difftime < showtime) 
+            {
                 difftime = Math.abs(showtime - difftime);
-                if (difftime > showtime) {
+                if (difftime > showtime) 
+                {
                     difftime = showtime;
                 }
+	            
                 setTimeout(function() {
                         endSplash(director, images, sceneCreationCallback);
                     },
                     difftime);
 
-            } else {
+            } 
+            else
+            {
                 endSplash(director, images, sceneCreationCallback);
             }
 
@@ -94,10 +99,8 @@ function createSplashScene(director, showtime, sceneCreationCallback) {
  * @param {Callback}
  */
 function endSplash(director, images, onEndSplashCallback) {
-
     director.emptyScenes();
     director.setImagesCache(images);
-    director.setClear(true);
 
     onEndSplashCallback(director);
 
