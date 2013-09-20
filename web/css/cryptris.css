@@ -96,30 +96,34 @@ ul{
 	font-size: 20px;
 	padding: 10px 28px;
 	background-color: #0071bb;
-	border: none;
 	color: #eee;
 	text-transform: uppercase;
-	border-bottom: 3px solid #002e4d;
 	cursor: pointer;
 	position: relative;
-	transition: border 0.15s ease-in, top 0.15s ease-in ;
+	transition: all 0.15s ease-in ;
 	margin: 1em;
 	top: 0px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-appearance: none;
 	border-radius: 0px;
+	box-shadow: 0 3px 0 #002e4d;
+	border: none;
 }
 
 .button:active{
-	border-bottom:1px solid #002e4d;
-	top:2px;
+	box-shadow: 0 1px 0 #002e4d;
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
 }
 
 .button.red{
 	background-color: #9c0500;
-	border-color: #440500;
+	box-shadow: 0 3px 0 #440500;
 }
 
+.button.red:active{
+		box-shadow: 0 1px 0 #440500;
+}
 .characters-left{
 	line-height: 46px;
 	margin: 15px 10px 30px;
@@ -514,6 +518,9 @@ ul{
 
 .dialog .button{
 	padding: 8px 20px;
+}
+.dialog .button:active{
+	top: 2px;
 }
 
 
