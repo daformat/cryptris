@@ -18,21 +18,21 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.isVisible = true;
 
     this.computeBlurGradient = function() {
-        if (this.msgType != COLUMN_TYPE_3) {
+        /*if (this.msgType != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
-        } else {
+        } else */{
             this.blurGradient = null;
         }
     }
 
     this.computeKeyBlurGradient = function() {
-        if (this.keyType != COLUMN_TYPE_3) {
+        /* if (this.keyType != COLUMN_TYPE_3) {
             this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
             this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
-        } else {
+        } else */{
             this.keyBlurGradient = null;
         }
     }
@@ -149,11 +149,11 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.blockToDestroy = null;
 
     this.computeGradient = function() {
-        if (this.type != COLUMN_TYPE_3) {
+        /*if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        } else {
+        } else */{
             this.gradient = null;
         }
     }

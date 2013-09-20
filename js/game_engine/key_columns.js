@@ -21,21 +21,21 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.blurGradient = null;
 
     this.computeGradient = function() {
-        if (this.type != COLUMN_TYPE_3) {
+        /*if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        } else {
+        } else */{
             this.gradient = null;
         }
     }
 
     this.computeBlurGradient = function() {
-        if (this.type != COLUMN_TYPE_3) {
+        /*if (this.type != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
-        } else {
+        } else */{
             this.blurGradient = null;
         }
     }
