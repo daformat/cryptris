@@ -92,6 +92,10 @@ function launchSplashScreen(director) {
  */
 var resizeInProcess = false;
 function resize(director, newWidth, newHeight) {
+    if (director.width < 800 || director.height < 550) {
+        return;
+    }
+
     if (resizeInProcess === false) {
         resizeInProcess = true;
 
@@ -99,15 +103,16 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['menu_scene'] !== null) {
                 currentGame.scenes['menu_scene']['resize'](director, currentGame.scenes['menu_scene']);
             }
+
+            if (currentGame.scenes['play_scene'] !== null) {
+                currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
+            }
         }
 
     }
     resizeInProcess = false;
 }
 
-function objectTest() {
-    this.test = "coucou";
-}
 
 /**
  * Startup it all up when the document is ready.
@@ -122,6 +127,7 @@ $(document).ready(function() {
     /**
      * Declare our main caat director.
      */
+
     var director = new CAAT.Director().initialize($(document).width(), $(document).height(), document.getElementById("main_scene")).setClear(false);
 
     /**
@@ -133,9 +139,4 @@ $(document).ready(function() {
      * Enable resize events.
      */
     director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
-
-    varKey = new objectTest();
-    varKey.test = null;
-    varKey = null;
-
 });

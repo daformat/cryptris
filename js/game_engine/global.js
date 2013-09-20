@@ -6,10 +6,13 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 
+var DEFAULT_SQUARE_WIDTH = 40;
+var DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
+
 function GameBoxOption() {
-	this.SQUARE_WIDTH = 40;
+	this.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = this.SQUARE_WIDTH + 3;
-	this.SQUARE_HEIGHT = parseInt(getQuerystring("s", 20));
+	this.SQUARE_HEIGHT = 20;
 	this.SPACE_WIDTH = 4;
 	this.SPACE_HEIGHT = 4;
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
@@ -46,9 +49,9 @@ function GameBoxOption() {
 }
 
 function RivalBoxOption() {
-	this.SQUARE_WIDTH = 40;
+	this.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = this.SQUARE_WIDTH + 3;
-	this.SQUARE_HEIGHT = parseInt(getQuerystring("s", 20));
+	this.SQUARE_HEIGHT = 20;
 	this.SPACE_WIDTH = 4;
 	this.SPACE_HEIGHT = 4;
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
@@ -81,15 +84,4 @@ function RivalBoxOption() {
 	}
 	this.numberColor = "#d30088";
 	this.numberGrow = "#fc56fc";
-}
-
-function getQuerystring(key, default_) {
-  if (default_==null) default_=""; 
-  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-  var qs = regex.exec(window.location.href);
-  if(qs == null)
-    return default_;
-  else
-    return qs[1];
 }
