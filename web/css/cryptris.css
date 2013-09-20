@@ -16,6 +16,10 @@ html, body {
 	background: #000;
 	color: #eee;
   font-size: 20px;
+  word-wrap: break-word; /* passage à la ligne forcé */
+   -webkit-hyphens: auto; /* césure propre */
+   -moz-hyphens: auto;
+   hyphens: auto;
 }
 
 ul{
@@ -295,7 +299,7 @@ ul{
 */
 
 .text-content{
-	margin: 40px 10% 160px;
+	margin: 40px 10% 70px;
 	display: inline-block;
 	max-width: 700px;
 	width: 80%;
