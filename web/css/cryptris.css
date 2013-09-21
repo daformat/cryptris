@@ -655,10 +655,12 @@ ul{
 }
 .dialog.cables .right img{
 	margin-right: 42px;
+	margin-left: 2px;
 }
 
 .dialog.cables .left img{
 	margin-left: 42px;
+	margin-right: 1px;
 }
 
 .dialog.cables .jacks{
@@ -671,14 +673,43 @@ ul{
 	padding: 0;
 	margin: 0;
 	font-size: 23px;
+	background: url(../img/entangled-cables-outlet.png) center no-repeat;
 }
 .dialog.cables .left .jacks{
 	right: -68px;
 }
 
+.dialog.cables .left .jacks a{
+	background-position: 100% 40%;
+}
+
+.dialog.cables .left .jacks a img{
+	position: relative;
+	transition: left 0.25s ease-in;
+}
+
+.dialog.cables .left .jacks a:hover img{
+	left: -15px;
+}
+
+
 .dialog.cables .right .jacks{
 	left: -68px;
 }
+
+.dialog.cables .right .jacks a{
+	background-position: 0% 40%;
+}
+
+.dialog.cables .right .jacks a img{
+	position: relative;
+	transition: right 0.25s ease-in;
+}
+
+.dialog.cables .right .jacks a:hover img{
+	right: -15px;
+}
+
 
 /*
 	Animations
