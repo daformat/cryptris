@@ -3,7 +3,7 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-20
+	@lastmod 2013-09-21
 
 */
 
@@ -20,6 +20,8 @@ html, body {
    -webkit-hyphens: auto; /* césure propre */
    -moz-hyphens: auto;
    hyphens: auto;
+  -webkit-text-size-adjust: none;
+
 }
 
 ul{
@@ -174,6 +176,7 @@ ul{
 .cryptris-logo-large{
 	width: 80%;
 	max-width: 1090px;
+	min-width: 500px;
 	margin-top: 0%;
 	margin-bottom: -50px;
 	padding-top:60px;
@@ -187,7 +190,7 @@ ul{
 	position: absolute;
 	top: 30px;
 	right: 35px;
-	width: 20%;
+	width: 157px;
 	max-width: 157px;
 }
 
