@@ -575,12 +575,9 @@ ul{
 .dialog.player h2{
 	background: #fff;
 	color: #0071bb;
-	padding: 3px 20px;
-	width: auto;
 	display: inline-block;
 	margin: 28px 0 8px 0;
 	font-family: "Quantico", sans-serif;
-	font-size: 22px;
 	font-weight: bold;
 }
 
@@ -605,6 +602,84 @@ ul{
 	box-shadow: 0 3px 0 #002e4d;
 
 }
+/*
+	Dialog for entangled cables
+*/
+.dialog.cables{
+	height: 560px;
+	width:864px;
+	text-align: left;
+}
+
+.dialog.cables h2{
+	background: #fff;
+	color: #0071bb;
+	display: inline-block;
+	margin: 28px 0 8px 0;
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	margin-left: 20px;
+
+}
+
+.dialog.cables .left{
+	display: inline-block;
+	position: relative;
+}
+
+.dialog.cables .right{
+	float: right;
+	position: relative;
+}
+
+.dialog.cables .content{
+	background: #93bcd7;
+	border: solid 7px #b8cfde;
+	margin: 5px 20px 0;
+	padding: 10px;
+
+}
+
+.dialog.cables .numbers{
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	font-size: 23px;
+	color: #eee;
+	position: absolute;
+	line-height: 52px;
+	top: -21px;
+}
+
+.dialog.cables .right .numbers{
+	right: 0;
+}
+.dialog.cables .right img{
+	margin-right: 42px;
+}
+
+.dialog.cables .left img{
+	margin-left: 42px;
+}
+
+.dialog.cables .jacks{
+	color: #eee;
+	position: absolute;
+	line-height: 52px;
+	top: -17px;
+}
+.dialog.cables .jacks a{
+	padding: 0;
+	margin: 0;
+	font-size: 23px;
+}
+.dialog.cables .left .jacks{
+	right: -68px;
+}
+
+.dialog.cables .right .jacks{
+	left: -68px;
+}
+
 /*
 	Animations
 */
