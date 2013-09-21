@@ -38,9 +38,10 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     }
 
     this.redraw = function() {
-        var columnY = this.y - ((this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT));
+	    var height = (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + 1; 
+        var columnY = this.y - height;
 
-        this.column.setSize(this.boxOption.SQUARE_WIDTH, (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT + 1));
+        this.column.setSize(this.boxOption.COLUMN_WIDTH, height);
 
         if (columnY > this.boxOption.BORDER_HEIGHT) {
             this.column.setLocation(this.x, columnY);
@@ -56,7 +57,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         this.column.paint = function(director, time) {
             var relativeY = object.squareNumber > 0 ? 0 : 1;
             var j = 1;
-            var ctx = director.ctx;
+
+	        var ctx = director.ctx;
             var x = 1.5;
 
             var clearTime = 250;
@@ -223,7 +225,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 
 	this.column.paint = function(director, time) {
-		if (this.isCached()) {
+		if (this.isCached()) 
+		{
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
 			return;
 		}
