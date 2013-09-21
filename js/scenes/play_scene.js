@@ -41,8 +41,7 @@ function createBackButton(director, width, height, text, x, y, color) {
 }
 
 
-function handle_ia(playScene, rivalBoxInfo) {
-
+function handle_ia(playScene, rivalBoxInfo) {	              
     var prepare_move = [];
     var move = [];
 
