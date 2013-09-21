@@ -50,35 +50,53 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.computeBlurGradient();
     this.computeGradient();
 
+	var object = this;
+	this.column.paint = function(director, time) {
+
+		if (this.isCached())
+		{
+			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+			return;
+		}
+
+		var ctx = director.ctx;
+		var x = 1.5;
+
+		// Custom paint method.
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+		ctx.fillStyle = object.gradient;
+		
+		for (var i = 0; i < object.squareNumber; ++i)
+		{
+			var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
+
+			if (this.y + y >= object.boxOption.BORDER_HEIGHT)
+			{
+				ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);				
+				ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+			}
+			else if (this.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT)
+			{
+				var diffNewHeight = 0;
+				while (this.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT)
+				{
+					++diffNewHeight;
+				}
+				var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
+				y = y + diffNewHeight;
+
+				ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, newHeight);
+				ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
+			}
+		}
+	}
+	
     this.redraw = function(x, y) {
         y = typeof y !== 'undefined' ? y : this.boxOption.BORDER_HEIGHT;
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
-
-        var object = this;
-        this.column.paint = function(director, time) {
-            if (this.isCached())
-            {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-             
-            var ctx = director.ctx;
-            var x = 1.5;
-            
-            // Custom paint method.
-            for (var i = 0; i < object.squareNumber; ++i) 
-            {
-                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
-
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-            }
-        }
     };
 
     this.firstRedraw = function(x) {
@@ -86,50 +104,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
-
-        var object = this;
-        this.column.paint = function(director, time) {	        
-        
-            if (this.isCached()) 
-            {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-             
-            var ctx = director.ctx;
-            var x = 1.5;
-            
-            // Custom paint method.
-            for (var i = 0; i < object.squareNumber; ++i) 
-            {
-			    var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
-
-                if (object.column.y + y >= object.boxOption.BORDER_HEIGHT) 
-                {
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                    ctx.fillStyle = object.gradient;
-                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-                } 
-                else if (object.column.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) 
-                {
-                    var diffNewHeight = 0;
-                    while (object.column.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) 
-                    {
-                        ++diffNewHeight;
-                    }
-                    var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
-                    y = y + diffNewHeight;
-
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, newHeight);
-                    ctx.fillStyle = object.gradient;
-                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
-                }
-            }
-        }
     };
 
     this.firstMove = function() {
@@ -295,8 +269,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 	this.firstRedraw = function () {
 		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].firstRedraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
-		}
-		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].firstMove();
 		}
 	}
