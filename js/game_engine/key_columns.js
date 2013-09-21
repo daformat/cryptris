@@ -52,7 +52,11 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
 	var object = this;
 	this.column.paint = function(director, time) {
-
+		if(this.height < 0)
+		{
+			return;
+		}
+		
 		if (this.isCached())
 		{
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
