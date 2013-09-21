@@ -88,7 +88,7 @@ $(function(){
 			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
 			
 			$d.trigger('startRumble');
-			setTimeout(function(){$d.trigger('stopRumble');}, 500);
+			setTimeout(function(){$d.trigger('stopRumble');}, 700);
 
 		})
 	}
