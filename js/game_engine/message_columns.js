@@ -236,15 +236,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		var x = 1.5;
 		ctx.lineWidth = 1;
 
-		if (this.columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
-		{
-			object.boxOption.setDefaultColor();
-		} 
-		else 
-		{
-			object.boxOption.setFullColor();
-		}
-
 		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
 		ctx.fillStyle = object.gradient;
 
@@ -265,7 +256,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	
     this.redraw = function(x, invalidate /* = false */) {
 	    // Don't invalidate drawing by default
-	    if(invalidate == null)
+	    if(invalidate === null)
 	    {
 		    invalidate = false;
 	    }
@@ -283,6 +274,16 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
 
+
+        if (this.columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
+        {
+            object.boxOption.setDefaultColor();
+        } 
+        else 
+        {
+            object.boxOption.setFullColor();
+        }
+
 	    if (this.type === COLUMN_TYPE_3)
 	    {
 		    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SPACE_HEIGHT);
@@ -290,19 +291,16 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	    }
 	    else
 	    {
-		    /*if (this.columnSize <= this.container.height - 2 * this.boxOption.BORDER_HEIGHT)*/
+		    if (this.columnSize <= this.container.height - 2 * this.boxOption.BORDER_HEIGHT)
 		    {
 			    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.columnSize);
 			    this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT - this.columnSize);
 		    }
-		    /* Never happens?!
-		       Blocks are resized so that columns are never higher than the container aren't they?
-		    else
+            else
 		    {
 			    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.container.height - 2 * this.boxOption.BORDER_HEIGHT);
 			    this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
 		    }
-		    */
 	    }
 	    
         this.computeGradient();
@@ -315,7 +313,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         }
-	    else if(!this.column.isCached() || invalidate)
+	    else if (!this.column.isCached() || invalidate)
         {
 	        if(invalidate)
 	        {
