@@ -64,7 +64,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
             ctx.lineWidth = 1;
 
-            if ($.now() - beginTime <= 2 * clearTime) {
+            if ($.now() - beginTime <= 2 * clearTime) 
+            {
                 ctx.globalAlpha = 1 - ($.now() - beginTime) / (clearTime * 2);
 
 	            // -- Disappearing key blocks
@@ -76,7 +77,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                 {
                     var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
-                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
+                    {
                         break;
                     }
 
@@ -89,7 +91,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                 {
                     var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
-                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                    if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
+                    {
                         break;
                     }
                     
@@ -105,7 +108,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     {
                         var y = object.column.height - 0.5 - j * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
 
-                        if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+                        if (y > object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
+                        {
                             break;
                         }
 
@@ -115,10 +119,13 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                         ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                     }
                 }
-            } else {
+            } 
+            else 
+            {
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
             }
+        }
     }
 }
 
@@ -248,7 +255,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		}
 		object.boxOption.setDefaultColor();
 	}
-	*/	
+		
 	
     this.redraw = function(x) {
 
