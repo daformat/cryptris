@@ -1,6 +1,5 @@
 function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn)
 {
-
     this.type = type;
     this.boxOption = boxOption;
     this.squareNumber = squareNumber;
@@ -214,7 +213,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                         object.boxOption.keyNeedToUpdate = true;
                     }
                 }
-                keyColumn = null;
             }
         }
     );
@@ -266,9 +264,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		for (var i = 0; i < this.columnList.length; ++i)
         {
 			this.container.removeChild(this.columnList[i].column);
-			//this.columnList[i].myTimer.cancel();
-			//this.columnList[i].myTimer = null;
-			this.columnList[i] = null;
+			this.columnList[i].myTimer.cancel();
 		}
 		this.columnList = [];
 		this.keyInMove = false;
