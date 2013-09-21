@@ -1,4 +1,3 @@
-
 function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player)
 {
     this.director = director;
@@ -60,7 +59,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.crypt_key = new Key(key_info, current_length, this.message, this.gameBox, director, boxOption, player);
     this.crypt_key.createKey();
     this.message.redraw();
-    this.crypt_key.firstRedraw();
+    this.crypt_key.firstDraw();
 
     this.resize = function()
     {
@@ -79,7 +78,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 
         if (this.crypt_key.keyInMove !== true && this.crypt_key.keyFirstMove !== true)
         {
-            //this.message.redraw();
+            this.message.redraw();
             this.crypt_key.redraw();
         }
     }

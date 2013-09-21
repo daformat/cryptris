@@ -108,7 +108,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
     };
 
-    this.firstRedraw = function(x)
+    this.firstDraw = function(x)
     {
         y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
         this.column.setLocation(x, y);
@@ -287,15 +287,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 			}
 		}
 
-		this.firstRedraw();
+		this.firstDraw();
 		return this;
 	}
 
-	this.firstRedraw = function ()
+	this.firstDraw = function ()
     {
 		for (var i = 0; i < this.columnList.length; ++i)
         {
-			this.columnList[i].firstRedraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+			this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
 			this.columnList[i].firstMove();
 		}
 	}
