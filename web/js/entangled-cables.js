@@ -39,12 +39,15 @@ $(function(){
 		$(".cables .left .numbers li").each(function(i){
 			
 			var cableIndex = cables[cableSet.L].L[i];
-			var $cable = $(".cables .left .jacks li").eq();
+			var $cable = $(".cables .left .jacks li").eq(cableIndex);
 
 			if( $(this).text() == n ){
 				// Answer is correct
 				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
-				$cable.click(function(){alert('Bravo')});
+				$cable.click(function(){
+					$(this).addClass("unplugged"); 
+					$(".cables .left .numbers li").eq(i).addClass("unplugged"); 
+				});
 			} else {
 				//Answer is wrong
 				electrifyCable($cable);
@@ -55,12 +58,15 @@ $(function(){
 		$(".cables .right .numbers li").each(function(i){
 			
 			var cableIndex = cables[cableSet.L].L[i];
-			var $cable = $(".cables .left .jacks li").eq();
+			var $cable = $(".cables .right .jacks li").eq(cableIndex);
 
 			if( $(this).text() == n ){
 				// Answer is correct
 				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
-				$cable.click(function(){alert('Bravo')});
+				$cable.click(function(){
+					$(this).addClass("unplugged"); 
+					$(".cables .right .numbers li").eq(i).addClass("unplugged"); 
+				});
 			} else {
 				//Answer is wrong
 				electrifyCable($cable);

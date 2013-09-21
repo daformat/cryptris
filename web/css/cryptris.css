@@ -72,6 +72,7 @@ ul{
 .white{
 	background: #fff;
 }
+
 .bg-circuits{
 	background: url(../img/bg-circuits.png) center no-repeat;
 	-webkit-background-size: cover; /* pour Chrome et Safari */
@@ -654,6 +655,11 @@ ul{
 	text-shadow: 0px 0px 10px #00f3ff;
 }
 
+.dialog.cables .numbers .unplugged{
+	text-shadow: none;
+	color: #678497;
+}
+
 .dialog.cables .right .numbers{
 	right: 0;
 }
@@ -696,7 +702,7 @@ ul{
 	left: -3px;
 }
 
-.dialog.cables .left .jacks a:active img{
+.dialog.cables .left .jacks a:active img, .dialog.cables .left .jacks .unplugged a img{
 	left: -15px;
 }
 
@@ -717,7 +723,7 @@ ul{
 	right: -3px;
 }
 
-.dialog.cables .right .jacks a:active img{
+.dialog.cables .right .jacks a:active img, .dialog.cables .right .jacks .unplugged a img{
 	right: -15px;
 }
 
