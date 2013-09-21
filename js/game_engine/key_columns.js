@@ -167,10 +167,13 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.keyDown = function()
     {
         if (this.type !== COLUMN_TYPE_3) 
-        {
+        { 
             this.keyInMove = true;
-            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.column.y + this.container.height);
-            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", 1750)).setCycle(false);
+            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 1;
+            var time = (finalDestination - this.column.y) / 1750 * 4500
+
+            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", time)).setCycle(false);
             this.column.addBehavior(this.pb);
             this.boxOption.objectsInMove.push(true);
         }
