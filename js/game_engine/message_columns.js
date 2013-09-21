@@ -40,7 +40,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.redraw = function() {
         var columnY = this.y - ((this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT));
 
-        this.column.setSize(this.boxOption.SQUARE_WIDTH, (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT));
+        this.column.setSize(this.boxOption.SQUARE_WIDTH, (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT + 1));
 
         if (columnY > this.boxOption.BORDER_HEIGHT) {
             this.column.setLocation(this.x, columnY);
@@ -54,7 +54,6 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         var beginTime = $.now();
 	    
         this.column.paint = function(director, time) {
-
             var relativeY = object.squareNumber > 0 ? 0 : 1;
             var j = 1;
             var ctx = director.ctx;
@@ -64,11 +63,12 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
             ctx.lineWidth = 1;
 
-            if ($.now() - beginTime <= 2 * clearTime) 
+	        var delta = $.now() - beginTime;
+            if (delta <= 2 * clearTime) 
             {
-                ctx.globalAlpha = 1 - ($.now() - beginTime) / (clearTime * 2);
-
-	            // -- Disappearing key blocks
+                ctx.globalAlpha = 1 - delta / (clearTime * 2);
+	            
+	            // -- Disappearing message blocks
 	            // Set drawing styles before the loop                                                                               
 	            ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
 	            ctx.fillStyle = object.keyBlurGradient;
@@ -86,7 +86,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
 	            
-	            // -- Disappearing message blocks
+	            // -- Disappearing key blocks
                 for (k = 0; k < object.keyNumber; ++k) 
                 {
                     var y = object.column.height - 0.5 - (j + k) * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT) + relativeY * object.boxOption.SPACE_HEIGHT;
@@ -99,10 +99,13 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                     ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);                    
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                 }
-
-                if ($.now() - beginTime <= clearTime) 
+	            
+	            
+                if (delta <= clearTime) 
                 {      
-                    ctx.globalAlpha = 1 - ($.now() - beginTime) / clearTime;
+                    ctx.globalAlpha = 1 - delta / clearTime;
+	                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
+	                ctx.fillStyle = object.blurGradient;
 
                     for (j = 1; j <= object.msgNumber; ++j)
                     {
@@ -112,13 +115,11 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                         {
                             break;
                         }
-
-                        ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
-                        ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                        ctx.fillStyle = object.blurGradient;
+                                                
+                        ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);                        
                         ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
                     }
-                }
+                }      
             } 
             else 
             {
@@ -221,8 +222,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	this.displayValue.cacheAsBitmap();
 
 
-	var columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
-	
 	this.column.paint = function(director, time) {
 		if (this.isCached()) {
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -234,31 +233,40 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		var x = 1.5;
 		ctx.lineWidth = 1;
 
-		if (columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+		if (this.columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) 
+		{
 			object.boxOption.setDefaultColor();
-		} else {
+		} 
+		else 
+		{
 			object.boxOption.setFullColor();
 		}
 
 		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
 		ctx.fillStyle = object.gradient;
 
-		for (var i = 0; i < object.squareNumber; ++i) {
-			var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5;
+		for (var i = 0; i < object.squareNumber; ++i) 
+		{
+			var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
 
-			if (y < -0.5) {
+			if (y < 0) {
 				break;
 			}
 
-			ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-			ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+			ctx.fillRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+			ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);			
 		}
+		
 		object.boxOption.setDefaultColor();
 	}
-		
 	
-    this.redraw = function(x) {
-
+    this.redraw = function(x, invalidate /* = false */) {
+	    // Don't invalidate drawing by default
+	    if(invalidate == null)
+	    {
+		    invalidate = false;
+	    }
+	    
         /**
          * Set message display.
          */
@@ -270,64 +278,105 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	    this.displayValue.stopCacheAsBitmap();
 	    this.displayValue.cacheAsBitmap();
 
-	    columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
+	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
 
-        if (this.type === COLUMN_TYPE_3) {
-            this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SPACE_HEIGHT);
-            this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT);
-        } else {
-            if (columnSize <= this.container.height - 2 * this.boxOption.BORDER_HEIGHT) {
-                this.column.setSize(this.boxOption.COLUMN_WIDTH, columnSize);
-                this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT - columnSize);
-            } else {
-                this.column.setSize(this.boxOption.COLUMN_WIDTH, this.container.height - 2 * this.boxOption.BORDER_HEIGHT);
-                this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
-            }
-        }
-
+	    if (this.type === COLUMN_TYPE_3)
+	    {
+		    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SPACE_HEIGHT);
+		    this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT);
+	    }
+	    else
+	    {
+		    /*if (this.columnSize <= this.container.height - 2 * this.boxOption.BORDER_HEIGHT)*/
+		    {
+			    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.columnSize);
+			    this.column.setLocation(x, this.container.height - this.boxOption.BORDER_HEIGHT - this.columnSize);
+		    }
+		    /* Never happens?!
+		       Blocks are resized so that columns are never higher than the container aren't they?
+		    else
+		    {
+			    this.column.setSize(this.boxOption.COLUMN_WIDTH, this.container.height - 2 * this.boxOption.BORDER_HEIGHT);
+			    this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
+		    }
+		    */
+	    }
+	    
         this.computeGradient();
-        if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
+	    
+        if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) 
+        {
+	        this.column.stopCacheAsBitmap();
             this.blockToDestroy = new blockToDestroy(this.director, this.lastType, this.keyType, this.column.x, this.column.y, this.squareNumber, this.keySquareNumber, this.blurSquareNumber, this.container, this.boxOption);
             this.blockToDestroy.redraw();
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         }
+	    else if(!this.column.isCached() || invalidate)
+        {
+	        if(invalidate)
+	        {
+		        this.column.stopCacheAsBitmap();
+	        }
+	        
+	        this.column.cacheAsBitmap();
+        }
     }
 
     this.changeType = function(newType) {
-        if (this.type === COLUMN_TYPE_3) {
-            if (newType === COLUMN_TYPE_1) {
+        if (this.type === COLUMN_TYPE_3) 
+        {
+            if (newType === COLUMN_TYPE_1) 
+            {
                 this.lastType = COLUMN_TYPE_2;
-            } else {
+            } 
+            else 
+            {
                 this.lastType = COLUMN_TYPE_1;
             }
-        } else {
+        } 
+        else 
+        {
             this.lastType = this.type;
         }
+	    
     	this.type = newType;
+	    this.column.stopCacheAsBitmap();
+	    
         this.redraw(this.column.x);
     }
 
-    this.mergeColumns = function(column) {
-        if (column.squareNumber > 0) {
-            if (this.type === COLUMN_TYPE_3 || this.type === column.type) {
+    this.mergeColumns = function(column) 
+    {
+        if (column.squareNumber > 0) 
+        {
+            if (this.type === COLUMN_TYPE_3 || this.type === column.type) 
+            {
                 this.addSquares(column);
             }
-            else if (this.type !== column.type) {
+            else if (this.type !== column.type) 
+            {
                 this.subSquares(column);
             }
         }
+	    
         this.redraw(this.column.x);
     }
 
     this.addSquares = function(column) {
-        if (column.squareNumber > 0) {
-            if (this.type === COLUMN_TYPE_3) {
+        if (column.squareNumber > 0)
+        {
+            if (this.type === COLUMN_TYPE_3) 
+            {
                 this.changeType(column.type);
                 this.squareNumber = column.squareNumber;
-            } else {
-                this.squareNumber += column.squareNumber;
             }
+            else 
+            {
+                this.squareNumber += column.squareNumber;
+	            this.redraw(this.column.x, true);
+            }
+	        
             this.blurSquareNumber = 0;
         }
     }
@@ -335,7 +384,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.subSquares = function(keyColumn) {
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
 
-        if (newSquareNumber < 0) {
+        if (newSquareNumber < 0) 
+        {
             this.keySquareNumber = this.squareNumber;
             this.keyType = keyColumn.type;
             keyColumn.pathContinue = true;
@@ -344,18 +394,23 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.blurSquareNumber = this.squareNumber;
             this.squareNumber = 0;
             this.changeType(COLUMN_TYPE_3);
-        } else if (newSquareNumber === 0) {
+        }
+        else if (newSquareNumber === 0) 
+        {
             this.changeType(COLUMN_TYPE_3);
             this.squareNumber = 0;
             this.blurSquareNumber = keyColumn.squareNumber;
             this.keySquareNumber = keyColumn.squareNumber;
             this.keyType = keyColumn.type;
-        } else {
+        }
+        else 
+        {
             this.keySquareNumber = keyColumn.squareNumber;
             this.keyType = keyColumn.type;
             this.squareNumber = newSquareNumber;
             this.blurSquareNumber = keyColumn.squareNumber;
         }
+	    
         keyColumn = null;
     }
 }
@@ -378,7 +433,8 @@ function Message(director, messageLength, message, container, boxOption) {
     }
 
     this.createMessage = function() {
-        for (var i = 0; i < this.length; ++i) {
+        for (var i = 0; i < this.length; ++i) 
+        {
             this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container, this.boxOption));
         }
         this.redraw();
@@ -386,56 +442,74 @@ function Message(director, messageLength, message, container, boxOption) {
     }
 
     this.redraw = function() {
-        if (this.boxOption.objectsInMove.length === 0) {
-
+        if (this.boxOption.objectsInMove.length === 0) 
+        {
+	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
+	        
             this.boxOption.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
             this.boxOption.COLUMN_WIDTH = DEFAULT_COLUMN_WIDTH;
 
             var max_column = this.columnList[0].squareNumber;
-            for (var i = 1; i < this.columnList.length; ++i) {
+            for (var i = 1; i < this.columnList.length; ++i) 
+            {
                 if (this.columnList[i].squareNumber > max_column) {
                     max_column = this.columnList[i].squareNumber;
                 }
             }
 
-            if (this.boxOption.SPACE_HEIGHT === 4) {
+            if (this.boxOption.SPACE_HEIGHT === 4) 
+            {
                 var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
-                if (newHeight > 20) {
+                if (newHeight > 20) 
+                {
                     this.boxOption.SQUARE_HEIGHT = 20;
                     this.boxOption.SPACE_HEIGHT = 4;
                 }
-                else if (newHeight <= 1) {
+                else if (newHeight <= 1) 
+                {
                     this.boxOption.SQUARE_HEIGHT = 1;
                     this.boxOption.SPACE_HEIGHT = 2;
-                } else {
+                }
+                else 
+                {
                     this.boxOption.SQUARE_HEIGHT = newHeight;
                 }
-            } else {
+            } 
+            else 
+            {
                 this.boxOption.SPACE_HEIGHT = 4;
                 var newHeight = parseInt((container.height - 2 * this.boxOption.BORDER_HEIGHT) / (this.boxOption.maxKeyNumber + max_column)) - this.boxOption.SPACE_HEIGHT;
 
-                if (newHeight <= 1) {
+                if (newHeight <= 1) 
+                {
                     this.boxOption.SPACE_HEIGHT = 2;
-                } else {
+                } 
+                else 
+                {
                     this.boxOption.SQUARE_HEIGHT = newHeight;
                 }
             }
 
         }
 
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+        for (var i = 0; i < this.columnList.length; ++i) 
+        {
+	        var invalidate = (oldSquareHeight != this.boxOption.SQUARE_HEIGHT);
+            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), invalidate);
         }
     }
 
     this.isResolved = function() {
         var tmpResolved = true;
 
-        for (var i = 0; i < this.columnList.length; ++i) {
-            if (this.columnList[i].squareNumber > 1) {
+        for (var i = 0; i < this.columnList.length; ++i)
+        {
+            if (this.columnList[i].squareNumber > 1) 
+            {
                 tmpResolved = false;
             }
         }
+	    
         this.resolved = tmpResolved;
     }
 }
