@@ -1,5 +1,7 @@
 $(function(){
 
+	$(".hidden").removeClass("hidden").fadeOut(0);
+
 	var cableSet = {
 		L: 0,
 		R: 0
@@ -33,21 +35,56 @@ $(function(){
 	}
 
 	var setCorrectCable = function(n){
+		
 		$(".cables .left .numbers li").each(function(i){
-			if( $(this).text() == n ){
-				console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cables[cableSet.L].L[i]+1)+"e cable de gauche");
-				$(".cables .left .jacks li").eq(cables[cableSet.L].L[i]).click(function(){alert('Bravo')});
-				
-			}
-		})
+			
+			var cableIndex = cables[cableSet.L].L[i];
+			var $cable = $(".cables .left .jacks li").eq();
 
-		$(".cables .right li").each(function(i){
 			if( $(this).text() == n ){
-				console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cables[cableSet.R].R[i]+1)+"e cable de droite");
-				$(".cables .left .jacks li").eq(cables[cableSet.R].R[i]).click(function(){alert('Bravo')});
+				// Answer is correct
+				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
+				$cable.click(function(){alert('Bravo')});
+			} else {
+				//Answer is wrong
+				electrifyCable($cable);
 			}
-		})
 
+		});
+
+		$(".cables .right .numbers li").each(function(i){
+			
+			var cableIndex = cables[cableSet.L].L[i];
+			var $cable = $(".cables .left .jacks li").eq();
+
+			if( $(this).text() == n ){
+				// Answer is correct
+				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
+				$cable.click(function(){alert('Bravo')});
+			} else {
+				//Answer is wrong
+				electrifyCable($cable);
+			}
+
+		});
+
+	}
+
+	var electrifyCable = function ($cable){
+		$cable.click(function(){
+			var $d = $('.dialog');
+			
+			$d.jrumble({
+				opacity: true,
+				opacityMin: .75
+			});
+			
+			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
+			
+			$d.trigger('startRumble');
+			setTimeout(function(){$d.trigger('stopRumble');}, 500);
+
+		})
 	}
 
 	setCorrectCable(42);
