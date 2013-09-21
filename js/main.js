@@ -128,6 +128,11 @@ $(document).ready(function() {
      */
     CAAT.DEBUG = parseInt(getQuerystring('dbg', 0)) == 1;
 
+    $('.trick-font').each(function()
+    {
+        $(this).attr('style', 'display: none;');
+    });
+
     /**
      * Declare our main caat director.
      */
