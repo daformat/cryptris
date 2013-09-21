@@ -1,4 +1,5 @@
-function convertTimeToString(time) {
+function convertTimeToString(time)
+{
     var timeInSecond = Math.floor(time / 1000);
     var hour = Math.floor(timeInSecond / 3600);
     var minuteInSecond = timeInSecond % 3600;
@@ -6,25 +7,30 @@ function convertTimeToString(time) {
     var second = minuteInSecond % 60;
 
     var hourString = "" + hour;
-    if (hour < 10) {
+    if (hour < 10)
+    {
         hourString = "0" + hourString;
     }
 
     var minuteString = "" + minute;
-    if (minute < 10) {
+    if (minute < 10)
+    {
         minuteString = "0" + minuteString;
     }
 
     var secondString = "" + second;
-    if (second < 10) {
+    if (second < 10)
+    {
         secondString = "0" + secondString;
     }
 
     return hourString + ":" + minuteString + ":" + secondString;
 }
 
-function setTextTimerPaint(timerText, text) {
-    timerText.paint = function(director) {
+function setTextTimerPaint(timerText, text)
+{
+    timerText.paint = function(director)
+    {
 
         var ctx = director.ctx;
 
@@ -39,7 +45,8 @@ function setTextTimerPaint(timerText, text) {
     }
 }
 
-function InfoColumn(director, resultScene, crypt_key) {
+function InfoColumn(director, resultScene, crypt_key)
+{
 
 	this.resultScene = resultScene;
 	this.director = director;
@@ -65,7 +72,8 @@ function InfoColumn(director, resultScene, crypt_key) {
                             setBackgroundImage(director.getImage('center-board'), false).
                             setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
 
-    this.centerTimer.paint = function(director) {
+    this.centerTimer.paint = function(director)
+    {
         var ctx = director.ctx;
         var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
         ctx.fillStyle = bg;
@@ -93,63 +101,87 @@ function InfoColumn(director, resultScene, crypt_key) {
                     .setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + 30);
 
     var object = this;
-    this.pad.mouseDown = function(e) {
+    this.pad.mouseDown = function(e)
+    {
         var theta = Math.PI / 4;
         var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
         var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);        
-        if (x2 * x2 + y2 * y2 <= 70 * 70) {
+        if (x2 * x2 + y2 * y2 <= 70 * 70)
+        {
 
-            if (x2 < 0 && y2 > 0) {
+            if (x2 < 0 && y2 > 0)
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-left'));
                 object.crypt_key.rotateLeft();
             }
-            if (x2 > 0 && y2 < 0) {
+            if (x2 > 0 && y2 < 0)
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-right'));
                 object.crypt_key.rotateRight();
             }
-            if (x2 > 0 && y2 > 0) {
+            if (x2 > 0 && y2 > 0)
+            {
                	object.pad.setBackgroundImage(object.director.getImage('pad-down'));
                 object.crypt_key.keyDown();
             }
-            if (x2 < 0 && y2 < 0) {
+            if (x2 < 0 && y2 < 0)
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-up'));
                 object.crypt_key.changeKeyType();
             }
         }
     }
 
-    CAAT.registerKeyListener(function(key) {
-        if (key.getKeyCode() === CAAT.Keys.LEFT) {
-            if (key.getAction() === 'down') {
+    CAAT.registerKeyListener(function(key)
+    {
+        if (key.getKeyCode() === CAAT.Keys.LEFT)
+        {
+            if (key.getAction() === 'down')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-left'));
-            } else if (key.getAction() === 'up') {
+            } 
+            else if (key.getAction() === 'up')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
             }
         }
-        if (key.getKeyCode() === CAAT.Keys.RIGHT) {
-            if (key.getAction() === 'down') {
+        if (key.getKeyCode() === CAAT.Keys.RIGHT)
+        {
+            if (key.getAction() === 'down')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-right'));
-            } else if (key.getAction() === 'up') {
+            } 
+            else if (key.getAction() === 'up')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
             }
         }
-        if (key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) {
-            if (key.getAction() === 'down') {
+        if (key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32)
+        {
+            if (key.getAction() === 'down')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-up'));
-            } else if (key.getAction() === 'up') {
+            } 
+            else if (key.getAction() === 'up')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
             }
         }
-        if (key.getKeyCode() === CAAT.Keys.DOWN) {
-            if (key.getAction() === 'down') {
+        if (key.getKeyCode() === CAAT.Keys.DOWN)
+        {
+            if (key.getAction() === 'down')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-down'));
-            } else if (key.getAction() === 'up') {
+            }
+            else if (key.getAction() === 'up')
+            {
                 object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
             }
         }
     });
 
-    this.pad.mouseUp = function(mouseEvent) {
+    this.pad.mouseUp = function(mouseEvent)
+    {
         object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
     }
 
@@ -160,34 +192,46 @@ function InfoColumn(director, resultScene, crypt_key) {
      var isPauseDown = false;
      var pauseX = this.pauseButton.x;
      var pauseY = this.pauseButton.y;
-     this.pauseButton.mouseDown = function(mouseEvent) {
-        if (isPauseDown === false) {
+     this.pauseButton.mouseDown = function(mouseEvent)
+     {
+        if (isPauseDown === false)
+        {
             object.pauseButton.setBackgroundImage(object.director.getImage('pause-down')).setLocation(pauseX, pauseY + 3);
             isPauseDown = true;
-        } else {
+        }
+        else
+        {
             object.pauseButton.setBackgroundImage(object.director.getImage('pause-up')).setLocation(pauseX, pauseY);
             isPauseDown = false;
         }
      }
-     this.pauseButton.mouseUp = function(mouseEvent) {
-        if (isPauseDown === false) {
+     this.pauseButton.mouseUp = function(mouseEvent)
+     {
+        if (isPauseDown === false)
+        {
             object.resultScene['scene'].setPaused(false);
-        } else {
+        }
+        else
+        {
             object.resultScene['scene'].setPaused(true);
         }
      }
 
-     /**
-      * Add a behavior for help button (to upgrade).
-      */
+    /**
+     * Add a behavior for help button (to upgrade).
+     */
     var isHelpDown = false;
     var helpX = this.helpButton.x;
     var helpY = this.helpButton.y;
-    this.helpButton.mouseDown = function(mouseEvent) {
-        if (isHelpDown === false) {
+    this.helpButton.mouseDown = function(mouseEvent)
+    {
+        if (isHelpDown === false)
+        {
             object.helpButton.setBackgroundImage(object.director.getImage('help-down')).setLocation(helpX, helpY + 3);
             isHelpDown = true;
-        } else {
+        }
+        else
+        {
             object.helpButton.setBackgroundImage(object.director.getImage('help-up')).setLocation(helpX, helpY);
             isHelpDown = false;
         }
@@ -203,7 +247,8 @@ function InfoColumn(director, resultScene, crypt_key) {
     this.infoColumnContainer.addChild(this.rightTimer);
 
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
+        function(time, ttime, timerTask)
+        {
 
             /**
              * Update the timer value.
@@ -211,5 +256,4 @@ function InfoColumn(director, resultScene, crypt_key) {
             setTextTimerPaint(object.timerText, convertTimeToString(time));
         }
     );
-	
 }

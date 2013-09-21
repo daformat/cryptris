@@ -1,4 +1,5 @@
-function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption) {
+function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption)
+{
     this.director = director;
     this.x = x;
     this.y = y;
@@ -17,35 +18,47 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.keyBlurGradient = null;
     this.isVisible = true;
 
-    this.computeBlurGradient = function() {
-        if (this.msgType != COLUMN_TYPE_3) {
+    this.computeBlurGradient = function()
+    {
+        if (this.msgType != COLUMN_TYPE_3)
+        {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
-        } else {
+        }
+        else
+        {
             this.blurGradient = null;
         }
     }
 
-    this.computeKeyBlurGradient = function() {
-        if (this.keyType != COLUMN_TYPE_3) {
+    this.computeKeyBlurGradient = function()
+    {
+        if (this.keyType != COLUMN_TYPE_3)
+        {
             this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
             this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
-        } else {
+        }
+        else
+        {
             this.keyBlurGradient = null;
         }
     }
 
-    this.redraw = function() {
+    this.redraw = function()
+    {
 	    var height = (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + 1; 
         var columnY = this.y - height;
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, height);
 
-        if (columnY > this.boxOption.BORDER_HEIGHT) {
+        if (columnY > this.boxOption.BORDER_HEIGHT)
+        {
             this.column.setLocation(this.x, columnY);
-        } else {
+        }
+        else
+        {
             this.column.setLocation(this.x, this.boxOption.BORDER_HEIGHT);
         }
         this.computeBlurGradient();
@@ -54,7 +67,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         var object = this;
         var beginTime = $.now();
 	    
-        this.column.paint = function(director, time) {
+        this.column.paint = function(director, time)
+        {
             var relativeY = object.squareNumber > 0 ? 0 : 1;
             var j = 1;
 
@@ -132,7 +146,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     }
 }
 
-function MessageColumn(director, type, initialNumber, container, boxOption) {
+function MessageColumn(director, type, initialNumber, container, boxOption)
+{
     this.type = type;
     this.director = director;
     this.boxOption = boxOption;
@@ -157,12 +172,16 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.keySquareNumber = 0;
     this.blockToDestroy = null;
 
-    this.computeGradient = function() {
-        if (this.type != COLUMN_TYPE_3) {
+    this.computeGradient = function()
+    {
+        if (this.type != COLUMN_TYPE_3)
+        {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        } else {
+        }
+        else
+        {
             this.gradient = null;
         }
     }
@@ -171,11 +190,13 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 	var object = this;
 	var signe = "";
-	if (this.type === COLUMN_TYPE_1) {
-		signe = "-"
+	if (this.type === COLUMN_TYPE_1)
+    {
+		signe = "-";
 	}
 
-	this.displayValueHexa.paint = function(director, time) {
+	this.displayValueHexa.paint = function(director, time)
+    {
 		if(this.isCached())
 		{
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -199,7 +220,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	this.displayValueHexa.cacheAsBitmap();
 
 
-	this.displayValue.paint = function(director, time) {
+	this.displayValue.paint = function(director, time)
+    {
 		if(this.isCached())
 		{
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -224,7 +246,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	this.displayValue.cacheAsBitmap();
 
 
-	this.column.paint = function(director, time) {
+	this.column.paint = function(director, time)
+    {
 		if (this.isCached()) 
 		{
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -243,7 +266,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		{
 			var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT);
 
-			if (y < 0) {
+			if (y < 0)
+            {
 				break;
 			}
 
@@ -254,7 +278,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		object.boxOption.setDefaultColor();
 	}
 	
-    this.redraw = function(x, invalidate /* = false */) {
+    this.redraw = function(x, invalidate /* = false */)
+    {
 	    // Don't invalidate drawing by default
 	    if(invalidate === null)
 	    {
@@ -324,7 +349,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
     }
 
-    this.changeType = function(newType) {
+    this.changeType = function(newType)
+    {
         if (this.type === COLUMN_TYPE_3) 
         {
             if (newType === COLUMN_TYPE_1) 
@@ -364,7 +390,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         this.redraw(this.column.x);
     }
 
-    this.addSquares = function(column) {
+    this.addSquares = function(column)
+    {
         if (column.squareNumber > 0)
         {
             if (this.type === COLUMN_TYPE_3) 
@@ -382,7 +409,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
     }
 
-    this.subSquares = function(keyColumn) {
+    this.subSquares = function(keyColumn)
+    {
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
 
         if (newSquareNumber < 0) 
@@ -416,7 +444,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 }
 
-function Message(director, messageLength, message, container, boxOption) {
+function Message(director, messageLength, message, container, boxOption)
+{
     this.length = messageLength;
     this.boxOption = boxOption;
     this.message = message;
@@ -424,8 +453,10 @@ function Message(director, messageLength, message, container, boxOption) {
     this.container = container;
     this.resolved = false;
 
-    this.resetMessage = function(key) {
-        for (var i = 0; i < this.columnList.length; ++i) {
+    this.resetMessage = function(key)
+    {
+        for (var i = 0; i < this.columnList.length; ++i)
+        {
             this.container.removeChild(this.columnList[i].column);
         }
         this.columnList = [];
@@ -433,7 +464,8 @@ function Message(director, messageLength, message, container, boxOption) {
         key.reAssignColumns();
     }
 
-    this.createMessage = function() {
+    this.createMessage = function()
+    {
         for (var i = 0; i < this.length; ++i) 
         {
             this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container, this.boxOption));
@@ -442,7 +474,8 @@ function Message(director, messageLength, message, container, boxOption) {
         return this;
     }
 
-    this.redraw = function() {
+    this.redraw = function()
+    {
         if (this.boxOption.objectsInMove.length === 0) 
         {
 	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
@@ -453,7 +486,8 @@ function Message(director, messageLength, message, container, boxOption) {
             var max_column = this.columnList[0].squareNumber;
             for (var i = 1; i < this.columnList.length; ++i) 
             {
-                if (this.columnList[i].squareNumber > max_column) {
+                if (this.columnList[i].squareNumber > max_column)
+                {
                     max_column = this.columnList[i].squareNumber;
                 }
             }
@@ -490,7 +524,6 @@ function Message(director, messageLength, message, container, boxOption) {
                     this.boxOption.SQUARE_HEIGHT = newHeight;
                 }
             }
-
         }
 
         for (var i = 0; i < this.columnList.length; ++i) 
@@ -500,7 +533,8 @@ function Message(director, messageLength, message, container, boxOption) {
         }
     }
 
-    this.isResolved = function() {
+    this.isResolved = function()
+    {
         var tmpResolved = true;
 
         for (var i = 0; i < this.columnList.length; ++i)

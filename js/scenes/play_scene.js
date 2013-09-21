@@ -7,41 +7,8 @@
  *     - play_scene.js                                              *
  *******************************************************************/
 
-/**
- * This function create the button we use in this scene.
- * @param director {CAAT.Director}
- * @param width {number}
- * @param height {number}
- * @param text {string}
- * @param x {number}
- * @param y {number}
- * @param color {string}
- */
-function createBackButton(director, width, height, text, x, y, color) {
-    var backButton = new CAAT.Actor().
-        setSize(width, height).
-        centerAt(x, y);
-
-    backButton.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.fillStyle = this.pointed ? 'orange' : color;
-        ctx.fillRect(0, 0, this.width, this.height);
-
-        ctx.strokeStyle = this.pointed ? 'red' : 'black';
-        ctx.strokeRect(0, 0, this.width, this.height);
-
-        ctx.font = '30px sans-serif';
-        ctx.fillStyle = 'black';
-        ctx.fillText(text, 10, this.height / 2 + 5);
-    };
-
-    return backButton;
-}
-
-
-function handle_ia(playScene, rivalBoxInfo) {	              
+function handle_ia(playScene, rivalBoxInfo)
+{	              
     var prepare_move = [];
     var move = [];
 
@@ -60,7 +27,8 @@ function handle_ia(playScene, rivalBoxInfo) {
 
     var actionToDo = ACTION_UNKNOWN;
 
-    for (var i = 0; i < key.length; ++i) {
+    for (var i = 0; i < key.length; ++i)
+    {
         move.push(0);
     }
     var index = 0;
@@ -72,25 +40,36 @@ function handle_ia(playScene, rivalBoxInfo) {
     var progress = true;
 
     playScene.createTimer(0, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
+        function(time, ttime, timerTask)
+        {
 
-            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
+            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false)
+            {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
-                if (actionToDo === ACTION_UNKNOWN && moveIsPrepared !== true) {
-                    if (actionToDo === ACTION_UNKNOWN) {
-                        if (keyIsInvert !== true) {
+                if (actionToDo === ACTION_UNKNOWN && moveIsPrepared !== true)
+                {
+                    if (actionToDo === ACTION_UNKNOWN)
+                    {
+                        if (keyIsInvert !== true)
+                        {
                             actionToDo = ACTION_INVERT;
                         }
-                        else if (move[index] !== -2) {
+                        else if (move[index] !== -2)
+                        {
                             actionToDo = ACTION_DOWN;
                             move[index] = move[index] - 1;
-                        } else if (move[index] === -2) {
-                            if (index < move.length - 1) {
+                        }
+                        else if (move[index] === -2)
+                        {
+                            if (index < move.length - 1)
+                            {
                                 ++index;
                                 actionToDo = ACTION_RIGHT;
-                            } else {
+                            }
+                            else
+                            {
                                 moveIsPrepared = true;
                                 actionToDo = ACTION_UNKNOWN;
                                 progress = true;
@@ -100,21 +79,30 @@ function handle_ia(playScene, rivalBoxInfo) {
                     }
                     current_time = time;
                 }
-
-                else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {
-                    
-                    if (progress === true) {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (index !== move.length - 1) {
+                else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true)
+                {    
+                    if (progress === true)
+                    {
+                        if (actionToDo === ACTION_UNKNOWN)
+                        {
+                            if (index !== move.length - 1)
+                            {
                                 actionToDo = ACTION_RIGHT;
                                 ++index;
-                            } else {
-                                if (keyIsInvert === true) {
+                            }
+                            else
+                            {
+                                if (keyIsInvert === true)
+                                {
                                     actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== 2) {
+                                }
+                                else if (move[index] !== 2)
+                                {
                                     actionToDo = ACTION_DOWN;
                                     move[index] = move[index] + 1;
-                                } else if (move[index] === 2) {
+                                }
+                                else if (move[index] === 2)
+                                {
                                     actionToDo = ACTION_UNKNOWN;
                                     progress = false;
                                     align_column = true;
@@ -122,26 +110,42 @@ function handle_ia(playScene, rivalBoxInfo) {
                             }
                         }
                     }
-                    else {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (align_column === true) {
-                                if (keyIsInvert !== true) {
+                    else
+                    {
+                        if (actionToDo === ACTION_UNKNOWN)
+                        {
+                            if (align_column === true)
+                            {
+                                if (keyIsInvert !== true)
+                                {
                                     actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== -2) {
+                                }
+                                else if (move[index] !== -2)
+                                {
                                     actionToDo = ACTION_DOWN;
                                     move[index] = move[index] - 1;
-                                } else if (move[index] === -2) {
+                                }
+                                else if (move[index] === -2)
+                                {
                                     actionToDo = ACTION_LEFT;
                                     align_column = false;
                                     --index;
                                 }
-                            } else {
-                                if (move[index] === 2) {
+                            }
+                            else
+                            {
+                                if (move[index] === 2)
+                                {
                                     align_column = true;
-                                } else {
-                                    if (keyIsInvert === true) {
+                                }
+                                else
+                                {
+                                    if (keyIsInvert === true)
+                                    {
                                         actionToDo = ACTION_INVERT;
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         actionToDo = ACTION_DOWN;
                                         move[index] = move[index] + 1;
                                         progress = true;
@@ -152,19 +156,27 @@ function handle_ia(playScene, rivalBoxInfo) {
                     }
                     current_time = time;
 
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT) {
+                }
+                else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT)
+                {
                     key.rotateRight();
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_LEFT) {
+                }
+                else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_LEFT)
+                {
                     key.rotateLeft();
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN) {
+                }
+                else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN)
+                {
                     key.keyDown();
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT) {
+                }
+                else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT)
+                {
                     key.changeKeyType();
                     keyIsInvert = !keyIsInvert;
                     actionToDo = ACTION_UNKNOWN;
@@ -176,14 +188,16 @@ function handle_ia(playScene, rivalBoxInfo) {
 }
 
 
-function resizePlayScene(director, playScene) {
+function resizePlayScene(director, playScene)
+{
 
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
 
     var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
 
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
+    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10)
+    {
         --DEFAULT_SQUARE_WIDTH;
         --DEFAULT_COLUMN_WIDTH;
         canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
@@ -213,7 +227,8 @@ function resizePlayScene(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director) {
+function createPlayScene(director)
+{
     /**
      * Create the dict to return.
      */
@@ -222,13 +237,8 @@ function createPlayScene(director) {
      * Create the play scene.
      */
     var scene = director.createScene();
-	scene.activate = function() {
-		//director.setClear(false);
-	}
 	resultScene.scene = scene;
 	 
-	
-
     /**
      * Define the current length of the message (and of the keys).
      */
@@ -237,11 +247,12 @@ function createPlayScene(director) {
     /**
      * Generate my private and public keys.
      */
-     var key_info_t = getKeyInfo(current_length);
+    var key_info_t = getKeyInfo(current_length);
 
     var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
 
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
+    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10)
+    {
         --DEFAULT_SQUARE_WIDTH;
         --DEFAULT_COLUMN_WIDTH;
         canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
@@ -251,7 +262,8 @@ function createPlayScene(director) {
      * Define a TEMPORARY message.
      */
     var tmp_message = [];
-    for (var i = 0; i < current_length; ++i) {
+    for (var i = 0; i < current_length; ++i)
+    {
         tmp_message.push(Math.floor(Math.random() * 3 - 1));
     }
     var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
@@ -275,7 +287,8 @@ function createPlayScene(director) {
                             setBackgroundImage(director.getImage('center-board'), false).
                             setLocation(leftPlayerName.x + leftPlayerName.width, leftPlayerName.y);
 
-    centerPlayerName.paint = function(director) {
+    centerPlayerName.paint = function(director)
+    {
         var ctx = director.ctx;
         var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
         ctx.fillStyle = bg;
@@ -287,7 +300,8 @@ function createPlayScene(director) {
                             setLocation(0, 0);
 
 
-    playerNameText.paint = function(director) {
+    playerNameText.paint = function(director)
+    {
 
         var ctx = director.ctx;
 
@@ -327,7 +341,8 @@ function createPlayScene(director) {
                             setBackgroundImage(director.getImage('center-board'), false).
                             setLocation(rightIAName.x - 175, rightIAName.y);
 
-    centerIAName.paint = function(director) {
+    centerIAName.paint = function(director)
+    {
         var ctx = director.ctx;
         var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
         ctx.fillStyle = bg;
@@ -340,7 +355,8 @@ function createPlayScene(director) {
                             setLocation(0, 0);
 
 
-    iaNameText.paint = function(director) {
+    iaNameText.paint = function(director)
+    {
 
         var ctx = director.ctx;
 
@@ -362,13 +378,6 @@ function createPlayScene(director) {
     var leftIAName = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('left-board')).
                             setLocation(centerIAName.x - director.getImage('left-board').width, centerIAName.y);
-
-
-
-    /**
-     * Create each necessary button.
-     */
-    resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
 
     /**
      * Add each element to its scene.
@@ -396,18 +405,21 @@ function createPlayScene(director) {
 
 
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
+        function(time, ttime, timerTask)
+        {
 
             var rivalMessage = rivalBoxInfo.message;
             var rivalBox = rivalBoxInfo.gameBox;
-            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
+            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true)
+            {
                 rivalMessage.boxOption.endResolved = time;
 
                 var winScreen = new CAAT.Actor().
                         setSize(rivalBox.width, rivalBox.height).
                         setLocation(0, 0);
 
-                winScreen.paint = function(director) {
+                winScreen.paint = function(director)
+                {
 
                     var ctx = director.ctx;
 
@@ -428,14 +440,16 @@ function createPlayScene(director) {
 
             var gameMessage = gameBoxInfo.message;
             var gameBox = gameBoxInfo.gameBox;
-            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
+            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true)
+            {
                 gameMessage.boxOption.endResolved = time;
 
                 var winScreen = new CAAT.Actor().
                         setSize(gameBox.width, gameBox.height).
                         setLocation(0, 0);
 
-                winScreen.paint = function(director) {
+                winScreen.paint = function(director)
+                {
 
                     var ctx = director.ctx;
 
@@ -458,7 +472,8 @@ function createPlayScene(director) {
     return resultScene;
 }
 
-function getQuerystring(key, default_) {
+function getQuerystring(key, default_)
+{
   if (default_==null) default_=""; 
   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");

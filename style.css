@@ -1,11 +1,13 @@
-body {
+body
+{
 	margin: 0px;
 	background-color: #000000;
 	min-height: 800px;
 	overflow: hidden;
 }
 
-.main_scene {
+.main_scene
+{
 	background-repeat:no-repeat;
 	background-position:center; 
 	margin: 0px;
@@ -13,18 +15,20 @@ body {
 	display: inline-block;
 }
 
-#container {
+#container
+{
 	text-align: center;
 	margin: 0px;
 	padding: 0px;
 }
 
-.bg-circuits{
+.bg-circuits
+{
 	background: url(img/fond-board.png) center no-repeat;
 	-webkit-background-size: cover; /* pour Chrome et Safari */
-  -moz-background-size: cover; /* pour Firefox */
-  -o-background-size: cover; /* pour Opera */
-  background-size: cover; /* version standardisée */
-  color: #eee;
-  font-weight: normal;
+    -moz-background-size: cover; /* pour Firefox */
+    -o-background-size: cover; /* pour Opera */
+    background-size: cover; /* version standardisée */
+    color: #eee;
+    font-weight: normal;
 }
