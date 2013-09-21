@@ -5,7 +5,7 @@ body {
 	overflow: hidden;
 }
 
-#main_scene {
+.main_scene {
 	background-repeat:no-repeat;
 	background-position:center; 
 	margin: 0px;

@@ -41,8 +41,7 @@ function createBackButton(director, width, height, text, x, y, color) {
 }
 
 
-function handle_ia(playScene, rivalBoxInfo) {
-
+function handle_ia(playScene, rivalBoxInfo) {	              
     var prepare_move = [];
     var move = [];
 
@@ -72,7 +71,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var alignColumn = false;
     var progress = true;
 
-    playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
+    playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
@@ -222,7 +221,13 @@ function createPlayScene(director) {
     /**
      * Create the play scene.
      */
-    resultScene['scene'] = director.createScene();
+    var scene = director.createScene();
+	scene.activate = function() {
+		//director.setClear(false);
+	}
+	resultScene.scene = scene;
+	 
+	
 
     /**
      * Define the current length of the message (and of the keys).
@@ -298,6 +303,7 @@ function createPlayScene(director) {
     }
 
     centerPlayerName.addChild(playerNameText);
+	playerNameText.cacheAsBitmap();
 
     var rightPlayerName = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('right-board')).
@@ -350,6 +356,7 @@ function createPlayScene(director) {
     }
 
     centerIAName.addChild(iaNameText);
+	iaNameText.cacheAsBitmap();
 
 
     var leftIAName = new CAAT.Foundation.Actor().
