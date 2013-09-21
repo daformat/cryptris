@@ -648,6 +648,7 @@ ul{
 	position: absolute;
 	line-height: 52px;
 	top: -21px;
+	text-shadow: 0px 0px 10px #00f3ff;
 }
 
 .dialog.cables .right .numbers{
@@ -689,9 +690,12 @@ ul{
 }
 
 .dialog.cables .left .jacks a:hover img{
-	left: -15px;
+	left: -3px;
 }
 
+.dialog.cables .left .jacks a:active img{
+	left: -15px;
+}
 
 .dialog.cables .right .jacks{
 	left: -68px;
@@ -707,6 +711,10 @@ ul{
 }
 
 .dialog.cables .right .jacks a:hover img{
+	right: -3px;
+}
+
+.dialog.cables .right .jacks a:active img{
 	right: -15px;
 }
 
