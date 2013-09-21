@@ -18,21 +18,21 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.isVisible = true;
 
     this.computeBlurGradient = function() {
-        /*if (this.msgType != COLUMN_TYPE_3) {
+        if (this.msgType != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
-        } else */{
+        } else {
             this.blurGradient = null;
         }
     }
 
     this.computeKeyBlurGradient = function() {
-        /* if (this.keyType != COLUMN_TYPE_3) {
+        if (this.keyType != COLUMN_TYPE_3) {
             this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
             this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
-        } else */{
+        } else {
             this.keyBlurGradient = null;
         }
     }
@@ -119,7 +119,6 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
                 ctx.globalAlpha = 0;
                 object.isVisible = false;
             }
-        }
     }
 }
 
@@ -135,9 +134,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.column = new CAAT.Foundation.ActorContainer();
     this.container.addChild(this.column);
 
-    this.displayValueHexa = new CAAT.Foundation.ActorContainer();
+    this.displayValueHexa = new CAAT.Foundation.Actor();
     this.container.addChild(this.displayValueHexa);
-    this.displayValue = new CAAT.Foundation.ActorContainer();
+    this.displayValue = new CAAT.Foundation.Actor();
     this.container.addChild(this.displayValue);
 
     this.gradient = null;
@@ -149,61 +148,122 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.blockToDestroy = null;
 
     this.computeGradient = function() {
-        /*if (this.type != COLUMN_TYPE_3) {
+        if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        } else */{
+        } else {
             this.gradient = null;
         }
     }
 
+
+
+	var object = this;
+	var signe = "";
+	if (this.type === COLUMN_TYPE_1) {
+		signe = "-"
+	}
+
+	this.displayValueHexa.paint = function(director, time) {
+		if(this.isCached())
+		{
+			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+			return;
+		}
+
+		var ctx = director.ctx;
+
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
+		ctx.shadowBlur = 5;
+		ctx.shadowColor = object.boxOption.numberGrow;
+
+		ctx.font = '15px Inconsolata';
+		ctx.fillStyle = object.boxOption.numberColor;
+		ctx.textAlign = 'center';
+		ctx.fillText(signe + "0x" + object.squareNumber.toString(16).toUpperCase(), this.width / 2, 11);
+	}
+
+	this.displayValueHexa.setSize(this.boxOption.SQUARE_WIDTH, 15);
+	this.displayValueHexa.cacheAsBitmap();
+
+
+	this.displayValue.paint = function(director, time) {
+		if(this.isCached())
+		{
+			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+			return;
+		}
+
+		var ctx = director.ctx;
+
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
+		ctx.shadowBlur = 5;
+		ctx.shadowColor = '#00FF9D';
+
+		ctx.font = '12px Inconsolata';
+		ctx.fillStyle = 'white';
+		ctx.textAlign = 'center';
+
+		ctx.fillText("(" + signe + object.squareNumber + ")", this.width / 2, 11);
+	}
+
+	this.displayValue.setSize(this.boxOption.SQUARE_WIDTH, 15);
+	this.displayValue.cacheAsBitmap();
+
+
+	var columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
+	
+	this.column.paint = function(director, time) {
+		if (this.isCached()) {
+			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+			return;
+		}
+
+		// Custom paint method.
+		var ctx = director.ctx;
+		var x = 1.5;
+		ctx.lineWidth = 1;
+
+		if (columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
+			object.boxOption.setDefaultColor();
+		} else {
+			object.boxOption.setFullColor();
+		}
+
+		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+		ctx.fillStyle = object.gradient;
+
+		for (var i = 0; i < object.squareNumber; ++i) {
+			var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5;
+
+			if (y < -0.5) {
+				break;
+			}
+
+			ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
+			ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+		}
+		object.boxOption.setDefaultColor();
+	}
+	*/	
+	
     this.redraw = function(x) {
 
-        var object = this;
         /**
          * Set message display.
          */
-        this.displayValueHexa.setLocation(x, this.container.height + 20).setSize(this.boxOption.SQUARE_WIDTH, 15);
-        this.displayValue.setLocation(x, this.displayValueHexa.y + this.displayValueHexa.height).setSize(this.boxOption.SQUARE_WIDTH, 15);
+        this.displayValueHexa.setLocation(x, this.container.height + 15).setSize(this.boxOption.SQUARE_WIDTH, 15);
+	    this.displayValueHexa.stopCacheAsBitmap();
+	    this.displayValueHexa.cacheAsBitmap();
+	    
+	    this.displayValue.setLocation(x, this.displayValueHexa.y + this.displayValueHexa.height).setSize(this.boxOption.SQUARE_WIDTH, 15);
+	    this.displayValue.stopCacheAsBitmap();
+	    this.displayValue.cacheAsBitmap();
 
-
-        var signe = "";
-        if (this.type === COLUMN_TYPE_1) {
-            signe = "-"
-        }
-
-        this.displayValueHexa.paint = function(director) {
-
-            var ctx = director.ctx;
-
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = object.boxOption.numberGrow;
-
-            ctx.font = '15px Inconsolata';
-            ctx.fillStyle = object.boxOption.numberColor;
-            ctx.textAlign = 'center';
-            ctx.fillText(signe + "0x" + object.squareNumber.toString(16).toUpperCase(), this.width / 2, 5);
-        }
-        this.displayValue.paint = function(director) {
-
-            var ctx = director.ctx;
-
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = '#00FF9D';
-
-            ctx.font = '12px Inconsolata';
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-
-            ctx.fillText("(" + signe + object.squareNumber + ")", this.width / 2, 5);
-        }
-
-        var columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
+	    columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT;
 
         if (this.type === COLUMN_TYPE_3) {
             this.column.setSize(this.boxOption.COLUMN_WIDTH, this.boxOption.SPACE_HEIGHT);
@@ -225,40 +285,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         }
-
-        this.column.paint = function(director, time) {
-
-            if (this.isCached()) {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-
-            // Custom paint method.
-            var ctx = director.ctx;
-            var x = 1.5;
-            ctx.lineWidth = 1;
-
-            if (columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
-                object.boxOption.setDefaultColor();
-            } else {
-                object.boxOption.setFullColor();
-            }
-            for (var i = 0; i < object.squareNumber; ++i) {
-
-                var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5; 
-
-                if (y < -0.5) {
-                    break;
-                }
-
-                ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-            }
-            object.boxOption.setDefaultColor();
-        }
-
     }
 
     this.changeType = function(newType) {

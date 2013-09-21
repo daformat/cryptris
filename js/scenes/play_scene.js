@@ -72,7 +72,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var alignColumn = false;
     var progress = true;
 
-    playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
+    playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
@@ -304,6 +304,7 @@ function createPlayScene(director) {
     }
 
     centerPlayerName.addChild(playerNameText);
+	playerNameText.cacheAsBitmap();
 
     var rightPlayerName = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('right-board')).
@@ -356,6 +357,7 @@ function createPlayScene(director) {
     }
 
     centerIAName.addChild(iaNameText);
+	iaNameText.cacheAsBitmap();
 
 
     var leftIAName = new CAAT.Foundation.Actor().

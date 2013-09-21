@@ -28,6 +28,7 @@ function createScenes(director) {
      */
     currentGame.scenes['menu_scene']['shortcutButton'].mouseClick = function(e) {
         director.switchToScene(director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
+	    currentGame.scenes.play_scene.resize(director, currentGame.scenes.play_scene);
     };
 
     currentGame.scenes['play_scene']['back_button'].mouseClick = function(e) {
@@ -133,10 +134,11 @@ $(document).ready(function() {
 
 	var director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
 	
-	director.addHandlers(offScreenCanvas[0]);
+	//director.addHandlers(onScreenCanvas[0]);
 	
-	director.onRenderStart = function() {
-		offScreenCanvas.attr({
+	/*
+	director.onRenderEnd = function() {
+		onScreenCanvas.attr({
 			width: director.width,
 			height: director.height
 		});
@@ -154,6 +156,7 @@ $(document).ready(function() {
 		director.ctx.restore();
 		director.ctx = offScreenCanvas[0].getContext('2d');
 	};	
+	*/
 	
 	
 	

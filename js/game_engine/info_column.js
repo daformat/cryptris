@@ -193,6 +193,7 @@ function InfoColumn(director, resultScene, crypt_key) {
         }
     }
 
+	
     this.infoColumnContainer.addChild(this.cryptrisLogo);
     this.infoColumnContainer.addChild(this.pad);
     this.infoColumnContainer.addChild(this.pauseButton);
@@ -210,4 +211,5 @@ function InfoColumn(director, resultScene, crypt_key) {
             setTextTimerPaint(object.timerText, convertTimeToString(time));
         }
     );
+	
 }

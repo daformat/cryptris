@@ -10,7 +10,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.keyFirstMove = false;
     this.pathContinue = false;
 
-    this.column = new CAAT.Foundation.ActorContainer();
+    this.column = new CAAT.Foundation.Actor();
     this.container.addChild(this.column);
 
     if (this.squareNumber === 0) {
@@ -21,21 +21,21 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.blurGradient = null;
 
     this.computeGradient = function() {
-        /*if (this.type != COLUMN_TYPE_3) {
+        if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        } else */{
+        } else {
             this.gradient = null;
         }
     }
 
     this.computeBlurGradient = function() {
-        /*if (this.type != COLUMN_TYPE_3) {
+        if (this.type != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
-        } else */{
+        } else {
             this.blurGradient = null;
         }
     }
@@ -70,7 +70,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                 ctx.fillStyle = object.gradient;
                 ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
             }
-        }
     }
 
     this.firstRedraw = function(x) {
@@ -80,7 +79,8 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
 
         var object = this;
-        this.column.paint = function(director, time) {
+        this.column.paint = function(director, time) {	        
+        
             if (this.isCached()) 
             {
                 CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -119,7 +119,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                     ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
                 }
             }
-        }
     }
 
     this.firstMove = function() {
@@ -161,7 +160,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     }
 
     this.keyDown = function() {
-
         if (this.type !== COLUMN_TYPE_3) {
             this.keyInMove = true;
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.column.y + this.container.height);
@@ -172,6 +170,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     }
 
     var object = this;
+	
     this.myTimer = director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
@@ -360,6 +359,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 
     var object = this;
 
+	
     director.createTimer(this.container.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
             if (object.keyFirstMove === true) {
