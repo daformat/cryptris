@@ -123,7 +123,7 @@ $(document).ready(function() {
     /**
      * Debug flag, turn it off to production version.
      */
-    CAAT.DEBUG = true;
+    CAAT.DEBUG = parseInt(getQuerystring('dbg', 0)) == 1;
 
     /**
      * Declare our main caat director.
