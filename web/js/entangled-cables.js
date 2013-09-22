@@ -2,11 +2,13 @@ $(function(){
 
 	$(".hidden").removeClass("hidden").fadeOut(0);
 
+	// Keep reference to the actual cable set used
 	var cableSet = {
 		L: 0,
 		R: 0
 	}
 
+	// Cable data
 	var cables = {
 		0: {
 				pics: {
@@ -34,17 +36,18 @@ $(function(){
 		}
 	}
 
-	var setCorrectCable = function(n){
+	// Loop through cables and set according behavior
+	var setCorrectCable = function(n) {
 		
-		$(".cables .left .numbers li").each(function(i){
+		$(".cables .left .numbers li").each(function(i) {
 			
 			var cableIndex = cables[cableSet.L].L[i];
 			var $cable = $(".cables .left .jacks li").eq(cableIndex);
 
-			if( $(this).text() == n ){
+			if( $(this).text() == n ) {
 				// Answer is correct
 				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
-				$cable.click(function(){
+				$cable.click(function() {
 					$(this).addClass("unplugged"); 
 					$(".cables .left .numbers li").eq(i).addClass("unplugged"); 
 				});
@@ -55,7 +58,7 @@ $(function(){
 
 		});
 
-		$(".cables .right .numbers li").each(function(i){
+		$(".cables .right .numbers li").each(function(i) {
 			
 			var cableIndex = cables[cableSet.L].L[i];
 			var $cable = $(".cables .right .jacks li").eq(cableIndex);
@@ -76,14 +79,16 @@ $(function(){
 
 	}
 
-	var electrifyCable = function ($cable){
+	// Picking the wrong cable plays an animation to simulate electric shock
+	var electrifyCable = function ($cable) {
+		var $d = $('.dialog');
+		
+		$d.jrumble({
+			opacity: true,
+			opacityMin: .75
+		});
+
 		$cable.click(function(){
-			var $d = $('.dialog');
-			
-			$d.jrumble({
-				opacity: true,
-				opacityMin: .75
-			});
 			
 			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
 			
@@ -93,5 +98,46 @@ $(function(){
 		})
 	}
 
+	var randomizeCables = function() {
+		var numbers = [];
+
+		$(".cables .left .numbers li").each(function(i){
+			numbers.push($(this).text());
+		});
+
+		numbers.shuffle();
+
+		$(".cables .left .numbers li").each(function(i){
+			$(this).text(numbers[i]);
+		});
+
+	}
+
+	// Shuffle array
+	Array.prototype.shuffle = function() {
+		var array = this;
+
+	  var currentIndex = array.length
+	    , temporaryValue
+	    , randomIndex
+	    ;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+	randomizeCables();
 	setCorrectCable(42);
 })
