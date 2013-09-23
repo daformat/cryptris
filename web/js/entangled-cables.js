@@ -78,14 +78,13 @@ $(function(){
 
 			applyCableBehavior($(this), $cableJack, n, i);
 
-
 		});
 
 	}
 
-	// 
+	// Apply cable behavior
 	var applyCableBehavior = function ($cableNumber, $cableJack, n, i){
-		$cableJack.addClass("n"+$cableNumber.text()+"-");
+
 		if( $cableNumber.text() == n ) {
 			// Answer is correct
 			$cableJack.click(function() {
@@ -95,10 +94,11 @@ $(function(){
 		} else {
 			//Answer is wrong
 			electrifyCable($cableJack);
-		}		
+		}
+
 	}
 
-	// Picking the wrong cable plays an animation to simulate electric shock
+	// Picking the wrong cable plays an animation to simulate an electric shock
 	var electrifyCable = function ($cable) {
 		var $d = $('.dialog');
 		
@@ -178,6 +178,7 @@ $(function(){
     return size;
 	};
 
+	// Need to be refactored ?
 	pickRandomCableSet();
 	randomizeCables();
 	setCorrectCable(42);
