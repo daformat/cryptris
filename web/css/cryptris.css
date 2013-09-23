@@ -644,14 +644,27 @@ ul{
 
 }
 
+.dialog.cables .numbers, .dialog.cables .jacks{
+	margin-top: 0;
+}
+
+.dialog.cables .numbers li, .dialog.cables .jacks li{
+	height: 52px;
+}
+
+.dialog.cables .numbers li{
+	position: relative;
+	top: 9px;
+}
+
 .dialog.cables .numbers{
 	font-family: "Quantico", sans-serif;
 	font-weight: bold;
 	font-size: 23px;
 	color: #eee;
 	position: absolute;
-	line-height: 52px;
-	top: -21px;
+	line-height: 0;
+	top: 0;
 	text-shadow: 0px 0px 10px #00f3ff;
 }
 
@@ -676,8 +689,8 @@ ul{
 .dialog.cables .jacks{
 	color: #eee;
 	position: absolute;
-	line-height: 52px;
-	top: -17px;
+	line-height: 0;
+	top: 0;
 }
 .dialog.cables .jacks a{
 	padding: 0;
