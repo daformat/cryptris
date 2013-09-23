@@ -33,7 +33,31 @@ $(function(){
 					5: 0,
 					6: 3	
 				}
-		}
+		},
+		1: {
+				pics: {
+					L: 'img/entangled-cables-L-02.png',
+					R: 'img/entangled-cables-R-02.png',
+				},
+				L: {
+					0: 2,
+					1: 5,
+					2: 4,
+					3: 6,
+					4: 1,
+					5: 0,
+					6: 3
+				},
+				R: {
+					0: 3,
+					1: 6,
+					2: 5,
+					3: 0,
+					4: 2,
+					5: 1,
+					6: 4					
+				}
+		}		
 	}
 
 	// Loop through cables and set according behavior
@@ -98,6 +122,7 @@ $(function(){
 		})
 	}
 
+	// shuffle cable position
 	var randomizeCables = function() {
 		var numbers = [];
 
@@ -111,6 +136,18 @@ $(function(){
 			$(this).text(numbers[i]);
 		});
 
+	}
+
+	// pick a random cable set
+	var pickRandomCableSet = function() {
+		cableSet = {
+			L: Math.floor(Math.random() * cables.size()),
+			R: Math.floor(Math.random() * cables.size()),
+		}
+
+		console.log(cableSet);
+		$(".cables .left .cables-img").attr('src', cables[cableSet.L].pics.L);
+		$(".cables .right .cables-img").attr('src', cables[cableSet.L].pics.R);
 	}
 
 	// Shuffle array
@@ -138,6 +175,16 @@ $(function(){
 	  return array;
 	}
 
+	Object.prototype.size = function() {
+		var obj = this;
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+	};
+
+	pickRandomCableSet();
 	randomizeCables();
 	setCorrectCable(42);
 })
