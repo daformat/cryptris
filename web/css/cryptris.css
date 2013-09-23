@@ -62,6 +62,7 @@ ul{
 	overflow-y: auto;
 	display: table;
   min-height: 700px;
+  overflow-x: hidden;
 
 }
 
@@ -169,6 +170,7 @@ ul{
 .vertical-centering{
   display:table-cell;
   vertical-align:middle;
+  overflow-x: hidden;
 }
 
 /*
@@ -402,6 +404,37 @@ ul{
 }
 .share textarea:focus{
 	outline: none;
+}
+
+.share #step2{
+	margin-left: 200%;
+	position: absolute;
+}
+.share table.encrypted-message{
+	width: 100%;
+}
+
+.share .encrypted-message a{
+	color: #eee;
+}
+
+.share .encrypted-message a img{
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.share .encrypted-message .message{
+	width: 60%;
+	text-align: center
+}
+
+.share .encrypted-message .message .img{
+	width: 100%;
+	max-width: 456px;
+}
+
+.share .encrypted-message .social-actions{
+	text-align: left;
 }
 
 /*

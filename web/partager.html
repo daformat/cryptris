@@ -17,30 +17,63 @@
     <script src="vendor/jquery-1.10.2.min.js"></script>
     <script src="js/count-characters-left.js"></script>
     <script src="js/keyboard-nav.js"></script>
-
+    <script src="js/share-animate-steps.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Geo|Inconsolata|Quantico:400,700' rel='stylesheet' type='text/css'>
 
   </head>
   <body class="share">
-    <div class="wrapper bg-circuits">
-      <div class="vertical-centering">
-        <img class="cryptris-logo-medium" src="img/logo-cryptris-large.png">
+    <div class="wrapper bg-circuits block">
+      <div class="wrapper" id="step1">
+        <div class="vertical-centering">
+          
+            <img class="cryptris-logo-medium" src="img/logo-cryptris-large.png">
 
-        <div class="text-content no-max-width">
-          <h2>Partager le jeu</h2>
-          <p>Proposez à vos amis de déchiffrer votre message, commencez par le saisir ci-dessous, il sera ensuite chiffré </p>
+            <div class="text-content no-max-width">
+              <h2>Partager le jeu</h2>
+              <p>Proposez à vos amis de déchiffrer votre message, commencez par le saisir ci-dessous, il sera ensuite chiffré </p>
 
-          <form id="share">
-              <fieldset><textarea></textarea></fieldset>
-              <div class="characters-left"><span class="count lcd">140</span> Caractères restants</div>
-              <input type="reset" value="Annuler" class="button red"><input type="submit" value="Suivant" class="button blue">
-          </form>
-    
-        </div>
+              <form id="share">
+                  <fieldset><textarea></textarea></fieldset>
+                  <div class="characters-left"><span class="count lcd">140</span> Caractères restants</div>
+                  <input type="reset" value="Annuler" class="button red"><input type="submit" value="Suivant" class="button blue">
+              </form>
+        
+            </div>
+          </div>
+
       </div>
-    </div>
 
+      <div class="wrapper" id="step2">
+        <div class="vertical-centering">
+            <img class="cryptris-logo-medium" src="img/logo-cryptris-large.png">
+            
+            <div class="text-content no-max-width">
+              <h2>Partager le jeu</h2>
+              <p>Voici votre message chiffré, cliquez sur les icônes des sites sur lesquels vous souhaitez le partager.</p>
+              
+              <table class="encrypted-message">
+                <tr>
+                  <td class="message">
+                    <!-- Include canvas here-->
+                    <img class="img" src="img/temp-encrypted-message.png">
+                  </td>
+                  <td class="social-actions">
+                    <p><a href="#"><img src="img/icn-facebook-large.png"> Partager sur facebook</a></p>
+                    <p><a href="#"><img src="img/icn-twitter-large.png"> Partager sur twitter</a></p>
+                    <p><a href="#"><img src="img/icn-google-plus-large.png"> Partager sur google plus</a></p>
+                  </td>
+                </tr>
+              </table>
+
+              <p><a href="#" class="button red">Annuler</a></p>
+            </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
     <a href="./index.html" class="btn-close"><img src="img/btn-close.png"></a>
 
