@@ -437,6 +437,10 @@ ul{
 	text-align: left;
 }
 
+.share .encrypted-message .social-actions p{
+	margin: 28px;
+}
+
 /*
 	New login screen
 */
