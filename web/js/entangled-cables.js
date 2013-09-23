@@ -126,13 +126,13 @@ $(function(){
 	var randomizeCables = function() {
 		var numbers = [];
 
-		$(".cables .left .numbers li").each(function(i){
+		$(".cables .numbers li").each(function(i){
 			numbers.push($(this).text());
 		});
 
 		numbers.shuffle();
 
-		$(".cables .left .numbers li").each(function(i){
+		$(".cables .numbers li").each(function(i){
 			$(this).text(numbers[i]);
 		});
 
@@ -175,6 +175,7 @@ $(function(){
 	  return array;
 	}
 
+	// Count object size
 	Object.prototype.size = function() {
 		var obj = this;
     var size = 0, key;
