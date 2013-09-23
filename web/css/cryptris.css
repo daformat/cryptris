@@ -264,6 +264,14 @@ ul{
 
 .social-icons a{
 	margin: 4px;
+	position: relative;
+}
+.social-icons a img{
+	transition: all 0.25s ease;
+}
+.social-icons a:hover img{
+	-webkit-transform: translateY(-10px) rotate(360deg);
+	transform: translateY(-10px) rotate(360deg);
 }
 /*
 	Scrollable content with gradient
