@@ -96,7 +96,7 @@ $(function(){
 				});
 			} else {
 				//Answer is wrong
-				electrifyCable($cable);
+				//electrifyCable($cable);
 			}
 
 		});
@@ -141,11 +141,10 @@ $(function(){
 	// pick a random cable set
 	var pickRandomCableSet = function() {
 		cableSet = {
-			L: Math.floor(Math.random() * cables.size()),
-			R: Math.floor(Math.random() * cables.size()),
+			L: Math.floor(Math.random() * objectsize(cables)),
+			R: Math.floor(Math.random() * objectsize(cables)),
 		}
 
-		console.log(cableSet);
 		$(".cables .left .cables-img").attr('src', cables[cableSet.L].pics.L);
 		$(".cables .right .cables-img").attr('src', cables[cableSet.L].pics.R);
 	}
@@ -176,8 +175,7 @@ $(function(){
 	}
 
 	// Count object size
-	Object.prototype.size = function() {
-		var obj = this;
+	var objectsize = function(obj) {
     var size = 0, key;
     for (key in obj) {
         if (obj.hasOwnProperty(key)) size++;
