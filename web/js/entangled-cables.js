@@ -48,7 +48,7 @@ $(function(){
 					5: 0,
 					6: 3
 				},
-				R: {
+				R: {	
 					0: 3,
 					1: 6,
 					2: 5,
@@ -62,45 +62,40 @@ $(function(){
 
 	// Loop through cables and set according behavior
 	var setCorrectCable = function(n) {
-		
-		$(".cables .left .numbers li").each(function(i) {
-			
-			var cableIndex = cables[cableSet.L].L[i];
-			var $cable = $(".cables .left .jacks li").eq(cableIndex);
+		var cableIndex, $cableJack;
 
-			if( $(this).text() == n ) {
-				// Answer is correct
-				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
-				$cable.click(function() {
-					$(this).addClass("unplugged"); 
-					$(".cables .left .numbers li").eq(i).addClass("unplugged"); 
-				});
-			} else {
-				//Answer is wrong
-				electrifyCable($cable);
-			}
+		$(".cables .left .numbers li").each(function(i) {
+			cableIndex = cables[cableSet.L].L[i];
+			$cableJack = $(".cables .left .jacks li").eq(cableIndex);
+
+			applyCableBehavior($(this), $cableJack, n);
 
 		});
 
 		$(".cables .right .numbers li").each(function(i) {
-			
-			var cableIndex = cables[cableSet.L].L[i];
-			var $cable = $(".cables .right .jacks li").eq(cableIndex);
+			cableIndex = cables[cableSet.R].R[i];
+			$cableJack = $(".cables .right .jacks li").eq(cableIndex);
 
-			if( $(this).text() == n ){
-				// Answer is correct
-				//console.log("Si la réponse est "+n+", alors il faut débrancher le "+(cableIndex+1)+"e cable de gauche");
-				$cable.click(function(){
-					$(this).addClass("unplugged"); 
-					$(".cables .right .numbers li").eq(i).addClass("unplugged"); 
-				});
-			} else {
-				//Answer is wrong
-				//electrifyCable($cable);
-			}
+			applyCableBehavior($(this), $cableJack, n, i);
+
 
 		});
 
+	}
+
+	// 
+	var applyCableBehavior = function ($cableNumber, $cableJack, n, i){
+		$cableJack.addClass("n"+$cableNumber.text()+"-");
+		if( $cableNumber.text() == n ) {
+			// Answer is correct
+			$cableJack.click(function() {
+				$cableNumber.toggleClass("unplugged"); 
+				$cableJack.toggleClass("unplugged"); 
+			});
+		} else {
+			//Answer is wrong
+			electrifyCable($cableJack);
+		}		
 	}
 
 	// Picking the wrong cable plays an animation to simulate electric shock
@@ -146,7 +141,7 @@ $(function(){
 		}
 
 		$(".cables .left .cables-img").attr('src', cables[cableSet.L].pics.L);
-		$(".cables .right .cables-img").attr('src', cables[cableSet.L].pics.R);
+		$(".cables .right .cables-img").attr('src', cables[cableSet.R].pics.R);
 	}
 
 	// Shuffle array
@@ -174,7 +169,7 @@ $(function(){
 	  return array;
 	}
 
-	// Count object size
+	// Count object size (kept out of Object prototype to avoid jquery mess)
 	var objectsize = function(obj) {
     var size = 0, key;
     for (key in obj) {
