@@ -418,6 +418,7 @@ ul{
 
 .share .encrypted-message a{
 	color: #eee;
+	padding: 20px 0;
 }
 
 .share .encrypted-message a img{
@@ -447,6 +448,13 @@ ul{
 	margin: 28px;
 }
 
+.share .social-actions a img{
+	transition: all 0.25s ease;
+}
+.share .social-actions a:hover img{
+	-webkit-transform: translateX(-10px) rotate(-360deg);
+	transform: translateX(-10px) rotate(-360deg);
+}
 /*
 	New login screen
 */
