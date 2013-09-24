@@ -611,12 +611,13 @@ ul{
 	bottom: 0;
 	height: 60px;
 	text-align: right;
-	width: 100%;
+	left: 23px;
 	right: 23px;
 }
 
 .dialog .button{
 	padding: 8px 20px;
+	margin: 0 8px;
 }
 .dialog .button:active{
 	top: 2px;

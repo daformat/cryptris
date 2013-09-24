@@ -60,8 +60,6 @@
     // create element and set it up
 		var $dialog = $(dialog[settings.type].template);
 				$dialog.css({marginLeft: "200%"});
-				$dialog.find('h2').text(settings.title);
-				$dialog.find('.avatar').html(settings.avatar);
 
 		populateContent($dialog);
 		populateControls($dialog);
@@ -103,13 +101,29 @@
 	// populateContent
 	var populateContent = function($dialog){
 		if ( typeof(settings.content) === "string" ){
-			$('.content', $dialog).html(settings.content)
-		} else {
-
+			$('.content', $dialog).prepend(settings.content)
+			console.log("Texte");
+		} else if( typeof(settings.content) === "object") {
+			console.log("Liste");
+			var $list = $('<ul class="selectable"></ul>');
+	    for (key in settings.content) {
+				var control = settings.content[key];
+	    	var $li = $('<li></li>');
+	    	var $control = $('<a href="#">'+control.label+'</a>').addClass(control.class);
+  	  			$control.click(control.onClick);
+  	  	
+  	  	$li.append('<span class="arrow">▶</span>', $control, '<span class="arrow">◀</span>');
+  	  	$list.append($li);
+    	}
+    	$('.content', $dialog).prepend($list);
 		}
 
 		if(settings.avatar) {
 			$('.avatar', $dialog).html(settings.avatar);
+		}
+
+		if(settings.title) {
+			$('h2', $dialog).text(settings.title);
 		}
 	}
 
@@ -117,7 +131,6 @@
     for (key in settings.controls) {
     	var control = settings.controls[key]
     	var $control = $('<a>'+control.label+'</a>').addClass(control.class);
-    	console.log($control);
     			$control.click(control.onClick);
 
     	$('.controls', $dialog).append($control);

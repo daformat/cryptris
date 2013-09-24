@@ -1,6 +1,6 @@
 $(function(){
 
-	$(".selectable li").mouseenter(function(){
+	$(document).on('mouseenter', ".selectable li", function(){
 		$('.selectable li').removeClass('active');
 		$(this).addClass('active');
 	})
