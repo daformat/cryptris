@@ -4,8 +4,10 @@ $(function(){
     $(".wrapper.active").closeAllDialogs(function(){
       $(".wrapper.active .vertical-centering").dialog({
         
-        title: "Test de titre de dialogue",
-        content: "Test de contenu <strong>html</strong><p><strong>Type :</strong> withoutAvatar<br/>Avec deux boutons</p>",
+        animateText: true,
+
+        title: "Test de titre de dialogue avec text animé",
+        content: "Test de contenu <strong>html</strong><br><br><strong>Type :</strong> withoutAvatar<br/>Avec deux boutons</p>",
         
         controls: [{
           label: "annuler", 
@@ -69,12 +71,14 @@ $(function(){
             label: "Première réponse", 
             onClick: function(){
               alert("Première réponse cliquée");
+              dialog4();
             }
           }, 
           {
             label: "Deuxième réponse", 
             onClick: function(){
               alert("Deuxième réponse cliquée");
+              dialog4();              
             }
           }
         ]

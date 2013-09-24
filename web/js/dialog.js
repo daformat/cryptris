@@ -9,7 +9,6 @@
 		          		+ '		<h2></h2>'
 							    + '   <div class="content">'
 							    + '      <span class="text"></span>'
-							    + '      <span class="blinking cursor">_</span>'
 							    + '    </div>'
 							    + '    <div class="controls"></div>'
 							    + ' </div>',
@@ -19,7 +18,6 @@
 		          		+ '		<h2></h2>'
 							    + '   <div class="content">'
 							    + '      <span class="text"></span>'
-							    + '      <span class="blinking cursor">_</span>'
 							    + '    </div>'
 							    + '    <div class="controls"></div>'
 							    + ' </div>',
@@ -45,6 +43,7 @@
 
     settings = $.extend({
 	    // Defaults settings
+	    animateText: false,
 	    content: "(Missing dialog)",
 	    controls: [ {
 	    	label: "ok", 
@@ -70,6 +69,8 @@
 		// animate in
 		$dialog.animate({
 						marginLeft: "0%"
+					}, function(){
+							if (settings.animateText) $('.content .text', $dialog).typeLetterByLetter(settings.content, 20);
 					});
 		
 		return this;
@@ -101,10 +102,12 @@
 	// populateContent
 	var populateContent = function($dialog){
 		if ( typeof(settings.content) === "string" ){
-			$('.content', $dialog).prepend(settings.content)
-			console.log("Texte");
+			if( !settings.animateText ) {
+				$('.content .text', $dialog).html(settings.content)
+			} else {
+				$('.content', $dialog).append('<span class="blinking cursor">_</span>');
+			}
 		} else if( typeof(settings.content) === "object") {
-			console.log("Liste");
 			var $list = $('<ul class="selectable"></ul>');
 	    for (key in settings.content) {
 				var control = settings.content[key];
