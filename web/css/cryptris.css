@@ -440,10 +440,11 @@ ul{
 }
 
 .share .encrypted-message .message{
-	width: 55%;
+	width: 45%;
 	text-align: center;
 	display: inline-block;
 	vertical-align: text-top;
+	min-width: 280px
 }
 
 .share .encrypted-message .message .img{
