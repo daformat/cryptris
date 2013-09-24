@@ -30,6 +30,7 @@ $(function(){
 
 function switchWrapper(sel){
 	$('.wrapper.active').fadeOut(function(){
+		$(this).removeClass('active');
 		setTimeout(function(){$(sel).fadeIn().addClass('active'); displayFirstDialog();}, 1000);
 	});
 }
