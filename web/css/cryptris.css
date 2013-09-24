@@ -641,10 +641,16 @@ ul{
 	text-transform: uppercase;
 	cursor: pointer;
 	position: relative;
-	transition: border 0.15s ease-in, top 0.15s ease-in ;
+	transition: all 0.15s ease ;
 	margin: 2px;
 	top: 0px;
 	-webkit-font-smoothing: antialiased;
+}
+
+.dialog li.active a:active{
+	box-shadow: 0 1px 0 rgb(0, 46, 77);
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
 }
 
 .dialog .arrow{
