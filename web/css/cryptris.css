@@ -401,6 +401,11 @@ ul{
 
 }
 
+.share textarea:focus{	
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
+	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
+}
+
 .share textarea.warning{
 	border-color: rgb(156, 5, 0);
 	border-color: rgba(255, 55, 50, 0.5);
