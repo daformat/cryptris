@@ -6,15 +6,15 @@ $(function(){
         
         animateText: true,
 
-        title: "Test de titre de dialogue avec text animé",
-        content: "Test de contenu <strong>html</strong><br><br><strong>Type :</strong> withoutAvatar<br/>Avec deux boutons</p>",
+        title: "Test de titre de dialogue",
+        content: "Test de contenu <strong>html</strong> avec animation du texte.<br><br><strong>Type :</strong> withoutAvatar<br/>Avec deux boutons</p>",
         
         controls: [{
           label: "annuler", 
           class: "button red",
           onClick: function(){
             alert("Bouton Annuler cliqué");
-            $(".wrapper.active").closeAllDialogs(function(){alert("closeAllDialogs() terminé !")})
+            $(".wrapper.active").closeAllDialogs(function(){alert("closeAllDialogs() terminé ! Recharger la page pour redémarrer les test.")})
           }
         }, 
 
@@ -35,13 +35,13 @@ $(function(){
         type: "withAvatar",
         avatar: "<img src='img/avatar-chercheuse.jpg'>",
         title: "Un dialogue avec avatar",
-        content: "Test de contenu <strong>html</strong><p><strong>Type :</strong> withAvatar<br/>Avec trois boutons</p>",
+        content: "Test de contenu <strong>html</strong> sans animation du texte.<p><strong>Type :</strong> withAvatar<br/>Avec trois boutons</p>",
         
         controls: [{
-          label: "Test", 
+          label: "Précédent", 
           class: "button",
           onClick: function(){
-            alert("Bouton Test cliqué");
+            $(".wrapper.active").closeAllDialogs(function(){ dialog1() });
           }
         }, 
 
@@ -50,6 +50,7 @@ $(function(){
           class: "button red",
           onClick: function(){
             alert("Bouton Annuler cliqué");
+            $(".wrapper.active").closeAllDialogs(function(){alert("closeAllDialogs() terminé ! Recharger la page pour redémarrer les test.")})            
           }
         }, 
 
