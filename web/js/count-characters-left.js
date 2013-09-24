@@ -1,6 +1,7 @@
 $(function(){
 	var $textarea = $("#share textarea");
 	var $counter = $(".characters-left .count");
+	var $text = $(".characters-left .text");
 
 	var countCharactersLeft = function(){
 		console.log("counting characters left")
@@ -18,6 +19,11 @@ $(function(){
 		else {
 			$counter.removeClass('red');
 			$textarea.removeClass('warning');
+		}
+		if(Math.abs(n)>1){
+			$text.text("Caractères restants");
+		} else {
+				$text.text("Caractère restant");
 		}
 	};
 
