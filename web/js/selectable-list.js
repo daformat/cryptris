@@ -16,11 +16,14 @@ $(function(){
 	      var $selected = $('.selectable li.active').removeClass('active');
 				var $choices = $selected.parent().children();
 		    $choices.eq(($choices.index($selected) + 1) % $choices.length).addClass("active");	       
+				return false;	
 	    }
 			else if (e.keyCode == 13 || e.keyCode == 32) { // enter || space
 				var $a = $('.selectable li.active a');
 				window.location = $a.attr('href');
 				$a.click();
+				return false;
 			}
+
 	});
 });
