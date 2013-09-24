@@ -14,6 +14,7 @@ $(function(){
           class: "button red",
           onClick: function(){
             alert("Bouton Annuler cliqué");
+            $(".wrapper.active").closeAllDialogs(function(){alert("closeAllDialogs() terminé !")})
           }
         }, 
 
@@ -88,7 +89,13 @@ $(function(){
 
   var dialog4 = function(){
     $("body").closeAllDialogs(function(){
-      $(".wrapper.active .vertical-centering").dialog();
+      $(".wrapper.active .vertical-centering").dialog({
+        controls: [{
+          label: "Recommencer", 
+          class: "button blue",
+          onClick: dialog1
+        }]
+      });
     });
   }
 
