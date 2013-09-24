@@ -410,7 +410,7 @@ ul{
 	margin-left: 200%;
 	position: absolute;
 }
-.share table.encrypted-message{
+.share .encrypted-message{
 	width: 100%;
 }
 
@@ -425,7 +425,9 @@ ul{
 
 .share .encrypted-message .message{
 	width: 60%;
-	text-align: center
+	text-align: center;
+	display: inline-block;
+	vertical-align: text-top;
 }
 
 .share .encrypted-message .message .img{
@@ -435,6 +437,8 @@ ul{
 
 .share .encrypted-message .social-actions{
 	text-align: left;
+	display: inline-block;
+	vertical-align: text-top;
 }
 
 .share .encrypted-message .social-actions p{
