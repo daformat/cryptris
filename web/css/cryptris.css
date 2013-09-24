@@ -428,6 +428,10 @@ ul{
 	margin-left: 200%;
 	position: absolute;
 }
+
+.share #step2 .button:active{
+	top: 2px;
+}
 .share .encrypted-message{
 	width: 100%;
 	max-width: 1000px;
