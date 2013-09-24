@@ -102,21 +102,25 @@
 	// populateContent
 	var populateContent = function($dialog){
 		if ( typeof(settings.content) === "string" ){
+		// content is text (can be html too)
 			if( !settings.animateText ) {
 				$('.content .text', $dialog).html(settings.content)
 			} else {
 				$('.content', $dialog).append('<span class="blinking cursor">_</span>');
 			}
 		} else if( typeof(settings.content) === "object") {
+		// content is an array
 			var $list = $('<ul class="selectable"></ul>');
 	    for (key in settings.content) {
-				var control = settings.content[key];
-	    	var $li = $('<li></li>');
-	    	var $control = $('<a href="#">'+control.label+'</a>').addClass(control.class);
-  	  			$control.click(control.onClick);
-  	  	
-  	  	$li.append('<span class="arrow">▶</span>', $control, '<span class="arrow">◀</span>');
-  	  	$list.append($li);
+	    	if (settings.content.hasOwnProperty(key)) {
+					var control = settings.content[key];
+		    	var $li = $('<li></li>');
+		    	var $control = $('<a href="#">'+control.label+'</a>').addClass(control.class);
+	  	  			$control.click(control.onClick);
+	  	  	
+	  	  	$li.append('<span class="arrow">▶</span>', $control, '<span class="arrow">◀</span>');
+	  	  	$list.append($li);
+	  	  }
     	}
     	$('.content', $dialog).prepend($list);
 		}
