@@ -1,7 +1,6 @@
 (function($) {
 
 	var settings,
-			actualDialog,
 			dialog = {
 				"withAvatar": {
 					template: '<div class="dialog with-avatar">'
@@ -41,8 +40,8 @@
 	// open new dialog
 	$.fn.dialog = function(options){
 
+    // Defaults settings
     settings = $.extend({
-	    // Defaults settings
 	    animateText: false,
 	    content: "(Missing dialog)",
 	    controls: [ {
@@ -70,6 +69,7 @@
 		$dialog.animate({
 						marginLeft: "0%"
 					}, function(){
+							// animate letter by letter if needed
 							if (settings.animateText) $('.content .text', $dialog).typeLetterByLetter(settings.content, 20);
 					});
 		
@@ -101,16 +101,24 @@
 
 	// populateContent
 	var populateContent = function($dialog){
+		
+		// if content is text (can be html too)
 		if ( typeof(settings.content) === "string" ){
-		// content is text (can be html too)
+
 			if( !settings.animateText ) {
+				// add text now
 				$('.content .text', $dialog).html(settings.content)
 			} else {
+				// only add blinking cursor, text will be added after dialog in animation is complete
 				$('.content', $dialog).append('<span class="blinking cursor">_</span>');
 			}
+
+		// if content is an array
 		} else if( typeof(settings.content) === "object") {
-		// content is an array
+		
 			var $list = $('<ul class="selectable"></ul>');
+
+			// loop through content and create links
 	    for (key in settings.content) {
 	    	if (settings.content.hasOwnProperty(key)) {
 					var control = settings.content[key];
@@ -122,18 +130,24 @@
 	  	  	$list.append($li);
 	  	  }
     	}
-    	$('.content', $dialog).prepend($list);
+
+    	// replace .content children with generated list
+    	$('.content', $dialog).html($list);
+		
 		}
 
+		// Add avatar if set
 		if(settings.avatar) {
 			$('.avatar', $dialog).html(settings.avatar);
 		}
 
+		// Add title if set
 		if(settings.title) {
 			$('h2', $dialog).text(settings.title);
 		}
 	}
 
+	// loop through controls and create appropriate links
 	var populateControls = function($dialog){
     for (key in settings.controls) {
     	var control = settings.controls[key]
