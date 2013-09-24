@@ -412,6 +412,8 @@ ul{
 }
 .share .encrypted-message{
 	width: 100%;
+	max-width: 1000px;
+	display: inline-block;
 }
 
 .share .encrypted-message a{
