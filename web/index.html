@@ -58,8 +58,19 @@
         <a href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img src="img/icn-twitter.png" alt=""></a>
 
         <!-- Google plus -->  
-        <a href="https://plus.google.com/share?url=http://cryptris.com" target="_blank" onclick="javascript:window.open('https://plus.google.com/share?url=http://cryptris.com&text=Plop','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img src="img/icn-google-plus.png" alt=""></a>
-        
+        <span
+          class="g-interactivepost"
+          data-contenturl="https://cryptris.com/"
+          data-contentdeeplinkid="/"
+          data-clientid="303615069411.apps.googleusercontent.com"
+          data-cookiepolicy="single_host_origin"
+          data-prefilltext="Cryptris, un jeu sur la cryptographie asymétrique"
+          data-calltoactionlabel="PLAY"
+          data-calltoactionurl="http://crytptis.com"
+          data-calltoactiondeeplinkid="/">
+          <a href="#"><img src="img/icn-google-plus.png" alt=""></a>
+        </span>
+
         <!-- Facebook -->
         <a href="http://www.facebook.com/sharer.php?s=100&p[title]=http://cryptris.com" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?u=http://cryptris.com','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img src="img/icn-facebook.png" alt=""></a>
         
@@ -70,5 +81,12 @@
 
     <script src="vendor/retina.js"></script>
 
+    <script type="text/javascript">
+      (function() {
+       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+       po.src = 'https://apis.google.com/js/client:plusone.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+     })();
+    </script>
   </body>
 </html>
