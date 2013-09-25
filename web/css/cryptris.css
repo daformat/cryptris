@@ -180,7 +180,7 @@ ul{
 /* Logos */
 
 .cryptris-logo-large{
-	width: 80%;
+	width: 70%;
 	max-width: 1090px;
 	min-width: 500px;
 	margin-top: 0%;
@@ -260,6 +260,7 @@ ul{
 /* Social icons */
 .social-icons{
 	position: absolute;
+	z-index: 100;
 	bottom: 35px;
 	right: 35px;
 }
@@ -274,6 +275,9 @@ ul{
 .social-icons a:hover img{
 	-webkit-transform: translateY(-10px) rotate(360deg);
 	transform: translateY(-10px) rotate(360deg);
+}
+.social-icons img.retina{
+	width: 35px;
 }
 /*
 	Scrollable content with gradient

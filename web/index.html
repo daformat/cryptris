@@ -16,6 +16,7 @@
 
     <script src="vendor/jquery-1.10.2.min.js"></script>
     <script src="js/viewport.js"></script>
+    <script src="js/mobile-detection.js"></script>
     <script src="js/selectable-list.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Geo|Inconsolata|Quantico:400,700' rel='stylesheet' type='text/css'>
@@ -56,7 +57,7 @@
       <div class='social-icons'>
 
         <!-- Twitter -->
-        <a href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img src="img/icn-twitter.png" alt=""></a>
+        <a href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
 
         <!-- Google plus -->  
         <span
@@ -69,18 +70,16 @@
           data-calltoactionlabel="PLAY"
           data-calltoactionurl="http://crytptis.com"
           data-calltoactiondeeplinkid="/">
-          <a href="#"><img src="img/icn-google-plus.png" alt=""></a>
+          <a href="#"><img class="retina" src="img/icn-google-plus@2x.png" data-at2x="img/icn-google-plus@2x.png" alt=""></a>
         </span>
 
         <!-- Facebook -->
-        <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img src="img/icn-facebook.png" alt=""></a>
+        <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
         
       </div>
     </div>
 
     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-
-    <script src="vendor/retina.js"></script>
 
     <script type="text/javascript">
       (function() {
@@ -89,5 +88,8 @@
        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
      })();
     </script>
+
+    <script src="vendor/retina.js"></script>
+
   </body>
 </html>
