@@ -194,7 +194,7 @@ $(function(){
 
 	function dialog6(){
 		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
-					
+
 			$.switchWrapper('#bg-circuits', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -210,12 +210,66 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: dialog6
+			      onClick: dialog7
 			    }]
 
 			  });	
 
 			});
+
+		});
+
+	}
+
+	function dialog7(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Parfait! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog8
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+	function dialog8(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
+
+		    type: "withAvatar",
+		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+		    title: "InriOS 3.14",
+		    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+		    
+		    controls: [{
+		      label: "Ouvrir le message", 
+		      class: "button blue",
+		      onClick: dialog8
+		    }]
+
+		  });	
 
 		});
 
