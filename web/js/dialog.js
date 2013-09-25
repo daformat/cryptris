@@ -52,12 +52,18 @@
 	    	} 
 	    } ],
 	    title: "Cryptris",
+	    transition: {
+	    	in: {opacity: "0", marginLeft: "150%"},
+	    	show: {opacity: "1", marginLeft: "0%"},
+	    	out: {opacity: "0", marginLeft: "-150%"}
+	    },
 	    type: "withoutAvatar"
     }, options );
 
     // create element and set it up
 		var $dialog = $(dialog[settings.type].template);
-				$dialog.css({marginLeft: "200%"});
+				$dialog.css(settings.transition.in);
+				$dialog.data('settings', settings);
 
 		populateContent($dialog);
 		populateControls($dialog);
@@ -66,9 +72,7 @@
 		this.append($dialog);
 
 		// animate in
-		$dialog.animate({
-						marginLeft: "0%"
-					}, function(){
+		$dialog.animate(settings.transition.show, function(){
 							// animate letter by letter if needed
 							if (settings.animateText) $('.content .text', $dialog).typeLetterByLetter(settings.content, 20);
 					});
@@ -80,9 +84,8 @@
 	$.fn.closeAllDialogs = function(_callback) {
 
 		// find all dialogs and animate them
-		$d = $('.dialog', this).animate({
-			'margin-left': '-200%'
-		}, function() {
+		$d = $('.dialog', this);
+		$d.animate($d.data('settings').transition.out, function() {
 
 			// on complete, remove element
 			$(this).remove();

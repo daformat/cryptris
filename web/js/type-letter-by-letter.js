@@ -24,7 +24,7 @@
 
 			$e.html(text.substr(0, n++));
 			
-			if(tag)
+			if(tag === true)
 				typeAnother($e, text, speed);
 			else
 				setTimeout(function(){typeAnother($e, text, speed)}, speed);
