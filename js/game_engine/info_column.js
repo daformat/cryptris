@@ -169,7 +169,7 @@ function InfoColumn(director, resultScene, crypt_key) {
      }
      this.pauseButton.mouseUp = function(mouseEvent) {
         if (object.isPauseDown === false) {
-            object.resultScene['scene'].setPaused(false);
+            object.resultScene.scene.setPaused(false);
         } else {
             object.resultScene['scene'].setPaused(true);
         }

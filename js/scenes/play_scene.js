@@ -138,12 +138,13 @@ function handle_ia(playScene, rivalBoxInfo) {
 
 function resizePlayScene(director, playScene) {
 
+    /*
     if (playScene.scene.isPaused() === true) {
         playScene.scene.setPaused(false);
         var pauseButton = playScene.info_column.pauseButton;
         playScene.info_column.isPauseDown = false;
         pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - 3);
-    }
+    }*/
 
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
@@ -161,6 +162,7 @@ function resizePlayScene(director, playScene) {
 
     playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
     playScene.rival_box.resize(playScene.scene, playScene.leftIAName, playScene.centerIAName, playScene.rightIAName);
+
 }
 
 /**
@@ -333,7 +335,6 @@ function createPlayScene(director) {
      * Call the IA script.
      */
     handle_ia(resultScene['scene'], rivalBoxInfo);
-
 
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {

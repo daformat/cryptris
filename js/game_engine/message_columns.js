@@ -215,7 +215,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
          */
 	    this.displayValue.setLocation(x, this.container.height + 15).setSize(this.boxOption.SQUARE_WIDTH, 15);
 	    this.displayValue.stopCacheAsBitmap();
-	    this.displayValue.cacheAsBitmap();
 
 	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT + 1;
 
@@ -253,6 +252,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	        }
         }
         this.column.cacheAsBitmap();
+
+        // TOFIX : Actually this line is commented to avoid number disparition during resize.
+        //this.displayValue.cacheAsBitmap();
     }
 
     this.changeType = function(newType) {
