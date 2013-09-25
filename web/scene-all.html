@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cryptris</title>
+    <meta name="viewport" content="initial-scale = 0.85,maximum-scale = 0.85" />
+    <meta charset="utf-8">
+
+    <!-- Css -->
+    <link href="css/cryptris.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="vendor/html5shiv.js"></script>
+      <script src="vendor/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/type-letter-by-letter.js"></script>
+    <script src="js/selectable-list.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/switch-wrapper.js"></script>
+    <script src="js/scene-all.js"></script>
+    
+    <link href='http://fonts.googleapis.com/css?family=Geo|Inconsolata|Quantico:400,700' rel='stylesheet' type='text/css'>
+
+  </head>
+  <body class="">
+
+    <div class="wrapper black active" id="prompts">
+      <div class="vertical-centering">
+        <p class="prompt" ><span class="arrow">▶</span> <span class="content">Tu es stagiaire dans une équipe de recherche Inria</span><span class="blinking cursor">_</span></p>
+      </div>
+    </div>
+
+    <div class="wrapper bg-institut hidden" id="bg-institut">
+      <div class="vertical-centering">
+      </div>
+    </div>
+
+    <div class="wrapper black hidden" id='new-login'>
+      <div class="vertical-centering">
+        <img src='img/logo-inria-pixelated.png' class="logo-inria-pixelated">
+        <form class="new-login" action="" method="get">
+          <label for="login">Choisissez votre nom d’utilisateur :</label>
+          <fieldset>
+            <span class="arrow">▶</span>
+            <input type="text" id="login-name" name="name">
+            <input type="submit" class="button blue" value="OK">
+          </fieldset>
+        </form>
+        
+        <div class="inrios">InriOS 3.14</div>
+      </div>
+    </div>
+
+    <div class="wrapper bg-circuits hidden" id="bg-circuits">
+      <div class="vertical-centering">
+      </div>
+    </div>
+
+  </body>
+</html>

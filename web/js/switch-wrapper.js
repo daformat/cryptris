@@ -4,9 +4,10 @@
 		$('.wrapper.active').fadeOut(function(){
 			$(this).removeClass('active');
 			setTimeout(function(){
-				$(sel).fadeIn().addClass('active');
-				if(_callback && typeof(_callback === "function" )) _callback();
-			}, 1000);
+				$(sel).fadeIn(function(){
+					if(_callback && typeof(_callback === "function" )) _callback();
+				}).addClass('active');
+			}, 100);
 		});
 	}
 
