@@ -1,5 +1,4 @@
-function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn)
-{
+function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn) {
     this.type = type;
     this.boxOption = boxOption;
     this.squareNumber = squareNumber;
@@ -14,38 +13,29 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.column = new CAAT.Foundation.Actor();
     this.container.addChild(this.column);
 
-    if (this.squareNumber === 0)
-    {
+    if (this.squareNumber === 0) {
         this.column.setSize(this.boxOption.SQUARE_WIDTH, this.boxOption.SQUARE_HEIGHT / 2);
     }
 
     this.gradient = null;
     this.blurGradient = null;
 
-    this.computeGradient = function()
-    {
-        if (this.type != COLUMN_TYPE_3) 
-        {
+    this.computeGradient = function() {
+        if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
             this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
-        }
-        else 
-        {
+        } else {
             this.gradient = null;
         }
     };
 
-    this.computeBlurGradient = function()
-    {
-        if (this.type != COLUMN_TYPE_3) 
-        {
+    this.computeBlurGradient = function() {
+        if (this.type != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
             this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
             this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
-        }
-        else 
-        {
+        } else {
             this.blurGradient = null;
         }
     };
@@ -54,15 +44,12 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.computeGradient();
 
 	var object = this;
-	this.column.paint = function(director, time)
-    {
-		if(this.height < 0)
-		{
+	this.column.paint = function(director, time) {
+		if(this.height < 0) {
 			return;
 		}
 		
-		if (this.isCached())
-		{
+		if (this.isCached()) {
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
 			return;
 		}
@@ -75,20 +62,15 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
 		ctx.fillStyle = object.gradient;
 		
-		for (var i = 0; i < object.squareNumber; ++i)
-		{
+		for (var i = 0; i < object.squareNumber; ++i) {
 			var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
 
-			if (this.y + y >= object.boxOption.BORDER_HEIGHT)
-			{
+			if (this.y + y >= object.boxOption.BORDER_HEIGHT) {
 				ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);				
 				ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-			}
-			else if (this.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT)
-			{
+			} else if (this.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) {
 				var diffNewHeight = 0;
-				while (this.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT)
-				{
+				while (this.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) {
 					++diffNewHeight;
 				}
 				var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
@@ -100,24 +82,21 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 		}
 	}
 	
-    this.redraw = function(x, y)
-    {
+    this.redraw = function(x, y) {
         y = typeof y !== 'undefined' ? y : this.boxOption.BORDER_HEIGHT;
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
     };
 
-    this.firstDraw = function(x)
-    {
+    this.firstDraw = function(x) {
         y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
     };
 
-    this.firstMove = function()
-    {
+    this.firstMove = function() {
         this.keyFirstMove = true;
         var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
         var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
@@ -129,22 +108,16 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.column.addBehavior(pb);
     };
 
-    this.stopMove = function()
-    {
-        if (this.pb !== null) 
-        {
+    this.stopMove = function() {
+        if (this.pb !== null) {
             this.pb.setOutOfFrameTime();
         }
     };
 
-    this.changeType = function()
-    {
-        if (this.type === COLUMN_TYPE_1) 
-        {
+    this.changeType = function() {
+        if (this.type === COLUMN_TYPE_1) {
             this.type = COLUMN_TYPE_2;
-        }
-        else if (this.type === COLUMN_TYPE_2) 
-        {
+        } else if (this.type === COLUMN_TYPE_2) {
             this.type = COLUMN_TYPE_1;
         }
 
@@ -152,23 +125,19 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.redraw();
     };
 
-    this.setInactive = function()
-    {
+    this.setInactive = function() {
         this.isActive = false;
     };
 
-    this.clean = function()
-    {
+    this.clean = function() {
         this.squareNumber = 0;
         this.redraw();
     };
 
-    this.keyDown = function()
-    {
-        if (this.type !== COLUMN_TYPE_3) 
-        { 
+    this.keyDown = function() {
+        if (this.type !== COLUMN_TYPE_3) {
             this.keyInMove = true;
-            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 1;
+            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
             var time = (finalDestination - this.column.y) / 1750 * 4500
 
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
@@ -181,35 +150,28 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     var object = this;
 	
     this.myTimer = director.createTimer(this.container.time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask)
-        {
-            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) 
-            {
+        function(time, ttime, timerTask) {
+            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
                 var msgColumn = object.msgColumn.column;
                 var keyColumn = object.column;
 
-                if (keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) 
-                {
+                if (keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
                     object.stopMove();
 
                     keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
                     object.msgColumn.mergeColumns(object);
 
 
-                    if (object.pathContinue === true) 
-                    {
+                    if (object.pathContinue === true) {
                         object.pathContinue = false;
                         object.keyDown();
-                    }
-                    else 
-                    {
+                    } else {
                         object.clean();
                         object.setInactive();
                     }
 
                     object.boxOption.objectsInMove.splice(0, 1);
-                    if (object.boxOption.objectsInMove.length === 0)
-                    {
+                    if (object.boxOption.objectsInMove.length === 0) {
                         object.boxOption.keyNeedToUpdate = true;
                     }
                 }
@@ -218,8 +180,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     );
 }
 
-function getSecondString(key, default_)
-{
+function getSecondString(key, default_) {
   if (default_==null) default_=""; 
   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
@@ -230,8 +191,7 @@ function getSecondString(key, default_)
     return qs[1];
 }
 
-function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player)
-{
+function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
 	this.player = player;
 	this.type = KEY_TYPE_NORMAL;
 	this.length = keyLength;
@@ -244,25 +204,20 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 
 	this.keyInfo = keyInfo;
 	this.normalKey = [];
-	for (var i = 0; i < this.keyInfo['normal_key'].length; ++i)
-    {
+	for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
 		this.normalKey.push(this.keyInfo['normal_key'][i]);
 	}
 	this.reverseKey = [];
-	for (var i = 0; i < this.keyInfo['reverse_key'].length; ++i)
-    {
+	for (var i = 0; i < this.keyInfo['reverse_key'].length; ++i) {
 		this.reverseKey.push(this.keyInfo['reverse_key'][i]);
 	}
 	this.number = [];
-	for (var i = 0; i < this.keyInfo['number'].length; ++i)
-    {
+	for (var i = 0; i < this.keyInfo['number'].length; ++i) {
 		this.number.push(this.keyInfo['number'][i]);
 	}
 
-	this.createKey = function ()
-    {
-		for (var i = 0; i < this.columnList.length; ++i)
-        {
+	this.createKey = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
 			this.container.removeChild(this.columnList[i].column);
 			this.columnList[i].myTimer.cancel();
 		}
@@ -271,18 +226,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		this.keyFirstMove = true;
 
 		this.boxOption.maxKeyNumber = 0;
-		for (var i = 0; i < this.length; ++i)
-        {
-			if (this.number[i] > this.boxOption.maxKeyNumber)
-            {
+		for (var i = 0; i < this.length; ++i) {
+			if (this.number[i] > this.boxOption.maxKeyNumber) {
 				this.boxOption.maxKeyNumber = this.number[i];
 			}
-			if (this.type === KEY_TYPE_NORMAL)
-            {
+			if (this.type === KEY_TYPE_NORMAL) {
 				this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
-			}
-            else if (this.type === KEY_TYPE_REVERSE)
-            {
+			} else if (this.type === KEY_TYPE_REVERSE) {
 				this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
 			}
 		}
@@ -291,48 +241,36 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		return this;
 	}
 
-	this.firstDraw = function ()
-    {
-		for (var i = 0; i < this.columnList.length; ++i)
-        {
+	this.firstDraw = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
 			this.columnList[i].firstMove();
 		}
 	}
 
-	this.redraw = function ()
-    {
-		for (var i = 0; i < this.columnList.length; ++i)
-        {
+	this.redraw = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
 		}
 	}
 
-	this.changeKeyType = function ()
-    {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false)
-        {
-			if (this.type === KEY_TYPE_NORMAL)
-            {
+	this.changeKeyType = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
+			if (this.type === KEY_TYPE_NORMAL) {
 				this.type = KEY_TYPE_REVERSE;
-			}
-            else
-            {
+			} else {
 				this.type = KEY_TYPE_NORMAL;
 			}
 
-			for (var i = 0; i < object.columnList.length; ++i)
-            {
+			for (var i = 0; i < object.columnList.length; ++i) {
 				object.columnList[i].changeType();
 				object.redraw();
 			}
 		}
 	}
 
-	this.rotateLeft = function ()
-    {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false)
-        {
+	this.rotateLeft = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
 			this.columnList.push(this.columnList[0]);
 			this.columnList.splice(0, 1);
 
@@ -350,10 +288,8 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		}
 	}
 
-	this.rotateRight = function ()
-    {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false)
-        {
+	this.rotateRight = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
 			this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
 			this.columnList.splice(this.columnList.length - 1, 1);
 
@@ -371,21 +307,16 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		}
 	}
 
-	this.reAssignColumns = function ()
-    {
-		for (var i = 0; i < this.columnList.length; ++i)
-        {
+	this.reAssignColumns = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].msgColumn = this.msgColumn.columnList[i];
 		}
 	}
 
-	this.keyDown = function ()
-    {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false)
-        {
+	this.keyDown = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
 			this.keyInMove = true;
-			for (var i = 0; i < this.columnList.length; ++i)
-            {
+			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].keyDown();
 			}
 		}
@@ -394,15 +325,11 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 	var object = this;
 
 	director.createTimer(this.container.time, Number.MAX_VALUE, null,
-		function (time, ttime, timerTask)
-        {
-			if (object.keyFirstMove === true)
-            {
+		function (time, ttime, timerTask) {
+			if (object.keyFirstMove === true) {
 				var newKeyFirstMove = false;
-				for (var i = 0; i < object.columnList.length; ++i)
-                {
-					if (object.columnList[i].keyFirstMove === true)
-                    {
+				for (var i = 0; i < object.columnList.length; ++i) {
+					if (object.columnList[i].keyFirstMove === true) {
 						newKeyFirstMove = true;
 					}
 				}
@@ -410,21 +337,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 			}
 
 
-			if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true)
-            {
+			if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
 				object.boxOption.keyNeedToUpdate = false;
 				var needToUpdateAgain = false;
-				for (var k = 0; k < object.msgColumn.columnList.length; ++k)
-                {
-					if (object.msgColumn.columnList[k].blockToDestroy !== null)
-                    {
-						if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false)
-                        {
+				for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
+					if (object.msgColumn.columnList[k].blockToDestroy !== null) {
+						if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false) {
 							object.msgColumn.columnList[k].container.removeChild(object.msgColumn.columnList[k].blockToDestroy.column);
 							object.msgColumn.columnList[k].blockToDestroy = null;
-						}
-                        else
-                        {
+						} else {
 							needToUpdateAgain = true;
 						}
 					}
@@ -432,12 +353,9 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 					object.msgColumn.columnList[k].keySquareNumber = 0;
 				}
 
-				if (needToUpdateAgain === true)
-                {
+				if (needToUpdateAgain === true) {
 					object.boxOption.keyNeedToUpdate = true;
-				}
-                else
-                {
+				} else {
 					object.msgColumn.redraw();
 					object.createKey();
 					object.msgColumn.isResolved();
@@ -446,24 +364,18 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		}
 	);
 
-	if (this.player === true) 
-	{
-		CAAT.registerKeyListener(function (key)
-        {
-			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down')
-            {
+	if (this.player === true) {
+		CAAT.registerKeyListener(function (key) {
+			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
 				object.rotateLeft();
 			}
-			if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down')
-            {
+			if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
 				object.rotateRight();
 			}
-			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down')
-            {
+			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				object.changeKeyType();
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up')
-            {
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
 				object.keyDown();
 			}
 		});
