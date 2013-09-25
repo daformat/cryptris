@@ -138,6 +138,14 @@
 
 		// find all dialogs and animate them
 		$d = $('.dialog', this);
+
+		// if no dialog was found, execute callback and return
+		if ($d.length<1) {
+				if(_callback && typeof(_callback === "function" )) _callback();
+				return this;
+		}
+		
+		// if there is any dialog, animate it out		
 		$d.animate($d.data('settings').transition.out, function() {
 
 			// on complete, remove element
@@ -146,11 +154,6 @@
 			// execute callback if any
 			if(_callback && typeof(_callback === "function" )) _callback();
 		});
-
-		// if no dialog was found, execute callback
-		if ($d.length<1) {
-				if(_callback && typeof(_callback === "function" )) _callback();
-		}
 
 		return this;
 	}

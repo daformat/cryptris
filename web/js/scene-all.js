@@ -8,30 +8,38 @@ $(function(){
 	$('.hidden').hide().removeClass('hidden');
 
 	function intro(){
-		// First prompt
-		$('.prompt .content').text('');
 
-		setTimeout(function(){
-			$('.prompt .content').typeLetterByLetter(
-				"Tu es stagiaire dans une équipe de recherche Inria", 
-				60, 
+		$("body").closeAllDialogs(function(){
 
-				function(){
-					// Second prompt
-					setTimeout(function(){
-						$('.prompt .content').text('');
-						setTimeout(function(){
-							$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60, function(){
-								// Switch to institute
+			$.switchWrapper('#prompt', function(){
+				// First prompt
+				$('.prompt .content').text('');
+
+				setTimeout(function(){
+					$('.prompt .content').typeLetterByLetter(
+						"Tu es stagiaire dans une équipe de recherche Inria", 
+						60, 
+
+						function(){
+							// Second prompt
+							setTimeout(function(){
+								$('.prompt .content').text('');
 								setTimeout(function(){
-									$.switchWrapper('#bg-institut', dialog1);
-								}, readingDelay);						
-							});
-						}, 2000)
-					}, readingDelay);
+									$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60, function(){
+										// Switch to institute
+										setTimeout(function(){
+											$.switchWrapper('#bg-institut', dialog1);
+										}, readingDelay);						
+									});
+								}, 2000)
+							}, readingDelay);
+
+					});
+				}, 2000);					
 
 			});
-		}, 2000);					
+		});
+
 	}
 
 	function dialog1(){
