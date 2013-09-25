@@ -54,6 +54,15 @@ ul{
 	General stuff
 */
 
+.main-wrapper{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow-x: hidden;
+}
+
 .wrapper{
 	position: absolute;
 	width: 100%;
@@ -172,6 +181,7 @@ ul{
   vertical-align:middle;
   overflow-x: hidden;
 }
+
 
 /*
 	Home screen

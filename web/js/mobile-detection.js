@@ -70,5 +70,6 @@ $(function(){
   
   if(iCheck == true){
     $("body").addClass('iPhone iPod');
+    $("body").append('<div class="wrapper" id="rotate-device"><div class="vertical-centering"><img src="img/rotate-device.png"></div></div>');
   }
 })
