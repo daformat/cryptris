@@ -267,7 +267,7 @@ $(function(){
 		    controls: [{
 		      label: "Ouvrir le message", 
 		      class: "button blue",
-		      onClick: dialog8
+		      onClick: dialog9
 		    }]
 
 		  });	
@@ -277,4 +277,58 @@ $(function(){
 	}	
 
 
+	function dialog9(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "J’ai crypté ce message à l’aide de ta clé publique, pour le décrypter tu dois utiliser ta clé privée. Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog10
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+
+	function dialog10(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
+
+		    type: "withAvatar",
+		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+		    title: "Chercheuse",
+		    content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur.",
+		    
+		    controls: [{
+		      label: "Suite", 
+		      class: "button blue",
+		      onClick: dialog10
+		    }]
+
+		  });	
+
+		});
+
+	}
 });
