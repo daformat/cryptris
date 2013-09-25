@@ -341,7 +341,7 @@ $(function(){
 
 	function dialogCables(){
 		$("body").closeAllDialogs(function(){
-			$.switchWrapper('#bg-circuits', function(){
+			$.switchWrapper('#bg-institut', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
