@@ -53,10 +53,11 @@ $(function(){
 	function switchToNewLogin() {
 		$(".wrapper.active .vertical-centering").closeAllDialogs();
 
-		$.switchWrapper('#new-login');
+		$.switchWrapper('#new-login', function(){
+			$('#login-name').focus();
+		});
 		$('.new-login').submit(function(e){
 			player.name = $('#login-name').val();
-			console.log(player.name);
 			$.switchWrapper('#bg-institut', dialog2);
 
 			return false;
@@ -73,7 +74,7 @@ $(function(){
 	    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 	    title: "Chercheuse",
-	    content: "Parfait <em>"+player.name+"</em>, ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
+	    content: "Parfait"+( player.name ? " <em>"+player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
 	    
 	    controls: [{
 	      label: "Suite", 
@@ -90,7 +91,7 @@ $(function(){
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    type: "player",
-		    title: player.name,
+		    title: player.name||"Joueur",
 
 		    content: [{
 		    	label: "Cryptogra... quoi ?",
@@ -194,7 +195,7 @@ $(function(){
 
 	function dialog6(){
 		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
-					
+
 			$.switchWrapper('#bg-circuits', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -210,7 +211,7 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: dialog6
+			      onClick: dialog7
 			    }]
 
 			  });	
@@ -219,7 +220,115 @@ $(function(){
 
 		});
 
+	}
+
+	function dialog7(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Parfait! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog8
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+	function dialog8(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
+
+		    type: "withAvatar",
+		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+		    title: "InriOS 3.14",
+		    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+		    
+		    controls: [{
+		      label: "Ouvrir le message", 
+		      class: "button blue",
+		      onClick: dialog9
+		    }]
+
+		  });	
+
+		});
+
 	}	
 
 
+	function dialog9(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "J’ai crypté ce message à l’aide de ta clé publique, pour le décrypter tu dois utiliser ta clé privée. Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog10
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+
+	function dialog10(){
+		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
+
+		    type: "withAvatar",
+		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+		    title: "Chercheuse",
+		    content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur.",
+		    
+		    controls: [{
+		      label: "Suite", 
+		      class: "button blue",
+		      onClick: dialog10
+		    }]
+
+		  });	
+
+		});
+
+	}
 });
