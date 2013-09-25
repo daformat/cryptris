@@ -356,7 +356,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "cables",
-			    title: "Séléctionner le cable à débranche",
+			    title: "Séléctionner le cable à débrancher",
 
 			  });
 
