@@ -1,12 +1,13 @@
 $(function(){
 
-	$(".hidden").removeClass("hidden").fadeOut(0);
+	$(".hidden").removeClass("hidden").hide();
 
 	// Keep reference to the actual cable set used
 	var cableSet = {
-		L: 0,
-		R: 0
-	}
+				L: 0,
+				R: 0
+			},
+			$cableDialog;
 
 	// Cable data
 	var cables = {
@@ -64,9 +65,9 @@ $(function(){
 	var setCorrectCable = function(n) {
 		var cableIndex, $cableJack;
 
-		$(".cables .left .numbers li").each(function(i) {
+		$(".left .numbers li", $cableDialog).each(function(i) {
 			cableIndex = cables[cableSet.L].L[i];
-			$cableJack = $(".cables .left .jacks li").eq(cableIndex);
+			$cableJack = $(".left .jacks li", $cableDialog).eq(cableIndex);
 
 			applyCableBehavior($(this), $cableJack, n);
 
@@ -74,7 +75,7 @@ $(function(){
 
 		$(".cables .right .numbers li").each(function(i) {
 			cableIndex = cables[cableSet.R].R[i];
-			$cableJack = $(".cables .right .jacks li").eq(cableIndex);
+			$cableJack = $(".right .jacks li", $cableDialog).eq(cableIndex);
 
 			applyCableBehavior($(this), $cableJack, n, i);
 
@@ -100,7 +101,7 @@ $(function(){
 
 	// Picking the wrong cable plays an animation to simulate an electric shock
 	var electrifyCable = function ($cable) {
-		var $d = $('.dialog');
+		var $d = $cableDialog;
 		
 		$d.jrumble({
 			opacity: true,
@@ -121,13 +122,13 @@ $(function(){
 	var randomizeCables = function() {
 		var numbers = [];
 
-		$(".cables .numbers li").each(function(i){
+		$(".numbers li", $cableDialog).each(function(i){
 			numbers.push($(this).text());
 		});
 
 		numbers.shuffle();
 
-		$(".cables .numbers li").each(function(i){
+		$(".numbers li", $cableDialog).each(function(i){
 			$(this).text(numbers[i]);
 		});
 
@@ -140,8 +141,8 @@ $(function(){
 			R: Math.floor(Math.random() * objectsize(cables)),
 		}
 
-		$(".cables .left .cables-img").attr('src', cables[cableSet.L].pics.L);
-		$(".cables .right .cables-img").attr('src', cables[cableSet.R].pics.R);
+		$(".left .cables-img", $cableDialog).attr('src', cables[cableSet.L].pics.L);
+		$(".right .cables-img", $cableDialog).attr('src', cables[cableSet.R].pics.R);
 	}
 
 	// Shuffle array
@@ -179,7 +180,11 @@ $(function(){
 	};
 
 	// Need to be refactored ?
-	pickRandomCableSet();
-	randomizeCables();
-	setCorrectCable(42);
+	$.fn.prepareCables = function(correctCable){
+		$cableDialog = this;
+
+		pickRandomCableSet();
+		randomizeCables();
+		setCorrectCable(correctCable);
+	}
 })

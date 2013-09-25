@@ -1,5 +1,5 @@
 $(function(){
-	
+
 	// Game settings
 	var readingDelay = 4000,
 			player = {};
@@ -330,6 +330,24 @@ $(function(){
 		      class: "button blue",
 		      onClick: dialog10
 		    }]
+
+		  });	
+
+		});
+
+	}
+
+
+
+	function dialog11(){
+		$("body").closeAllDialogs(function(){
+
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
+
+		    type: "cables",
+		    title: "Séléctionner le cable à débranche",
 
 		  });	
 

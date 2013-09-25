@@ -14,12 +14,12 @@
 			  },
 				"withoutAvatar": {
 					template: '<div class="dialog">'
-		          		+ '		<h2></h2>'
-							    + '   <div class="content">'
+		          		+ '  <h2></h2>'
+							    + '    <div class="content">'
 							    + '      <span class="text"></span>'
 							    + '    </div>'
-							    + '    <div class="controls"></div>'
-							    + ' </div>',
+							    + '  <div class="controls"></div>'
+							    + '</div>',
 			  },
 				"player": {
 					template: '<div class="dialog player">'
@@ -27,6 +27,55 @@
 							    + '   <div class="content">'
 							    + '   </div>'
 							    + '</div>'
+				},
+				"cables": {
+	        template: '<div class="dialog cables">'
+	          			+ '  <h2>Sélectionnez le câble à débrancher</h2>'
+	          			+ '  <div class="content">'
+	            		+ '    <div class="left">'
+	              	+ '      <ul class="numbers">'
+	                + '        <li>42</li>'
+	                + '        <li>24</li>'
+	                + '        <li>78</li>'
+	                + '        <li>27</li>'
+	                + '        <li>31</li>'
+	                + '        <li>03</li>'
+	                + '        <li>16</li>'
+	              	+ '      </ul>'
+	              	+ '      <img class="cables-img" src="img/entangled-cables-L-01.png">'
+	              	+ '      <ul class="jacks">'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-L.png" alt=""></a></li>'
+	              	+ '      </ul>'
+	            		+ '    </div>'
+	            		+ '    <div class="right">'
+	              	+ '      <ul class="numbers">'
+	                + '        <li>23</li>'
+	                + '        <li>98</li>'
+	                + '        <li>25</li>'
+	                + '        <li>36</li>'
+	                + '        <li>55</li>'
+	                + '        <li>47</li>'
+	                + '        <li>07</li>'
+	              	+ '      </ul>'
+	              	+ '      <img class="cables-img" src="img/entangled-cables-R-01.png">'
+	              	+ '      <ul class="jacks">'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	                + '        <li><a href="#" class="jack"><img src="img/entangled-cables-jack-R.png" alt=""></a></li>'
+	              	+ '      </ul>'
+	            		+ '    </div>'
+	          			+ '  </div>'
+	        				+ '</div>'
 				},
 				"custom": {
 					template: '<div class="dialog">'
@@ -65,8 +114,10 @@
 				$dialog.css(settings.transition.in);
 				$dialog.data('settings', settings);
 
-		populateContent($dialog);
-		populateControls($dialog);
+		if(settings.type != 'cables') {
+			populateContent($dialog);
+			populateControls($dialog);
+		}
 
 		// append to the DOM
 		this.append($dialog);
