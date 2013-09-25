@@ -8,6 +8,8 @@ $(function(){
 	$('.hidden').hide().removeClass('hidden');
 
 	function intro(){
+		// make sure prompt is empty
+		$('.prompt .content').text('');
 
 		$("body").closeAllDialogs(function(){
 
