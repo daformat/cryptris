@@ -73,7 +73,7 @@ $(function(){
 	    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 	    title: "Chercheuse",
-	    content: "Parfait <em>"+player.name+"</em>, ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
+	    content: "Parfait"+( player.name ? " <em>"+player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
 	    
 	    controls: [{
 	      label: "Suite", 
@@ -90,7 +90,7 @@ $(function(){
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    type: "player",
-		    title: player.name,
+		    title: player.name||"Joueur",
 
 		    content: [{
 		    	label: "Cryptogra... quoi ?",
