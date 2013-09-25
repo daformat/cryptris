@@ -14,8 +14,7 @@ var currentGame = new game();
  * shown after the splash screen.
  * @param director {CAAT.Director}
  */
-function createScenes(director)
-{
+function createScenes(director) {
     /**
      * Create each scene.
      */
@@ -26,8 +25,7 @@ function createScenes(director)
     /**
      * Link each scene together.
      */
-    currentGame.scenes['menu_scene']['shortcutButton'].mouseClick = function(e)
-    {
+    currentGame.scenes['menu_scene']['shortcutButton'].mouseClick = function(e) {
         director.switchToScene(director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
     };
 
@@ -41,8 +39,7 @@ function createScenes(director)
  * This function displays the splash screen and switch to the 'menu scene'.
  * @param director {CAAT.Director}
  */
-function launchSplashScreen(director)
-{
+function launchSplashScreen(director) {
     /**
      * Image assets
      */
@@ -63,6 +60,8 @@ function launchSplashScreen(director)
     imgs.push({id:'left-board', url: "img/assets/left-board-assets_07.png"});
     imgs.push({id:'right-board', url: "img/assets/right-board-assets_07.png"});
     imgs.push({id:'center-board', url: "img/assets/center-board-assets_07.png"});
+    imgs.push({id:'triangle-left', url: "img/assets/triangle-left.png"});
+    imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
 
     /**
      * Clear the director.
@@ -74,10 +73,8 @@ function launchSplashScreen(director)
      */
     new CAAT.Module.Preloader.ImagePreloader().loadImages(
         imgs,
-        function on_load(counter, images)
-        {
-            if (counter === images.length)
-            {
+        function on_load(counter, images) {
+            if (counter === images.length) {
                 director.setImagesCache(images);
                 var splashScene = createSplashScene(director, 2000, createScenes);
                 CAAT.loop(60);
@@ -91,26 +88,20 @@ function launchSplashScreen(director)
  * Launch all resize functions when the event is fired.
  */
 var resizeInProcess = false;
-function resize(director, newWidth, newHeight)
-{
-    if (director.width < 800 || director.height < 550)
-    {
+function resize(director, newWidth, newHeight) {
+    if (director.width < 800 || director.height < 550) {
         return;
     }
 
-    if (resizeInProcess === false)
-    {
+    if (resizeInProcess === false) {
         resizeInProcess = true;
 
-        if (currentGame.scenes !== null)
-        {
-            if (currentGame.scenes['menu_scene'] !== null)
-            {
+        if (currentGame.scenes !== null) {
+            if (currentGame.scenes['menu_scene'] !== null) {
                 currentGame.scenes['menu_scene']['resize'](director, currentGame.scenes['menu_scene']);
             }
 
-            if (currentGame.scenes['play_scene'] !== null)
-            {
+            if (currentGame.scenes['play_scene'] !== null) {
                 currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
             }
         }
@@ -133,12 +124,12 @@ $(document).ready(function() {
         $(this).attr('style', 'display: none;');
     });
 
+    a = "test";
+
     /**
      * Declare our main caat director.
      */
-    var onScreenCanvas  = $('.main_scene'),
-	    offScreenCanvas = $('<canvas>').addClass('main_scene').css('display', 'none').insertAfter(onScreenCanvas);
-
+    var onScreenCanvas  = $('.main_scene');
 	var director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
 	
     /**

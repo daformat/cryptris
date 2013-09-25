@@ -1,5 +1,4 @@
-function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player)
-{
+function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player) {
     this.director = director;
     this.boxOption = boxOption;
     this.relativeX = relativeX;
@@ -9,14 +8,12 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.my_message = my_message;
     this.player = player;
 
-    this.sizeWidth = function()
-    {
+    this.sizeWidth = function() {
         console.log(this.boxOption.SPACE_WIDTH + " - " + DEFAULT_SQUARE_WIDTH);
         return this.current_length * (this.boxOption.SPACE_WIDTH + DEFAULT_COLUMN_WIDTH) - this.boxOption.SPACE_WIDTH + 2 * this.boxOption.BORDER_WIDTH;
     }
 
-    this.sizeHeight = function()
-    {
+    this.sizeHeight = function() {
         return this.director.height - this.relativeY - 100;
     }
 
@@ -34,8 +31,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     /**
      * Create each column and set their color.
      */
-    for (var i = 0; i < current_length; ++i)
-    {
+    for (var i = 0; i < current_length; ++i) {
         var column = new CAAT.ShapeActor().setSize(DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
                                                  .setFillStyle(boxOption.columnColor)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
@@ -61,13 +57,11 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.message.redraw();
     this.crypt_key.firstDraw();
 
-    this.resize = function()
-    {
+    this.resize = function() {
         this.gameBox.setSize(this.sizeWidth(), this.sizeHeight())
                     .setLocation(this.relativeX, this.relativeY);
 
-        for (var i = 0; i < this.columnList.length; ++i)
-        {
+        for (var i = 0; i < this.columnList.length; ++i) {
             this.columnList[i].setSize(DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
                               .setLocation(this.boxOption.BORDER_WIDTH + i * (DEFAULT_COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.boxOption.BORDER_HEIGHT)
 	                          .cacheAsBitmap();
@@ -76,8 +70,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 	    this.gameBox.stopCacheAsBitmap();
 	    this.gameBox.cacheAsBitmap();
 
-        if (this.crypt_key.keyInMove !== true && this.crypt_key.keyFirstMove !== true)
-        {
+        if (this.crypt_key.keyInMove !== true && this.crypt_key.keyFirstMove !== true) {
             this.message.redraw();
             this.crypt_key.redraw();
         }

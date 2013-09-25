@@ -6,16 +6,18 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 
+var DEFAULT_SPACE_WIDTH = 4;
 var DEFAULT_SQUARE_WIDTH = 40;
 var DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
+var DEFAULT_SQUARE_HEIGHT = 20;
+var DEFAULT_SPACE_HEIGHT = 4;
 
-function GameBoxOption()
-{
+function GameBoxOption() {
 	this.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = this.SQUARE_WIDTH + 3;
-	this.SQUARE_HEIGHT = 20;
-	this.SPACE_WIDTH = 4;
-	this.SPACE_HEIGHT = 4;
+	this.SQUARE_HEIGHT = DEFAULT_SQUARE_HEIGHT;
+	this.SPACE_WIDTH = DEFAULT_SPACE_WIDTH;
+	this.SPACE_HEIGHT = DEFAULT_SPACE_HEIGHT;
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
 	this.BORDER_WIDTH = 8;
 
@@ -37,13 +39,11 @@ function GameBoxOption()
 	this.keyNeedToUpdate = false;
 	this.endResolved = null;
 
-	this.setDefaultColor = function()
-	{
+	this.setDefaultColor = function() {
 		this.StrokeColor = this.defaultStrokeColor;
 	}
 
-	this.setFullColor = function()
-	{
+	this.setFullColor = function() {
 		this.StrokeColor = this.fullStrokeColor;
 	}
 
@@ -51,13 +51,12 @@ function GameBoxOption()
 	this.numberGrow = "#00FF9D";
 }
 
-function RivalBoxOption()
-{
+function RivalBoxOption() {
 	this.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = this.SQUARE_WIDTH + 3;
-	this.SQUARE_HEIGHT = 20;
-	this.SPACE_WIDTH = 4;
-	this.SPACE_HEIGHT = 4;
+	this.SQUARE_HEIGHT = DEFAULT_SQUARE_HEIGHT;
+	this.SPACE_WIDTH = DEFAULT_SPACE_WIDTH;
+	this.SPACE_HEIGHT = DEFAULT_SPACE_HEIGHT;
 	this.BORDER_HEIGHT = 2 * this.SPACE_HEIGHT;
 	this.BORDER_WIDTH = 8;
 	
@@ -79,13 +78,11 @@ function RivalBoxOption()
 	this.keyNeedToUpdate = false;
 	this.endResolved = null;
 
-	this.setDefaultColor = function()
-	{
+	this.setDefaultColor = function() {
 		this.StrokeColor = this.defaultStrokeColor;
 	}
 
-	this.setFullColor = function()
-	{
+	this.setFullColor = function() {
 		this.StrokeColor = this.fullStrokeColor;
 	}
 	this.numberColor = "#d30088";
