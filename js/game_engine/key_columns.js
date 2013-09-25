@@ -9,6 +9,8 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.keyInMove = false;
     this.keyFirstMove = false;
     this.pathContinue = false;
+    this.isResize = false;
+    this.pbFirstMove = null;
 
     this.column = new CAAT.Foundation.Actor();
     this.container.addChild(this.column);
@@ -99,13 +101,13 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.firstMove = function() {
         this.keyFirstMove = true;
         var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
-        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
+        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
 
         var object = this;
         var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; }, 'behaviorApplied' : null};
 
-        pb.addListener(behaviorListener);
-        this.column.addBehavior(pb);
+        this.pbFirstMove.addListener(behaviorListener);
+        this.column.addBehavior(this.pbFirstMove);
     };
 
     this.stopMove = function() {
@@ -113,6 +115,12 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
             this.pb.setOutOfFrameTime();
         }
     };
+
+    this.stopFirstMove = function() {
+        if (this.pbFirstMove !== null) {
+            this.pbFirstMove.setOutOfFrameTime();
+        }
+    }
 
     this.changeType = function() {
         if (this.type === COLUMN_TYPE_1) {
@@ -155,7 +163,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                 var msgColumn = object.msgColumn.column;
                 var keyColumn = object.column;
 
-                if (keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
+                if (object.isResize === true || keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
                     object.stopMove();
 
                     keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
@@ -201,6 +209,20 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 	this.boxOption = boxOption;
 	this.keyInMove = false;
 	this.keyFirstMove = false;
+
+    this.resize = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            this.columnList[i].isResize = true;
+        }
+
+        if (this.keyFirstMove === true) {
+            for (var i = 0; i < this.columnList.length; ++i) {
+                this.columnList[i].stopFirstMove();
+            }
+            this.keyFirstMove = false;
+            this.redraw();
+        }
+    }
 
 	this.keyInfo = keyInfo;
 	this.normalKey = [];

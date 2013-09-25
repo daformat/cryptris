@@ -152,29 +152,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		signe = "-";
 	}
 
-	this.displayValueHexa.paint = function(director, time) {
-		if (this.isCached()) {
-			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-			return;
-		}
-
-		var ctx = director.ctx;
-
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		ctx.shadowBlur = 5;
-		ctx.shadowColor = object.boxOption.numberGrow;
-
-		ctx.font = '15px Inconsolata';
-		ctx.fillStyle = object.boxOption.numberColor;
-		ctx.textAlign = 'center';
-		ctx.fillText(signe + "0x" + object.squareNumber.toString(16).toUpperCase(), this.width / 2, 11);
-	}
-
-	this.displayValueHexa.setSize(this.boxOption.SQUARE_WIDTH, 15);
-	this.displayValueHexa.cacheAsBitmap();
-
-
 	this.displayValue.paint = function(director, time) {
 		if (this.isCached()) {
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -236,11 +213,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         /**
          * Set message display.
          */
-        this.displayValueHexa.setLocation(x, this.container.height + 15).setSize(this.boxOption.SQUARE_WIDTH, 15);
-	    this.displayValueHexa.stopCacheAsBitmap();
-	    this.displayValueHexa.cacheAsBitmap();
-	    
-	    this.displayValue.setLocation(x, this.displayValueHexa.y + this.displayValueHexa.height).setSize(this.boxOption.SQUARE_WIDTH, 15);
+	    this.displayValue.setLocation(x, this.container.height + 15).setSize(this.boxOption.SQUARE_WIDTH, 15);
 	    this.displayValue.stopCacheAsBitmap();
 	    this.displayValue.cacheAsBitmap();
 
@@ -278,9 +251,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	        if(invalidate) {
 		        this.column.stopCacheAsBitmap();
 	        }
-	        
-	        this.column.cacheAsBitmap();
         }
+        this.column.cacheAsBitmap();
     }
 
     this.changeType = function(newType) {
@@ -309,7 +281,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             }
         }
 	    
-        this.redraw(this.column.x);
+        this.redraw(this.column.x, true);
     }
 
     this.addSquares = function(column) {
@@ -414,8 +386,13 @@ function Message(director, messageLength, message, container, boxOption) {
         return this;
     }
 
-    this.redraw = function() {
+    this.redraw = function(isInvalidate /* = false */) {
         if (this.boxOption.objectsInMove.length === 0) {
+            // -- Do not invalidate by default.
+            if (isInvalidate === null) {
+                isInvalidate = false;
+            }
+
 	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
             var oldSpaceHeight = this.boxOption.SPACE_HEIGHT;
 	        
@@ -464,17 +441,20 @@ function Message(director, messageLength, message, container, boxOption) {
                     }
                 }
             }
-        }
 
-        this.triangle_left.setLocation(-this.triangle_left.width, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT + this.triangle_left.height) / 2) - 1);
-        this.triangle_right.setLocation(this.container.width, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT + this.triangle_right.height) / 2) - 1);
-        this.base_line.setLocation(0, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT) / 2));
-        this.base_line_position = parseInt((this.container.width % 9) / 2);
+            this.triangle_left.setLocation(-this.triangle_left.width, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT + this.triangle_left.height) / 2) - 1);
+            this.triangle_right.setLocation(this.container.width, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT + this.triangle_right.height) / 2) - 1);
+            this.base_line.setLocation(0, this.container.height - this.boxOption.BORDER_HEIGHT - this.boxOption.SQUARE_HEIGHT - parseInt((this.boxOption.SPACE_HEIGHT) / 2));
+            this.base_line_position = parseInt((this.container.width % 9) / 2);
 
-        for (var i = 0; i < this.columnList.length; ++i) {
-	        var invalidate = (oldSquareHeight !== this.boxOption.SQUARE_HEIGHT || oldSpaceHeight !== this.boxOption.SPACE_HEIGHT);
-            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), invalidate);
+            for (var i = 0; i < this.columnList.length; ++i) {
+                var invalidate = (isInvalidate || oldSquareHeight !== this.boxOption.SQUARE_HEIGHT || oldSpaceHeight !== this.boxOption.SPACE_HEIGHT);
+                this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), invalidate);
+            }
+
+            return true;
         }
+        return false;
     }
 
     this.isResolved = function() {

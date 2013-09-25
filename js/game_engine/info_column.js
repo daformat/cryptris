@@ -154,20 +154,21 @@ function InfoColumn(director, resultScene, crypt_key) {
     /**
      * Add a paused behavior on pause button.
      */
-     var isPauseDown = false;
+     this.isPauseDown = false;
+     var object = this;
      var pauseX = this.pauseButton.x;
      var pauseY = this.pauseButton.y;
      this.pauseButton.mouseDown = function(mouseEvent) {
-        if (isPauseDown === false) {
+        if (object.isPauseDown === false) {
             object.pauseButton.setBackgroundImage(object.director.getImage('pause-down')).setLocation(pauseX, pauseY + 3);
-            isPauseDown = true;
+            object.isPauseDown = true;
         } else {
             object.pauseButton.setBackgroundImage(object.director.getImage('pause-up')).setLocation(pauseX, pauseY);
-            isPauseDown = false;
+            object.isPauseDown = false;
         }
      }
      this.pauseButton.mouseUp = function(mouseEvent) {
-        if (isPauseDown === false) {
+        if (object.isPauseDown === false) {
             object.resultScene['scene'].setPaused(false);
         } else {
             object.resultScene['scene'].setPaused(true);
@@ -190,7 +191,6 @@ function InfoColumn(director, resultScene, crypt_key) {
         }
     }
 
-	
     this.infoColumnContainer.addChild(this.cryptrisLogo);
     this.infoColumnContainer.addChild(this.pad);
     this.infoColumnContainer.addChild(this.pauseButton);

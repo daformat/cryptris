@@ -7,9 +7,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.key_info = key_info;
     this.my_message = my_message;
     this.player = player;
+    this.tryToResize = false;
 
     this.sizeWidth = function() {
-        console.log(this.boxOption.SPACE_WIDTH + " - " + DEFAULT_SQUARE_WIDTH);
         return this.current_length * (this.boxOption.SPACE_WIDTH + DEFAULT_COLUMN_WIDTH) - this.boxOption.SPACE_WIDTH + 2 * this.boxOption.BORDER_WIDTH;
     }
 
@@ -56,8 +56,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.crypt_key.createKey();
     this.message.redraw();
     this.crypt_key.firstDraw();
+    this.resizeTimer = null;
 
-    this.resize = function() {
+    this.resize = function(scene, left, center, right, info /* = false */) {
         this.gameBox.setSize(this.sizeWidth(), this.sizeHeight())
                     .setLocation(this.relativeX, this.relativeY);
 
@@ -70,10 +71,37 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 	    this.gameBox.stopCacheAsBitmap();
 	    this.gameBox.cacheAsBitmap();
 
-        if (this.crypt_key.keyInMove !== true && this.crypt_key.keyFirstMove !== true) {
-            this.message.redraw();
-            this.crypt_key.redraw();
+        if (this.crypt_key.keyInMove === true) {
+            this.crypt_key.resize();
         }
+
+        this.message.redraw(true);
+        this.crypt_key.redraw();
+
+
+        this.tryToResize = true;
+        var object = this;
+        this.resizeTimer = scene.createTimer(0, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+                if (object.tryToResize === true) {
+
+                    if (object.message.redraw(true) === true) {
+                        if (object.player === true) {
+                            left.setLocation(object.gameBox.x - 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
+                            center.setLocation(left.x + left.width, left.y);
+                            right.setLocation(center.x + center.width, center.y);
+
+                            info.infoColumnContainer.centerAt(object.gameBox.x + object.gameBox.width + 130, 80 + object.gameBox.height / 2);
+                        } else {
+                            right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
+                            center.setLocation(right.x - 175, right.y);
+                            left.setLocation(center.x - object.director.getImage('left-board').width, center.y);
+                        }
+                        object.tryToResize = false;
+                    }
+                }
+            }
+        );
     }
 
     return this;
