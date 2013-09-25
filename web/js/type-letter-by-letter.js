@@ -22,10 +22,12 @@
 			if ( c == '<') tag = true; 
 			else if ( c == '>') tag = false; 
 
-			$e.html(text.substr(0, n++));
+			$e.html(text.substr(0, ++n));
 			
-			if(tag === true)
+			if(tag === true){
 				typeAnother($e, text, speed);
+				//console.log("In tag")
+			}
 			else
 				setTimeout(function(){typeAnother($e, text, speed)}, speed);
 		} else { 
