@@ -51,7 +51,7 @@ $(function(){
 	}
 
 	function switchToNewLogin() {
-		$(".wrapper.active .vertical-centering").closeAllDialogs();
+		$("body").closeAllDialogs();
 
 		$.switchWrapper('#new-login', function(){
 			$('#login-name').focus();
@@ -86,7 +86,7 @@ $(function(){
 	}
 
 	function dialog3(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -117,7 +117,7 @@ $(function(){
 	}
 
 	function dialog4opt1(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -143,7 +143,7 @@ $(function(){
 
 
 	function dialog4opt2(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -168,7 +168,7 @@ $(function(){
 	}
 
 	function dialog5(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -194,7 +194,7 @@ $(function(){
 
 
 	function dialog6(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
 
@@ -223,7 +223,7 @@ $(function(){
 	}
 
 	function dialog7(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
 
@@ -252,7 +252,7 @@ $(function(){
 	}
 
 	function dialog8(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -278,7 +278,7 @@ $(function(){
 
 
 	function dialog9(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
 
@@ -308,7 +308,7 @@ $(function(){
 
 
 	function dialog10(){
-		$(".wrapper.active .vertical-centering").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
