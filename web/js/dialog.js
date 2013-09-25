@@ -118,6 +118,8 @@
 			populateContent($dialog);
 			populateControls($dialog);
 		}
+		setAvatar($dialog);
+		setTitle($dialog)
 
 		// append to the DOM
 		this.append($dialog);
@@ -193,11 +195,16 @@
 		
 		}
 
+	}
+
+	var setAvatar = function($dialog){
 		// Add avatar if set
 		if(settings.avatar) {
 			$('.avatar', $dialog).html(settings.avatar);
-		}
+		}		
+	}
 
+	var setTitle = function($dialog){
 		// Add title if set
 		if(settings.title) {
 			$('h2', $dialog).text(settings.title);
@@ -207,11 +214,13 @@
 	// loop through controls and create appropriate links
 	var populateControls = function($dialog){
     for (key in settings.controls) {
-    	var control = settings.controls[key]
-    	var $control = $('<a>'+control.label+'</a>').addClass(control.class);
-    			$control.click(control.onClick);
+    	if (settings.controls.hasOwnProperty(key)) {
+				var control = settings.controls[key]
+	    	var $control = $('<a>'+control.label+'</a>').addClass(control.class);
+	    			$control.click(control.onClick);
 
-    	$('.controls', $dialog).append($control);
+	    	$('.controls', $dialog).append($control);
+	    }
     }
 	}
 

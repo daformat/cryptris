@@ -328,7 +328,7 @@ $(function(){
 		    controls: [{
 		      label: "Suite", 
 		      class: "button blue",
-		      onClick: dialog10
+		      onClick: dialogCables
 		    }]
 
 		  });	
@@ -339,17 +339,50 @@ $(function(){
 
 
 
+	function dialogCables(){
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "cables",
+			    title: "Séléctionner le cable à débranche",
+
+			  });
+
+	      $('.cables').prepareCables(42, dialog11);
+
+			});
+
+		});
+	}
+
 	function dialog11(){
 		$("body").closeAllDialogs(function(){
 
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    animateText: true,
+			$.switchWrapper('#bg-circuits', function(){
 
-		    type: "cables",
-		    title: "Séléctionner le cable à débranche",
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-		  });	
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux éléctriques et ça devrait être bon !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog10
+			    }]
+
+			  });	
+
+			});
 
 		});
 

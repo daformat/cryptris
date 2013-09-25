@@ -7,7 +7,8 @@ $(function(){
 				L: 0,
 				R: 0
 			},
-			$cableDialog;
+			$cableDialog,
+			_callback;
 
 	// Cable data
 	var cables = {
@@ -91,6 +92,12 @@ $(function(){
 			$cableJack.click(function() {
 				$cableNumber.toggleClass("unplugged"); 
 				$cableJack.toggleClass("unplugged"); 
+
+				if(_callback && typeof(_callback === "function" ))
+					setTimeout(function(){
+						_callback();
+					}, 1000);
+
 			});
 		} else {
 			//Answer is wrong
@@ -179,9 +186,11 @@ $(function(){
     return size;
 	};
 
-	// Need to be refactored ?
-	$.fn.prepareCables = function(correctCable){
+	// correctCable: Numeric label of the correct cable
+	// callback: fired when correct cable is unplugged
+	$.fn.prepareCables = function(correctCable, callback){
 		$cableDialog = this;
+		_callback = callback;
 
 		pickRandomCableSet();
 		randomizeCables();
