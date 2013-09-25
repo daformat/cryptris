@@ -53,10 +53,11 @@ $(function(){
 	function switchToNewLogin() {
 		$(".wrapper.active .vertical-centering").closeAllDialogs();
 
-		$.switchWrapper('#new-login');
+		$.switchWrapper('#new-login', function(){
+			$('#login-name').focus();
+		});
 		$('.new-login').submit(function(e){
 			player.name = $('#login-name').val();
-			console.log(player.name);
 			$.switchWrapper('#bg-institut', dialog2);
 
 			return false;
