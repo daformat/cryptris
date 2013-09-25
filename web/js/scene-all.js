@@ -377,7 +377,7 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: dialog10
+			      onClick: intro
 			    }]
 
 			  });	
