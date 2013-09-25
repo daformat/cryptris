@@ -40,7 +40,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
+            if (gameIsPaused === false && key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
@@ -138,13 +138,12 @@ function handle_ia(playScene, rivalBoxInfo) {
 
 function resizePlayScene(director, playScene) {
 
-    /*
     if (playScene.scene.isPaused() === true) {
         playScene.scene.setPaused(false);
         var pauseButton = playScene.info_column.pauseButton;
         playScene.info_column.isPauseDown = false;
         pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - 3);
-    }*/
+    }
 
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;

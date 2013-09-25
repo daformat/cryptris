@@ -1,3 +1,4 @@
+var gameIsPaused = false;
 
 var COLUMN_TYPE_1 = 'type1';
 var COLUMN_TYPE_2 = 'type2';

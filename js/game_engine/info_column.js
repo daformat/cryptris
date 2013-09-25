@@ -1,5 +1,5 @@
 function convertTimeToString(time) {
-    var timeInSecond = Math.floor(time / 1000);
+    var timeInSecond = time;
     var hour = Math.floor(timeInSecond / 3600);
     var minuteInSecond = timeInSecond % 3600;
     var minute = Math.floor(minuteInSecond / 60);
@@ -21,22 +21,6 @@ function convertTimeToString(time) {
     }
 
     return hourString + ":" + minuteString + ":" + secondString;
-}
-
-function setTextTimerPaint(timerText, text) {
-    timerText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '22px Quantico';
-        ctx.fillStyle = 'white';
-        ctx.fillText(text, 0, 0);
-    }
 }
 
 function InfoColumn(director, resultScene, crypt_key) {
@@ -74,6 +58,35 @@ function InfoColumn(director, resultScene, crypt_key) {
 
     this.timerText = new CAAT.Foundation.Actor().
                             setLocation(0, this.centerTimer.height / 2 + 8);
+
+    var object = this;
+    this.currentTime = 0;
+    
+    setInterval(function incTimer() {
+        if (gameIsPaused === false) {
+            object.currentTime = object.currentTime + 1;
+        }
+    },
+    1000);
+
+    this.timerText.paint = function(director) {
+
+        if (this.isCached()) {
+            CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+            return;
+        }
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '22px Quantico';
+        ctx.fillStyle = 'white';
+        ctx.fillText(convertTimeToString(object.currentTime), 0, 0);
+    }
+
     this.centerTimer.addChild(this.timerText);
 
     this.rightTimer = new CAAT.Foundation.Actor().
@@ -94,23 +107,25 @@ function InfoColumn(director, resultScene, crypt_key) {
 
     var object = this;
     this.pad.mouseDown = function(e) {
-        var theta = Math.PI / 4;
-        var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
-        var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);        
-        if (x2 * x2 + y2 * y2 <= 70 * 70) {
+        if (gameIsPaused === false) {
+            var theta = Math.PI / 4;
+            var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
+            var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);        
+            if (x2 * x2 + y2 * y2 <= 70 * 70) {
 
-            if (x2 < 0 && y2 > 0) {
-                object.pad.setBackgroundImage(object.director.getImage('pad-left'));
-                object.crypt_key.rotateLeft();
-            } else if (x2 > 0 && y2 < 0) {
-                object.pad.setBackgroundImage(object.director.getImage('pad-right'));
-                object.crypt_key.rotateRight();
-            } else if (x2 > 0 && y2 > 0) {
-               	object.pad.setBackgroundImage(object.director.getImage('pad-down'));
-                object.crypt_key.keyDown();
-            } else if (x2 < 0 && y2 < 0) {
-                object.pad.setBackgroundImage(object.director.getImage('pad-up'));
-                object.crypt_key.changeKeyType();
+                if (x2 < 0 && y2 > 0) {
+                    object.pad.setBackgroundImage(object.director.getImage('pad-left'));
+                    object.crypt_key.rotateLeft();
+                } else if (x2 > 0 && y2 < 0) {
+                    object.pad.setBackgroundImage(object.director.getImage('pad-right'));
+                    object.crypt_key.rotateRight();
+                } else if (x2 > 0 && y2 > 0) {
+               	    object.pad.setBackgroundImage(object.director.getImage('pad-down'));
+                    object.crypt_key.keyDown();
+                } else if (x2 < 0 && y2 < 0) {
+                    object.pad.setBackgroundImage(object.director.getImage('pad-up'));
+                    object.crypt_key.changeKeyType();
+                }
             }
         }
     }
@@ -155,6 +170,7 @@ function InfoColumn(director, resultScene, crypt_key) {
      * Add a paused behavior on pause button.
      */
      this.isPauseDown = false;
+     this.saveTime = null;
      var object = this;
      var pauseX = this.pauseButton.x;
      var pauseY = this.pauseButton.y;
@@ -168,10 +184,12 @@ function InfoColumn(director, resultScene, crypt_key) {
         }
      }
      this.pauseButton.mouseUp = function(mouseEvent) {
-        if (object.isPauseDown === false) {
-            object.resultScene.scene.setPaused(false);
+        if (gameIsPaused === true) {
+            gameIsPaused = false;
+            resultScene.scene.setPaused(false);
         } else {
-            object.resultScene['scene'].setPaused(true);
+            gameIsPaused = true;
+            resultScene.scene.setPaused(true);
         }
      }
 
@@ -199,13 +217,4 @@ function InfoColumn(director, resultScene, crypt_key) {
     this.infoColumnContainer.addChild(this.centerTimer);
     this.infoColumnContainer.addChild(this.rightTimer);
 
-    resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
-
-            /**
-             * Update the timer value.
-             */
-            setTextTimerPaint(object.timerText, convertTimeToString(time));
-        }
-    );
 }
