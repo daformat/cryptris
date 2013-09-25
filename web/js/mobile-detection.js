@@ -55,8 +55,9 @@ function checkOrientation() {
   }
 
   if(!isNative){isPortrait = forceIsPortrait();}
-
   
+  if(isPortrait === true) {$("body").addClass("portrait");}
+  else {$("body").removeClass("portrait");}
 }
 
 $(function(){
@@ -66,5 +67,8 @@ $(function(){
 
   window.addEventListener('orientationchange', checkOrientation);
   checkOrientation();
-
+  
+  if(iCheck == true){
+    $("body").addClass('iPhone iPod');
+  }
 })

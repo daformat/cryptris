@@ -188,6 +188,10 @@ ul{
 	padding-top:60px;
 }
 
+.portrait .cryptris-logo-large{
+	width: 100%;
+}
+
 .logo-digital-cuisine-medium{
 	margin: 2% 0;
 }
@@ -260,7 +264,6 @@ ul{
 /* Social icons */
 .social-icons{
 	position: absolute;
-	z-index: 100;
 	bottom: 35px;
 	right: 35px;
 }
@@ -859,4 +862,28 @@ ul{
 .blinking{
 	-webkit-animation: blinking 1s infinite;
 	animation: blinking 1s infinite;
+}
+
+/*
+	Device orientation
+*/
+#rotate-device{
+	margin-left: -200%;
+	background: rgba(0,0,0,0.8);
+}
+#rotate-device img{
+	transition: width 0.25s ease, height 0.25s ease, opacity 0.5s ease;
+	opacity: 0;
+	width: 0px;
+	height: 0px;
+}
+
+.iPhone.portrait #rotate-device, .iPod.portrait #rotate-device{
+	margin-left: 0%;
+}
+
+.iPhone.portrait #rotate-device img, .iPod.portrait #rotate-device img{
+	opacity: 1;
+	width: 400px;
+	height: 400px;
 }
