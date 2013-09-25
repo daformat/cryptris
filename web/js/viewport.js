@@ -5,6 +5,5 @@
     } else if ( navigator.userAgent.match(/iPad/i) ) {
         doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.8, maximum-scale = 0.8");
     } else{
-    	alert("hop");
     }
 }(document));
