@@ -35,31 +35,107 @@ $(function(){
 					5: 0,
 					6: 3	
 				}
-		},
+			},
+
 		1: {
-				pics: {
-					L: 'img/entangled-cables-L-02.png',
-					R: 'img/entangled-cables-R-02.png',
-				},
-				L: {
-					0: 2,
-					1: 5,
-					2: 4,
-					3: 6,
-					4: 1,
-					5: 0,
-					6: 3
-				},
-				R: {	
-					0: 3,
-					1: 6,
-					2: 5,
-					3: 0,
-					4: 2,
-					5: 1,
-					6: 4					
-				}
-		}		
+			pics: {
+				L: 'img/entangled-cables-L-02.png',
+				R: 'img/entangled-cables-R-02.png',
+			},
+			L: {
+				0: 1,
+				1: 4,
+				2: 3,
+				3: 2,
+				4: 0,
+				5: 6,
+				6: 5	
+			},
+			R: {
+				0: 4,
+				1: 6,
+				2: 2,
+				3: 5,
+				4: 1,
+				5: 0,
+				6: 3
+			}
+		},
+
+		2: {
+			pics: {
+				L: 'img/entangled-cables-L-03.png',
+				R: 'img/entangled-cables-R-03.png',
+			},
+			L: {
+				0: 5,
+				1: 4,
+				2: 0,
+				3: 3,
+				4: 2,
+				5: 6,
+				6: 1
+			},
+			R: {
+				0: 3,
+				1: 2,
+				2: 0,
+				3: 6,
+				4: 1,
+				5: 5,
+				6: 4
+			}
+		},
+
+		3: {
+			pics: {
+				L: 'img/entangled-cables-L-04.png',
+				R: 'img/entangled-cables-R-04.png',
+			},
+			L: {
+				0: 6,
+				1: 3,
+				2: 4,
+				3: 1,
+				4: 5,
+				5: 0,
+				6: 2
+			},
+			R: {
+				0: 3,
+				1: 6,
+				2: 2,
+				3: 0,
+				4: 5,
+				5: 1,
+				6: 4
+			}
+		},
+
+		4: {
+			pics: {
+				L: 'img/entangled-cables-L-05.png',
+				R: 'img/entangled-cables-R-05.png',
+			},
+			L: {
+				0: 5,
+				1: 1,
+				2: 4,
+				3: 6,
+				4: 0,
+				5: 2,
+				6: 3
+			},
+			R: {
+				0: 5,
+				1: 4,
+				2: 1,
+				3: 6,
+				4: 2,
+				5: 0,
+				6: 3
+			}
+		}
 	}
 
 	// Loop through cables and set according behavior
