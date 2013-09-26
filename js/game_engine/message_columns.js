@@ -238,6 +238,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		    }
 	    }
 	    
+        if (this.blockToDestroy !== null) {
+            this.blockToDestroy.column.setLocation(this.column.x, this.column.y - this.blockToDestroy.column.height);
+        }
         this.computeGradient();
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
@@ -389,11 +392,11 @@ function Message(director, messageLength, message, container, boxOption) {
     }
 
     this.redraw = function(isInvalidate /* = false */) {
-        if (this.boxOption.objectsInMove.length === 0) {
-            // -- Do not invalidate by default.
-            if (isInvalidate === null) {
-                isInvalidate = false;
-            }
+        // -- Do not invalidate by default.
+        if (isInvalidate === null) {
+            isInvalidate = false;
+        }
+        if (this.boxOption.objectsInMove.length === 0 || isInvalidate) {
 
 	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
             var oldSpaceHeight = this.boxOption.SPACE_HEIGHT;

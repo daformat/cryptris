@@ -85,6 +85,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 	}
 	
     this.redraw = function(x, y) {
+
         y = typeof y !== 'undefined' ? y : this.boxOption.BORDER_HEIGHT;
         this.column.setLocation(x, y);
 
@@ -104,22 +105,40 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
 
         var object = this;
-        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; }, 'behaviorApplied' : null};
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; object.pbFirstMove = null; }, 'behaviorApplied' : null};
 
         this.pbFirstMove.addListener(behaviorListener);
         this.column.addBehavior(this.pbFirstMove);
     };
 
+    this.startFirstAnimation = function() {
+        this.keyFirstMove = true;
+        var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
+        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
+
+        var object = this;
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; object.pbFirstMove = null; }, 'behaviorApplied' : null};
+
+        this.pbFirstMove.addListener(behaviorListener);
+        this.column.addBehavior(this.pbFirstMove);
+    }
+
     this.stopMove = function() {
         if (this.pb !== null) {
             this.pb.setOutOfFrameTime();
+            this.pb = null;
+            return true;
         }
+        return false;
     };
 
     this.stopFirstMove = function() {
         if (this.pbFirstMove !== null) {
             this.pbFirstMove.setOutOfFrameTime();
+            this.pbFirstMove = null;
+            return true;
         }
+        return false;
     }
 
     this.changeType = function() {
@@ -154,6 +173,16 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
             this.boxOption.objectsInMove.push(true);
         }
     };
+
+    this.startAnimation = function() {
+            this.keyInMove = true;
+            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
+            var time = (finalDestination - this.column.y) / 1750 * 4500
+
+            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", time)).setCycle(false);
+            this.column.addBehavior(this.pb);
+    }
 
     var object = this;
 	
@@ -210,17 +239,18 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 	this.keyInMove = false;
 	this.keyFirstMove = false;
 
-    this.resize = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].isResize = true;
-        }
+    this.resize = function(isPaused) {
+		for (var i = 0; i < this.columnList.length; ++i) {
+    	    this.columnList[i].isResize = true;
+   		}
 
-        if (this.keyFirstMove === true) {
-            for (var i = 0; i < this.columnList.length; ++i) {
-                this.columnList[i].stopFirstMove();
-            }
+	    if (this.keyFirstMove === true) {
+
+    	    for (var i = 0; i < this.columnList.length; ++i) {
+        	    this.columnList[i].stopFirstMove();
+           	}
             this.keyFirstMove = false;
-            this.redraw();
+    		this.redraw();
         }
     }
 
@@ -273,6 +303,11 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 	this.redraw = function () {
 		for (var i = 0; i < this.columnList.length; ++i) {
 			this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+		}
+	}
+	this.resizeRedraw = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.columnList[i].column.y);
 		}
 	}
 
@@ -342,6 +377,32 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 				this.columnList[i].keyDown();
 			}
 		}
+	}
+
+	this.stoppedKey = [];
+	this.stoppedFirstKey = [];
+	this.stopAnimation = function() {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			if (this.columnList[i].stopMove() === true) {
+				this.stoppedKey.push(this.columnList[i]);
+			}
+			if (this.columnList[i].stopFirstMove() === true) {
+				this.stoppedFirstKey.push(this.columnList[i]);
+			}
+		}
+	}
+
+	this.startAnimation = function() {
+		for (var i = 0; i < this.stoppedKey.length; ++i) {
+			this.stoppedKey[i].startAnimation();
+		}
+		this.stoppedKey = [];
+
+		for (var i = 0; i < this.stoppedFirstKey.length; ++i) {
+			this.stoppedFirstKey[i].startFirstAnimation();
+		}
+		console.log(this.stoppedFirstKey.length);
+		this.stoppedFirstKey = [];
 	}
 
 	var object = this;

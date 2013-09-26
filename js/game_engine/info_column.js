@@ -171,7 +171,14 @@ function InfoColumn(director, resultScene, crypt_key) {
 		}
 	}
 	this.pauseButton.mouseUp = function(mouseEvent) {
-		resultScene.scene.setPaused(!resultScene.scene.isPaused());		
+		resultScene.scene.setPaused(!resultScene.scene.isPaused());
+		if (resultScene.scene.isPaused() === true) {
+			resultScene.game_box.crypt_key.stopAnimation();
+			resultScene.rival_box.crypt_key.stopAnimation();
+		} else {
+			resultScene.game_box.crypt_key.startAnimation();
+			resultScene.rival_box.crypt_key.startAnimation();
+		}
 	}
 
 	/**
