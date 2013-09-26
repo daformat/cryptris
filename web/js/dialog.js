@@ -183,7 +183,7 @@
 	    	if (settings.content.hasOwnProperty(key)) {
 					var control = settings.content[key];
 		    	var $li = $('<li class='+( (i===0) ? 'active': '')+'></li>');
-		    	var $control = $('<a href="#">'+control.label+'</a>').addClass(control.class);
+		    	var $control = $('<a>'+control.label+'</a>').addClass(control.class);
 	  	  			$control.click(control.onClick);
 	  	  	
 	  	  	$li.append('<span class="arrow">▶</span>', $control, '<span class="arrow">◀</span>');
