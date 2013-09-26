@@ -188,7 +188,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 	
     this.myTimer = director.createTimer(director.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
+            if (director.currentScene.isPaused() === false && object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
                 var msgColumn = object.msgColumn.column;
                 var keyColumn = object.column;
 
@@ -419,19 +419,36 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 				object.keyFirstMove = newKeyFirstMove;
 			}
 
-
 			if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
 				object.boxOption.keyNeedToUpdate = false;
 				var needToUpdateAgain = false;
 				for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
-					if (object.msgColumn.columnList[k].blockToDestroy !== null) {
-						if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false) {
-							object.msgColumn.columnList[k].container.removeChild(object.msgColumn.columnList[k].blockToDestroy.column);
-							object.msgColumn.columnList[k].blockToDestroy = null;
+					var msgColumn = object.msgColumn.columnList[k];
+					if (msgColumn.blockToDestroy !== null) {
+						if (msgColumn.blockToDestroy.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.blockToDestroy.column);
+							msgColumn.blockToDestroy = null;
 						} else {
 							needToUpdateAgain = true;
 						}
 					}
+					if (msgColumn.levelMsg !== null) {
+						if (msgColumn.levelMsg.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.levelMsg.msg);
+							msgColumn.levelMsg = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+					if (msgColumn.previousMsg !== null) {
+						if (msgColumn.previousMsg.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.previousMsg.msg);
+							msgColumn.previousMsg = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+
 					object.msgColumn.columnList[k].blurSquareNumber = 0;
 					object.msgColumn.columnList[k].keySquareNumber = 0;
 				}

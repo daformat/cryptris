@@ -95,7 +95,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                     center.setLocation(left.x + left.width, left.y);
                     right.setLocation(center.x + center.width, center.y);
 
-                    info.infoColumnContainer.centerAt(object.gameBox.x + object.gameBox.width + 130, 80 + object.gameBox.height / 2);
+                    info.redraw();
                 } else {
                     right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
                     center.setLocation(right.x - 175, right.y);
@@ -115,7 +115,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                             center.setLocation(left.x + left.width, left.y);
                             right.setLocation(center.x + center.width, center.y);
 
-                            info.infoColumnContainer.centerAt(object.gameBox.x + object.gameBox.width + 130, 80 + object.gameBox.height / 2);
+                            info.redraw();
                         } else {
                             right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
                             center.setLocation(right.x - 175, right.y);

@@ -1,3 +1,81 @@
+function levelMessage(director, x, y, number, container, boxOption) {
+    this.isVisible = true;
+    this.container = container;
+    this.msg = new CAAT.Foundation.ActorContainer();
+    this.container.addChild(this.msg);
+    this.number = number;
+    var number = this.number;
+    this.x = x;
+    this.y = y;
+    this.boxOption = boxOption;
+    this.clearTime = 1000;
+    this.delta = this.clearTime;
+
+    var object = this;
+    this.beginTime = this.msg.parent.time;
+    var beginTime = this.beginTime;
+
+    this.msg.setLocation(this.x, this.y);
+    this.msg.setSize(this.boxOption.SQUARE_WIDTH, 20);
+
+    this.finalDestination = this.y - 20;
+    this.pb = null;
+
+    this.startAnimation = function() {
+        var path =  new CAAT.LinearPath().setInitialPosition(this.msg.x, this.msg.y).setFinalPosition(this.msg.x, this.finalDestination);
+        this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, this.delta).setCycle(false);
+
+        var object = this;
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { }, 'behaviorApplied' : null};
+
+        this.pb.addListener(behaviorListener);
+        this.msg.addBehavior(this.pb);
+    }
+    this.startAnimation();
+
+    this.stopAnimation = function() {
+        if (this.pb !== null) {
+            this.pb.setOutOfFrameTime();
+            this.pb = null;
+        }
+    }
+
+    this.msg.paint = function(director, time) {
+
+        var clearTime = object.clearTime;
+        object.delta = time - beginTime;
+        object.msg.setSize(object.boxOption.SQUARE_WIDTH, 20);
+
+        if(this.isCached()) {
+            CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+            return;
+        }
+        var signe = "";
+        if (number > 0) {
+            signe = "+";
+        }
+        var ctx = director.ctx;
+
+        if (object.delta <= clearTime) {
+            ctx.globalAlpha = 1 - object.delta / clearTime;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = object.boxOption.numberGrow;
+
+            ctx.font = '15px Inconsolata';
+            ctx.fillStyle = object.boxOption.numberColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(signe + number, this.width / 2, 0);
+        } else {
+            object.stopAnimation();
+            object.msg.paint = function(director, time) {};
+            ctx.globalAlpha = 0;
+            object.isVisible = false;
+        }
+    }
+}
+
 function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption) {
     this.director = director;
     this.x = x;
@@ -37,7 +115,10 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         }
     }
 
+    this.beginTime = this.column.parent.time;
+
     this.redraw = function() {
+
 	    var height = (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + 1; 
         var columnY = this.y - height;
 
@@ -52,7 +133,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         this.computeKeyBlurGradient();
 
         var object = this;
-        var beginTime = this.column.parent.time;
+        var beginTime = this.beginTime;
 	    
         this.column.paint = function(director, time) {
 
@@ -65,7 +146,6 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
                 var ctx = director.ctx;
                 var x = 1.5;
-
 
                 ctx.lineWidth = 1;
                 ctx.globalAlpha = 1 - delta / (clearTime * 2);
@@ -133,6 +213,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.keyBlurGradient = null;
     this.keySquareNumber = 0;
     this.blockToDestroy = null;
+    this.levelMsg = null;
+    this.previousMsg = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -169,7 +251,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		ctx.fillStyle = 'white';
 		ctx.textAlign = 'center';
 
-		ctx.fillText("(" + signe + object.squareNumber + ")", this.width / 2, 11);
+		ctx.fillText(signe + object.squareNumber, this.width / 2, 11);
 	}
 
 	this.displayValue.setSize(this.boxOption.SQUARE_WIDTH, 15);
@@ -218,7 +300,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT + 1;
 
-
         if (this.columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
             object.boxOption.setDefaultColor();
         } else {
@@ -237,22 +318,32 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 			    this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
 		    }
 	    }
-	    
+        
+        this.computeGradient();
+        var diffHeight = 0;
         if (this.blockToDestroy !== null) {
             this.blockToDestroy.column.setLocation(this.column.x, this.column.y - this.blockToDestroy.column.height);
+            diffHeight = this.blockToDestroy.column.height;
         }
-        this.computeGradient();
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
 	        this.column.stopCacheAsBitmap();
             this.blockToDestroy = new blockToDestroy(this.director, this.lastType, this.keyType, this.column.x, this.column.y, this.squareNumber, this.keySquareNumber, this.blurSquareNumber, this.container, this.boxOption);
             this.blockToDestroy.redraw();
+
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         } else if (!this.column.isCached() || invalidate) {
 	        if(invalidate) {
 		        this.column.stopCacheAsBitmap();
 	        }
+        }
+        
+        if (this.levelMsg !== null) {
+            this.levelMsg.msg.setLocation(this.column.x, this.levelMsg.msg.y);
+        }
+        if (this.previousMsg !== null) {
+            this.previousMsg.msg.setLocation(this.column.x, this.previousMsg.msg.y);
         }
         this.column.cacheAsBitmap();
 
@@ -291,14 +382,22 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
     this.addSquares = function(column) {
         if (column.squareNumber > 0) {
+            var y = 0;
             if (this.type === COLUMN_TYPE_3) {
                 this.changeType(column.type);
                 this.squareNumber = column.squareNumber;
+                y = column.column.y;
             } else {
                 this.squareNumber += column.squareNumber;
 	            this.redraw(this.column.x, true);
+                y = this.column.y;
             }
 	        
+            if (this.levelMsg !== null) {
+                this.previousMsg = this.levelMsg;
+            }
+            this.levelMsg = new levelMessage(this.director, this.column.x, y - this.boxOption.SPACE_HEIGHT, column.squareNumber, this.container, this.boxOption);
+
             this.blurSquareNumber = 0;
         }
     }
@@ -306,7 +405,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.subSquares = function(keyColumn) {
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
 
+        var diffNumber = -1 * keyColumn.squareNumber;
         if (newSquareNumber < 0) {
+            diffNumber = -1 * this.squareNumber;
             this.keySquareNumber = this.squareNumber;
             this.keyType = keyColumn.type;
             keyColumn.pathContinue = true;
@@ -327,7 +428,12 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.squareNumber = newSquareNumber;
             this.blurSquareNumber = keyColumn.squareNumber;
         }
-	    
+	   
+        if (this.levelMsg !== null) {
+            this.previousMsg = this.levelMsg;
+        }
+        this.levelMsg = new levelMessage(this.director, this.column.x, keyColumn.column.y - this.boxOption.SPACE_HEIGHT, diffNumber, this.container, this.boxOption);
+
         keyColumn = null;
     }
 }
@@ -374,6 +480,28 @@ function Message(director, messageLength, message, container, boxOption) {
         }
     }
 
+    this.stopLevelMsgAnimation = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            if (this.columnList[i].levelMsg !== null) {
+                this.columnList[i].levelMsg.stopAnimation();
+            }
+            if (this.columnList[i].previousMsg !== null) {
+                this.columnList[i].previousMsg.stopAnimation();
+            }
+        }
+    }
+
+    this.startLevelMsgAnimation = function() {
+        for (var i = 0; i < this.columnList.length; ++i) {
+            if (this.columnList[i].levelMsg !== null) {
+                this.columnList[i].levelMsg.startAnimation();
+            }
+            if (this.columnList[i].previousMsg !== null) {
+                this.columnList[i].previousMsg.startAnimation();
+            }
+        }
+    }
+
     this.resetMessage = function(key) {
         for (var i = 0; i < this.columnList.length; ++i) {
             this.container.removeChild(this.columnList[i].column);
@@ -411,37 +539,39 @@ function Message(director, messageLength, message, container, boxOption) {
                 }
             }
 
-            var newHeight = 0;
-            var totalSquares = this.boxOption.maxKeyNumber + max_column;
-            var totalHeight = this.container.height - 2 * this.boxOption.BORDER_HEIGHT;
+            if (director.currentScene.isPaused() === false) {
+                var newHeight = 0;
+                var totalSquares = this.boxOption.maxKeyNumber + max_column;
+                var totalHeight = this.container.height - 2 * this.boxOption.BORDER_HEIGHT;
 
-            if (this.boxOption.SQUARE_HEIGHT > 1) {
-                newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
-                if (newHeight > 20) {
-                    this.boxOption.SQUARE_HEIGHT = DEFAULT_SQUARE_HEIGHT;
-                } else if (newHeight <= 1) {
-                    this.boxOption.SQUARE_HEIGHT = 1;
-                } else {
-                    this.boxOption.SQUARE_HEIGHT = newHeight;
-                }
-            } else {
-                newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
-                if (newHeight < 1) {
-                    if (this.boxOption.SPACE_HEIGHT > 2) {
-                        this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT - 1;
+                if (this.boxOption.SQUARE_HEIGHT > 1) {
+                    newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
+                    if (newHeight > 20) {
+                        this.boxOption.SQUARE_HEIGHT = DEFAULT_SQUARE_HEIGHT;
+                    } else if (newHeight <= 1) {
+                        this.boxOption.SQUARE_HEIGHT = 1;
+                    } else {
+                        this.boxOption.SQUARE_HEIGHT = newHeight;
                     }
                 } else {
-                    if (this.boxOption.SPACE_HEIGHT < DEFAULT_SPACE_HEIGHT) {
-                        this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT + 1;
-                        newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
-
-                        if (newHeight < 1) {
+                    newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
+                    if (newHeight < 1) {
+                        if (this.boxOption.SPACE_HEIGHT > 2) {
                             this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT - 1;
                         }
                     } else {
-                        var columnHeight = (newHeight + this.boxOption.SPACE_HEIGHT) * totalSquares + 2 * this.boxOption.BORDER_HEIGHT;
-                        if (columnHeight <= this.container.height) {
-                            this.boxOption.SQUARE_HEIGHT = newHeight;
+                        if (this.boxOption.SPACE_HEIGHT < DEFAULT_SPACE_HEIGHT) {
+                            this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT + 1;
+                            newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
+
+                            if (newHeight < 1) {
+                                this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT - 1;
+                            }
+                        } else {
+                            var columnHeight = (newHeight + this.boxOption.SPACE_HEIGHT) * totalSquares + 2 * this.boxOption.BORDER_HEIGHT;
+                            if (columnHeight <= this.container.height) {
+                                this.boxOption.SQUARE_HEIGHT = newHeight;
+                            }
                         }
                     }
                 }

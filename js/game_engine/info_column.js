@@ -44,6 +44,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.resultScene = resultScene;
 	this.director = director;
 	this.crypt_key = crypt_key;
+	this.marge = 30
 
 	this.infoColumnContainer = new CAAT.Foundation.ActorContainer();
 	this.resultScene['scene'].addChild(this.infoColumnContainer);
@@ -57,7 +58,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 	this.leftTimer = new CAAT.Foundation.Actor().
 		setBackgroundImage(director.getImage('left-board')).
-		setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + 20);
+		setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);
 
 
 	this.centerTimer = new CAAT.Foundation.ActorContainer().
@@ -83,7 +84,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 	this.pauseButton = new CAAT.Foundation.Actor().
 		setBackgroundImage(director.getImage('pause-up')).
-		setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + 30);
+		setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge);
 
 	this.helpButton = new CAAT.Foundation.Actor().
 		setBackgroundImage(director.getImage('help-up')).
@@ -91,7 +92,32 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 	this.pad = new CAAT.Actor().setSize(155, 152)
 		.setBackgroundImage(director.getImage('pad-untouched'))
-		.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + 30);
+		.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
+
+
+	this.redraw = function() {
+		if (this.director.height < 600) {
+			this.marge = 15;
+		}
+		else if (this.director.height > 800) {
+			this.marge = 30;
+		}
+		else {
+			this.marge = 15 / 200 * this.director.height - 30;
+		}
+		this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
+								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, 80 + this.resultScene.game_box.gameBox.height / 2);
+
+		this.cryptrisLogo.setLocation(0, 0);
+		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);
+		this.centerTimer.setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
+		this.rightTimer.setLocation(this.centerTimer.x + this.centerTimer.width, this.centerTimer.y);
+		this.pauseButton.setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge);
+
+		this.helpButton.setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y);
+		this.pad.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
+	}
+	this.redraw();
 
 	var object = this;
 	this.pad.mouseDown = function(e) {
@@ -175,9 +201,13 @@ function InfoColumn(director, resultScene, crypt_key) {
 		if (resultScene.scene.isPaused() === true) {
 			resultScene.game_box.crypt_key.stopAnimation();
 			resultScene.rival_box.crypt_key.stopAnimation();
+			resultScene.game_box.message.stopLevelMsgAnimation();
+			resultScene.rival_box.message.stopLevelMsgAnimation();
 		} else {
 			resultScene.game_box.crypt_key.startAnimation();
 			resultScene.rival_box.crypt_key.startAnimation();
+			resultScene.game_box.message.startLevelMsgAnimation();
+			resultScene.rival_box.message.startLevelMsgAnimation();
 		}
 	}
 
@@ -206,13 +236,13 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.infoColumnContainer.addChild(this.rightTimer);
 
 	resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null, 
-	function(time, ttime, timerTask) {
+		function(time, ttime, timerTask) {
 
-		/**
-		 * Update the timer value.
-		 */
-		setTextTimerPaint(object.timerText, convertTimeToString(time));
-	}
-);
+			/**
+		 	 * Update the timer value.
+		 	 */
+			setTextTimerPaint(object.timerText, convertTimeToString(time));
+		}
+	);
 
 }

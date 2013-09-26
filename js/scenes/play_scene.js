@@ -387,7 +387,7 @@ function createPlayScene(director) {
             }
         }
     );
-    //resizePlayScene(director, resultScene);
+    resizePlayScene(director, resultScene);
     return resultScene;
 }
 
