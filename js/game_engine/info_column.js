@@ -171,7 +171,7 @@ function InfoColumn(director, resultScene, crypt_key) {
         if (object.isPauseDown === false) {
             object.resultScene.scene.setPaused(false);
         } else {
-            object.resultScene['scene'].setPaused(true);
+            object.resultScene.scene.setPaused(true);
         }
      }
 

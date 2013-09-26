@@ -358,7 +358,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 				object.keyFirstMove = newKeyFirstMove;
 			}
 
-
 			if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
 				object.boxOption.keyNeedToUpdate = false;
 				var needToUpdateAgain = false;

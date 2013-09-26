@@ -1,3 +1,50 @@
+function levelMessage(director, x, y, number, container, boxOption) {
+    this.isVisible = true;
+    this.container = container;
+    this.msg = new CAAT.Foundation.ActorContainer();
+    this.container.addChild(this.msg);
+    var number = number;
+    this.x = x;
+    this.y = y;
+    this.boxOption = boxOption;
+
+    var object = this;
+    var beginTime = $.now();
+
+    this.msg.setLocation(x, y);
+    this.msg.setSize(this.boxOption.SQUARE_WIDTH, 20);
+        
+    this.msg.paint = function(director, time) {
+        if(this.isCached()) {
+            CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+            return;
+        }
+        var signe = "+";
+        if (number < 0) {
+            signe = "-";
+        }
+        var ctx = director.ctx;
+
+        var clearTime = 1000;
+        var delta = $.now() - beginTime;
+        if (delta <= clearTime) {
+            ctx.globalAlpha = 1 - delta / clearTime;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = object.boxOption.numberGrow;
+
+            ctx.font = '15px Inconsolata';
+            ctx.fillStyle = object.boxOption.numberColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(signe + number, this.width / 2, 0);
+        } else {
+            ctx.globalAlpha = 0;
+            object.isVisible = false;
+        }
+    }
+}
+
 function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption) {
     this.director = director;
     this.x = x;
@@ -38,6 +85,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     }
 
     this.redraw = function() {
+
 	    var height = (this.keyNumber + this.msgNumber) * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + 1; 
         var columnY = this.y - height;
 
@@ -65,7 +113,6 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 
                 var ctx = director.ctx;
                 var x = 1.5;
-
 
                 ctx.lineWidth = 1;
                 ctx.globalAlpha = 1 - delta / (clearTime * 2);
@@ -133,6 +180,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.keyBlurGradient = null;
     this.keySquareNumber = 0;
     this.blockToDestroy = null;
+    this.levelMsg = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -218,7 +266,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT + 1;
 
-
         if (this.columnSize <= object.container.height - 2 * object.boxOption.BORDER_HEIGHT) {
             object.boxOption.setDefaultColor();
         } else {
@@ -237,13 +284,16 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 			    this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
 		    }
 	    }
-	    
         this.computeGradient();
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
 	        this.column.stopCacheAsBitmap();
             this.blockToDestroy = new blockToDestroy(this.director, this.lastType, this.keyType, this.column.x, this.column.y, this.squareNumber, this.keySquareNumber, this.blurSquareNumber, this.container, this.boxOption);
             this.blockToDestroy.redraw();
+
+            var diffNumber = this.squareNumber - this.keySquareNumber;
+            this.levelMsg = levelMessage(this.director, this.column.x, this.column.y - (this.squareNumber + this.keySquareNumber) * (this.boxOption.SPACE_HEIGHT + this.boxOption.SQUARE_HEIGHT), diffNumber, this.container, this.boxOption);
+
             this.blurSquareNumber = 0;
             this.keySquareNumber = 0;
         } else if (!this.column.isCached() || invalidate) {
@@ -251,6 +301,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		        this.column.stopCacheAsBitmap();
 	        }
         }
+        
         this.column.cacheAsBitmap();
 
         // TOFIX : Actually this line is commented to avoid number disparition during resize.
