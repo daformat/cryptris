@@ -68,7 +68,9 @@ function levelMessage(director, x, y, number, container, boxOption) {
             ctx.textAlign = 'center';
             ctx.fillText(signe + number, this.width / 2, 0);
         } else {
-            ctx.globalAlpha = 1;
+            object.stopAnimation();
+            object.msg.paint = function(director, time) {};
+            ctx.globalAlpha = 0;
             object.isVisible = false;
         }
     }
@@ -248,7 +250,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		ctx.fillStyle = 'white';
 		ctx.textAlign = 'center';
 
-		ctx.fillText("(" + signe + object.squareNumber + ")", this.width / 2, 11);
+		ctx.fillText(signe + object.squareNumber, this.width / 2, 11);
 	}
 
 	this.displayValue.setSize(this.boxOption.SQUARE_WIDTH, 15);
