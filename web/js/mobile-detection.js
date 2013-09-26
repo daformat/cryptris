@@ -2,6 +2,7 @@ var ua = navigator.userAgent,
     nua = navigator.userAgent,
     uaOk = null,
     iCheck = null,
+    aCheck = null,
     uaAndroid = null,
     uaIOS = null,
     isAndroid = null,
@@ -28,6 +29,7 @@ function detectIphoneIpod(){
     if (uaIOS[0] >= 5 && window.DeviceMotionEvent != undefined) {
       isIOS = true;
       isOk = true;
+      isNative = true;
     }
   }
 }
@@ -38,6 +40,10 @@ function detectAndroid() {
     if (uaAndroid >= 4 ) {
       isAndroid = true;
       isOk = true;
+      isNative = true;
+    }
+    if( ua.indexOf("Mobile") ) {
+      aCheck = true;
     }
   }
 }
@@ -45,6 +51,7 @@ function detectAndroid() {
 function forceIsPortrait(){return window.innerHeight > window.innerWidth;}
 
 function checkOrientation() {
+
   switch(window.orientation) {  
     case -90: case 90:
       isPortrait = false;
@@ -68,8 +75,8 @@ $(function(){
   window.addEventListener('orientationchange', checkOrientation);
   checkOrientation();
   
-  if(iCheck == true){
-    $("body").addClass('iPhone iPod');
+  if(iCheck == true || aCheck == true){
+    $("body").addClass( ( iCheck == true ? 'ios-mobile' : (aCheck == true ? 'android-mobile' : '') ) );
     $("body").append('<div class="wrapper" id="rotate-device"><div class="vertical-centering"><img src="img/rotate-device.png"></div></div>');
   }
 })

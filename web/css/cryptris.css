@@ -888,11 +888,11 @@ ul{
 	height: 0px;
 }
 
-.iPhone.portrait #rotate-device, .iPod.portrait #rotate-device{
+.ios-mobile.portrait #rotate-device, .android-mobile.portrait #rotate-device {
 	margin-left: 0%;
 }
 
-.iPhone.portrait #rotate-device img, .iPod.portrait #rotate-device img{
+.ios-mobile.portrait #rotate-device img, .android-mobile.portrait #rotate-device img {
 	opacity: 1;
 	width: 400px;
 	height: 400px;
