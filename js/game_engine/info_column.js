@@ -185,14 +185,12 @@ function InfoColumn(director, resultScene, crypt_key) {
 	 */
 	this.isPauseDown = false;
 	var object = this;
-	var pauseX = this.pauseButton.x;
-	var pauseY = this.pauseButton.y;
 	this.pauseButton.mouseDown = function(mouseEvent) {
 		if (object.isPauseDown === false) {
-			object.pauseButton.setBackgroundImage(object.director.getImage('pause-down')).setLocation(pauseX, pauseY + 3);
+			object.pauseButton.setBackgroundImage(object.director.getImage('pause-down')).setLocation(object.pauseButton.x, object.pauseButton.y + 3);
 			object.isPauseDown = true;
 		} else {
-			object.pauseButton.setBackgroundImage(object.director.getImage('pause-up')).setLocation(pauseX, pauseY);
+			object.pauseButton.setBackgroundImage(object.director.getImage('pause-up')).setLocation(object.pauseButton.x, object.pauseButton.y - 3);
 			object.isPauseDown = false;
 		}
 	}
@@ -215,14 +213,12 @@ function InfoColumn(director, resultScene, crypt_key) {
 	 * Add a behavior for help button (to upgrade).
 	 */
 	var isHelpDown = false;
-	var helpX = this.helpButton.x;
-	var helpY = this.helpButton.y;
 	this.helpButton.mouseDown = function(mouseEvent) {
 		if (isHelpDown === false) {
-			object.helpButton.setBackgroundImage(object.director.getImage('help-down')).setLocation(helpX, helpY + 3);
+			object.helpButton.setBackgroundImage(object.director.getImage('help-down')).setLocation(object.helpButton.x, object.helpButton.y + 3);
 			isHelpDown = true;
 		} else {
-			object.helpButton.setBackgroundImage(object.director.getImage('help-up')).setLocation(helpX, helpY);
+			object.helpButton.setBackgroundImage(object.director.getImage('help-up')).setLocation(object.helpButton.x, object.helpButton.y - 3);
 			isHelpDown = false;
 		}
 	}
