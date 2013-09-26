@@ -188,7 +188,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 	
     this.myTimer = director.createTimer(director.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
+            if (director.currentScene.isPaused() === false && object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
                 var msgColumn = object.msgColumn.column;
                 var keyColumn = object.column;
 
@@ -440,6 +440,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 							needToUpdateAgain = true;
 						}
 					}
+					if (msgColumn.previousMsg !== null) {
+						if (msgColumn.previousMsg.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.previousMsg.msg);
+							msgColumn.previousMsg = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+
 					object.msgColumn.columnList[k].blurSquareNumber = 0;
 					object.msgColumn.columnList[k].keySquareNumber = 0;
 				}

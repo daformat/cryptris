@@ -214,6 +214,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.keySquareNumber = 0;
     this.blockToDestroy = null;
     this.levelMsg = null;
+    this.previousMsg = null;
 
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
@@ -319,11 +320,10 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	    }
         
         this.computeGradient();
+        var diffHeight = 0;
         if (this.blockToDestroy !== null) {
             this.blockToDestroy.column.setLocation(this.column.x, this.column.y - this.blockToDestroy.column.height);
-        }
-        if (this.levelMsg !== null) {
-            this.levelMsg.msg.setLocation(this.column.x, this.levelMsg.msg.y);
+            diffHeight = this.blockToDestroy.column.height;
         }
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
@@ -339,6 +339,12 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	        }
         }
         
+        if (this.levelMsg !== null) {
+            this.levelMsg.msg.setLocation(this.column.x, this.levelMsg.msg.y);
+        }
+        if (this.previousMsg !== null) {
+            this.previousMsg.msg.setLocation(this.column.x, this.previousMsg.msg.y);
+        }
         this.column.cacheAsBitmap();
 
         // TOFIX : Actually this line is commented to avoid number disparition during resize.
@@ -387,6 +393,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
                 y = this.column.y;
             }
 	        
+            if (this.levelMsg !== null) {
+                this.previousMsg = this.levelMsg;
+            }
             this.levelMsg = new levelMessage(this.director, this.column.x, y - this.boxOption.SPACE_HEIGHT, column.squareNumber, this.container, this.boxOption);
 
             this.blurSquareNumber = 0;
@@ -420,6 +429,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             this.blurSquareNumber = keyColumn.squareNumber;
         }
 	   
+        if (this.levelMsg !== null) {
+            this.previousMsg = this.levelMsg;
+        }
         this.levelMsg = new levelMessage(this.director, this.column.x, keyColumn.column.y - this.boxOption.SPACE_HEIGHT, diffNumber, this.container, this.boxOption);
 
         keyColumn = null;
@@ -473,6 +485,9 @@ function Message(director, messageLength, message, container, boxOption) {
             if (this.columnList[i].levelMsg !== null) {
                 this.columnList[i].levelMsg.stopAnimation();
             }
+            if (this.columnList[i].previousMsg !== null) {
+                this.columnList[i].previousMsg.stopAnimation();
+            }
         }
     }
 
@@ -480,6 +495,9 @@ function Message(director, messageLength, message, container, boxOption) {
         for (var i = 0; i < this.columnList.length; ++i) {
             if (this.columnList[i].levelMsg !== null) {
                 this.columnList[i].levelMsg.startAnimation();
+            }
+            if (this.columnList[i].previousMsg !== null) {
+                this.columnList[i].previousMsg.startAnimation();
             }
         }
     }
