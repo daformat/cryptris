@@ -100,12 +100,12 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         this.computeKeyBlurGradient();
 
         var object = this;
-        var beginTime = $.now();
+        var beginTime = this.column.parent.time;
 	    
         this.column.paint = function(director, time) {
 
             var clearTime = 250;
-	        var delta = $.now() - beginTime;
+	        var delta = time - beginTime;
             if (delta <= 2 * clearTime) {
 
                 var relativeY = object.squareNumber > 0 ? 0 : 1;
@@ -284,6 +284,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 			    this.column.setLocation(x, this.boxOption.BORDER_HEIGHT);
 		    }
 	    }
+        
         this.computeGradient();
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {
@@ -440,11 +441,11 @@ function Message(director, messageLength, message, container, boxOption) {
     }
 
     this.redraw = function(isInvalidate /* = false */) {
-        if (this.boxOption.objectsInMove.length === 0) {
-            // -- Do not invalidate by default.
-            if (isInvalidate === null) {
-                isInvalidate = false;
-            }
+        // -- Do not invalidate by default.
+        if (isInvalidate === null) {
+            isInvalidate = false;
+        }
+        if (this.boxOption.objectsInMove.length === 0 || isInvalidate) {
 
 	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
             var oldSpaceHeight = this.boxOption.SPACE_HEIGHT;

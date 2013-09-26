@@ -71,16 +71,40 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 	    this.gameBox.stopCacheAsBitmap();
 	    this.gameBox.cacheAsBitmap();
 
-        if (this.crypt_key.keyInMove === true) {
+        if (scene.isPaused() === false && this.crypt_key.keyInMove === true) {
             this.crypt_key.resize();
         }
 
         this.message.redraw(true);
-        this.crypt_key.redraw();
 
+        this.crypt_key.resizeRedraw();
+
+        for (var i = 0; i < this.message.columnList.length; ++i) {
+            if (this.message.columnList[i].blockToDestroy !== null) {
+                this.message.columnList[i].blockToDestroy.redraw();
+            }
+        }
 
         this.tryToResize = true;
         var object = this;
+        if (this.tryToResize === true && scene.isPaused()) {
+
+            if (object.message.redraw(true) === true) {
+                if (object.player === true) {
+                    left.setLocation(object.gameBox.x - 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
+                    center.setLocation(left.x + left.width, left.y);
+                    right.setLocation(center.x + center.width, center.y);
+
+                    info.infoColumnContainer.centerAt(object.gameBox.x + object.gameBox.width + 130, 80 + object.gameBox.height / 2);
+                } else {
+                    right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
+                    center.setLocation(right.x - 175, right.y);
+                    left.setLocation(center.x - object.director.getImage('left-board').width, center.y);
+                }
+                object.tryToResize = false;
+            }
+        }
+
         this.resizeTimer = scene.createTimer(0, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
                 if (object.tryToResize === true) {

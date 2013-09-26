@@ -4,6 +4,31 @@ function game() {
     this.ianame = "RJ-45";
 }
 
+/**
+ * Launch all resize functions when the event is fired.
+ */
+var resizeInProcess = false;
+function resize(director, newWidth, newHeight) {
+    if (director.width < 800 || director.height < 550) {
+        return;
+    }
+
+    if (resizeInProcess === false) {
+        resizeInProcess = true;
+
+        if (currentGame.scenes !== null) {
+            if (currentGame.scenes['menu_scene'] !== null) {
+                currentGame.scenes['menu_scene']['resize'](director, currentGame.scenes['menu_scene']);
+            }
+
+            if (currentGame.scenes['play_scene'] !== null) {
+                currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
+            }
+        }
+    }
+    resizeInProcess = false;
+}
+
 function genSecretKey(dim) {
 
     var sk = [];

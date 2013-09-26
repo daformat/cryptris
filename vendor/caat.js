@@ -22426,16 +22426,17 @@ CAAT.Module({
              * Director.
              */
             render:function (time) {
-
+				var paused = false;
                 if (this.currentScene && this.currentScene.isPaused()) {
-                    return;
+                    time = 0;
+	                paused = true;
                 }
 
                 this.time += time;
 
                 for (i = 0, l = this.childrenList.length; i < l; i++) {
                     var c = this.childrenList[i];
-                    if (c.isInAnimationFrame(this.time) && !c.isPaused()) {
+                    if (c.isInAnimationFrame(this.time) && !c.isPaused() && !paused) {
                         var tt = c.time - c.start_time;
                         c.timerManager.checkTimers(tt);
                         c.timerManager.removeExpiredTimers();
@@ -22465,7 +22466,14 @@ CAAT.Module({
                     for (i = 0; i < ne; i++) {
                         c = this.childrenList[i];
                         if (c.isInAnimationFrame(this.time)) {
-                            tt = c.time - c.start_time;
+                            if(paused)
+                            {
+	                            tt = c.time;   
+                            }
+	                        else
+                            {
+	                            tt = c.time - c.start_time;
+                            }
                             if (c.onRenderStart) {
                                 c.onRenderStart(tt);
                             }
@@ -22474,7 +22482,7 @@ CAAT.Module({
                                 c.onRenderEnd(tt);
                             }
 
-                            if (!c.isPaused()) {
+                            if (!c.isPaused() && !paused) {
                                 c.time += time;
                             }
 
@@ -22520,7 +22528,14 @@ CAAT.Module({
                         c = this.childrenList[i];
 
                         if (c.isInAnimationFrame(this.time)) {
-                            tt = c.time - c.start_time;
+                            if(paused)
+                            {
+	                            tt = c.time;   
+                            }
+	                        else
+                            {
+	                            tt = c.time - c.start_time;
+                            }
                             ctx.save();
 
                             if (c.onRenderStart) {
@@ -22547,7 +22562,7 @@ CAAT.Module({
                                 c.drawScreenBoundingBox(this, tt);
                             }
 
-                            if (!c.isPaused()) {
+                            if (!c.isPaused() && !paused) {
                                 c.time += time;
                             }
 
