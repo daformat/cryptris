@@ -70,7 +70,7 @@ ul{
 	text-align: center;
 	overflow-y: auto;
 	display: table;
-  min-height: 620px;
+  min-height: 600px;
   overflow-x: hidden;
 
 }
@@ -193,7 +193,7 @@ ul{
 	width: 70%;
 	max-width: 1090px;
 	min-width: 500px;
-	margin-top: 0%;
+	margin-top: -5%;
 	margin-bottom: -50px;
 	padding-top:60px;
 }
@@ -888,11 +888,11 @@ ul{
 	height: 0px;
 }
 
-.iPhone.portrait #rotate-device, .iPod.portrait #rotate-device{
+.ios-mobile.portrait #rotate-device, .android-mobile.portrait #rotate-device {
 	margin-left: 0%;
 }
 
-.iPhone.portrait #rotate-device img, .iPod.portrait #rotate-device img{
+.ios-mobile.portrait #rotate-device img, .android-mobile.portrait #rotate-device img {
 	opacity: 1;
 	width: 400px;
 	height: 400px;
