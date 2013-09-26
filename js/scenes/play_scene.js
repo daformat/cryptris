@@ -40,7 +40,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
-            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
+            if (gameIsPaused === false && key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
@@ -136,37 +136,25 @@ function handle_ia(playScene, rivalBoxInfo) {
     );
 }
 
-
 function resizePlayScene(director, playScene) {
 
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
 
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
+    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
 
     while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
         --DEFAULT_SQUARE_WIDTH;
         --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
+        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
     }
 
-    playScene['game_box'].relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 20;
-    playScene['game_box'].resize();
+    playScene.game_box.relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 40;
+    playScene.game_box.resize(playScene.scene, playScene.leftPlayerName, playScene.centerPlayerName, playScene.rightPlayerName, playScene.info_column);
 
+    playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
+    playScene.rival_box.resize(playScene.scene, playScene.leftIAName, playScene.centerIAName, playScene.rightIAName);
 
-    playScene['leftPlayerName'].setLocation(playScene['game_box'].gameBox.x - 12, playScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-    playScene['centerPlayerName'].setLocation(playScene['leftPlayerName'].x + playScene['leftPlayerName'].width, playScene['leftPlayerName'].y);
-    playScene['rightPlayerName'].setLocation(playScene['centerPlayerName'].x + playScene['centerPlayerName'].width, playScene['centerPlayerName'].y);
-
-    playScene['info_column'].infoColumnContainer.centerAt(playScene['game_box'].gameBox.x + playScene['game_box'].gameBox.width + 130, 80 + playScene['game_box'].gameBox.height / 2);
-
-    playScene['rival_box'].relativeX = playScene['game_box'].gameBox.x + 260 + playScene['game_box'].gameBox.width;
-    playScene['rival_box'].resize();
-
-
-    playScene['rightIAName'].setLocation(playScene['rival_box'].gameBox.x + playScene['rival_box'].gameBox.width - director.getImage('right-board').width + 12, playScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-    playScene['centerIAName'].setLocation(playScene['rightIAName'].x - 175, playScene['rightIAName'].y);
-    playScene['leftIAName'].setLocation(playScene['centerIAName'].x - director.getImage('left-board').width, playScene['centerIAName'].y);
 }
 
 /**
@@ -214,9 +202,9 @@ function createPlayScene(director) {
     /**
      * Position relative of the game box to the screen. 
      */
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
+    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 60 + 260;
 
-    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2), 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
+    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2) + 30, 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
     var crypt_key = gameBoxInfo.crypt_key;
     resultScene['game_box'] = gameBoxInfo;
 
@@ -340,7 +328,6 @@ function createPlayScene(director) {
      */
     handle_ia(resultScene['scene'], rivalBoxInfo);
 
-
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
@@ -400,7 +387,7 @@ function createPlayScene(director) {
             }
         }
     );
-
+    //resizePlayScene(director, resultScene);
     return resultScene;
 }
 
