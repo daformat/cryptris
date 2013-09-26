@@ -1,8 +1,13 @@
 $(function(){
 
 	// Game settings
-	var readingDelay = 4000,
-			player = {};
+
+	var game = {
+		readingDelay: 4000,
+		player: {},
+		dialog4: [false, false, false]
+	}
+
 
 	// hide .hidden elements and remove class
 	$('.hidden').hide().removeClass('hidden');
@@ -31,10 +36,10 @@ $(function(){
 										// Switch to institute
 										setTimeout(function(){
 											$.switchWrapper('#bg-institut', dialog1);
-										}, readingDelay);						
+										}, game.readingDelay);						
 									});
 								}, 2000)
-							}, readingDelay);
+							}, game.readingDelay);
 
 					});
 				}, 2000);					
@@ -72,7 +77,7 @@ $(function(){
 			$('#login-name').focus();
 		});
 		$('.new-login').submit(function(e){
-			player.name = $('#login-name').val();
+			game.player.name = $('#login-name').val();
 			$.switchWrapper('#bg-institut', dialog2);
 
 			return false;
@@ -89,7 +94,7 @@ $(function(){
 	    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 	    title: "Chercheuse",
-	    content: "Parfait"+( player.name ? " <em>"+player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
+	    content: "Parfait"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
 	    
 	    controls: [{
 	      label: "Suite", 
@@ -106,18 +111,21 @@ $(function(){
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    type: "player",
-		    title: player.name||"Joueur",
+		    title: game.player.name||"Joueur",
 
 		    content: [{
 		    	label: "Cryptogra... quoi ?",
-		    	onClick: dialog4opt1
+		    	onClick: dialog4opt1,
+		    	class: game.dialog4[0] ? 'asked': 'not-asked'
 		    },
 		    {
 		    	label: "Asymétrique ? Pourquoi asymétrique ?",
-		    	onClick: dialog4opt2
+		    	onClick: dialog4opt2,
+		    	class: game.dialog4[1] ? 'asked': 'not-asked'
 		    },{
 		    	label: "Si vous le dites...",
-		    	onClick: dialog5
+		    	onClick: dialog5,
+		    	class: game.dialog4[2] ? 'asked': 'not-asked'
 		    }],
 		    
 		    controls: [{
@@ -132,6 +140,8 @@ $(function(){
 	}
 
 	function dialog4opt1(){
+		game.dialog4[0] = true;
+
 		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
@@ -158,7 +168,9 @@ $(function(){
 
 
 	function dialog4opt2(){
-		$("body").closeAllDialogs(function(){
+			game.dialog4[1] = true;
+
+			$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
@@ -183,6 +195,8 @@ $(function(){
 	}
 
 	function dialog5(){
+		game.dialog4[2] = true;
+		
 		$("body").closeAllDialogs(function(){
 
 		  $(".wrapper.active .vertical-centering").dialog({

@@ -665,6 +665,10 @@ ul{
 	-webkit-font-smoothing: antialiased;
 }
 
+.dialog .asked{
+	opacity: 0.5;
+}
+
 .dialog li.active a:active{
 	box-shadow: 0 1px 0 rgb(0, 46, 77);
 	-webkit-transform: translateY(2px);

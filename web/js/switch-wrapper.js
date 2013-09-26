@@ -11,11 +11,9 @@
 				$(this).removeClass('active');
 
 				// fadeIn requested wrapper
-				setTimeout(function(){
-					$sel.fadeIn(function(){
-						if(_callback && typeof(_callback === "function" )) _callback();
-					}).addClass('active');
-				}, 100);
+				$sel.delay(100).fadeIn(function(){
+					if(_callback && typeof(_callback === "function" )) _callback();
+				}).addClass('active');
 
 			});
 		} else{
