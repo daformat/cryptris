@@ -52,12 +52,12 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         this.computeKeyBlurGradient();
 
         var object = this;
-        var beginTime = $.now();
+        var beginTime = this.column.parent.time;
 	    
         this.column.paint = function(director, time) {
 
             var clearTime = 250;
-	        var delta = $.now() - beginTime;
+	        var delta = time - beginTime;
             if (delta <= 2 * clearTime) {
 
                 var relativeY = object.squareNumber > 0 ? 0 : 1;

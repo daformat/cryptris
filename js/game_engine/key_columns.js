@@ -157,7 +157,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
     var object = this;
 	
-    this.myTimer = director.createTimer(this.container.time, Number.MAX_VALUE, null,
+    this.myTimer = director.createTimer(director.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
             if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
                 var msgColumn = object.msgColumn.column;
