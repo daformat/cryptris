@@ -9,7 +9,7 @@ function game() {
  */
 var resizeInProcess = false;
 function resize(director, newWidth, newHeight) {
-    if (director.width < 800 || director.height < 550) {
+    if (director.width < 800 || director.height < 500) {
         return;
     }
 

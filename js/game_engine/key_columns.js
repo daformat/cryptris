@@ -423,10 +423,19 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 				object.boxOption.keyNeedToUpdate = false;
 				var needToUpdateAgain = false;
 				for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
-					if (object.msgColumn.columnList[k].blockToDestroy !== null) {
-						if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false) {
-							object.msgColumn.columnList[k].container.removeChild(object.msgColumn.columnList[k].blockToDestroy.column);
-							object.msgColumn.columnList[k].blockToDestroy = null;
+					var msgColumn = object.msgColumn.columnList[k];
+					if (msgColumn.blockToDestroy !== null) {
+						if (msgColumn.blockToDestroy.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.blockToDestroy.column);
+							msgColumn.blockToDestroy = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+					if (msgColumn.levelMsg !== null) {
+						if (msgColumn.levelMsg.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.levelMsg.msg);
+							msgColumn.levelMsg = null;
 						} else {
 							needToUpdateAgain = true;
 						}

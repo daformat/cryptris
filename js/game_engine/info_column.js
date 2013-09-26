@@ -175,9 +175,13 @@ function InfoColumn(director, resultScene, crypt_key) {
 		if (resultScene.scene.isPaused() === true) {
 			resultScene.game_box.crypt_key.stopAnimation();
 			resultScene.rival_box.crypt_key.stopAnimation();
+			resultScene.game_box.message.stopLevelMsgAnimation();
+			resultScene.rival_box.message.stopLevelMsgAnimation();
 		} else {
 			resultScene.game_box.crypt_key.startAnimation();
 			resultScene.rival_box.crypt_key.startAnimation();
+			resultScene.game_box.message.startLevelMsgAnimation();
+			resultScene.rival_box.message.startLevelMsgAnimation();
 		}
 	}
 
