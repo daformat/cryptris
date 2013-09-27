@@ -392,7 +392,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Parfait ! Tu as compris comment faire, je n’en attendais pas moins de toi ! Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut.",
+			    content: "Parfait ! Tu as compris comment faire, je n’en attendais pas <span>moins de toi !</span> Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut.",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -452,7 +452,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: ( game.player.name ? " <em>"+game.player.name+",</em> e" : "E" ) + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir de la salle des machines, essaie de débrancher le câble n° 42 du tableau éléctrique principal.",
+			    content: ( game.player.name ? " <em>"+game.player.name+",</em> e" : "E" ) + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau éléctrique principal.",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -641,7 +641,36 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Zut, le serveur essaie lui aussi de décrypter le message, heureusement il ne dispose que de ta clé publique ! Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code",
+			    content: "Zut, le serveur essaie lui aussi de décrypter le message, heureusement il ne dispose que de ta clé publique ! Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.",
+			    
+			    controls: [{
+			      label: "Décrypter le message", 
+			      class: "button blue",
+			      onClick: playLevel1
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}	
+
+	function playLevel1(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-m.jpg'>",
+
+			    title: "Mathieu",
+			    content: "Ici, intégrer le niveau 1, sans ce dialogue :)",
 			    
 			    controls: [{
 			      label: "Décrypter le message", 
@@ -655,7 +684,7 @@ $(function(){
 
 		});
 
-	}	
+	}			
 
 
 	function dialogDecryptedMessage1(){
@@ -671,7 +700,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Message décrypté",
-			    content: "Débranche le câble 55 du panneau éléctrique D",
+			    content: "Débranche le câble 55 du panneau éléctrique V",
 			    
 			    controls: [{
 			      label: "Débrancher le câble", 
@@ -729,7 +758,7 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: intro
+			      onClick: dialogServerIsFaster
 			    }]
 
 			  });	
@@ -738,6 +767,473 @@ $(function(){
 
 		});
 
+	}
+
+
+	function dialogServerIsFaster(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogSendingSecondCable
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}	
+
+
+	function dialogSendingSecondCable(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Je t'envoie le deuxième câble, crypté avec quatre blocs de plus. Avec la cryptologie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogEcnryptedSecondCable
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+
+
+	function dialogEcnryptedSecondCable(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "InriOS 3.14",
+			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+			    
+			    controls: [{
+			      label: "Décrypter le message", 
+			      class: "button blue",
+			      onClick: playLevel2
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+	function playLevel2(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-m.jpg'>",
+
+			    title: "Mathieu",
+			    content: "Ici, intégrer le niveau 2, sans dialogue :)",
+			    
+			    controls: [{
+			      label: "Décrypter le message", 
+			      class: "button blue",
+			      onClick: dialogDecryptedMessage2
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}		
+
+
+	function dialogDecryptedMessage2(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Message décrypté",
+			    content: "Débranche le câble 78 du panneau éléctrique M",
+			    
+			    controls: [{
+			      label: "Débrancher le câble", 
+			      class: "button blue",
+			      onClick: dialogCables2
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}			
+	
+
+	function dialogCables2(){
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "cables",
+			    title: "Séléctionner le cable à débrancher",
+
+			  });
+
+	      $('.cables').prepareCables(78, dialogSuccessCables2);
+
+			});
+
+		});
+	}	
+
+
+
+	function dialogSuccessCables2(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau éléctrique et je pourrais enfin sortir !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogServerIsInfectingOtherMachines
+			    }]
+
+			  });	
+
+			});
+
+		});
+	}
+
+
+	function dialogServerIsInfectingOtherMachines(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Ce serveur ne devrait pas être en mesure de décrypter aussi rapidement ces messages... J’ai compris ! Il contamine d’autres ordinateurs et augmente ainsi sa puissance !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogSendingThirdCable
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+
+
+	function dialogSendingThirdCable(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Je t'envoie le prochain tronçon, en augmentant encore la difficulté du cryptage. Il lui faudra quelques milliers d'années pour <span>décrypter ce dernier message</span>, et d'ici-là nous l'aurons débranché et analysé !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogEcnryptedThirdCable
+			    }]
+
+			  });	
+
+			});
+
+		});				
+
+	}
+
+
+	function dialogEcnryptedThirdCable(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "InriOS 3.14",
+			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+			    
+			    controls: [{
+			      label: "Décrypter le message", 
+			      class: "button blue",
+			      onClick: playLevel3
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}
+
+	function playLevel3(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-m.jpg'>",
+
+			    title: "Mathieu",
+			    content: "Ici, intégrer le niveau 3, sans dialogue :)",
+			    
+			    controls: [{
+			      label: "Décrypter le message", 
+			      class: "button blue",
+			      onClick: dialogDecryptedMessage3
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}		
+
+
+	function dialogDecryptedMessage3(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Message décrypté",
+			    content: "Débranche le câble 31 du panneau éléctrique N",
+			    
+			    controls: [{
+			      label: "Débrancher le câble", 
+			      class: "button blue",
+			      onClick: dialogCables3
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}			
+	
+
+	function dialogCables3(){
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "cables",
+			    title: "Séléctionner le cable à débrancher",
+
+			  });
+
+	      $('.cables').prepareCables(31, dialogSuccessCables3);
+
+			});
+
+		});
+	}		
+
+
+
+	function dialogSuccessCables3(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Mes félicitations! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogIWasTrapped
+			    }]
+
+			  });	
+
+			});
+
+		});				
+
+	}
+
+
+	function dialogIWasTrapped(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogThanksToCrypto
+			    }]
+
+			  });	
+
+			});
+
+		});				
+
+	}	
+
+
+	function dialogThanksToCrypto(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué la tâche, car tu disposes de la clé privée, en revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: theEnd
+			    }]
+
+			  });	
+
+			});
+
+		});				
+
+	}		
+
+	function theEnd(){
+		intro();
 	}
 
 	intro();
