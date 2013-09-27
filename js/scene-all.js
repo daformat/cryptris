@@ -1015,7 +1015,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Je t'envoie le prochain tronçon, en augmentant encore la difficulté du cryptage. Il lui faudra quelques milliers d'années pour <span>décrypter ce dernier message</span>, et d'ici-là nous l'aurons débranché et analysé !",
+			    content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques milliers d'années pour <span>décrypter ce dernier message</span>, et d'ici-là nous l'aurons débranché et analysé !",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -1216,7 +1216,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué la tâche, car tu disposes de la clé privée, en revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
+			    content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée, en revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
 			    
 			    controls: [{
 			      label: "Suite", 
