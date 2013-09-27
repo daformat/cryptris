@@ -701,7 +701,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Message décrypté",
-			    content: "Débranche le câble 55 du panneau éléctrique V",
+			    content: "Débranche le câble 24 du panneau éléctrique V",
 			    
 			    controls: [{
 			      label: "Débrancher le câble", 
@@ -732,7 +732,7 @@ $(function(){
 
 			  });
 
-	      $('.cables').prepareCables(55, dialogSuccessCables1);
+	      $('.cables').prepareCables(24, dialogSuccessCables1);
 
 			});
 
