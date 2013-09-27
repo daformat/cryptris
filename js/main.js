@@ -10,8 +10,7 @@
 var currentGame = new game();
 
 /**
- * This function will be called to let you define new scenes that will be
- * shown after the splash screen.
+ * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
  */
 function createScenes(director) {
@@ -19,15 +18,7 @@ function createScenes(director) {
      * Create each scene.
      */
     currentGame.scenes = {};
-    currentGame.scenes['menu_scene'] = createMenuScene(director);
     currentGame.scenes['play_scene'] = createPlayScene(director);
-
-    /**
-     * Link each scene together.
-     */
-    currentGame.scenes['menu_scene']['shortcutButton'].mouseClick = function(e) {
-        director.switchToScene(director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
-    };
 
     /**
      * Define the framerate.
@@ -36,16 +27,14 @@ function createScenes(director) {
 }
 
 /**
- * This function displays the splash screen and switch to the 'menu scene'.
+ * This function preload each assets needed by the game and create each scenes..
  * @param director {CAAT.Director}
  */
-function launchSplashScreen(director) {
+function initGame(director) {
     /**
      * Image assets
      */
     var imgs= [];
-    imgs.push({id:'splash',   url: "img/splash/splash_digital_cuisine.png" });
-    imgs.push({id:'spinner',  url: "img/splash/rueda.png" });
     imgs.push({id:'logo-board', url: "img/assets/board-assets_03.png"});
     imgs.push({id:'pad-untouched', url: "img/assets/board-assets_35.png"});
     imgs.push({id:'pad-left', url: "img/assets/board-assets_25.png"});
@@ -64,21 +53,17 @@ function launchSplashScreen(director) {
     imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
 
     /**
-     * Clear the director.
-     */
-    director.setClear(CAAT.Foundation.Director.CLEAR_DIRTY_RECTS);
-
-    /**
      * Preload our necessarly images and load the splash screens.
      */
     new CAAT.Module.Preloader.ImagePreloader().loadImages(
         imgs,
         function on_load(counter, images) {
             if (counter === images.length) {
+                director.emptyScenes();
                 director.setImagesCache(images);
-                var splashScene = createSplashScene(director, 2000, createScenes);
+                createScenes(director);
+                director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
                 CAAT.loop(60);
-                splashScene.loadedImage(0,null);
             }
         }
     );
@@ -94,6 +79,9 @@ $(document).ready(function() {
      */
     CAAT.DEBUG = parseInt(getQuerystring('dbg', 0)) == 1;
 
+    /**
+     * We use this to enable some fonts in our gameBox.
+     */
     $('.trick-font').each(function()
     {
         $(this).attr('style', 'display: none;');
@@ -106,9 +94,9 @@ $(document).ready(function() {
 	var director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
 	
     /**
-     * Launch splash screen
+     * Init the game
      */
-    launchSplashScreen(director);
+    initGame(director);
 
     /**
      * Enable resize events.

@@ -17,10 +17,6 @@ function resize(director, newWidth, newHeight) {
         resizeInProcess = true;
 
         if (currentGame.scenes !== null) {
-            if (currentGame.scenes['menu_scene'] !== null) {
-                currentGame.scenes['menu_scene']['resize'](director, currentGame.scenes['menu_scene']);
-            }
-
             if (currentGame.scenes['play_scene'] !== null) {
                 currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
             }

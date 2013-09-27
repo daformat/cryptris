@@ -1,0 +1,903 @@
+/*
+
+	Cryptris.css
+	------------
+	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
+	@lastmod 2013-09-21
+
+*/
+
+html, body { 
+  margin:0;
+  padding:0;
+  font-family: 'Geo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+	text-shadow: 0 0 1px rgba(100,100,255,0.5);
+	background: #000;
+	color: #eee;
+  font-size: 20px;
+  word-wrap: break-word; /* passage à la ligne forcé */
+   -webkit-hyphens: auto; /* césure propre */
+   -moz-hyphens: auto;
+   hyphens: auto;
+  -webkit-text-size-adjust: none;
+
+}
+
+ul{
+	list-style-type: none
+}
+
+a{
+	color: #5eded3;
+	text-decoration: none;
+}
+
+
+h1, h2, h3, h4, h5, h6{
+	color: #0091bb;
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 31px;
+}
+
+h3 { margin-bottom: -10px; }
+
+img { border: none;}
+
+ul{
+	list-style-type: none;
+	padding: 0;
+}
+
+/*
+	General stuff
+*/
+
+.main-wrapper{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow-x: hidden;
+}
+
+.wrapper{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: auto;
+	display: table;
+  min-height: 600px;
+  overflow-x: hidden;
+
+}
+
+.wrapper.block{
+	display: block;
+}
+
+.white{
+	background: #fff;
+}
+
+.bg-circuits{
+	background: url(../img/bg-circuits.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+  color: #eee;
+  font-weight: normal;
+}
+
+.bg-institut{
+	background: url(../img/bg-institut.jpg) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+  color: #eee;
+  font-weight: normal;
+}
+
+.hidden{
+	opacity: 0;
+	display: none;
+}
+/*
+	Utils
+*/
+
+.button{
+	font-family: 'Geo', sans-serif;
+	font-size: 20px;
+	padding: 10px 28px;
+	background-color: #0071bb;
+	color: #eee;
+	text-transform: uppercase;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.15s ease-in ;
+	margin: 1em;
+	top: 0px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-appearance: none;
+	border-radius: 0px;
+	box-shadow: 0 3px 0 #002e4d;
+	border: none;
+}
+
+.button:active{
+	box-shadow: 0 1px 0 #002e4d;
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
+}
+
+.button.red{
+	background-color: #9c0500;
+	box-shadow: 0 3px 0 #440500;
+}
+
+.button.red:active{
+		box-shadow: 0 1px 0 #440500;
+}
+.characters-left{
+	line-height: 46px;
+	margin: 15px 10px 30px;
+	color:  #0091bb;
+}
+
+.lcd{
+	width: 141px;
+	height: 46px;
+	background: url(../img/lcd.png) center no-repeat;
+	display: inline-block;
+	font-family: 'Quantico', sans-serif;
+	font-weight: bold;
+	font-size: 22px;
+	text-shadow: 0px 0px 10px #00f3ff;
+	color: #eee;
+	margin: 10px;
+}
+
+.count.red{
+	color: #fdd;
+	text-shadow: 0 0 10px #fc56fc;
+}
+
+.arrow{
+	margin: 0.5em;
+	color: #0091bb;
+	line-height: 10px;
+		font-size: 20px;
+
+}
+
+.vertical-centering{
+  display:table-cell;
+  vertical-align:middle;
+  overflow-x: hidden;
+}
+
+
+/*
+	Home screen
+*/
+
+/* Logos */
+
+.cryptris-logo-large{
+	width: 70%;
+	max-width: 1090px;
+	min-width: 500px;
+	margin-top: -5%;
+	margin-bottom: -50px;
+	padding-top:60px;
+}
+
+.portrait .cryptris-logo-large{
+	width: 100%;
+}
+
+.logo-digital-cuisine-medium{
+	margin: 2% 0;
+}
+
+.logo-inria{
+	position: absolute;
+	top: 30px;
+	right: 35px;
+	width: 157px;
+	max-width: 157px;
+}
+
+.logo-inria-medium{
+	width: 100%;
+}
+
+/* Menu */
+
+.main-menu{
+	color: #0091bb;
+	font-size: 31px;
+	fon-weight: 400;
+	background: #000;
+	background: rgba(0,0,0,0.3);
+	display: inline-block;
+	border-top: 2px solid #eee;
+	border-bottom: 2px solid #eee;
+	padding: 10px 0;
+	width: 80%;
+	max-width: 450px;
+	text-transform: uppercase;
+}
+
+.main-menu a{
+	color: inherit;
+}
+.main-menu li{
+		padding: 5px 0;
+		margin: 2px 0;
+		transition: all 0.25s ease;
+}
+.main-menu li a{
+	width: 100%;
+	display:inline-block;
+}
+
+.main-menu .arrow{
+	font-size: 20px;
+	margin: 0.5em;
+	color: #0091bb;
+	text-shadow: none;
+	visibility: hidden;
+	opacity: 0;
+	line-height: 10px;
+	transition: all 0.25s ease;
+
+}
+
+.main-menu .active .arrow, .main-menu li:hover .arrow{
+	visibility: visible;
+	opacity: 1;
+}
+
+.main-menu .active, .main-menu li:hover{
+	color: #fff;
+	background-color: #000;
+	text-shadow: 0px 0px 10px #00f3ff;
+}
+
+/* Social icons */
+.social-icons{
+	position: absolute;
+	bottom: 35px;
+	right: 35px;
+}
+
+.social-icons a{
+	margin: 4px;
+	position: relative;
+}
+.social-icons a img{
+	transition: all 0.25s ease;
+}
+.social-icons a:hover img{
+	-webkit-transform: translateY(-10px) rotate(360deg);
+	transform: translateY(-10px) rotate(360deg);
+}
+.social-icons img.retina{
+	width: 35px;
+}
+/*
+	Scrollable content with gradient
+*/
+
+.overflow-gradient-top{
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	height: 70px;
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 ); /* IE6-8 */
+}
+
+.overflow-gradient-bottom{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 70px;
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-8 */
+}
+
+/*
+	Credits, about, bonus, share
+*/
+
+.text-content{
+	margin: 40px 10% 70px;
+	display: inline-block;
+	max-width: 700px;
+	width: 80%;
+}
+.text-content.no-max-width{
+		max-width: none;
+}
+
+.credits-logos img{
+	margin: 15px 20px;
+}
+
+.btn-close{
+	position: absolute;
+	right: 35px;
+	top: 30px;
+	width: 39px;
+	height: 38px;
+}
+.btn-close img{
+	width: 100%;
+	transition: all 0.15s ease;
+}
+
+.btn-close:hover img{
+	-webkit-transform: scale(1.2) rotate(0);
+	transform: scale(1.2) rotate(0);
+}
+
+.btn-close:active img{
+	-webkit-transform: scale(0.8) rotate(180deg);
+	transform: scale(0.8) rotate(180deg);
+}
+/*
+ Share
+*/
+
+.share .cryptris-logo-medium {
+	margin-top: 1%;
+	max-width: 724px;
+	width: 80%;
+}
+
+.share .text-content{
+	margin-top: 5px;
+	margin-bottom: 50px;
+}
+
+.share h2{
+	margin-top: 0;
+}
+
+.share textarea{
+	background-color: #000;
+	background-color: rgba(0,0,0, 0.4);
+
+	border: 10px solid #0071bb;
+	border: 10px solid rgba(0, 150, 237, 0.2);
+
+	border-radius: 3px;
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
+	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
+
+	width: 80%;
+	max-width: 530px;
+	height: 3.5em;
+
+	font-size: 20px;
+	color: #eee;
+
+	font-family: inherit;
+	text-shadow: inherit;
+	font-weight: normal;
+	padding:15px 20px;
+
+	-webkit-font-smoothing: antialiased;
+	resize: none;
+
+	transition: border-color 0.35s ease, box-shadow 0.45s ease;
+	overflow-y: auto;
+	-webkit-appearance: none;
+
+}
+
+.share textarea:focus{	
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
+	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
+}
+
+.share textarea.warning{
+	border-color: rgb(156, 5, 0);
+	border-color: rgba(255, 55, 50, 0.5);
+	-webkit-box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
+	box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
+
+}
+
+.share fieldset{
+	border: none;
+	margin: 0;
+	padding: 0;
+
+}
+.share textarea:focus{
+	outline: none;
+}
+
+.share #step2{
+	margin-left: 200%;
+	position: absolute;
+}
+
+.share #step2 .button:active{
+	top: 2px;
+}
+.share .encrypted-message{
+	width: 100%;
+	max-width: 1000px;
+	display: inline-block;
+}
+
+.share .encrypted-message a{
+	color: #eee;
+	padding: 20px 0;
+}
+
+.share .encrypted-message a img{
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.share .encrypted-message .message{
+	width: 45%;
+	text-align: center;
+	display: inline-block;
+	vertical-align: text-top;
+	min-width: 280px
+}
+
+.share .encrypted-message .message .img{
+	width: 100%;
+	max-width: 456px;
+}
+
+.share .encrypted-message .social-actions{
+	text-align: left;
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+.share .encrypted-message .social-actions p{
+	margin: 28px;
+}
+
+.share .social-actions a img{
+	transition: all 0.25s ease;
+}
+.share .social-actions a:hover img{
+	-webkit-transform: translateX(-10px) rotate(-360deg);
+	transform: translateX(-10px) rotate(-360deg);
+}
+/*
+	New login screen
+*/
+.logo-inria-pixelated{
+	margin: -20px;
+	margin-bottom: 80px;
+}
+
+.new-login label{
+	display: block;
+	font-size: 27px;
+	color: #0091bb;
+}
+
+.new-login fieldset{
+	display: inline-block;
+	padding: 10px 0;
+	margin: 10px;
+	border: 0;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	width: 80%;
+	max-width: 430px;
+}
+
+.new-login .button{
+	margin: 0 -0.5em 0 0.5em;
+	padding: 8px 20px;
+}
+
+.new-login input[type=text]{
+	background: none;
+	border: none;
+	color: #fff;
+	font-family: "Geo", sans-serif;
+	font-size: 33px;
+	width: 75%; /*	width: 68%; */
+	margin: 0;
+	padding: 0;
+}
+
+.new-login input[type=text]:focus{
+	outline: none;
+}
+
+.new-login .arrow{
+	margin: 0.5em 0.5em .5em -0.5em
+}
+.inrios{
+	position: absolute;
+	bottom: 10px;
+	text-align: center;
+	width: 100%;
+	margin: 40px 0;
+	font-size: 33px;
+}
+/*
+	Prompt and cursor
+*/
+
+.prompt{
+	font-size: 33px;
+	text-transform: uppercase;
+}
+
+.prompt .arrow{
+	font-size: 23px;
+}
+
+.cursor{
+	color: #0091bb;
+}
+
+/*
+	Dialogs
+*/
+.dialog{
+	background-color: #e5e5e5;
+	width: 860px;
+	height: 278px;
+	box-shadow: 5px 10px 0 rgba(0,0,0, 0.3);
+	color: #284c63;
+	text-shadow: none;
+	line-height: 30px;
+	display: inline-block;
+	position: relative;
+}
+
+.dialog.with-avatar{
+	text-align: left;
+}
+
+.dialog h2{
+	background: #0071bb;
+	color: #eee;
+	padding: 3px 20px;
+	width: auto;
+	display: inline-block;
+	margin: 28px 0 8px 0;
+	font-family: "Quantico", sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.dialog .avatar{
+	float: left;
+	padding: 10px;
+	background: #fff;
+	line-height: 0;
+	margin-right: 20px;
+}
+
+.dialog .content{
+	padding: 8px 42px;
+}
+
+.dialog .content img.keyboard-key{
+	vertical-align: text-top;
+	position: relative;
+	top: -3px;
+	line-height: 1px;
+}
+
+.dialog em{
+	font-style: normal;
+	color: #0071bb;
+}
+
+.dialog .controls{
+	position: absolute;
+	bottom: 0;
+	height: 60px;
+	text-align: right;
+	left: 23px;
+	right: 23px;
+}
+
+.dialog .button{
+	padding: 8px 20px;
+	margin: 0 8px;
+}
+.dialog .button:active{
+	top: 2px;
+}
+
+
+.dialog ul{
+	display: inline-block;
+	margin: 5px;
+}
+.dialog li{
+		padding: 5px 0;
+		margin: 2px 0;
+		transition: all 0.25s ease;
+}
+.dialog li a{
+	display:inline-block;
+	font-family: 'Geo', sans-serif;
+	font-size: 26px;
+	padding: 5px 14px;
+	border: none;
+	text-transform: uppercase;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.15s ease ;
+	margin: 2px;
+	top: 0px;
+	-webkit-font-smoothing: antialiased;
+}
+
+.dialog .asked{
+	opacity: 0.5;
+}
+
+.dialog li.active a:active{
+	box-shadow: 0 1px 0 rgb(0, 46, 77);
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
+}
+
+.dialog .arrow{
+	font-size: 20px;
+	margin: 0.5em;
+	color: #0091bb;
+	text-shadow: none;
+	visibility: hidden;
+	opacity: 0;
+	line-height: 10px;
+	transition: all 0.25s ease;
+}
+
+.dialog.player h2{
+	background: #fff;
+	color: #0071bb;
+	display: inline-block;
+	margin: 28px 0 8px 0;
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+}
+
+.dialog li a{
+	transition: all 0.25s ease;
+	text-shadow: none;
+	color: #284c63;
+}
+
+.dialog .active .arrow, .dialog li:hover .arrow{
+	visibility: visible;
+	opacity: 1;
+}
+
+.dialog .active, .dialog li:hover{
+	text-shadow: 0px 0px 10px #00f3ff;
+}
+
+.dialog li.active a{
+	background-color: #0071bb;
+	color: #eee;
+	box-shadow: 0 3px 0 #002e4d;
+
+}
+/*
+	Dialog for entangled cables
+*/
+.dialog.cables{
+	height: 560px;
+	width:864px;
+	text-align: left;
+}
+
+.dialog.cables h2{
+	background: #fff;
+	color: #0071bb;
+	display: inline-block;
+	margin: 28px 0 8px 0;
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	margin-left: 20px;
+
+}
+
+.dialog.cables .left{
+	display: inline-block;
+	position: relative;
+}
+
+.dialog.cables .right{
+	float: right;
+	position: relative;
+}
+
+.dialog.cables .content{
+	background: #93bcd7;
+	border: solid 7px #b8cfde;
+	margin: 5px 20px 0;
+	padding: 10px;
+
+}
+
+.dialog.cables .numbers, .dialog.cables .jacks{
+	margin-top: 0;
+}
+
+.dialog.cables .numbers li, .dialog.cables .jacks li{
+	height: 52px;
+}
+
+.dialog.cables .numbers li{
+	position: relative;
+	top: 9px;
+}
+
+.dialog.cables .numbers{
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	font-size: 23px;
+	color: #eee;
+	position: absolute;
+	line-height: 0;
+	top: 0;
+	text-shadow: 0px 0px 10px #00f3ff;
+}
+
+.dialog.cables .numbers .unplugged{
+	text-shadow: none;
+	color: #678497;
+}
+
+.dialog.cables .right .numbers{
+	right: 0;
+}
+.dialog.cables .right img{
+	margin-right: 42px;
+	margin-left: 2px;
+}
+
+.dialog.cables .left img{
+	margin-left: 42px;
+	margin-right: 1px;
+}
+
+.dialog.cables .jacks{
+	color: #eee;
+	position: absolute;
+	line-height: 0;
+	top: 0;
+}
+.dialog.cables .jacks a{
+	padding: 0;
+	margin: 0;
+	font-size: 23px;
+	background: url(../img/entangled-cables-outlet.png) center no-repeat;
+}
+.dialog.cables .left .jacks{
+	right: -68px;
+}
+
+.dialog.cables .left .jacks a{
+	background-position: 100% 40%;
+}
+
+.dialog.cables .left .jacks a img{
+	position: relative;
+	transition: left 0.25s ease-in;
+}
+
+.dialog.cables .left .jacks a:hover img{
+	left: -3px;
+}
+
+.dialog.cables .left .jacks a:active img, .dialog.cables .left .jacks .unplugged a img{
+	left: -15px;
+}
+
+.dialog.cables .right .jacks{
+	left: -68px;
+}
+
+.dialog.cables .right .jacks a{
+	background-position: 0% 40%;
+}
+
+.dialog.cables .right .jacks a img{
+	position: relative;
+	transition: right 0.25s ease-in;
+}
+
+.dialog.cables .right .jacks a:hover img{
+	right: -3px;
+}
+
+.dialog.cables .right .jacks a:active img, .dialog.cables .right .jacks .unplugged a img{
+	right: -15px;
+}
+
+
+/*
+	Animations
+*/
+
+@-webkit-keyframes blinking
+{
+	0% {opacity: 0;}
+	45% {opacity: 0;}
+	50%  {opacity: 1;}
+	95%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+
+@keyframes blinking
+{
+	0% {opacity: 0;}
+	45% {opacity: 0;}
+	50%  {opacity: 1;}
+	95%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+
+.blinking{
+	-webkit-animation: blinking 1s infinite;
+	animation: blinking 1s infinite;
+}
+
+/*
+	Device orientation
+*/
+#rotate-device{
+	margin-left: -200%;
+	background: rgba(0,0,0,0.8);
+}
+#rotate-device img{
+	transition: width 0.25s ease, height 0.25s ease, opacity 0.5s ease;
+	opacity: 0;
+	width: 0px;
+	height: 0px;
+}
+
+.ios-mobile.portrait #rotate-device, .android-mobile.portrait #rotate-device {
+	margin-left: 0%;
+}
+
+.ios-mobile.portrait #rotate-device img, .android-mobile.portrait #rotate-device img {
+	opacity: 1;
+	width: 400px;
+	height: 400px;
+}

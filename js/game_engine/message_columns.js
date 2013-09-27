@@ -8,7 +8,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
     this.x = x;
     this.y = y;
     this.boxOption = boxOption;
-    this.clearTime = 1000;
+    this.clearTime = 750;
     this.delta = this.clearTime;
 
     var object = this;
