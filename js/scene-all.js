@@ -526,7 +526,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Attends, ce n’est pas normal... Laisse-moi vérifier... Ça alors ! Le serveur s’est reprogrammé de lui-même et c’est lui qui contrôle le système. Il nous écoute manifestement et t’a empêché de débrancher le câble, tout comme il a verrouillé les portes de la salle, je suis enfermée ici !",
+			    content: "Attends, ce n’est pas normal... Laisse-moi vérifier... Ça alors ! Le serveur s’est reprogrammé de lui-même et c’est lui qui contrôle le système. Manifestement, il nous écoute et t’a empêché de débrancher le câble, tout comme il a verrouillé les portes de la salle. Je suis enfermée ici !",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -1219,7 +1219,37 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée, en revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
+			    content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogThanksToCrypto2
+			    }]
+
+			  });	
+
+			});
+
+		});				
+
+	}		
+
+
+	function dialogThanksToCrypto2(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -1233,10 +1263,14 @@ $(function(){
 
 		});				
 
-	}		
+	}			
 
 	function theEnd(){
-		intro();
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#end-game', function(){
+			});
+		});
 	}
 
 	intro();
