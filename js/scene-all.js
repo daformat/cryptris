@@ -80,6 +80,7 @@ $(function(){
 			game.player.name = $('#login-name').val();
 			$.switchWrapper('#bg-institut', dialog2);
 			currentGame.username = game.player.name;
+			$('.new-login').unbind('submit');
 			return false;
 		});
 	}
