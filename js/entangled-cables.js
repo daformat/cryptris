@@ -8,7 +8,8 @@ $(function(){
 				R: 0
 			},
 			$cableDialog,
-			_callback;
+			_callback,
+			timeouts = [];
 
 	// Cable data
 	var cables = {
@@ -166,13 +167,15 @@ $(function(){
 		if( $cableNumber.text() == n ) {
 			// Answer is correct
 			$cableJack.click(function() {
+				clearTimeouts();
+				
 				$cableNumber.toggleClass("unplugged"); 
 				$cableJack.toggleClass("unplugged"); 
 
 				if(_callback && typeof(_callback === "function" ))
-					setTimeout(function(){
+					timeouts.push(setTimeout(function(){
 						_callback();
-					}, 1000);
+					}, 1000));
 
 			});
 		} else {
@@ -193,23 +196,24 @@ $(function(){
 		});
 
 		$cable.click(function(){
-			
+			clearTimeouts();
+
 			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
 			
 			$d.trigger('startRumble');
-			setTimeout(function(){
+			timeouts.push(setTimeout(function(){
 				$d.trigger('stopRumble');
 
 				if( callbackOnClick == true ) {
 
 					if(_callback && typeof(_callback === "function" ))
-						setTimeout(function(){
+						timeouts.push(setTimeout(function(){
 							_callback();
-						}, 1000);
+						}, 1000));
 
 				}
 
-			}, 700);
+			}, 700));
 
 		})
 	}
@@ -274,6 +278,15 @@ $(function(){
     }
     return size;
 	};
+
+	// clear timeouts to prevent mess
+	var clearTimeouts = function () {
+		$.each(timeouts, function(i){
+			clearTimeout(timeouts[i])
+		});
+
+		timeouts = [];
+	}
 
 	// correctCable: Numeric label of the correct cable
 	// callback: fired when correct cable is unplugged
