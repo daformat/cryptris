@@ -79,7 +79,7 @@ $(function(){
 		$('.new-login').submit(function(e){
 			game.player.name = $('#login-name').val();
 			$.switchWrapper('#bg-institut', dialog2);
-
+			currentGame.username = game.player.name;
 			return false;
 		});
 	}
@@ -225,7 +225,8 @@ $(function(){
 	function dialog6(){
 		$("body").closeAllDialogs(function(){
 
-			$.switchWrapper('#bg-circuits', function(){
+			$.switchWrapper('#game-board', function(){
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['create_key_scene']['scene']), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -240,16 +241,30 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: dialog7
+			      onClick: switchToCreateKey
 			    }]
 
-			  });	
+			  });
+	
 
 			});
 
 		});
 
 	}
+
+	function switchToCreateKey() {
+		$("body").closeAllDialogs();
+		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+                if (currentGame.goToDialog7 === true) {
+                    waitToContinue.cancel();
+                    dialog7();
+                }
+            }
+        );
+	}
+
 
 	function dialog7(){
 		$("body").closeAllDialogs(function(){

@@ -18,7 +18,12 @@ function createScenes(director) {
      * Create each scene.
      */
     currentGame.scenes = {};
+    currentGame.scenes['waiting_scene'] = director.createScene();
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director);
     currentGame.scenes['play_scene'] = createPlayScene(director);
+    //currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['create_key_scene']['scene']), 0, 0, false);
+
+
 
     /**
      * Define the framerate.
@@ -90,16 +95,16 @@ $(document).ready(function() {
     /**
      * Declare our main caat director.
      */
-    var onScreenCanvas  = $('.main_scene');
-	var director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
-	
+    var onScreenCanvas  = $('#main_scene');
+	currentGame.director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
+
     /**
      * Init the game
      */
-    initGame(director);
+    initGame(currentGame.director);
 
     /**
      * Enable resize events.
      */
-    director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
+    currentGame.director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
 });

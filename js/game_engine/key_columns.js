@@ -311,6 +311,13 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 		}
 	}
 
+	this.hidden = function() {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].container.removeChild(this.columnList[i].column);
+		}
+		this.columnList = [];
+	}
+
 	this.changeKeyType = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
 			if (this.type === KEY_TYPE_NORMAL) {
@@ -466,19 +473,17 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 
 	if (this.player === true) {
 		CAAT.registerKeyListener(function (key) {
-			if (gameIsPaused === false) {
-				if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
-					object.rotateLeft();
-				}
-				if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
-					object.rotateRight();
-				}
-				if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
-					object.changeKeyType();
-				}
-				if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-					object.keyDown();
-				}
+			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
+				object.rotateLeft();
+			}
+			if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
+				object.rotateRight();
+			}
+			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
+				object.changeKeyType();
+			}
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+				object.keyDown();
 			}
 		});
 	}

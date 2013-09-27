@@ -1,5 +1,5 @@
-var gameIsPaused = false;
 
+var MAX_BOARD_LENGTH = 12;
 var COLUMN_TYPE_1 = 'type1';
 var COLUMN_TYPE_2 = 'type2';
 var COLUMN_TYPE_3 = 'empty';

@@ -2,6 +2,10 @@ function game() {
 	this.username = "MATHIEU";
 	this.scenes = null;
     this.ianame = "RJ-45";
+    this.director = null;
+    this.playerKeyInfo = null;
+    this.iaCreateKeyTimer = null;
+    this.goToDialog7 = false;
 }
 
 /**
@@ -143,6 +147,33 @@ function getKeyInfo(dim) {
     }
 
     return result;
+}
+
+function resetPublicKey(newPk) {
+
+    if (currentGame.playerKeyInfo !== null && currentGame.playerKeyInfo !== undefined) {
+        currentGame.playerKeyInfo['public_key'] = {};
+        currentGame.playerKeyInfo['public_key']['key'] = newPk;
+        currentGame.playerKeyInfo['public_key']['normal_key'] = [];
+        currentGame.playerKeyInfo['public_key']['reverse_key'] = [];
+        currentGame.playerKeyInfo['public_key']['number'] = [];
+
+        for (var i = 0; i < newPk.length; ++i) {
+            if (newPk[i] > 0) {
+                currentGame.playerKeyInfo['public_key']['normal_key'].push(COLUMN_TYPE_1);
+                currentGame.playerKeyInfo['public_key']['reverse_key'].push(COLUMN_TYPE_2);
+                currentGame.playerKeyInfo['public_key']['number'].push(newPk[i]);
+            } else if (newPk[i] < 0) {
+                currentGame.playerKeyInfo['public_key']['normal_key'].push(COLUMN_TYPE_2);
+                currentGame.playerKeyInfo['public_key']['reverse_key'].push(COLUMN_TYPE_1);
+                currentGame.playerKeyInfo['public_key']['number'].push(-1 * newPk[i]);
+            } else {
+                currentGame.playerKeyInfo['public_key']['normal_key'].push(COLUMN_TYPE_3);
+                currentGame.playerKeyInfo['public_key']['reverse_key'].push(COLUMN_TYPE_3);
+                currentGame.playerKeyInfo['public_key']['number'].push(newPk[i]);
+            }
+        }
+    }
 }
 
 function chiffre(dim, message, pk) {

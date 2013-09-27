@@ -502,6 +502,30 @@ function Message(director, messageLength, message, container, boxOption) {
         }
     }
 
+    this.upMessage = function() {
+        var msgOnMove = 0;
+        for (var i = 0; i < this.columnList.length; ++i) {
+            ++msgOnMove;
+            var msgColumn = this.columnList[i];
+
+            var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
+            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, 2500).setCycle(false);
+            var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; console.log('message on the top'); }, 'behaviorApplied' : null};
+            pb.addListener(behaviorListener);
+
+            msgColumn.column.addBehavior(pb);
+        }
+
+        var waitToContinue = director.createTimer(director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+                if (msgOnMove === 0) {
+                    waitToContinue.cancel();
+                    currentGame.goToDialog7 = true;
+                }
+            }
+        );
+    }
+
     this.resetMessage = function(key) {
         for (var i = 0; i < this.columnList.length; ++i) {
             this.container.removeChild(this.columnList[i].column);

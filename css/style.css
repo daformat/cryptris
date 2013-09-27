@@ -11,6 +11,7 @@ body {
 	margin: 0px;
 	padding: 0px;
 	display: inline-block;
+	overflow: hidden;
 }
 
 #container {
@@ -20,7 +21,7 @@ body {
 }
 
 .bg-circuits {
-	background: url(img/fond-board.png) center no-repeat;
+	background: url(../img/fond-board.png) center no-repeat;
 	-webkit-background-size: cover; /* pour Chrome et Safari */
     -moz-background-size: cover; /* pour Firefox */
     -o-background-size: cover; /* pour Opera */

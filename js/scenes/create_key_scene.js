@@ -7,7 +7,7 @@
  *     - play_scene.js                                              *
  *******************************************************************/
 
-function handle_ia(playScene, rivalBoxInfo) {	              
+function ia_create_pk(createKeyScene, gameBoxInfo) {	              
     var prepare_move = [];
     var move = [];
 
@@ -21,13 +21,13 @@ function handle_ia(playScene, rivalBoxInfo) {
     var ACTION_INVERT = 3;
     var ACTION_AFTER_DOWN = 4;
 
-    var message = rivalBoxInfo.message;
-    var key = rivalBoxInfo.crypt_key;
+    var message = gameBoxInfo.message;
+    var key = gameBoxInfo.crypt_key;
 
     var actionToDo = ACTION_UNKNOWN;
 
     for (var i = 0; i < key.length; ++i) {
-        move.push(0);
+        move.push(Math.floor(Math.random() * 5) - 2);
     }
     var index = 0;
 
@@ -37,82 +37,31 @@ function handle_ia(playScene, rivalBoxInfo) {
     var alignColumn = false;
     var progress = true;
 
-    playScene.createTimer(0, Number.MAX_VALUE, null,
+    currentGame.iaCreateKeyTimer = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            if (index < move.length && key.keyInMove === false && key.keyFirstMove === false) {
+                if (actionToDo === ACTION_UNKNOWN) {
 
-            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
-                /**
-                 * TO PRECISE : We apply -2 key at all columns of the message.
-                 */
-                if (actionToDo === ACTION_UNKNOWN && moveIsPrepared !== true) {
                     if (actionToDo === ACTION_UNKNOWN) {
-                        if (keyIsInvert !== true) {
-                            actionToDo = ACTION_INVERT;
-                        } else if (move[index] !== -2) {
-                            actionToDo = ACTION_DOWN;
-                            move[index] = move[index] - 1;
-                        } else if (move[index] === -2) {
-                            if (index < move.length - 1) {
-                                ++index;
-                                actionToDo = ACTION_RIGHT;
-                            } else {
-                                moveIsPrepared = true;
-                                actionToDo = ACTION_UNKNOWN;
-                                progress = true;
-                                index = move.length - 1;
-                            }
-                        }
-                    }
-                    current_time = time;
-                } else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {    
-                    if (progress === true) {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (index !== move.length - 1) {
-                                actionToDo = ACTION_RIGHT;
-                                ++index;
-                            } else {
-                                if (keyIsInvert === true) {
-                                    actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== 2) {
-                                    actionToDo = ACTION_DOWN;
-                                    move[index] = move[index] + 1;
-                                } else if (move[index] === 2) {
-                                    actionToDo = ACTION_UNKNOWN;
-                                    progress = false;
-                                    align_column = true;
-                                }
-                            }
-                        }
-                    } else {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (align_column === true) {
-                                if (keyIsInvert !== true) {
-                                    actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== -2) {
-                                    actionToDo = ACTION_DOWN;
-                                    move[index] = move[index] - 1;
-                                } else if (move[index] === -2) {
-                                    actionToDo = ACTION_LEFT;
-                                    align_column = false;
-                                    --index;
-                                }
-                            } else {
-                                if (move[index] === 2) {
-                                    align_column = true;
-                                } else {
-                                    if (keyIsInvert === true) {
-                                        actionToDo = ACTION_INVERT;
-                                    } else {
-                                        actionToDo = ACTION_DOWN;
-                                        move[index] = move[index] + 1;
-                                        progress = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    current_time = time;
 
+                        if (move[index] === 0) {
+                            if (keyIsInvert === true) {
+                                actionToDo = ACTION_INVERT;
+                            } else {
+                                actionToDo = ACTION_RIGHT;
+                                ++index;
+                            }
+                        } else {
+                            if (move[index] < 0) {
+                                actionToDo = ACTION_INVERT;
+                                move[index] = -1 * move[index];
+                            } else {
+                                actionToDo = ACTION_DOWN;
+                                move[index] = move[index] - 1;
+                            }
+                        }
+                    }
+                    current_time = time;
                 } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT) {
                     key.rotateRight();
                     actionToDo = ACTION_UNKNOWN;
@@ -122,7 +71,7 @@ function handle_ia(playScene, rivalBoxInfo) {
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN) {
-                    key.keyDown();
+                    key.oldKeyDown();
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT) {
@@ -131,29 +80,42 @@ function handle_ia(playScene, rivalBoxInfo) {
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 }
+            } else if (index === move.length) {
+                currentGame.iaCreateKeyTimer.cancel();
+
+                message.upMessage();
+                key.hidden();
+                var newPk = [];
+                for (var i = 0; i < message.columnList.length; ++i) {
+                    if (message.columnList[i].type === COLUMN_TYPE_1) {
+                        newPk.push(message.columnList[i].squareNumber);
+                    } else if (message.columnList[i].type === COLUMN_TYPE_2) {
+                        newPk.push(-1 * message.columnList[i].squareNumber);
+                    } else {
+                        newPk.push(0);
+                    }
+                }
+                resetPublicKey(newPk);
             }
         }
     );
 }
 
-function resizePlayScene(director, playScene) {
+function resizeCreateKeyScene(director, createKeyScene) {
 
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
 
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
+    var canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * createKeyScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
 
     while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
         --DEFAULT_SQUARE_WIDTH;
         --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
+        canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * createKeyScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
     }
 
-    playScene.game_box.relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 40;
-    playScene.game_box.resize(playScene.scene, playScene.leftPlayerName, playScene.centerPlayerName, playScene.rightPlayerName, playScene.info_column);
-
-    playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
-    playScene.rival_box.resize(playScene.scene, playScene.leftIAName, playScene.centerIAName, playScene.rightIAName);
+    createKeyScene.game_box.relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 40;
+    createKeyScene.game_box.resize(createKeyScene.scene, createKeyScene.leftPlayerName, createKeyScene.centerPlayerName, createKeyScene.rightPlayerName, createKeyScene.info_column);
 
 }
 
@@ -161,7 +123,7 @@ function resizePlayScene(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director) {
+function createCreateKeyScene(director) {
     /**
      * Create the dict to return.
      */
@@ -175,36 +137,36 @@ function createPlayScene(director) {
     /**
      * Define the current length of the message (and of the keys).
      */
-    var current_length = parseInt(getQuerystring("n", 8));
+    var current_length = MAX_BOARD_LENGTH;
 
     /**
      * Generate my private and public keys.
      */
-    var key_info_t = getKeyInfo(current_length);
+    currentGame.playerKeyInfo = getKeyInfo(current_length);
 
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
+    var canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
 
     while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
         --DEFAULT_SQUARE_WIDTH;
         --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
+        canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
     }
 
     /**
-     * Define a TEMPORARY message.
+     * Define an empty message.
      */
-    var tmp_message = [];
+    var tmp_empty_message = [];
     for (var i = 0; i < current_length; ++i) {
-        tmp_message.push(Math.floor(Math.random() * 3 - 1));
+        tmp_empty_message.push(0);
     }
-    var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
+    var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
 
     /**
      * Position relative of the game box to the screen. 
      */
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 60 + 260;
+    var canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 60 + 260;
 
-    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2) + 30, 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
+    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2) + 30, 80, current_length, currentGame.playerKeyInfo['private_key'], empty_message, true);
     var crypt_key = gameBoxInfo.crypt_key;
     resultScene['game_box'] = gameBoxInfo;
 
@@ -255,82 +217,31 @@ function createPlayScene(director) {
     var infoColumn = new InfoColumn(director, resultScene, crypt_key);
     resultScene['info_column'] = infoColumn;
 
-
-    var rivalBoxInfo = new GameBox(director, new RivalBoxOption(), resultScene['game_box'].gameBox.x + 260 + resultScene['game_box'].gameBox.width, 80, current_length, key_info_t['public_key'], my_message, false);
-    resultScene['rival_box'] = rivalBoxInfo;
-
-    var rightIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('right-board')).
-                            setLocation(resultScene['rival_box'].gameBox.x + resultScene['rival_box'].gameBox.width - director.getImage('right-board').width + 12, resultScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-
-    var centerIAName = new CAAT.Foundation.ActorContainer().
-                            setSize(175, director.getImage('center-board').height).
-                            setBackgroundImage(director.getImage('center-board'), false).
-                            setLocation(rightIAName.x - 175, rightIAName.y);
-
-    centerIAName.paint = function(director) {
-        var ctx = director.ctx;
-        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-    }
-
-
-    var iaNameText = new CAAT.Foundation.Actor().
-                            setSize(175, director.getImage('center-board').height).
-                            setLocation(0, 0);
-
-
-    iaNameText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '22px Quantico';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(currentGame.ianame, this.width / 2, this.height / 2 + 7);
-    }
-
-    centerIAName.addChild(iaNameText);
-	iaNameText.cacheAsBitmap();
-
-
-    var leftIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('left-board')).
-                            setLocation(centerIAName.x - director.getImage('left-board').width, centerIAName.y);
-
     /**
      * Add each element to its scene.
      */
     resultScene['scene'].addChild(resultScene['game_box'].gameBox);
-    resultScene['scene'].addChild(resultScene['rival_box'].gameBox);
     resultScene['scene'].addChild(leftPlayerName);
     resultScene['scene'].addChild(centerPlayerName);
     resultScene['scene'].addChild(rightPlayerName);
-    resultScene['scene'].addChild(rightIAName);
-    resultScene['scene'].addChild(centerIAName);
-    resultScene['scene'].addChild(leftIAName);
 
-    resultScene['resize'] = resizePlayScene;
-    resultScene['rightIAName'] = rightIAName;
-    resultScene['centerIAName'] = centerIAName;
-    resultScene['leftIAName'] = leftIAName;
+    resultScene['resize'] = resizeCreateKeyScene;
     resultScene['rightPlayerName'] = rightPlayerName;
     resultScene['centerPlayerName'] = centerPlayerName;
     resultScene['leftPlayerName'] = leftPlayerName;
-    /*
-     * Call the IA script.
-     */
-    handle_ia(resultScene['scene'], rivalBoxInfo);
 
+    /**
+     * Overwrite keyDown to not down the key but launch the create public key process.
+     */
+    resultScene.game_box.crypt_key.oldKeyDown = resultScene.game_box.crypt_key.keyDown;
+    resultScene.game_box.crypt_key.keyDown = function() {
+        if (currentGame.iaCreateKeyTimer === null) {
+            ia_create_pk(resultScene['scene'], gameBoxInfo);
+        }
+    }
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-
+/*
             var rivalMessage = rivalBoxInfo.message;
             var rivalBox = rivalBoxInfo.gameBox;
             if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
@@ -385,19 +296,9 @@ function createPlayScene(director) {
                 };
                 gameBox.addChild(winScreen);
             }
+        */
         }
     );
-    resizePlayScene(director, resultScene);
+    resizeCreateKeyScene(director, resultScene);
     return resultScene;
-}
-
-function getQuerystring(key, default_) {
-  if (default_==null) default_=""; 
-  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-  var qs = regex.exec(window.location.href);
-  if(qs == null)
-    return default_;
-  else
-    return qs[1];
 }

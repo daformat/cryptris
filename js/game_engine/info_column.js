@@ -121,25 +121,23 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 	var object = this;
 	this.pad.mouseDown = function(e) {
-		if (gameIsPaused === false) {
-			var theta = Math.PI / 4;
-			var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
-			var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);
-			if (x2 * x2 + y2 * y2 <= 70 * 70) {
+		var theta = Math.PI / 4;
+		var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
+		var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);
+		if (x2 * x2 + y2 * y2 <= 70 * 70) {
 
-				if (x2 < 0 && y2 > 0) {
-					object.pad.setBackgroundImage(object.director.getImage('pad-left'));
-					object.crypt_key.rotateLeft();
-				} else if (x2 > 0 && y2 < 0) {
-					object.pad.setBackgroundImage(object.director.getImage('pad-right'));
-					object.crypt_key.rotateRight();
-				} else if (x2 > 0 && y2 > 0) {
-					object.pad.setBackgroundImage(object.director.getImage('pad-down'));
-					object.crypt_key.keyDown();
-				} else if (x2 < 0 && y2 < 0) {
-					object.pad.setBackgroundImage(object.director.getImage('pad-up'));
-					object.crypt_key.changeKeyType();
-				}
+			if (x2 < 0 && y2 > 0) {
+				object.pad.setBackgroundImage(object.director.getImage('pad-left'));
+				object.crypt_key.rotateLeft();
+			} else if (x2 > 0 && y2 < 0) {
+				object.pad.setBackgroundImage(object.director.getImage('pad-right'));
+				object.crypt_key.rotateRight();
+			} else if (x2 > 0 && y2 > 0) {
+				object.pad.setBackgroundImage(object.director.getImage('pad-down'));
+				object.crypt_key.keyDown();
+			} else if (x2 < 0 && y2 < 0) {
+				object.pad.setBackgroundImage(object.director.getImage('pad-up'));
+				object.crypt_key.changeKeyType();
 			}
 		}
 	}
