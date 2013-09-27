@@ -509,7 +509,7 @@ function Message(director, messageLength, message, container, boxOption) {
             var msgColumn = this.columnList[i];
 
             var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
-            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, 2500).setCycle(false);
+            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, 1000).setCycle(false);
             var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; console.log('message on the top'); }, 'behaviorApplied' : null};
             pb.addListener(behaviorListener);
 
