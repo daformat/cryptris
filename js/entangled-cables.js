@@ -176,14 +176,15 @@ $(function(){
 
 			});
 		} else {
-			//Answer is wrong
-			electrifyCable($cableJack);
+
+			//Answer is wrong, or every cable is set to be electrified
+			electrifyCable($cableJack, (n == null ? true : false));
 		}
 
 	}
 
 	// Picking the wrong cable plays an animation to simulate an electric shock
-	var electrifyCable = function ($cable) {
+	var electrifyCable = function ($cable, callbackOnClick) {
 		var $d = $cableDialog;
 		
 		$d.jrumble({
@@ -196,7 +197,19 @@ $(function(){
 			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
 			
 			$d.trigger('startRumble');
-			setTimeout(function(){$d.trigger('stopRumble');}, 700);
+			setTimeout(function(){
+				$d.trigger('stopRumble');
+
+				if( callbackOnClick == true ) {
+
+					if(_callback && typeof(_callback === "function" ))
+						setTimeout(function(){
+							_callback();
+						}, 1000);
+
+				}
+
+			}, 700);
 
 		})
 	}
