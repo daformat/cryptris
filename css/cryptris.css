@@ -371,7 +371,7 @@ ul{
  Share
 */
 
-.share .cryptris-logo-medium {
+.cryptris-logo-medium {
 	margin-top: 1%;
 	max-width: 724px;
 	width: 80%;
@@ -850,6 +850,42 @@ ul{
 	right: -15px;
 }
 
+/*
+	End game
+*/
+
+#end-game .cryptris-logo-medium {
+	margin-bottom: -60px;
+}
+
+#end-game .button:active{
+	top: 2px;
+}
+
+#end-game .share-game {
+	margin-top: 30px;
+	margin-bottom: 50px;
+	text-align: center;
+	width: 100%;
+}
+
+#end-game .share-game a{
+	display: inline-block;
+	padding: 0 10px;
+	width: 56px;
+}
+
+#end-game .share-game a img{
+	width: 56px;
+	height: 56px;	
+	transition: all 0.15s ease;
+	vertical-align: middle;
+}
+
+#end-game .share-game a:active img{
+	width: 36px;
+	height: 36px;	
+}
 
 /*
 	Animations
