@@ -195,15 +195,19 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.pauseButton.mouseUp = function(mouseEvent) {
 		resultScene.scene.setPaused(!resultScene.scene.isPaused());
 		if (resultScene.scene.isPaused() === true) {
+			if (resultScene.rival_box != null) {
+				resultScene.rival_box.crypt_key.stopAnimation();
+				resultScene.rival_box.message.stopLevelMsgAnimation();
+			}
 			resultScene.game_box.crypt_key.stopAnimation();
-			resultScene.rival_box.crypt_key.stopAnimation();
 			resultScene.game_box.message.stopLevelMsgAnimation();
-			resultScene.rival_box.message.stopLevelMsgAnimation();
 		} else {
+			if (resultScene.rival_box != null) {
+				resultScene.rival_box.crypt_key.startAnimation();
+				resultScene.rival_box.message.startLevelMsgAnimation();
+			}
 			resultScene.game_box.crypt_key.startAnimation();
-			resultScene.rival_box.crypt_key.startAnimation();
 			resultScene.game_box.message.startLevelMsgAnimation();
-			resultScene.rival_box.message.startLevelMsgAnimation();
 		}
 	}
 

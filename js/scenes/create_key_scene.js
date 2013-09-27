@@ -12,7 +12,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
     var move = [];
 
     var current_time = 0;
-    var WAITING_TIME = 250;
+    var WAITING_TIME = 100;//250;
 
     var ACTION_UNKNOWN = -1;
     var ACTION_LEFT = 0;

@@ -8,7 +8,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
     this.x = x;
     this.y = y;
     this.boxOption = boxOption;
-    this.clearTime = 750;
+    this.clearTime = 100; //750;
     this.delta = this.clearTime;
 
     var object = this;
@@ -137,7 +137,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 	    
         this.column.paint = function(director, time) {
 
-            var clearTime = 250;
+            var clearTime = 100;//250;
 	        var delta = time - beginTime;
             if (delta <= 2 * clearTime) {
 
