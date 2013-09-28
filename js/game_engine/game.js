@@ -1,5 +1,5 @@
 function game() {
-	this.username = "MATHIEU";
+	this.username = "PLAYER";
 	this.scenes = null;
     this.ianame = "RJ-45";
     this.director = null;

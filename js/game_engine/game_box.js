@@ -52,13 +52,74 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
      * Create my key object.
      * This object inserts all necessary columns to gameBox.
      */
-    this.crypt_key = new Key(key_info, current_length, this.message, this.gameBox, director, boxOption, player);
+    this.crypt_key = new Key(key_info, current_length, this.message, this.gameBox, director, boxOption);
     this.crypt_key.createKey();
     this.message.redraw();
     this.crypt_key.firstDraw();
     this.resizeTimer = null;
 
-    this.resize = function(scene, left, center, right, info /* = false */) {
+
+    var object = this;
+
+    this.leftName = new CAAT.Foundation.Actor().
+                        setBackgroundImage(director.getImage('left-board'));
+
+    this.centerName = new CAAT.Foundation.ActorContainer().
+                            setSize(175, director.getImage('center-board').height).
+                            setBackgroundImage(director.getImage('center-board'), false);
+
+    this.centerName.paint = function(director) {
+        var ctx = director.ctx;
+        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+    }
+
+    this.nameText = new CAAT.Foundation.Actor().
+                            setSize(175, director.getImage('center-board').height).
+                            setLocation(0, 0);
+
+
+    this.nameText.paint = function(director) {
+
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '700 22px Quantico';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.fillText(object.player ? currentGame.username : currentGame.ianame, this.width / 2, this.height / 2 + 7);
+    }
+
+    this.centerName.addChild(this.nameText);
+    this.nameText.cacheAsBitmap();
+
+    this.rightName = new CAAT.Foundation.Actor().
+                            setBackgroundImage(director.getImage('right-board'));
+
+    this.boxOption.scene.addChild(this.leftName);
+    this.boxOption.scene.addChild(this.centerName);
+    this.boxOption.scene.addChild(this.rightName);
+
+
+    this.redrawName = function(info /* = false */) {
+        if (this.player === true) {
+            this.leftName.setLocation(this.gameBox.x - 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
+            this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
+            this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
+            info ? info.redraw() : null;
+        } else {
+            this.rightName.setLocation(this.gameBox.x + this.gameBox.width - this.director.getImage('right-board').width + 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
+            this.centerName.setLocation(this.rightName.x - 175, this.rightName.y);
+            this.leftName.setLocation(this.centerName.x - this.director.getImage('left-board').width, this.centerName.y);
+        }
+    }
+
+    this.resize = function(scene, info /* = false */) {
         this.gameBox.setSize(this.sizeWidth(), this.sizeHeight())
                     .setLocation(this.relativeX, this.relativeY);
 
@@ -86,22 +147,10 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         }
 
         this.tryToResize = true;
-        var object = this;
         if (this.tryToResize === true && scene.isPaused()) {
 
-            if (object.message.redraw(true) === true) {
-                if (object.player === true) {
-                    left.setLocation(object.gameBox.x - 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
-                    center.setLocation(left.x + left.width, left.y);
-                    right.setLocation(center.x + center.width, center.y);
-
-                    info.redraw();
-                } else {
-                    right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
-                    center.setLocation(right.x - 175, right.y);
-                    left.setLocation(center.x - object.director.getImage('left-board').width, center.y);
-                }
-                object.tryToResize = false;
+            if (this.message.redraw(true) === true) {
+                this.redrawName(info);
             }
         }
 
@@ -110,17 +159,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                 if (object.tryToResize === true) {
 
                     if (object.message.redraw(true) === true) {
-                        if (object.player === true) {
-                            left.setLocation(object.gameBox.x - 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
-                            center.setLocation(left.x + left.width, left.y);
-                            right.setLocation(center.x + center.width, center.y);
-
-                            info.redraw();
-                        } else {
-                            right.setLocation(object.gameBox.x + object.gameBox.width - object.director.getImage('right-board').width + 12, object.gameBox.y - object.director.getImage('left-board').height - 10);
-                            center.setLocation(right.x - 175, right.y);
-                            left.setLocation(center.x - object.director.getImage('left-board').width, center.y);
-                        }
+                        object.redrawName(info);
                         object.tryToResize = false;
                     }
                 }

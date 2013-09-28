@@ -139,10 +139,10 @@ function handle_ia(playScene, rivalBoxInfo) {
 function resizePlayScene(director, playScene) {
 
     playScene.game_box.relativeX = getRelativeX(playScene.resizeOption);
-    playScene.game_box.resize(playScene.scene, playScene.leftPlayerName, playScene.centerPlayerName, playScene.rightPlayerName, playScene.info_column);
+    playScene.game_box.resize(playScene.scene, playScene.info_column);
 
     playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
-    playScene.rival_box.resize(playScene.scene, playScene.leftIAName, playScene.centerIAName, playScene.rightIAName);
+    playScene.rival_box.resize(playScene.scene);
 
 }
 
@@ -158,8 +158,7 @@ function createPlayScene(director) {
     /**
      * Create the play scene.
      */
-    var scene = director.createScene();
-	resultScene.scene = scene;
+    resultScene.scene = director.createScene();
 	 
     /**
      * Define the current length of the message (and of the keys).
@@ -186,7 +185,7 @@ function createPlayScene(director) {
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -199,7 +198,7 @@ function createPlayScene(director) {
      * Create the ia board.
      */
     var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message, false);
     resultScene['rival_box'] = rivalBoxInfo;
 
     /*
@@ -224,114 +223,17 @@ function createPlayScene(director) {
     bindHelpButtonByDefault(infoColumn.helpButton, director);
 
 
-
-    var leftPlayerName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('left-board')).
-                            setLocation(resultScene['game_box'].gameBox.x - 12, resultScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-
-    var centerPlayerName = new CAAT.Foundation.ActorContainer().
-                            setSize(175, director.getImage('center-board').height).
-                            setBackgroundImage(director.getImage('center-board'), false).
-                            setLocation(leftPlayerName.x + leftPlayerName.width, leftPlayerName.y);
-
-    centerPlayerName.paint = function(director) {
-        var ctx = director.ctx;
-        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-    }
-
-    var playerNameText = new CAAT.Foundation.Actor().
-                            setSize(175, director.getImage('center-board').height).
-                            setLocation(0, 0);
-
-
-    playerNameText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '700 22px Quantico';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(currentGame.username, this.width / 2, this.height / 2 + 7);
-    }
-
-    centerPlayerName.addChild(playerNameText);
-	playerNameText.cacheAsBitmap();
-
-    var rightPlayerName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('right-board')).
-                            setLocation(centerPlayerName.x + centerPlayerName.width, centerPlayerName.y);
-
-    var rightIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('right-board')).
-                            setLocation(resultScene['rival_box'].gameBox.x + resultScene['rival_box'].gameBox.width - director.getImage('right-board').width + 12, resultScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-
-    var centerIAName = new CAAT.Foundation.ActorContainer().
-                            setSize(175, director.getImage('center-board').height).
-                            setBackgroundImage(director.getImage('center-board'), false).
-                            setLocation(rightIAName.x - 175, rightIAName.y);
-
-    centerIAName.paint = function(director) {
-        var ctx = director.ctx;
-        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-    }
-
-
-    var iaNameText = new CAAT.Foundation.Actor().
-                            setSize(175, director.getImage('center-board').height).
-                            setLocation(0, 0);
-
-
-    iaNameText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '700 22px Quantico';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(currentGame.ianame, this.width / 2, this.height / 2 + 7);
-    }
-
-    centerIAName.addChild(iaNameText);
-	iaNameText.cacheAsBitmap();
-
-
-    var leftIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('left-board')).
-                            setLocation(centerIAName.x - director.getImage('left-board').width, centerIAName.y);
-
     /**
      * Add each element to its scene.
      */
     resultScene.scene.addChild(resultScene['game_box'].gameBox);
     resultScene.scene.addChild(resultScene['rival_box'].gameBox);
-    resultScene.scene.addChild(leftPlayerName);
-    resultScene.scene.addChild(centerPlayerName);
-    resultScene.scene.addChild(rightPlayerName);
-    resultScene.scene.addChild(rightIAName);
-    resultScene.scene.addChild(centerIAName);
-    resultScene.scene.addChild(leftIAName);
 
+    /**
+     * Set the resize callback to call.
+     */
     resultScene['resize'] = resizePlayScene;
-    resultScene['rightIAName'] = rightIAName;
-    resultScene['centerIAName'] = centerIAName;
-    resultScene['leftIAName'] = leftIAName;
-    resultScene['rightPlayerName'] = rightPlayerName;
-    resultScene['centerPlayerName'] = centerPlayerName;
-    resultScene['leftPlayerName'] = leftPlayerName;
+
     /*
      * Call the IA script.
      */

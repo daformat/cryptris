@@ -25,9 +25,10 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['play_scene'] !== null) {
                 currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
             }
+            /*
             if (currentGame.scenes['create_key_scene'] !== null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
-            }
+            }*/
         }
     }
     resizeInProcess = false;
