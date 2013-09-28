@@ -102,7 +102,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 }
 
 function resizeCreateKeyScene(director, createKeyScene) {
-
+/*
     DEFAULT_SQUARE_WIDTH = 40;
     DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
 
@@ -116,7 +116,7 @@ function resizeCreateKeyScene(director, createKeyScene) {
 
     createKeyScene.game_box.relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 40;
     createKeyScene.game_box.resize(createKeyScene.scene, createKeyScene.leftPlayerName, createKeyScene.centerPlayerName, createKeyScene.rightPlayerName, createKeyScene.info_column);
-
+*/
 }
 
 /**
@@ -144,14 +144,6 @@ function createCreateKeyScene(director) {
      */
     currentGame.playerKeyInfo = getKeyInfo(current_length);
 
-    var canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
-        --DEFAULT_SQUARE_WIDTH;
-        --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-    }
-
     /**
      * Define an empty message.
      */
@@ -164,9 +156,8 @@ function createCreateKeyScene(director) {
     /**
      * Position relative of the game box to the screen. 
      */
-    var canvasWidth = ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 60 + 260;
-
-    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2) + 30, 80, current_length, currentGame.playerKeyInfo['private_key'], empty_message, true);
+/*
+    var gameBoxInfo = new GameBox(director, new GameBoxOption(), 30, 80, current_length, currentGame.playerKeyInfo['private_key'], empty_message, true);
     var crypt_key = gameBoxInfo.crypt_key;
     resultScene['game_box'] = gameBoxInfo;
 
@@ -216,10 +207,11 @@ function createCreateKeyScene(director) {
 
     var infoColumn = new InfoColumn(director, resultScene, crypt_key);
     resultScene['info_column'] = infoColumn;
-
+*/
     /**
      * Add each element to its scene.
      */
+     /*
     resultScene['scene'].addChild(resultScene['game_box'].gameBox);
     resultScene['scene'].addChild(leftPlayerName);
     resultScene['scene'].addChild(centerPlayerName);
@@ -229,10 +221,11 @@ function createCreateKeyScene(director) {
     resultScene['rightPlayerName'] = rightPlayerName;
     resultScene['centerPlayerName'] = centerPlayerName;
     resultScene['leftPlayerName'] = leftPlayerName;
-
+*/
     /**
      * Overwrite keyDown to not down the key but launch the create public key process.
      */
+     /*
     resultScene.game_box.crypt_key.oldKeyDown = resultScene.game_box.crypt_key.keyDown;
     resultScene.game_box.crypt_key.keyDown = function() {
         if (currentGame.iaCreateKeyTimer === null) {
@@ -241,6 +234,7 @@ function createCreateKeyScene(director) {
     }
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            **/
 /*
             var rivalMessage = rivalBoxInfo.message;
             var rivalBox = rivalBoxInfo.gameBox;
@@ -297,8 +291,10 @@ function createCreateKeyScene(director) {
                 gameBox.addChild(winScreen);
             }
         */
+        /*
         }
     );
-    resizeCreateKeyScene(director, resultScene);
+*/
+    //resizeCreateKeyScene(director, resultScene);
     return resultScene;
 }

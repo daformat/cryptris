@@ -10,6 +10,30 @@
 var currentGame = new game();
 
 /**
+ * Launch all resize functions when the event is fired.
+ */
+var resizeInProcess = false;
+function resize(director, newWidth, newHeight) {
+    if (director.width < 800 || director.height < 500) {
+        return;
+    }
+
+    if (resizeInProcess === false) {
+        resizeInProcess = true;
+
+        if (currentGame.scenes !== null) {
+            if (currentGame.scenes['play_scene'] !== null) {
+                currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
+            }
+            if (currentGame.scenes['create_key_scene'] !== null) {
+                currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
+            }
+        }
+    }
+    resizeInProcess = false;
+}
+
+/**
  * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
  */

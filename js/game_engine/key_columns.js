@@ -25,8 +25,8 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
-            this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
+            this.gradient.addColorStop(0, this.boxOption.boardColorInfo.colorLeft[this.type]);
+            this.gradient.addColorStop(1, this.boxOption.boardColorInfo.colorRight[this.type]);
         } else {
             this.gradient = null;
         }
@@ -35,8 +35,8 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.computeBlurGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
+            this.blurGradient.addColorStop(0, this.boxOption.boardColorInfo.blurColorLeft[this.type]);
+            this.blurGradient.addColorStop(1, this.boxOption.boardColorInfo.blurColorRight[this.type]);
         } else {
             this.blurGradient = null;
         }
@@ -61,7 +61,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
 		// Custom paint method.
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+		ctx.strokeStyle = object.boxOption.boardColorInfo.strokeColor[object.type];
 		ctx.fillStyle = object.gradient;
 		
 		for (var i = 0; i < object.squareNumber; ++i) {

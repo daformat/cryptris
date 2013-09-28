@@ -138,18 +138,7 @@ function handle_ia(playScene, rivalBoxInfo) {
 
 function resizePlayScene(director, playScene) {
 
-    DEFAULT_SQUARE_WIDTH = 40;
-    DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
-
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
-
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
-        --DEFAULT_SQUARE_WIDTH;
-        --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene.game_box.current_length + 2 * 8) + 2 * 60 + 260;
-    }
-
-    playScene.game_box.relativeX = parseInt(director.width / 2 - canvasWidth / 2) + 40;
+    playScene.game_box.relativeX = getRelativeX(playScene.resizeOption);
     playScene.game_box.resize(playScene.scene, playScene.leftPlayerName, playScene.centerPlayerName, playScene.rightPlayerName, playScene.info_column);
 
     playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
@@ -182,14 +171,6 @@ function createPlayScene(director) {
      */
     var key_info_t = getKeyInfo(current_length);
 
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
-        --DEFAULT_SQUARE_WIDTH;
-        --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-    }
-
     /**
      * Define a TEMPORARY message.
      */
@@ -199,12 +180,10 @@ function createPlayScene(director) {
     }
     var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
 
-    /**
-     * Position relative of the game box to the screen. 
-     */
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 60 + 260;
+    resultScene.resizeOption = new ResizeOption(current_length, 2);
 
-    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2) + 30, 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
+    var playerBoxOption = new BoxOption(resultScene.resizeOption, playerBoardColorInfo);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
     var crypt_key = gameBoxInfo.crypt_key;
     resultScene['game_box'] = gameBoxInfo;
 
@@ -256,7 +235,8 @@ function createPlayScene(director) {
     resultScene['info_column'] = infoColumn;
 
 
-    var rivalBoxInfo = new GameBox(director, new RivalBoxOption(), resultScene['game_box'].gameBox.x + 260 + resultScene['game_box'].gameBox.width, 80, current_length, key_info_t['public_key'], my_message, false);
+    var rivalBoxOption = new BoxOption(resultScene.resizeOption, iaBoardColorInfo);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene['game_box'].gameBox.x + 260 + resultScene['game_box'].gameBox.width, 80, current_length, key_info_t['public_key'], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo;
 
     var rightIAName = new CAAT.Foundation.Actor().
@@ -334,55 +314,64 @@ function createPlayScene(director) {
             var rivalMessage = rivalBoxInfo.message;
             var rivalBox = rivalBoxInfo.gameBox;
             if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
-                rivalMessage.boxOption.endResolved = time;
-
-                var winScreen = new CAAT.Actor().
+                rivalMessage.boxOption.endResolved = time; 
+                var rivalWinScreen = new CAAT.Actor().
                         setSize(rivalBox.width, rivalBox.height).
                         setLocation(0, 0);
 
-                winScreen.paint = function(director) {
+                rivalWinScreen.paint = function(director) {
 
                     var ctx = director.ctx;
 
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                     ctx.fillRect(0, 0, this.width, this.height);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
 
                     ctx.strokeStyle = 'rgb(0, 0, 0)';
                     ctx.strokeRect(0, 0, this.width, this.height);
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    ctx.shadowBlur = 5;
+                    ctx.shadowColor = '#00FF9D';
 
-                    ctx.font = '30px sans-serif';
-                    ctx.fillStyle = 'black';
-                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
-                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
-                };
-                rivalBox.addChild(winScreen);
+                    ctx.font = '14pt Inconsolata';
+                    ctx.fillStyle = '#00e770';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
+                }
+                rivalBox.addChild(rivalWinScreen);
             }
 
 
             var gameMessage = gameBoxInfo.message;
             var gameBox = gameBoxInfo.gameBox;
             if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
-                gameMessage.boxOption.endResolved = time;
-
+                gameMessage.boxOption.endResolved = time; 
                 var winScreen = new CAAT.Actor().
                         setSize(gameBox.width, gameBox.height).
                         setLocation(0, 0);
-
                 winScreen.paint = function(director) {
 
                     var ctx = director.ctx;
 
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                     ctx.fillRect(0, 0, this.width, this.height);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
 
                     ctx.strokeStyle = 'rgb(0, 0, 0)';
                     ctx.strokeRect(0, 0, this.width, this.height);
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    ctx.shadowBlur = 5;
+                    ctx.shadowColor = '#00FF9D';
 
-                    ctx.font = '30px sans-serif';
-                    ctx.fillStyle = 'black';
-                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
-                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
-                };
+                    ctx.font = '14pt Inconsolata';
+                    ctx.fillStyle = '#00e770';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
+                }
                 gameBox.addChild(winScreen);
             }
         }

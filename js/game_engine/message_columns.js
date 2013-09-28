@@ -61,10 +61,10 @@ function levelMessage(director, x, y, number, container, boxOption) {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = 5;
-            ctx.shadowColor = object.boxOption.numberGrow;
+            ctx.shadowColor = object.boxOption.boardColorInfo.numberGrow;
 
             ctx.font = '15px Inconsolata';
-            ctx.fillStyle = object.boxOption.numberColor;
+            ctx.fillStyle = object.boxOption.boardColorInfo.numberColor;
             ctx.textAlign = 'center';
             ctx.fillText(signe + number, this.width / 2, 0);
         } else {
@@ -98,8 +98,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.computeBlurGradient = function() {
         if (this.msgType != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.msgType]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.msgType]);
+            this.blurGradient.addColorStop(0, this.boxOption.boardColorInfo.blurColorLeft[this.msgType]);
+            this.blurGradient.addColorStop(1, this.boxOption.boardColorInfo.blurColorRight[this.msgType]);
         } else {
             this.blurGradient = null;
         }
@@ -108,8 +108,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.computeKeyBlurGradient = function() {
         if (this.keyType != COLUMN_TYPE_3) {
             this.keyBlurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.keyBlurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.keyType]);
-            this.keyBlurGradient.addColorStop(1, this.boxOption.blurColor[this.keyType]);
+            this.keyBlurGradient.addColorStop(0, this.boxOption.boardColorInfo.blurColorLeft[this.keyType]);
+            this.keyBlurGradient.addColorStop(1, this.boxOption.boardColorInfo.blurColorRight[this.keyType]);
         } else {
             this.keyBlurGradient = null;
         }
@@ -152,7 +152,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 	            
 	            // -- Disappearing key and message blocks
 	            // Set drawing styles before the loop                                                                               
-	            ctx.strokeStyle = object.boxOption.blurStrokeColor[object.keyType];
+	            ctx.strokeStyle = object.boxOption.boardColorInfo.blurStrokeColor[object.keyType];
 	            ctx.fillStyle = object.keyBlurGradient;
 	            
                 for (j = 1; j <= object.msgNumber + object.keyNumber; ++j) {
@@ -168,7 +168,7 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 	            
                 if (delta <= clearTime) {
                     ctx.globalAlpha = 1 - delta / clearTime;
-	                ctx.strokeStyle = object.boxOption.blurStrokeColor[object.msgType];
+	                ctx.strokeStyle = object.boxOption.boardColorInfo.blurStrokeColor[object.msgType];
 	                ctx.fillStyle = object.blurGradient;
 
                     for (j = 1; j <= object.msgNumber; ++j) {
@@ -218,8 +218,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
-            this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
+            this.gradient.addColorStop(0, this.boxOption.boardColorInfo.colorLeft[this.type]);
+            this.gradient.addColorStop(1, this.boxOption.boardColorInfo.colorRight[this.type]);
         } else {
             this.gradient = null;
         }
@@ -268,7 +268,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		var x = 1.5;
 		ctx.lineWidth = 1;
 
-		ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
+		ctx.strokeStyle = object.boxOption.boardColorInfo.strokeColor[object.type];
 		ctx.fillStyle = object.gradient;
 
 		for (var i = 0; i < object.squareNumber; ++i) {
@@ -538,8 +538,8 @@ function Message(director, messageLength, message, container, boxOption) {
 	        var oldSquareHeight = this.boxOption.SQUARE_HEIGHT;
             var oldSpaceHeight = this.boxOption.SPACE_HEIGHT;
 	        
-            this.boxOption.SQUARE_WIDTH = DEFAULT_SQUARE_WIDTH;
-            this.boxOption.COLUMN_WIDTH = DEFAULT_COLUMN_WIDTH;
+            this.boxOption.SQUARE_WIDTH = this.boxOption.resizeOption.DEFAULT_SQUARE_WIDTH;
+            this.boxOption.COLUMN_WIDTH = this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH;
 
             var max_column = this.columnList[0].squareNumber;
             for (var i = 1; i < this.columnList.length; ++i) {
@@ -556,7 +556,7 @@ function Message(director, messageLength, message, container, boxOption) {
                 if (this.boxOption.SQUARE_HEIGHT > 1) {
                     newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
                     if (newHeight > 20) {
-                        this.boxOption.SQUARE_HEIGHT = DEFAULT_SQUARE_HEIGHT;
+                        this.boxOption.SQUARE_HEIGHT = this.boxOption.resizeOption.DEFAULT_SQUARE_HEIGHT;
                     } else if (newHeight <= 1) {
                         this.boxOption.SQUARE_HEIGHT = 1;
                     } else {
@@ -569,7 +569,7 @@ function Message(director, messageLength, message, container, boxOption) {
                             this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT - 1;
                         }
                     } else {
-                        if (this.boxOption.SPACE_HEIGHT < DEFAULT_SPACE_HEIGHT) {
+                        if (this.boxOption.SPACE_HEIGHT < this.boxOption.resizeOption.DEFAULT_SPACE_HEIGHT) {
                             this.boxOption.SPACE_HEIGHT = this.boxOption.SPACE_HEIGHT + 1;
                             newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
 

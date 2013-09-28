@@ -10,7 +10,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.tryToResize = false;
 
     this.sizeWidth = function() {
-        return this.current_length * (this.boxOption.SPACE_WIDTH + DEFAULT_COLUMN_WIDTH) - this.boxOption.SPACE_WIDTH + 2 * this.boxOption.BORDER_WIDTH;
+        return this.current_length * (this.boxOption.SPACE_WIDTH + this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH) - this.boxOption.SPACE_WIDTH + 2 * this.boxOption.BORDER_WIDTH;
     }
 
     this.sizeHeight = function() {
@@ -32,10 +32,10 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
      * Create each column and set their color.
      */
     for (var i = 0; i < current_length; ++i) {
-        var column = new CAAT.ShapeActor().setSize(DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
-                                                 .setFillStyle(boxOption.columnColor)
+        var column = new CAAT.ShapeActor().setSize(this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
+                                                 .setFillStyle(boxOption.boardColorInfo.columnColor)
                                                  .setShape(CAAT.ShapeActor.prototype.SHAPE_RECTANGLE)
-                                                 .setLocation(this.boxOption.BORDER_WIDTH + i * (DEFAULT_COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.boxOption.BORDER_HEIGHT);
+                                                 .setLocation(this.boxOption.BORDER_WIDTH + i * (this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.boxOption.BORDER_HEIGHT);
 	    column.cacheAsBitmap();
         this.gameBox.addChild(column);
         this.columnList.push(column);
@@ -63,8 +63,8 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                     .setLocation(this.relativeX, this.relativeY);
 
         for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].setSize(DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
-                              .setLocation(this.boxOption.BORDER_WIDTH + i * (DEFAULT_COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.boxOption.BORDER_HEIGHT)
+            this.columnList[i].setSize(this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH, this.gameBox.height - 2 * this.boxOption.BORDER_HEIGHT)
+                              .setLocation(this.boxOption.BORDER_WIDTH + i * (this.boxOption.resizeOption.DEFAULT_COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.boxOption.BORDER_HEIGHT)
 	                          .cacheAsBitmap();
         }
 	    
