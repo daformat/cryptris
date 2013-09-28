@@ -25,6 +25,11 @@ function game() {
 
     this.createKeySceneActive = false;
     this.playSceneActive = false;
+
+    this.deactivateScenes = function() {
+    	this.createKeySceneActive = false;
+    	this.playSceneActive = false;
+    }
 }
 
 function ResizeOption(currentLength, numberBoard) {

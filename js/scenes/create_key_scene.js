@@ -120,6 +120,14 @@ function createCreateKeyScene(director) {
      */
     resultScene.scene = director.createScene();
      
+    /*
+     * Deactivate all scenes and activate this scene.
+     */
+    resultScene.scene.activated = function() {
+        currentGame.deactivateScenes();
+        currentGame.createKeySceneActive = true;
+    }
+     
     /**
      * Define the current length of the message (and of the keys).
      */

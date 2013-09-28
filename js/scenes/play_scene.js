@@ -159,6 +159,14 @@ function createPlayScene(director) {
      * Create the play scene.
      */
     resultScene.scene = director.createScene();
+
+    /*
+     * Deactivate all scenes and activate this scene.
+     */
+    resultScene.scene.activated = function() {
+        currentGame.deactivateScenes();
+        currentGame.playSceneActive = true;
+    }
 	 
     /**
      * Define the current length of the message (and of the keys).
