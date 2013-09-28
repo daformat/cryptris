@@ -447,14 +447,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 							needToUpdateAgain = true;
 						}
 					}
-					if (msgColumn.previousMsg !== null) {
-						if (msgColumn.previousMsg.isVisible === false) {
-							msgColumn.container.removeChild(msgColumn.previousMsg.msg);
-							msgColumn.previousMsg = null;
-						} else {
-							needToUpdateAgain = true;
-						}
-					}
 
 					object.msgColumn.columnList[k].blurSquareNumber = 0;
 					object.msgColumn.columnList[k].keySquareNumber = 0;
