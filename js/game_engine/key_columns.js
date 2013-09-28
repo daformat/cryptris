@@ -228,9 +228,8 @@ function getSecondString(key, default_) {
     return qs[1];
 }
 
-function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
+function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.director = director;
-	this.player = player;
 	this.type = KEY_TYPE_NORMAL;
 	this.length = keyLength;
 	this.columnList = [];

@@ -47,8 +47,6 @@ function createScenes(director) {
     currentGame.scenes['play_scene'] = createPlayScene(director);
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
 
-
-
     /**
      * Define the framerate.
      */

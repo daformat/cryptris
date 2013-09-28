@@ -186,7 +186,7 @@ function createPlayScene(director) {
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -199,7 +199,7 @@ function createPlayScene(director) {
      * Create the ia board.
      */
     var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message, false);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message);
     resultScene['rival_box'] = rivalBoxInfo;
 
     /*
@@ -255,7 +255,7 @@ function createPlayScene(director) {
         ctx.shadowBlur = 5;
         ctx.shadowColor = '#00FF9D';
 
-        ctx.font = '22px Quantico';
+        ctx.font = '700 22px Quantico';
         ctx.textAlign = 'center';
         ctx.fillStyle = 'white';
         ctx.fillText(currentGame.username, this.width / 2, this.height / 2 + 7);
@@ -299,7 +299,7 @@ function createPlayScene(director) {
         ctx.shadowBlur = 5;
         ctx.shadowColor = '#00FF9D';
 
-        ctx.font = '22px Quantico';
+        ctx.font = '700 22px Quantico';
         ctx.textAlign = 'center';
         ctx.fillStyle = 'white';
         ctx.fillText(currentGame.ianame, this.width / 2, this.height / 2 + 7);

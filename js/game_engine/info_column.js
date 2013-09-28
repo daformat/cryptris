@@ -61,7 +61,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 		ctx.shadowBlur = 5;
 		ctx.shadowColor = '#00FF9D';
 
-		ctx.font = '22px Quantico';
+		ctx.font = '700 22px Quantico';
 		ctx.fillStyle = 'white';
 		ctx.fillText(convertTimeToString(this.time), 0, 0);
 	}
