@@ -165,7 +165,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
         if (this.type !== COLUMN_TYPE_3) {
             this.keyInMove = true;
             var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
-            var time = 200;//(finalDestination - this.column.y) / 1750 * 4500
+            var time = (finalDestination - this.column.y) / 1750 * 4500
 
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
             this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", time)).setCycle(false);
@@ -177,7 +177,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.startAnimation = function() {
             this.keyInMove = true;
             var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
-            var time = 200; //(finalDestination - this.column.y) / 1750 * 4500
+            var time = (finalDestination - this.column.y) / 1750 * 4500
 
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
             this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", time)).setCycle(false);

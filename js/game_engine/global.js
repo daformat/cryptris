@@ -24,15 +24,16 @@ function GameBoxOption() {
 
 	this.paused = false;
 
-	this.ColorLeft = { 'type2' : 'rgba(138, 155, 199, 1)', 'type1' : 'rgba(31, 151, 195, 1)', 'empty' : null };
-	this.Color = { 'type2' : 'rgba(79, 135, 191, 1)', 'type1' : 'rgba(1, 109, 181, 1)', 'empty' : null };
-	this.blurColorLeft = { 'type2' : 'rgba(138, 155, 199, 1)', 'type1' : 'rgba(31, 151, 195, 1)', 'empty' : null };
-	this.blurColor = { 'type2' : 'rgba(79, 135, 191, 1)', 'type1' : 'rgba(1, 109, 181, 1)', 'empty' : null };
-	this.StrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(0, 187, 178, 1)', 'empty' : null };
+	this.ColorLeft = { 'type2' : 'rgba(20, 115, 158, 1)', 'type1' : 'rgba(107, 141, 167, 1)', 'empty' : null };
+	this.Color = { 'type2' : 'rgba(1, 76, 131, 1)', 'type1' : 'rgba(53, 120, 157, 1)', 'empty' : null };
+	this.blurColorLeft = { 'type1' : '#4dd0ff', 'type2' : '#e6e6e6', 'empty' : null };
+	this.blurColor = { 'type1' : ' #0099ff', 'type2' : '#8ac7e6', 'empty' : null };
+
+	this.StrokeColor = { 'type2' : 'rgba(0, 143, 148, 1)', 'type1' : 'rgba(178, 190, 201, 1)', 'empty' : null };
 	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(0, 187, 178, 1)', 'empty' : null };
 
-	this.defaultStrokeColor = { 'type2' : '#ffffff', 'type1' : '#00bbb2', 'empty' : null };
-	this.fullStrokeColor = { 'type2' : '#555555', 'type1' : '#0077a2', 'empty' : null };
+	this.defaultStrokeColor = { 'type2' : 'rgba(0, 143, 148, 1)', 'type1' : 'rgba(178, 190, 201, 1)', 'empty' : null };
+	this.fullStrokeColor = { 'type2' : 'rgba(0, 143, 148, 0.5)', 'type1' : 'rgba(178, 190, 201, 0.5)', 'empty' : null };
 
 	this.columnColor = 'rgba(0, 113, 187, 0.2)';
 	this.objectsInMove = [];
@@ -63,15 +64,16 @@ function RivalBoxOption() {
 	
 	this.paused = false;
 
-	this.ColorLeft = { 'type2' : 'rgba(200, 200, 191, 1)', 'type1' : 'rgba(157, 109, 181, 1)', 'empty' : null };
-	this.Color = { 'type2' : 'rgba(156, 155, 199, 1)', 'type1' : 'rgba(152, 53, 195, 1)', 'empty' : null };
-	this.blurColorLeft = { 'type2' : 'rgba(200, 200, 191, 0.5)', 'type1' : 'rgba(157, 109, 181, 0.5)', 'empty' : null };
-	this.blurColor = { 'type2' : 'rgba(156, 155, 199, 0.5)', 'type1' : 'rgba(152, 53, 195, 0.5)', 'empty' : null };
+	this.ColorLeft = { 'type2' : 'rgba(116, 109, 116, 1)', 'type1' : 'rgba(103, 70, 116, 1)', 'empty' : null };
+	this.Color = { 'type2' : 'rgba(88, 83, 119, 1)', 'type1' : 'rgba(82, 34, 103, 1)', 'empty' : null };
+	this.blurColorLeft = { 'type1' : '#b17bcc', 'type2' : '#e6dada', 'empty' : null };
+	this.blurColor = { 'type1' : '#9f37cc', 'type2' : '#b5b1ff', 'empty' : null };
 
-	this.StrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
-	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 0.5)', 'type1' : 'rgba(163, 96, 187, 0.5)', 'empty' : null };
-	this.defaultStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
-	this.fullStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
+	this.StrokeColor = { 'type2' : 'rgba(189, 187, 191, 1)', 'type1' : 'rgba(125, 75, 142, 1)', 'empty' : null };
+	this.blurStrokeColor = { 'type2' : 'rgba(255, 255, 255, 1)', 'type1' : 'rgba(163, 96, 187, 1)', 'empty' : null };
+
+	this.defaultStrokeColor = { 'type2' : 'rgba(189, 187, 191, 1)', 'type1' : 'rgba(125, 75, 142, 1)', 'empty' : null };
+	this.fullStrokeColor = { 'type2' : 'rgba(189, 187, 191, 0.5)', 'type1' : 'rgba(125, 75, 142, 0.5)', 'empty' : null };
 
 	this.columnColor = 'rgba(187, 53, 0, 0.2)';
 	this.objectsInMove = [];
