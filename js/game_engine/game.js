@@ -1,13 +1,3 @@
-function game() {
-	this.username = "PLAYER";
-	this.scenes = null;
-    this.ianame = "RJ-45";
-    this.director = null;
-    this.playerKeyInfo = null;
-    this.iaCreateKeyTimer = null;
-    this.goToDialog7 = false;
-}
-
 function genSecretKey(dim) {
 
     var sk = [];

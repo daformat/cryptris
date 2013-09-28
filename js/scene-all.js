@@ -259,6 +259,8 @@ $(function(){
 
 	function switchToCreateKey() {
 		$("body").closeAllDialogs();
+		// Enable the action on the key.
+		currentGame.createKeySceneActive = true;
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
                 if (currentGame.goToDialog7 === true) {

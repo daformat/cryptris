@@ -202,26 +202,22 @@ function createPlayScene(director) {
     resultScene['rival_box'] = rivalBoxInfo;
 
     /*
-     * Bind the key with keyboard controls.
+     * Bind each element of the scene with controls (mouse and keyboard.)
      */
-    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key);
+    
+    // Bind the key with keyboard controls.
+    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key, 'playSceneActive');
 
-    /*
-     * Bind infoColumn pad with controls.
-     */
-    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key);
-    bindPadWithKeyboard(infoColumn.pad, director);
+    // Bind infoColumn pad with controls.
+    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key, 'playSceneActive');
+    bindPadWithKeyboard(infoColumn.pad, director, 'playSceneActive');
 
-    /*
-     * Bind all objects with pause Buttons.
-     */
-    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, rivalBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.message], director);
+    // Bind all objects with pause Buttons.
+    var objectsWithAnimation = [gameBoxInfo.crypt_key, rivalBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.message];
+    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, 'playSceneActive');
 
-    /*
-     * Bind default help button (do nothing).
-     */
-    bindHelpButtonByDefault(infoColumn.helpButton, director);
-
+    // Bind default help button (do nothing).
+    bindHelpButtonByDefault(infoColumn.helpButton, director, 'playSceneActive');
 
     /**
      * Add each element to its scene.

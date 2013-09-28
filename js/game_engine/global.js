@@ -8,6 +8,25 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 
+function game() {
+	this.username = "PLAYER";
+	this.ianame = "RJ-45";
+
+    this.director = null;
+	this.scenes = null;
+
+    this.playerKeyInfo = null;
+
+    this.iaCreateKeyTimer = null;
+    this.goToDialog7 = false;
+
+    this.maxNewKeyMove = 5;
+    this.nbrNewKeyMove = 0;
+
+    this.createKeySceneActive = false;
+    this.playSceneActive = false;
+}
+
 function ResizeOption(currentLength, numberBoard) {
 
 	this.DEFAULT_SPACE_WIDTH = 4;
