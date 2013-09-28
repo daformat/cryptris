@@ -471,7 +471,7 @@ function Message(director, messageLength, message, container, boxOption) {
         }
     }
 
-    this.stopLevelMsgAnimation = function() {
+    this.stopAnimation = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
             if (this.columnList[i].levelMsg !== null) {
                 this.columnList[i].levelMsg.stopAnimation();
@@ -479,7 +479,7 @@ function Message(director, messageLength, message, container, boxOption) {
         }
     }
 
-    this.startLevelMsgAnimation = function() {
+    this.startAnimation = function() {
         for (var i = 0; i < this.columnList.length; ++i) {
             if (this.columnList[i].levelMsg !== null) {
                 this.columnList[i].levelMsg.startAnimation();

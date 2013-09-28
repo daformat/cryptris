@@ -182,10 +182,47 @@ function createPlayScene(director) {
 
     resultScene.resizeOption = new ResizeOption(current_length, 2);
 
-    var playerBoxOption = new BoxOption(resultScene.resizeOption, playerBoardColorInfo);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
-    var crypt_key = gameBoxInfo.crypt_key;
+    /**
+     * Create the player game board.
+     */
+    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message, true);
     resultScene['game_box'] = gameBoxInfo;
+
+    /**
+     * Create the central column (to display some information).
+     */
+    var infoColumn = new InfoColumn(director, resultScene, gameBoxInfo.crypt_key);
+    resultScene['info_column'] = infoColumn;
+
+    /**
+     * Create the ia board.
+     */
+    var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message, false);
+    resultScene['rival_box'] = rivalBoxInfo;
+
+    /*
+     * Bind the key with keyboard controls.
+     */
+    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key);
+
+    /*
+     * Bind infoColumn pad with controls.
+     */
+    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key);
+    bindPadWithKeyboard(infoColumn.pad, director);
+
+    /*
+     * Bind all objects with pause Buttons.
+     */
+    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, rivalBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.message], director);
+
+    /*
+     * Bind default help button (do nothing).
+     */
+    bindHelpButtonByDefault(infoColumn.helpButton, director);
+
 
 
     var leftPlayerName = new CAAT.Foundation.Actor().
@@ -230,14 +267,6 @@ function createPlayScene(director) {
     var rightPlayerName = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('right-board')).
                             setLocation(centerPlayerName.x + centerPlayerName.width, centerPlayerName.y);
-
-    var infoColumn = new InfoColumn(director, resultScene, crypt_key);
-    resultScene['info_column'] = infoColumn;
-
-
-    var rivalBoxOption = new BoxOption(resultScene.resizeOption, iaBoardColorInfo);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene['game_box'].gameBox.x + 260 + resultScene['game_box'].gameBox.width, 80, current_length, key_info_t['public_key'], my_message, false);
-    resultScene['rival_box'] = rivalBoxInfo;
 
     var rightIAName = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('right-board')).
@@ -287,14 +316,14 @@ function createPlayScene(director) {
     /**
      * Add each element to its scene.
      */
-    resultScene['scene'].addChild(resultScene['game_box'].gameBox);
-    resultScene['scene'].addChild(resultScene['rival_box'].gameBox);
-    resultScene['scene'].addChild(leftPlayerName);
-    resultScene['scene'].addChild(centerPlayerName);
-    resultScene['scene'].addChild(rightPlayerName);
-    resultScene['scene'].addChild(rightIAName);
-    resultScene['scene'].addChild(centerIAName);
-    resultScene['scene'].addChild(leftIAName);
+    resultScene.scene.addChild(resultScene['game_box'].gameBox);
+    resultScene.scene.addChild(resultScene['rival_box'].gameBox);
+    resultScene.scene.addChild(leftPlayerName);
+    resultScene.scene.addChild(centerPlayerName);
+    resultScene.scene.addChild(rightPlayerName);
+    resultScene.scene.addChild(rightIAName);
+    resultScene.scene.addChild(centerIAName);
+    resultScene.scene.addChild(leftIAName);
 
     resultScene['resize'] = resizePlayScene;
     resultScene['rightIAName'] = rightIAName;

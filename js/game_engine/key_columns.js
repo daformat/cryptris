@@ -229,6 +229,7 @@ function getSecondString(key, default_) {
 }
 
 function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
+	this.director = director;
 	this.player = player;
 	this.type = KEY_TYPE_NORMAL;
 	this.length = keyLength;
@@ -462,21 +463,4 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, play
 			}
 		}
 	);
-
-	if (this.player === true) {
-		CAAT.registerKeyListener(function (key) {
-			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
-				object.rotateLeft();
-			}
-			if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
-				object.rotateRight();
-			}
-			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
-				object.changeKeyType();
-			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				object.keyDown();
-			}
-		});
-	}
 }

@@ -79,7 +79,7 @@ var iaBoardColorInfo = {
 	'numberGrow' : '#fc56fc'
 }
 
-function BoxOption(resizeOption, boardColorInfo) {
+function BoxOption(scene, resizeOption, boardColorInfo) {
 	this.SQUARE_WIDTH = resizeOption.DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = resizeOption.DEFAULT_COLUMN_WIDTH;
 	this.SQUARE_HEIGHT = resizeOption.DEFAULT_SQUARE_HEIGHT;
@@ -89,6 +89,7 @@ function BoxOption(resizeOption, boardColorInfo) {
 	this.BORDER_WIDTH = resizeOption.DEFAULT_BORDER_WIDTH;
 
 	this.resizeOption = resizeOption;
+	this.scene = scene;
 
 	this.boardColorInfo = boardColorInfo;
 	this.objectsInMove = [];

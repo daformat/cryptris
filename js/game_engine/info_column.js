@@ -23,22 +23,6 @@ function convertTimeToString(time) {
 	return hourString + ":" + minuteString + ":" + secondString;
 }
 
-function setTextTimerPaint(timerText, text) {
-	timerText.paint = function(director) {
-
-		var ctx = director.ctx;
-
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		ctx.shadowBlur = 5;
-		ctx.shadowColor = '#00FF9D';
-
-		ctx.font = '22px Quantico';
-		ctx.fillStyle = 'white';
-		ctx.fillText(text, 0, 0);
-	}
-}
-
 function InfoColumn(director, resultScene, crypt_key) {
 
 	this.resultScene = resultScene;
@@ -49,12 +33,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.infoColumnContainer = new CAAT.Foundation.ActorContainer();
 	this.resultScene['scene'].addChild(this.infoColumnContainer);
 
-	this.infoColumnContainer.setSize(240, 440).centerAt(resultScene['game_box'].gameBox.x + resultScene['game_box'].gameBox.width + 130, 80 + resultScene['game_box'].gameBox.height / 2);
-
-	this.cryptrisLogo = new CAAT.Foundation.Actor().
-		setBackgroundImage(director.getImage('logo-board')).
-		setLocation(0, 0).
-		setSize(240, 110);
+	this.cryptrisLogo = new CAAT.Foundation.Actor().setBackgroundImage(director.getImage('logo-board')).setSize(240, 110);
 
 	this.leftTimer = new CAAT.Foundation.Actor().
 		setBackgroundImage(director.getImage('left-board')).
@@ -63,8 +42,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 	this.centerTimer = new CAAT.Foundation.ActorContainer().
 		setSize(105, director.getImage('center-board').height).
-		setBackgroundImage(director.getImage('center-board'), false).
-		setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
+		setBackgroundImage(director.getImage('center-board'), false);
 
 	this.centerTimer.paint = function(director) {
 		var ctx = director.ctx;
@@ -73,27 +51,36 @@ function InfoColumn(director, resultScene, crypt_key) {
 		ctx.fillRect(0, 0, this.width, this.height);
 	}
 
-	this.timerText = new CAAT.Foundation.Actor().
-		setLocation(0, this.centerTimer.height / 2 + 8);
+	this.timerText = new CAAT.Foundation.Actor().setLocation(0, this.centerTimer.height / 2 + 8);
+	this.timerText.paint = function(director) {
+
+		var ctx = director.ctx;
+
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
+		ctx.shadowBlur = 5;
+		ctx.shadowColor = '#00FF9D';
+
+		ctx.font = '22px Quantico';
+		ctx.fillStyle = 'white';
+		ctx.fillText(convertTimeToString(this.time), 0, 0);
+	}
 
 	this.centerTimer.addChild(this.timerText);
 
 	this.rightTimer = new CAAT.Foundation.Actor().
-		setBackgroundImage(director.getImage('right-board')).
-		setLocation(this.centerTimer.x + this.centerTimer.width, this.centerTimer.y);
+		setBackgroundImage(director.getImage('right-board'));
 
 	this.pauseButton = new CAAT.Foundation.Actor().
-		setBackgroundImage(director.getImage('pause-up')).
-		setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge);
+		setBackgroundImage(director.getImage('pause-up'));
+	this.pauseButton.isPressed = false;
 
 	this.helpButton = new CAAT.Foundation.Actor().
-		setBackgroundImage(director.getImage('help-up')).
-		setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y);
+		setBackgroundImage(director.getImage('help-up'));
+	this.helpButton.isPressed = false;
 
 	this.pad = new CAAT.Actor().setSize(155, 152)
-		.setBackgroundImage(director.getImage('pad-untouched'))
-		.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
-
+		.setBackgroundImage(director.getImage('pad-untouched'));
 
 	this.redraw = function() {
 		if (this.director.height < 600) {
@@ -112,118 +99,15 @@ function InfoColumn(director, resultScene, crypt_key) {
 		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);
 		this.centerTimer.setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
 		this.rightTimer.setLocation(this.centerTimer.x + this.centerTimer.width, this.centerTimer.y);
-		this.pauseButton.setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge);
 
-		this.helpButton.setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y);
+		var relativePauseY = this.pauseButton.isPressed ? 3 : 0;
+		this.pauseButton.setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge + relativePauseY);
+
+		var relativeHelpY = this.helpButton.isPressed ? 3 : 0;
+		this.helpButton.setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y - relativePauseY + relativeHelpY);
 		this.pad.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
 	}
 	this.redraw();
-
-	var object = this;
-	this.pad.mouseDown = function(e) {
-		var theta = Math.PI / 4;
-		var x2 = (e.x - object.pad.width / 2) * Math.cos(theta) + (e.y - object.pad.height / 2) * Math.sin(theta);
-		var y2 = (e.y - object.pad.height / 2) * Math.cos(theta) - (e.x - object.pad.width / 2) * Math.sin(theta);
-		if (x2 * x2 + y2 * y2 <= 70 * 70) {
-
-			if (x2 < 0 && y2 > 0) {
-				object.pad.setBackgroundImage(object.director.getImage('pad-left'));
-				object.crypt_key.rotateLeft();
-			} else if (x2 > 0 && y2 < 0) {
-				object.pad.setBackgroundImage(object.director.getImage('pad-right'));
-				object.crypt_key.rotateRight();
-			} else if (x2 > 0 && y2 > 0) {
-				object.pad.setBackgroundImage(object.director.getImage('pad-down'));
-				object.crypt_key.keyDown();
-			} else if (x2 < 0 && y2 < 0) {
-				object.pad.setBackgroundImage(object.director.getImage('pad-up'));
-				object.crypt_key.changeKeyType();
-			}
-		}
-	}
-
-	CAAT.registerKeyListener(function(key) {
-		if (key.getKeyCode() === CAAT.Keys.LEFT) {
-			if (key.getAction() === 'down') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-left'));
-			} else if (key.getAction() === 'up') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
-			}
-		}
-		if (key.getKeyCode() === CAAT.Keys.RIGHT) {
-			if (key.getAction() === 'down') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-right'));
-			} else if (key.getAction() === 'up') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
-			}
-		}
-		if (key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) {
-			if (key.getAction() === 'down') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-up'));
-			} else if (key.getAction() === 'up') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
-			}
-		}
-		if (key.getKeyCode() === CAAT.Keys.DOWN) {
-			if (key.getAction() === 'down') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-down'));
-			} else if (key.getAction() === 'up') {
-				object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
-			}
-		}
-	});
-
-	this.pad.mouseUp = function(mouseEvent) {
-		object.pad.setBackgroundImage(object.director.getImage('pad-untouched'));
-	}
-
-
-	/**
-	 * Add a paused behavior on pause button.
-	 */
-	this.isPauseDown = false;
-	var object = this;
-	this.pauseButton.mouseDown = function(mouseEvent) {
-		if (object.isPauseDown === false) {
-			object.pauseButton.setBackgroundImage(object.director.getImage('pause-down')).setLocation(object.pauseButton.x, object.pauseButton.y + 3);
-			object.isPauseDown = true;
-		} else {
-			object.pauseButton.setBackgroundImage(object.director.getImage('pause-up')).setLocation(object.pauseButton.x, object.pauseButton.y - 3);
-			object.isPauseDown = false;
-		}
-	}
-	this.pauseButton.mouseUp = function(mouseEvent) {
-		resultScene.scene.setPaused(!resultScene.scene.isPaused());
-		if (resultScene.scene.isPaused() === true) {
-			if (resultScene.rival_box != null) {
-				resultScene.rival_box.crypt_key.stopAnimation();
-				resultScene.rival_box.message.stopLevelMsgAnimation();
-			}
-			resultScene.game_box.crypt_key.stopAnimation();
-			resultScene.game_box.message.stopLevelMsgAnimation();
-		} else {
-			if (resultScene.rival_box != null) {
-				resultScene.rival_box.crypt_key.startAnimation();
-				resultScene.rival_box.message.startLevelMsgAnimation();
-			}
-			resultScene.game_box.crypt_key.startAnimation();
-			resultScene.game_box.message.startLevelMsgAnimation();
-		}
-	}
-
-	/**
-	 * Add a behavior for help button (to upgrade).
-	 */
-	var isHelpDown = false;
-	this.helpButton.mouseDown = function(mouseEvent) {
-		if (isHelpDown === false) {
-			object.helpButton.setBackgroundImage(object.director.getImage('help-down')).setLocation(object.helpButton.x, object.helpButton.y + 3);
-			isHelpDown = true;
-		} else {
-			object.helpButton.setBackgroundImage(object.director.getImage('help-up')).setLocation(object.helpButton.x, object.helpButton.y - 3);
-			isHelpDown = false;
-		}
-	}
 
 	this.infoColumnContainer.addChild(this.cryptrisLogo);
 	this.infoColumnContainer.addChild(this.pad);
@@ -232,15 +116,4 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.infoColumnContainer.addChild(this.leftTimer);
 	this.infoColumnContainer.addChild(this.centerTimer);
 	this.infoColumnContainer.addChild(this.rightTimer);
-
-	resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null, 
-		function(time, ttime, timerTask) {
-
-			/**
-		 	 * Update the timer value.
-		 	 */
-			setTextTimerPaint(object.timerText, convertTimeToString(time));
-		}
-	);
-
 }
