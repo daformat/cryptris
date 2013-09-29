@@ -12,7 +12,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var move = [];
 
     var current_time = 0;
-    var WAITING_TIME = 250;
+    var WAITING_TIME = rivalBoxInfo.boxOption.timeInfo.waitingIATime;
 
     var ACTION_UNKNOWN = -1;
     var ACTION_LEFT = 0;

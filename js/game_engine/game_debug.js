@@ -5,12 +5,15 @@ $(document).ready(function() {
         }
         if (key.getKeyCode() === CAAT.Keys.b && key.getAction() === 'down') {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_min_scene']['scene']), 0, 0, false);
+            currentGame.scenes.play_min_scene.rival_box.boxOption.timeInfo = rivalPMinSceneTime;
         }
         if (key.getKeyCode() === CAAT.Keys.c && key.getAction() === 'down') {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_medium_scene']['scene']), 0, 0, false);
+            currentGame.scenes.play_medium_scene.rival_box.boxOption.timeInfo = rivalPMediumSceneTime;
         }
         if (key.getKeyCode() === CAAT.Keys.d && key.getAction() === 'down') {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_max_scene']['scene']), 0, 0, false);
+            currentGame.scenes.play_max_scene.rival_box.boxOption.timeInfo = rivalPMaxSceneTime;
         }
         if (key.getKeyCode() === CAAT.Keys.e && key.getAction() === 'down') {
             if (currentGame.keyIsPregenerated === true) {
@@ -18,9 +21,9 @@ $(document).ready(function() {
             }
         }
         if (key.getKeyCode() === CAAT.Keys.r && key.getAction() === 'down') {
-            preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_MESSAGE, 'playMinSceneActive');
-            preparePlayScene(currentGame.director, MEDIUM_BOARD_LENGTH, 'play_medium_scene', FIRST_MESSAGE, 'playMediumSceneActive');
-            preparePlayScene(currentGame.director, MAX_BOARD_LENGTH, 'play_max_scene', FIRST_MESSAGE, 'playMaxSceneActive');
+            preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_MESSAGE, 'playMinSceneActive', true);
+            preparePlayScene(currentGame.director, MEDIUM_BOARD_LENGTH, 'play_medium_scene', FIRST_MESSAGE, 'playMediumSceneActive', true);
+            preparePlayScene(currentGame.director, MAX_BOARD_LENGTH, 'play_max_scene', FIRST_MESSAGE, 'playMaxSceneActive', true);
         }
     });
 });

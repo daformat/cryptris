@@ -138,6 +138,28 @@ var rivalPSceneTime = {
 	'blockDestroyedTime' : 250, // ms
 }
 
+var rivalPMinSceneTime = {
+	'waitingIATime' : 250, // ms
+	'keyFirstMoveTime' : 250, // ms
+	'keyDownSpeed' : 10, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 750, // ms
+	'blockDestroyedTime' : 250, // ms
+}
+var rivalPMediumSceneTime = {
+	'waitingIATime' : 100, // ms
+	'keyFirstMoveTime' : 200, // ms
+	'keyDownSpeed' : 6, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 500, // ms
+	'blockDestroyedTime' : 200, // ms
+}
+var rivalPMaxSceneTime = {
+	'waitingIATime' : 50, // ms
+	'keyFirstMoveTime' : 100, // ms
+	'keyDownSpeed' : 4, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 200, // ms
+	'blockDestroyedTime' : 100, // ms
+}
+
 var createKeySceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 250, // ms

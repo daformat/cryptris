@@ -378,10 +378,13 @@ $(function(){
 
 	}	
 
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard) {
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo) {
 		// Prepare the sceneName and set it as the current scene.
 		preparePlayScene(currentGame.director, sizeBoard, sceneName, FIRST_MESSAGE, hookName, withIaBoard);
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
+
+        // set the speed of this scene.
+        timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
 
         // Create a timer to catch the moment we have to go to the next scene.
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
@@ -744,7 +747,7 @@ $(function(){
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true);
+			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime);
 		});
 
 	}
@@ -930,7 +933,7 @@ $(function(){
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true);
+				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime);
 			});
 		});
 	}
@@ -1116,7 +1119,7 @@ $(function(){
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true);
+				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime);
 			});
 		});
 	}
