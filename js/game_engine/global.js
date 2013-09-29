@@ -44,6 +44,8 @@ function ResizeOption(currentLength, numberBoard) {
 	this.DEFAULT_SPACE_INFOCOLUMN_GAMEBOX = 10;
 	this.DEFAULT_INFOCOLUMN_WIDTH = 240;
 	this.DEFAULT_OUTSIDE_SPACE = 60;
+	this.DEFAULT_BOTTOM_MARGIN = 100;
+	this.DEFAULT_RELATIVE_Y = 110
 	this.currentLength = currentLength;
 	this.numberBoard = numberBoard;
 

@@ -88,7 +88,8 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 	}
 
 	pad.mouseDown = function(e) {
-		var padIsActive = !gameBox.crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive];
+		var crypt_key = gameBox.crypt_key;
+		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive];
 		var padMoveKey = padIsActive && currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove;
 
 		var theta = Math.PI / 4;

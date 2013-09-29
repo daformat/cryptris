@@ -139,7 +139,9 @@ function handle_ia(playScene, rivalBoxInfo) {
 function resizePlayScene(director, playScene) {
 
     playScene.game_box.relativeX = getRelativeX(playScene.resizeOption);
-    playScene.game_box.resize(playScene.scene, playScene.info_column);
+    playScene.game_box.resize(playScene.scene);
+
+    playScene.info_column.redraw();
 
     playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
     playScene.rival_box.resize(playScene.scene);
@@ -193,7 +195,7 @@ function createPlayScene(director) {
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, key_info_t.private_key, my_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.private_key, my_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -206,7 +208,7 @@ function createPlayScene(director) {
      * Create the ia board.
      */
     var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, 80, current_length, key_info_t.public_key, my_message, false);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.public_key, my_message, false);
     resultScene['rival_box'] = rivalBoxInfo;
 
     /*

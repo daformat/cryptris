@@ -93,7 +93,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 			this.marge = 15 / 200 * this.director.height - 30;
 		}
 		this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
-								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, 80 + this.resultScene.game_box.gameBox.height / 2);
+								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2);
 
 		this.cryptrisLogo.setLocation(0, 0);
 		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);

@@ -94,6 +94,11 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
     this.blurGradient = null;
     this.keyBlurGradient = null;
     this.isVisible = true;
+    this.isBottom = false;
+
+    if (this.container.height - this.boxOption.resizeOption.DEFAULT_BORDER_HEIGHT === y) {
+        this.isBottom = true;
+    }
 
     this.computeBlurGradient = function() {
         if (this.msgType != COLUMN_TYPE_3) {
@@ -319,10 +324,12 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 	    }
         
         this.computeGradient();
-        var diffHeight = 0;
         if (this.blockToDestroy !== null) {
-            this.blockToDestroy.column.setLocation(this.column.x, this.column.y - this.blockToDestroy.column.height);
-            diffHeight = this.blockToDestroy.column.height;
+            if (this.blockToDestroy.isBottom === false) {
+                this.blockToDestroy.column.setLocation(this.column.x, this.column.y - this.blockToDestroy.column.height);
+            } else {
+                this.blockToDestroy.column.setLocation(this.column.x, this.container.height - this.boxOption.resizeOption.DEFAULT_BORDER_HEIGHT - this.blockToDestroy.column.height);
+            }
         }
 	    
         if (this.blurSquareNumber > 0 || this.keySquareNumber > 0) {

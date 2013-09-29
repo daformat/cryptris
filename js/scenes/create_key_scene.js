@@ -103,7 +103,9 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
 function resizeCreateKeyScene(director, createKeyScene) {
     createKeyScene.game_box.relativeX = getRelativeX(createKeyScene.resizeOption);
-    createKeyScene.game_box.resize(createKeyScene.scene, createKeyScene.info_column)
+    createKeyScene.game_box.resize(createKeyScene.scene)
+
+    createKeyScene.info_column.redraw();
 }
 
 /**
@@ -153,7 +155,7 @@ function createCreateKeyScene(director) {
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), 80, current_length, currentGame.playerKeyInfo.private_key, empty_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, currentGame.playerKeyInfo.private_key, empty_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
