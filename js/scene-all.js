@@ -313,6 +313,11 @@ $(function(){
             function(time, ttime, timerTask) {
                 if (currentGame.goToDialog7 === true) {
                     waitToContinue.cancel();
+
+
+					// Disable the action on the key.
+					currentGame.createKeySceneActive = false;
+                    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
                     dialog7();
                 }
             }
@@ -683,7 +688,7 @@ $(function(){
 	function dialogServerAlsoTryingToBreakEncryption(){
 		$("body").closeAllDialogs(function(){
 
-			$.switchWrapper('#bg-circuits', function(){
+			$.switchWrapper('#game-board', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -711,28 +716,8 @@ $(function(){
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-
-			$.switchWrapper('#bg-circuits', function(){
-
-			  $(".wrapper.active .vertical-centering").dialog({
-			    
-			    animateText: true,
-
-			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-m.jpg'>",
-
-			    title: "Mathieu",
-			    content: "Ici, intégrer le niveau 1, sans ce dialogue :)",
-			    
-			    controls: [{
-			      label: "Décrypter le message", 
-			      class: "button blue",
-			      onClick: dialogDecryptedMessage1
-			    }]
-
-			  });	
-
-			});
+			// Set the createKeyScene as the current scene.
+        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
 
 		});
 

@@ -115,7 +115,6 @@ var playerPSceneTime = {
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
-	'messageUpTime' : 1000 // ms
 }
 
 var rivalPSceneTime = {
@@ -124,30 +123,19 @@ var rivalPSceneTime = {
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
-	'messageUpTime' : 1000 // ms
 }
 
-/*
 var createKeySceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 250, // ms
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
-	'messageUpTime' : 1000 // ms
-}
-*/
-
-var createKeySceneTime = {
-	'waitingIATime' : 50, // ms
-	'keyFirstMoveTime' : 50, // ms
-	'keyDownSpeed' : 5, // multiplicator of the initial speed.
-	'levelUpNumberTime' : 50, // ms
-	'blockDestroyedTime' : 50, // ms
-	'messageUpTime' : 1000, // ms
+	'messageUpTime' : 1000, // ms (only necessary here.)
 	'keyAppearTime' : 2500, // ms (only necessary here.)
 	'keyClippingTime' : 1000 // ms (only necessary here.)
 }
+
 
 function BoxOption(scene, resizeOption, boardColorInfo, timeInfo) {
 	this.SQUARE_WIDTH = resizeOption.DEFAULT_SQUARE_WIDTH;
