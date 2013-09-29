@@ -241,7 +241,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 		}
 
         var signe = "";
-        if (object.type === COLUMN_TYPE_1) {
+        if (object.type === COLUMN_TYPE_2) {
             signe = "-";
         }
 

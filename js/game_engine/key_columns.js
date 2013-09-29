@@ -257,15 +257,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.keyInfo = keyInfo;
 	this.normalKey = [];
-	for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
+	for (var i = 0; i < this.keyInfo['normal_key'].length && i < keyLength; ++i) {
 		this.normalKey.push(this.keyInfo['normal_key'][i]);
 	}
 	this.reverseKey = [];
-	for (var i = 0; i < this.keyInfo['reverse_key'].length; ++i) {
+	for (var i = 0; i < this.keyInfo['reverse_key'].length && i < keyLength; ++i) {
 		this.reverseKey.push(this.keyInfo['reverse_key'][i]);
 	}
 	this.number = [];
-	for (var i = 0; i < this.keyInfo['number'].length; ++i) {
+	for (var i = 0; i < this.keyInfo['number'].length && i < keyLength; ++i) {
 		this.number.push(this.keyInfo['number'][i]);
 	}
 

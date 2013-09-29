@@ -175,12 +175,12 @@ function createPlayScene(director) {
     /**
      * Define the current length of the message (and of the keys).
      */
-    var current_length = parseInt(getQuerystring("n", 8));
+    var current_length = getQuerystring("n", MIN_BOARD_LENGTH);
 
     /**
      * Generate my private and public keys.
      */
-    var key_info_t = getKeyInfo(current_length);
+    var key_info_t = currentGame.playerKeyInfo;//getKeyInfo(current_length);
 
     /**
      * Define a TEMPORARY message.
@@ -189,7 +189,7 @@ function createPlayScene(director) {
     for (var i = 0; i < current_length; ++i) {
         tmp_message.push(Math.floor(Math.random() * 3 - 1));
     }
-    var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
+    var my_message = chiffre(current_length, tmp_message, key_info_t['public_key'][current_length]['key']);
 
     resultScene.resizeOption = new ResizeOption(current_length, 2);
 
@@ -197,7 +197,7 @@ function createPlayScene(director) {
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.private_key, my_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.private_key[current_length], my_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -210,7 +210,7 @@ function createPlayScene(director) {
      * Create the ia board.
      */
     var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.public_key, my_message, false);
+    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.public_key[current_length], my_message, false);
     resultScene['rival_box'] = rivalBoxInfo;
 
     /*

@@ -218,7 +218,7 @@ function resizeCreateKeyScene(director, createKeyScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createCreateKeyScene(director) {
+function createCreateKeyScene(director, current_length, empty_message) {
     /**
      * Create the dict to return.
      */
@@ -235,33 +235,17 @@ function createCreateKeyScene(director) {
         currentGame.deactivateScenes();
         currentGame.createKeySceneActive = true;
     }
-     
-    /**
-     * Define the current length of the message (and of the keys).
-     */
-    var current_length = MAX_BOARD_LENGTH;
 
     /**
-     * Generate my private and public keys.
+     * Define the board resize option.
      */
-    currentGame.playerKeyInfo = getKeyInfo(current_length);
-
-    /**
-     * Define an empty message.
-     */
-    var tmp_empty_message = [];
-    for (var i = 0; i < current_length; ++i) {
-        tmp_empty_message.push(0);
-    }
-    var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
-
     resultScene.resizeOption = new ResizeOption(current_length, 1);
 
     /**
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, createKeySceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, currentGame.playerKeyInfo.private_key, empty_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, currentGame.playerKeyInfo.private_key[current_length], empty_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**

@@ -33,6 +33,35 @@ function resize(director, newWidth, newHeight) {
     resizeInProcess = false;
 }
 
+
+/**
+ *
+ *
+ */
+function prepareCreateKeyScene(director) {
+
+    /**
+     * Define the current length of the message (and of the keys).
+     */
+    var current_length = MAX_BOARD_LENGTH;
+
+    /**
+     * Generate my private and public keys.
+     */
+    currentGame.playerKeyInfo = getKeyInfo(current_length);
+
+    /**
+     * Define an empty message.
+     */
+    var tmp_empty_message = [];
+    for (var i = 0; i < current_length; ++i) {
+        tmp_empty_message.push(0);
+    }
+    var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
+
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message);
+}
+
 /**
  * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
@@ -42,8 +71,13 @@ function createScenes(director) {
      * Create each scene.
      */
     currentGame.scenes = {};
+
+    // This scene is active between two scenes.
     currentGame.scenes['waiting_scene'] = director.createScene();
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director);
+
+    prepareCreateKeyScene(director);
+
+
     currentGame.scenes['play_scene'] = createPlayScene(director);
 
     /**
