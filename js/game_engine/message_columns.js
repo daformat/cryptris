@@ -143,7 +143,6 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
         this.column.paint = function(director, time) {
 
             var clearTime = object.boxOption.timeInfo.blockDestroyedTime;
-            console.log(clearTime);
 	        var delta = time - beginTime;
             if (delta <= 2 * clearTime) {
 

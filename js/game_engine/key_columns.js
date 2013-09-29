@@ -166,7 +166,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
             this.keyInMove = true;
             var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
             var time = (finalDestination - this.column.y) / 1750 * 450 * this.boxOption.timeInfo.keyDownSpeed;
-            console.log(time);
 
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
             this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", time)).setCycle(false);
@@ -321,7 +320,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.changeKeyType = function () {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
 			if (this.type === KEY_TYPE_NORMAL) {
 				this.type = KEY_TYPE_REVERSE;
 			} else {
@@ -336,7 +335,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.rotateLeft = function () {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
 			this.columnList.push(this.columnList[0]);
 			this.columnList.splice(0, 1);
 
@@ -355,7 +354,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.rotateRight = function () {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
 			this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
 			this.columnList.splice(this.columnList.length - 1, 1);
 
@@ -380,7 +379,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.keyDown = function () {
-		if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
 			this.keyInMove = true;
 			this.numberApplied = this.numberApplied + 1;
 			for (var i = 0; i < this.columnList.length; ++i) {
@@ -411,7 +410,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 		for (var i = 0; i < this.stoppedFirstKey.length; ++i) {
 			this.stoppedFirstKey[i].startFirstAnimation();
 		}
-		console.log(this.stoppedFirstKey.length);
 		this.stoppedFirstKey = [];
 	}
 

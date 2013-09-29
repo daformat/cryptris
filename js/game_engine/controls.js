@@ -2,7 +2,7 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 	var scene = crypt_key.boxOption.scene;
 
 	CAAT.registerKeyListener(function (key) {
-		if (scene.isPaused() === false && currentGame[hookSceneActive] === true) {
+		if (scene.isPaused() === false && currentGame[hookSceneActive] === true  && crypt_key.msgColumn.resolved === false) {
 			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
 				crypt_key.rotateLeft();
 			}
@@ -53,7 +53,7 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 	}
 
 	pad.mouseDown = function(e) {
-		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive];
+		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive] && this.msgColumn.resolved === false;
 
 		var theta = Math.PI / 4;
 		var x2 = (e.x - pad.width / 2) * Math.cos(theta) + (e.y - pad.height / 2) * Math.sin(theta);

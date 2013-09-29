@@ -37,7 +37,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var alignColumn = false;
     var progress = true;
 
-    playScene.createTimer(0, Number.MAX_VALUE, null,
+    var decryptMsgTimer = playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
@@ -131,6 +131,8 @@ function handle_ia(playScene, rivalBoxInfo) {
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 }
+            } else if (key.msgColumn.resolved === true) {
+                decryptMsgTimer.cancel();
             }
         }
     );
