@@ -25,6 +25,12 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['play_min_scene'] != null) {
                 currentGame.scenes['play_min_scene']['resize'](director, currentGame.scenes['play_min_scene']);
             }
+            if (currentGame.scenes['play_medium_scene'] != null) {
+                currentGame.scenes['play_medium_scene']['resize'](director, currentGame.scenes['play_medium_scene']);
+            }
+            if (currentGame.scenes['play_max_scene'] != null) {
+                currentGame.scenes['play_max_scene']['resize'](director, currentGame.scenes['play_max_scene']);
+            }
             if (currentGame.scenes['create_key_scene'] != null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
@@ -60,7 +66,7 @@ function prepareCreateKeyScene(director) {
 /**
  *
  */
-function preparePlayScene(director, boardLength, boardName, message) {
+function preparePlayScene(director, boardLength, boardName, message, hookActive) {
 
     /**
      * Define the current length of the message (and of the keys).
@@ -76,7 +82,7 @@ function preparePlayScene(director, boardLength, boardName, message) {
     }
     var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 
-    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo);
+    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo, hookActive);
 }
 
 /**

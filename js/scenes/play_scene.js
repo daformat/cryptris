@@ -154,7 +154,7 @@ function resizePlayScene(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director, current_length, message, keyInfo) {
+function createPlayScene(director, current_length, message, keyInfo, hookActive) {
     /**
      * Create the dict to return.
      */
@@ -169,7 +169,8 @@ function createPlayScene(director, current_length, message, keyInfo) {
      */
     resultScene.scene.activated = function() {
         currentGame.deactivateScenes();
-        currentGame.playSceneActive = true;
+        currentGame[hookActive] = true;
+        console.log(hookActive);
     }
 	 
     /**
@@ -202,18 +203,18 @@ function createPlayScene(director, current_length, message, keyInfo) {
      */
     
     // Bind the key with keyboard controls.
-    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key, 'playSceneActive');
+    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key, hookActive);
 
     // Bind infoColumn pad with controls.
-    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key, 'playSceneActive');
-    bindPadWithKeyboard(infoColumn.pad, director, 'playSceneActive');
+    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key, hookActive);
+    bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
     // Bind all objects with pause Buttons.
     var objectsWithAnimation = [gameBoxInfo.crypt_key, rivalBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.message];
-    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, 'playSceneActive');
+    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, 'playSceneActive');
+    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
 
     /**
      * Add each element to its scene.

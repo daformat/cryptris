@@ -31,11 +31,15 @@ function game() {
     this.displayKey = false;
 
     this.createKeySceneActive = false;
-    this.playSceneActive = false;
+    this.playMinSceneActive = false;
+    this.playMediumSceneActive = false;
+    this.playMaxSceneActive = false;
 
     this.deactivateScenes = function() {
     	this.createKeySceneActive = false;
-    	this.playSceneActive = false;
+    	this.playMinSceneActive = false;
+    	this.playMediumSceneActive = false;
+    	this.playMaxSceneActive = false;
     }
 }
 
