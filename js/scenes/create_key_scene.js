@@ -7,12 +7,16 @@
  *     - play_scene.js                                              *
  *******************************************************************/
 
-function ia_create_pk(createKeyScene, gameBoxInfo) {	              
+function ia_create_pk(createKeyScene, gameBoxInfo) {
+    if (currentGame.iaCreateKeyTimer != null) {
+        return ;
+    }
+
     var prepare_move = [];
     var move = [];
 
     var current_time = 0;
-    var WAITING_TIME = 250;
+    var WAITING_TIME = gameBoxInfo.boxOption.timeInfo.waitingIATime;
 
     var ACTION_UNKNOWN = -1;
     var ACTION_LEFT = 0;
@@ -154,7 +158,7 @@ function createCreateKeyScene(director) {
     /**
      * Create the player game board.
      */
-    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
+    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, createKeySceneTime);
     var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, currentGame.playerKeyInfo.private_key, empty_message, true);
     resultScene['game_box'] = gameBoxInfo;
 

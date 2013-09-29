@@ -24,26 +24,21 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 
 	CAAT.registerKeyListener(function (key) {
 		if (scene.isPaused() === false && currentGame[hookSceneActive] === true) {
+			var keyIsActive = crypt_key.numberApplied < currentGame.maxNewKeyMove;
 			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
-				if (currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove) {
-					crypt_key.rotateLeft();
-				}
+				keyIsActive ? crypt_key.rotateLeft() : null;
 			}
 			if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
-				if (currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove) {
-					crypt_key.rotateRight();
-				}
+				keyIsActive ?  crypt_key.rotateRight() : null;
 			}
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
-				if (currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove) {
-					crypt_key.changeKeyType();
-				}
+				keyIsActive ? crypt_key.changeKeyType() : null;
 			}
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				if (currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove) {
-					currentGame.nbrNewKeyMove = currentGame.nbrNewKeyMove + 1;
+				if (crypt_key.numberApplied < currentGame.maxNewKeyMove) {
 					crypt_key.keyDown();
 				} else if (currentGame.iaCreateKeyTimer === null) {
+					crypt_key.keyDown();
 					ia_process(scene, gameBox, hookSceneActive);
 				}
 			}
@@ -90,7 +85,7 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 	pad.mouseDown = function(e) {
 		var crypt_key = gameBox.crypt_key;
 		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive];
-		var padMoveKey = padIsActive && currentGame.nbrNewKeyMove < currentGame.maxNewKeyMove;
+		var padMoveKey = padIsActive && crypt_key.numberApplied < currentGame.maxNewKeyMove;
 
 		var theta = Math.PI / 4;
 		var x2 = (e.x - pad.width / 2) * Math.cos(theta) + (e.y - pad.height / 2) * Math.sin(theta);
@@ -106,9 +101,9 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 			} else if (x2 > 0 && y2 > 0) {
 				pad.setBackgroundImage(director.getImage('pad-down'));
 				if (padMoveKey) {
-					currentGame.nbrNewKeyMove = currentGame.nbrNewKeyMove + 1;
 					crypt_key.keyDown();
 				} else if (padIsActive && currentGame.iaCreateKeyTimer === null) {
+					crypt_key.keyDown();
 					ia_process(scene, gameBox);
 				}
 			} else if (x2 < 0 && y2 < 0) {

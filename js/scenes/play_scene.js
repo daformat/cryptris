@@ -194,7 +194,7 @@ function createPlayScene(director) {
     /**
      * Create the player game board.
      */
-    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo);
+    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
     var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.private_key, my_message, true);
     resultScene['game_box'] = gameBoxInfo;
 
@@ -207,7 +207,7 @@ function createPlayScene(director) {
     /**
      * Create the ia board.
      */
-    var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo);
+    var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
     var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, key_info_t.public_key, my_message, false);
     resultScene['rival_box'] = rivalBoxInfo;
 

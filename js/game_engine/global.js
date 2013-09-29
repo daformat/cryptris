@@ -21,7 +21,6 @@ function game() {
     this.goToDialog7 = false;
 
     this.maxNewKeyMove = 5;
-    this.nbrNewKeyMove = 0;
 
     this.createKeySceneActive = false;
     this.playSceneActive = false;
@@ -105,7 +104,31 @@ var iaBoardColorInfo = {
 	'numberGrow' : '#fc56fc'
 }
 
-function BoxOption(scene, resizeOption, boardColorInfo) {
+var playerPSceneTime = {
+	'waitingIATime' : 250, // ms
+	'keyFirstMoveTime' : 250, // ms
+	'keyDownSpeed' : 10, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 750, // ms
+	'blockDestroyedTime' : 250 // ms
+}
+
+var rivalPSceneTime = {
+	'waitingIATime' : 250, // ms
+	'keyFirstMoveTime' : 250, // ms
+	'keyDownSpeed' : 10, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 750, // ms
+	'blockDestroyedTime' : 250 // ms
+}
+
+var createKeySceneTime = {
+	'waitingIATime' : 100, // ms
+	'keyFirstMoveTime' : 250, // ms
+	'keyDownSpeed' : 10, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 750, // ms
+	'blockDestroyedTime' : 250 // ms
+}
+
+function BoxOption(scene, resizeOption, boardColorInfo, timeInfo) {
 	this.SQUARE_WIDTH = resizeOption.DEFAULT_SQUARE_WIDTH;
 	this.COLUMN_WIDTH = resizeOption.DEFAULT_COLUMN_WIDTH;
 	this.SQUARE_HEIGHT = resizeOption.DEFAULT_SQUARE_HEIGHT;
@@ -118,6 +141,7 @@ function BoxOption(scene, resizeOption, boardColorInfo) {
 	this.scene = scene;
 
 	this.boardColorInfo = boardColorInfo;
+	this.timeInfo = timeInfo;
 	this.objectsInMove = [];
 	this.maxKeyNumber = 1;
 	this.keyNeedToUpdate = false;

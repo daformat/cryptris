@@ -8,7 +8,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
     this.x = x;
     this.y = y;
     this.boxOption = boxOption;
-    this.clearTime = 750;
+    this.clearTime = this.boxOption.timeInfo.levelUpNumberTime;
     this.delta = this.clearTime;
 
     var object = this;
@@ -142,7 +142,8 @@ function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumbe
 	    
         this.column.paint = function(director, time) {
 
-            var clearTime = 250;
+            var clearTime = object.boxOption.timeInfo.blockDestroyedTime;
+            console.log(clearTime);
 	        var delta = time - beginTime;
             if (delta <= 2 * clearTime) {
 
@@ -501,8 +502,8 @@ function Message(director, messageLength, message, container, boxOption) {
             var msgColumn = this.columnList[i];
 
             var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
-            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, 1000).setCycle(false);
-            var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; console.log('message on the top'); }, 'behaviorApplied' : null};
+            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, this.boxOption.timeInfo.levelUpNumberTime).setCycle(false);
+            var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; }, 'behaviorApplied' : null};
             pb.addListener(behaviorListener);
 
             msgColumn.column.addBehavior(pb);
