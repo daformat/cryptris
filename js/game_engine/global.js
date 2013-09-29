@@ -65,7 +65,6 @@ function ResizeOption(currentLength, numberBoard) {
 	this.DEFAULT_RELATIVE_Y = 110
 	this.currentLength = currentLength;
 	this.numberBoard = numberBoard;
-
 }
 
 function getRelativeX(resizeOption) {
@@ -145,6 +144,7 @@ var rivalPMinSceneTime = {
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
 }
+
 var rivalPMediumSceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 200, // ms
@@ -152,6 +152,7 @@ var rivalPMediumSceneTime = {
 	'levelUpNumberTime' : 500, // ms
 	'blockDestroyedTime' : 200, // ms
 }
+
 var rivalPMaxSceneTime = {
 	'waitingIATime' : 50, // ms
 	'keyFirstMoveTime' : 100, // ms

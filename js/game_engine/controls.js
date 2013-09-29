@@ -36,7 +36,6 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 			}
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
 				keyIsActive ? crypt_key.keyDown() : null;
-				crypt_key.numberApplied === currentGame.maxNewKeyMove ? currentGame.keyIsPregenerated = true : null;
 			}
 		}
 	});
@@ -65,7 +64,6 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 			} else if (x2 > 0 && y2 > 0) {
 				pad.setBackgroundImage(director.getImage('pad-down'));
 				padIsActive ? crypt_key.keyDown() : null;
-				crypt_key.numberApplied === currentGame.maxNewKeyMove ? currentGame.keyIsPregenerated = true : null;
 			} else if (x2 < 0 && y2 < 0) {
 				pad.setBackgroundImage(director.getImage('pad-up'));
 				padIsActive ? crypt_key.changeKeyType() : null;
@@ -97,7 +95,7 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 				padMoveKey ? crypt_key.rotateRight() : null;
 			} else if (x2 > 0 && y2 > 0) {
 				pad.setBackgroundImage(director.getImage('pad-down'));
-				padMoveKey ? crypt_key.keyDown() : currentGame.keyIsPregenerated = true;
+				padMoveKey ? crypt_key.keyDown() : null;
 			} else if (x2 < 0 && y2 < 0) {
 				pad.setBackgroundImage(director.getImage('pad-up'));
 				padMoveKey ? crypt_key.changeKeyType() : null;

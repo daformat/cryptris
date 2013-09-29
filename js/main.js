@@ -77,12 +77,10 @@ function preparePlayScene(director, boardLength, boardName, message, hookActive,
     var current_length = getQuerystring("n", boardLength);
 
     /**
-     * Define a TEMPORARY message.
+     * Define a message.
      */
-    var tmp_message = [];
-    for (var i = 0; i < current_length; ++i) {
-        tmp_message.push(Math.floor(Math.random() * 3 - 1));
-    }
+    var tmp_message = string_to_ternary(message, current_length, true);
+
     var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 
     currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard);

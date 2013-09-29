@@ -264,9 +264,29 @@ $(function(){
 		$("body").closeAllDialogs();
 		// Enable the action on the key.
 		currentGame.createKeySceneActive = true;
+
+
+		var timer1 = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+            	/* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
+            	if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 1) {
+            		// Cancel the timer when we display the message.
+            		timer1.cancel();
+
+            		// Uncomment me for disable input entry.
+            		//currentGame.createKeySceneActive = false;
+            		/** !!! Important In your function, set this variable at true to enable the input entry **/
+
+            		// call the function you want here
+            		// yourfunction();
+            		alert("cherche MIAM dans scene-all.js :)");
+            	}
+            }
+        );
+
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
-                if (currentGame.keyIsPregenerated === true) {
+                if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
                     waitToContinue.cancel();
                     dialog6KeyPreGenerated();
                 }
@@ -378,9 +398,9 @@ $(function(){
 
 	}	
 
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo) {
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message) {
 		// Prepare the sceneName and set it as the current scene.
-		preparePlayScene(currentGame.director, sizeBoard, sceneName, FIRST_MESSAGE, hookName, withIaBoard);
+		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
 
         // set the speed of this scene.
@@ -404,7 +424,7 @@ $(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the correct scene at bg, and deactivate its control.
-			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false);
+			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, FIRST_MESSAGE);
 			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -747,7 +767,7 @@ $(function(){
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime);
+			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime, FIRST_BATTLE_MESSAGE);
 		});
 
 	}
@@ -933,7 +953,7 @@ $(function(){
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime);
+				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime, SECOND_BATTLE_MESSAGE);
 			});
 		});
 	}
@@ -1119,7 +1139,7 @@ $(function(){
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime);
+				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime, THIRD_BATTLE_MESSAGE);
 			});
 		});
 	}

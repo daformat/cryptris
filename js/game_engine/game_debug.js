@@ -21,9 +21,9 @@ $(document).ready(function() {
             }
         }
         if (key.getKeyCode() === CAAT.Keys.r && key.getAction() === 'down') {
-            preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_MESSAGE, 'playMinSceneActive', true);
-            preparePlayScene(currentGame.director, MEDIUM_BOARD_LENGTH, 'play_medium_scene', FIRST_MESSAGE, 'playMediumSceneActive', true);
-            preparePlayScene(currentGame.director, MAX_BOARD_LENGTH, 'play_max_scene', FIRST_MESSAGE, 'playMaxSceneActive', true);
+            preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_BATTLE_MESSAGE, 'playMinSceneActive', true);
+            preparePlayScene(currentGame.director, MEDIUM_BOARD_LENGTH, 'play_medium_scene', SECOND_BATTLE_MESSAGE, 'playMediumSceneActive', true);
+            preparePlayScene(currentGame.director, MAX_BOARD_LENGTH, 'play_max_scene', THIRD_BATTLE_MESSAGE, 'playMaxSceneActive', true);
         }
     });
 });
