@@ -59,7 +59,29 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message);
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo);
+}
+
+/**
+ *
+ */
+function preparePlayScene(director) {
+
+    /**
+     * Define the current length of the message (and of the keys).
+     */
+    var current_length = getQuerystring("n", MIN_BOARD_LENGTH);
+
+    /**
+     * Define a TEMPORARY message.
+     */
+    var tmp_message = [];
+    for (var i = 0; i < current_length; ++i) {
+        tmp_message.push(Math.floor(Math.random() * 3 - 1));
+    }
+    var my_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
+
+    currentGame.scenes['play_scene'] = createPlayScene(director, current_length, my_message, currentGame.playerKeyInfo);
 }
 
 /**
@@ -78,7 +100,6 @@ function createScenes(director) {
     prepareCreateKeyScene(director);
 
 
-    currentGame.scenes['play_scene'] = createPlayScene(director);
 
     /**
      * Define the framerate.
