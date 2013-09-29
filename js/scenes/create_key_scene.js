@@ -12,8 +12,6 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
         return ;
     }
 
-    console.log(gameBoxInfo);
-
     var prepare_move = [];
     var move = [];
 
@@ -149,7 +147,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                                         keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
                                         currentGame.nbrKeyClipping = currentGame.nbrKeyClipping + 1;
                                     } else {
-                                        currentGame.goToDialog7 = true;
+                                        currentGame.goToNextDialog = true;
                                     }
                                 },
                                 'behaviorApplied' : null
@@ -191,7 +189,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                         newPk.push(0);
                     }
                 }
-                resetPublicKey(newPk);
+                resetPublicKey(newPk, indexToReset);
             }
         }
     );

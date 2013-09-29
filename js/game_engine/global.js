@@ -8,6 +8,8 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 
+var indexToReset = MIN_BOARD_LENGTH;
+
 function game() {
 	this.username = "PLAYER";
 	this.ianame = "RJ-45";
@@ -18,7 +20,7 @@ function game() {
     this.playerKeyInfo = null;
 
     this.iaCreateKeyTimer = null;
-    this.goToDialog7 = false;
+    this.goToNextDialog = false;
 
     this.maxNewKeyMove = 5;
     this.keyIsPregenerated = false;

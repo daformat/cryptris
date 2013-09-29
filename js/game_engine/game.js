@@ -170,33 +170,29 @@ function getKeyInfo(dim) {
     return result;
 }
 
-function resetPublicKey(newPk) {
+function resetPublicKey(newPk, index) {
 
     if (currentGame.playerKeyInfo !== null && currentGame.playerKeyInfo !== undefined) {
 
-        for (var j = 0; j < authorizedLength.length; j++) {
-            var index = authorizedLength[j];
-
-            currentGame.playerKeyInfo['public_key'][index] = {};
-            currentGame.playerKeyInfo['public_key'][index]['key'] = newPk;
-            currentGame.playerKeyInfo['public_key'][index]['normal_key'] = [];
-            currentGame.playerKeyInfo['public_key'][index]['reverse_key'] = [];
-            currentGame.playerKeyInfo['public_key'][index]['number'] = [];
+        currentGame.playerKeyInfo['public_key'][index] = {};
+        currentGame.playerKeyInfo['public_key'][index]['key'] = newPk;
+        currentGame.playerKeyInfo['public_key'][index]['normal_key'] = [];
+        currentGame.playerKeyInfo['public_key'][index]['reverse_key'] = [];
+        currentGame.playerKeyInfo['public_key'][index]['number'] = [];
             
-            for (var i = 0; i < newPk.length; ++i) {
-                if (newPk[i] > 0) {
-                    currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_1);
-                    currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_2);
-                    currentGame.playerKeyInfo['public_key'][index]['number'].push(newPk[i]);
-                } else if (newPk[i] < 0) {
-                    currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_2);
-                    currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_1);
-                    currentGame.playerKeyInfo['public_key'][index]['number'].push(-1 * newPk[i]);
-                } else {
-                    currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_3);
-                    currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_3);
-                    currentGame.playerKeyInfo['public_key'][index]['number'].push(newPk[i]);
-                }
+        for (var i = 0; i < newPk.length; ++i) {
+            if (newPk[i] > 0) {
+                currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_1);
+                currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_2);
+                currentGame.playerKeyInfo['public_key'][index]['number'].push(newPk[i]);
+            } else if (newPk[i] < 0) {
+                currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_2);
+                currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_1);
+                currentGame.playerKeyInfo['public_key'][index]['number'].push(-1 * newPk[i]);
+            } else {
+                currentGame.playerKeyInfo['public_key'][index]['normal_key'].push(COLUMN_TYPE_3);
+                currentGame.playerKeyInfo['public_key'][index]['reverse_key'].push(COLUMN_TYPE_3);
+                currentGame.playerKeyInfo['public_key'][index]['number'].push(newPk[i]);
             }
         }
     }

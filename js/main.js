@@ -22,8 +22,8 @@ function resize(director, newWidth, newHeight) {
         resizeInProcess = true;
 
         if (currentGame.scenes !== null) {
-            if (currentGame.scenes['play_scene'] != null) {
-                currentGame.scenes['play_scene']['resize'](director, currentGame.scenes['play_scene']);
+            if (currentGame.scenes['play_min_scene'] != null) {
+                currentGame.scenes['play_min_scene']['resize'](director, currentGame.scenes['play_min_scene']);
             }
             if (currentGame.scenes['create_key_scene'] != null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
@@ -43,12 +43,7 @@ function prepareCreateKeyScene(director) {
     /**
      * Define the current length of the message (and of the keys).
      */
-    var current_length = MAX_BOARD_LENGTH;
-
-    /**
-     * Generate my private and public keys.
-     */
-    currentGame.playerKeyInfo = getKeyInfo(current_length);
+    var current_length = MIN_BOARD_LENGTH;
 
     /**
      * Define an empty message.
@@ -65,7 +60,7 @@ function prepareCreateKeyScene(director) {
 /**
  *
  */
-function preparePlayScene(director) {
+function preparePlayMinScene(director) {
 
     /**
      * Define the current length of the message (and of the keys).
@@ -81,7 +76,9 @@ function preparePlayScene(director) {
     }
     var my_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 
-    currentGame.scenes['play_scene'] = createPlayScene(director, current_length, my_message, currentGame.playerKeyInfo);
+    console.log(currentGame.playerKeyInfo['public_key'][current_length]['key']);
+
+    currentGame.scenes['play_min_scene'] = createPlayScene(director, current_length, my_message, currentGame.playerKeyInfo);
 }
 
 /**
@@ -89,6 +86,12 @@ function preparePlayScene(director) {
  * @param director {CAAT.Director}
  */
 function createScenes(director) {
+
+    /**
+     * Define a default set of public/private key.
+     */
+    currentGame.playerKeyInfo = getKeyInfo(MAX_BOARD_LENGTH);
+
     /**
      * Create each scene.
      */
