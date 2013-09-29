@@ -97,6 +97,14 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                             var winScreen = new CAAT.Actor().
                                 setSize(gameBoxInfo.gameBox.width, gameBoxInfo.gameBox.height).
                                 setLocation(0, 0);
+
+
+                            var alphaScreen = new CAAT.AlphaBehavior().
+                                                  setValues(0,1).
+                                                  setCycle(false).
+                                                  setFrameTime(winScreen.time, 2000);
+                            winScreen.addBehavior(alphaScreen);
+
                             winScreen.paint = function(director) {
 
                                 var ctx = director.ctx;
@@ -232,6 +240,9 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo) 
     resultScene.scene.activated = function() {
         currentGame.deactivateScenes();
         currentGame.createKeySceneActive = true;
+        if (resultScene.resize != null) {
+            resultScene.resize(director, resultScene);
+        }
     }
 
     /**

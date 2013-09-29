@@ -170,7 +170,9 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     resultScene.scene.activated = function() {
         currentGame.deactivateScenes();
         currentGame[hookActive] = true;
-        console.log(hookActive);
+        if (resultScene.resize != null) {
+            resultScene.resize(director, resultScene);
+        }
     }
 	 
     /**
@@ -238,7 +240,9 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
             var rivalMessage = rivalBoxInfo.message;
             var rivalBox = rivalBoxInfo.gameBox;
             if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
-                rivalMessage.boxOption.endResolved = time; 
+                currentGame.gameOver = true;
+
+                rivalMessage.boxOption.endResolved = time;
                 var rivalWinScreen = new CAAT.Actor().
                         setSize(rivalBox.width, rivalBox.height).
                         setLocation(0, 0);
@@ -271,6 +275,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
             var gameMessage = gameBoxInfo.message;
             var gameBox = gameBoxInfo.gameBox;
             if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
+                currentGame.goToNextDialog = true;
                 gameMessage.boxOption.endResolved = time; 
                 var winScreen = new CAAT.Actor().
                         setSize(gameBox.width, gameBox.height).

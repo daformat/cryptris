@@ -228,7 +228,7 @@ $(function(){
 	function dialog6(){
 		$("body").closeAllDialogs(function(){
 
-			$.switchWrapper('#game-board', function(){
+			$.switchWrapper('#bg-circuits', function(){
 			  // Set the createKeyScene as the current scene.
         	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['create_key_scene']['scene']), 0, 0, false);
         	  // Disable input in the scene.
@@ -277,7 +277,7 @@ $(function(){
 	function dialog6KeyPreGenerated() {
 		$("body").closeAllDialogs(function() {
 
-			$.switchWrapper('#game-board', function() {
+			$.switchWrapper('#bg-circuits', function() {
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -311,13 +311,13 @@ $(function(){
 
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
-                if (currentGame.goToDialog7 === true) {
+                if (currentGame.goToNextDialog === true) {
                     waitToContinue.cancel();
-
+                    currentGame.goToNextDialog = false;
 
 					// Disable the action on the key.
 					currentGame.createKeySceneActive = false;
-                    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
+                    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
                     dialog7();
                 }
             }
@@ -688,7 +688,7 @@ $(function(){
 	function dialogServerAlsoTryingToBreakEncryption(){
 		$("body").closeAllDialogs(function(){
 
-			$.switchWrapper('#game-board', function(){
+			$.switchWrapper('#bg-circuits', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -712,16 +712,32 @@ $(function(){
 
 		});
 
-	}	
+	}
+
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard) {
+		// Prepare the play_min_scene and set it as the current scene.
+		preparePlayScene(currentGame.director, sizeBoard, sceneName, FIRST_MESSAGE, sceneName);
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
+
+        // Create a timer to catch the moment we have to go to the next scene.
+		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+               	if (currentGame.goToNextDialog === true) {
+                   	waitToContinue.cancel();
+                   	currentGame.goToNextDialog = false;
+
+            	    onDecrypt();
+               	}
+            }
+        );
+	}
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-			// Set the createKeyScene as the current scene.
-        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_scene']['scene']), 0, 0, false);
-
+			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH);
 		});
 
-	}			
+	}
 
 
 	function dialogDecryptedMessage1(){
@@ -759,6 +775,9 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 			$.switchWrapper('#bg-institut', function(){
 
+			  // Disable the action on the key and switch to the waiting scene.
+			  currentGame.playMinSceneActive = false;
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
@@ -897,34 +916,15 @@ $(function(){
 
 	}
 
-	function playLevel2(){
-		$("body").closeAllDialogs(function(){
 
+	function playLevel2() {
+		$("body").closeAllDialogs(function() {			
+			goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH);
 			$.switchWrapper('#bg-circuits', function(){
-
-			  $(".wrapper.active .vertical-centering").dialog({
-			    
-			    animateText: true,
-
-			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-m.jpg'>",
-
-			    title: "Mathieu",
-			    content: "Ici, intégrer le niveau 2, sans dialogue :)",
-			    
-			    controls: [{
-			      label: "Décrypter le message", 
-			      class: "button blue",
-			      onClick: dialogDecryptedMessage2
-			    }]
-
-			  });	
-
 			});
-
 		});
+	}
 
-	}		
 
 
 	function dialogDecryptedMessage2(){
@@ -959,6 +959,10 @@ $(function(){
 
 	function dialogCables2(){
 		$("body").closeAllDialogs(function(){
+			// Disable the action on the key and switch to the waiting scene.
+			currentGame.playMinSceneActive = false;
+        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+
 			$.switchWrapper('#bg-institut', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -1098,34 +1102,14 @@ $(function(){
 
 	}
 
-	function playLevel3(){
-		$("body").closeAllDialogs(function(){
 
+	function playLevel3() {
+		$("body").closeAllDialogs(function() {			
+			goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH);
 			$.switchWrapper('#bg-circuits', function(){
-
-			  $(".wrapper.active .vertical-centering").dialog({
-			    
-			    animateText: true,
-
-			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-m.jpg'>",
-
-			    title: "Mathieu",
-			    content: "Ici, intégrer le niveau 3, sans dialogue :)",
-			    
-			    controls: [{
-			      label: "Décrypter le message", 
-			      class: "button blue",
-			      onClick: dialogDecryptedMessage3
-			    }]
-
-			  });	
-
 			});
-
 		});
-
-	}		
+	}
 
 
 	function dialogDecryptedMessage3(){
@@ -1160,6 +1144,10 @@ $(function(){
 
 	function dialogCables3(){
 		$("body").closeAllDialogs(function(){
+			// Disable the action on the key and switch to the waiting scene.
+			currentGame.playMinSceneActive = false;
+        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+
 			$.switchWrapper('#bg-institut', function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({

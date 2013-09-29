@@ -22,6 +22,7 @@ function game() {
 
     this.iaCreateKeyTimer = null;
     this.goToNextDialog = false;
+    this.gameOver = false;
 
     this.maxNewKeyMove = 5;
     this.keyIsPregenerated = false;
