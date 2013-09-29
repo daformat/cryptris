@@ -77,6 +77,7 @@ function initGame(director) {
     imgs.push({id:'center-board', url: "img/assets/center-board-assets_07.png"});
     imgs.push({id:'triangle-left', url: "img/assets/triangle-left.png"});
     imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
+    imgs.push({id:'key-symbol', url: "img/key-symbol.png"});
 
     /**
      * Preload our necessarly images and load the splash screens.

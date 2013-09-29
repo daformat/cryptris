@@ -21,6 +21,11 @@ function game() {
     this.goToDialog7 = false;
 
     this.maxNewKeyMove = 5;
+    this.keyIsPregenerated = false;
+    this.keyIsInPlace = false;
+    this.nbrKeyClipping = 0;
+    this.maxKeyClipping = 3;
+    this.displayKey = false;
 
     this.createKeySceneActive = false;
     this.playSceneActive = false;
@@ -91,14 +96,14 @@ var playerBoardColorInfo = {
 	'numberGrow' : '#00FF9D'
 }
 var iaBoardColorInfo = {
-	'colorLeft' : { 'type1' : 'rgba(103, 70, 116, 1)', 'type2' : 'rgba(116, 109, 116, 1)', 'empty' : null },
-	'colorRight' : { 'type1' : 'rgba(82, 34, 103, 1)', 'type2' : 'rgba(88, 83, 119, 1)', 'empty' : null },
-	'blurColorLeft' : { 'type1' : '#b17bcc', 'type2' : '#e6dada', 'empty' : null },
-	'blurColorRight' : { 'type1' : '#9f37cc', 'type2' : '#b5b1ff', 'empty' : null },
-	'strokeColor' : { 'type1' : 'rgba(125, 75, 142, 1)', 'type2' : 'rgba(189, 187, 191, 1)', 'empty' : null },
-	'blurStrokeColor' : { 'type1' : 'rgba(163, 96, 187, 1)', 'type2' : 'rgba(255, 255, 255, 1)', 'empty' : null },
-	'defaultStrokeColor' : { 'type1' : 'rgba(125, 75, 142, 1)', 'type2' : 'rgba(189, 187, 191, 1)', 'empty' : null },
-	'fullStrokeColor' : { 'type1' : 'rgba(125, 75, 142, 0.5)', 'type2' : 'rgba(189, 187, 191, 0.5)', 'empty' : null },
+	'colorLeft' : { 'type2' : 'rgba(103, 70, 116, 1)', 'type1' : 'rgba(116, 109, 116, 1)', 'empty' : null },
+	'colorRight' : { 'type2' : 'rgba(82, 34, 103, 1)', 'type1' : 'rgba(88, 83, 119, 1)', 'empty' : null },
+	'blurColorLeft' : { 'type2' : '#b17bcc', 'type1' : '#e6dada', 'empty' : null },
+	'blurColorRight' : { 'type2' : '#9f37cc', 'type1' : '#b5b1ff', 'empty' : null },
+	'strokeColor' : { 'type2' : 'rgba(125, 75, 142, 1)', 'type1' : 'rgba(189, 187, 191, 1)', 'empty' : null },
+	'blurStrokeColor' : { 'type2' : 'rgba(163, 96, 187, 1)', 'type1' : 'rgba(255, 255, 255, 1)', 'empty' : null },
+	'defaultStrokeColor' : { 'type2' : 'rgba(125, 75, 142, 1)', 'type1' : 'rgba(189, 187, 191, 1)', 'empty' : null },
+	'fullStrokeColor' : { 'type2' : 'rgba(125, 75, 142, 0.5)', 'type1' : 'rgba(189, 187, 191, 0.5)', 'empty' : null },
 	'columnColor' : 'rgba(187, 53, 0, 0.2)',
 	'numberColor' : '#d30088',
 	'numberGrow' : '#fc56fc'
@@ -109,7 +114,8 @@ var playerPSceneTime = {
 	'keyFirstMoveTime' : 250, // ms
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
-	'blockDestroyedTime' : 250 // ms
+	'blockDestroyedTime' : 250, // ms
+	'messageUpTime' : 1000 // ms
 }
 
 var rivalPSceneTime = {
@@ -117,15 +123,30 @@ var rivalPSceneTime = {
 	'keyFirstMoveTime' : 250, // ms
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
-	'blockDestroyedTime' : 250 // ms
+	'blockDestroyedTime' : 250, // ms
+	'messageUpTime' : 1000 // ms
 }
 
+/*
 var createKeySceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 250, // ms
 	'keyDownSpeed' : 10, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
-	'blockDestroyedTime' : 250 // ms
+	'blockDestroyedTime' : 250, // ms
+	'messageUpTime' : 1000 // ms
+}
+*/
+
+var createKeySceneTime = {
+	'waitingIATime' : 50, // ms
+	'keyFirstMoveTime' : 50, // ms
+	'keyDownSpeed' : 5, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 50, // ms
+	'blockDestroyedTime' : 50, // ms
+	'messageUpTime' : 1000, // ms
+	'keyAppearTime' : 2500, // ms (only necessary here.)
+	'keyClippingTime' : 1000 // ms (only necessary here.)
 }
 
 function BoxOption(scene, resizeOption, boardColorInfo, timeInfo) {

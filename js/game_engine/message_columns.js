@@ -233,16 +233,17 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 
 	var object = this;
-	var signe = "";
-	if (this.type === COLUMN_TYPE_1) {
-		signe = "-";
-	}
 
 	this.displayValue.paint = function(director, time) {
 		if (this.isCached()) {
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
 			return;
 		}
+
+        var signe = "";
+        if (object.type === COLUMN_TYPE_1) {
+            signe = "-";
+        }
 
 		var ctx = director.ctx;
 
@@ -501,7 +502,7 @@ function Message(director, messageLength, message, container, boxOption) {
             var msgColumn = this.columnList[i];
 
             var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
-            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, this.boxOption.timeInfo.levelUpNumberTime).setCycle(false);
+            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, this.boxOption.timeInfo.messageUpTime).setCycle(false);
             var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; }, 'behaviorApplied' : null};
             pb.addListener(behaviorListener);
 
@@ -512,7 +513,7 @@ function Message(director, messageLength, message, container, boxOption) {
             function(time, ttime, timerTask) {
                 if (msgOnMove === 0) {
                     waitToContinue.cancel();
-                    currentGame.goToDialog7 = true;
+                    currentGame.displayKey = true;
                 }
             }
         );

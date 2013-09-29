@@ -78,8 +78,8 @@ $(function(){
 		});
 		$('.new-login').submit(function(e){
 			game.player.name = $('#login-name').val();
+			currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
 			$.switchWrapper('#bg-institut', dialog2);
-			currentGame.username = game.player.name;
 			$('.new-login').unbind('submit').submit(function(e){
 				return false;
 			});
@@ -229,7 +229,10 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#game-board', function(){
+			  // Set the createKeyScene as the current scene.
         	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['create_key_scene']['scene']), 0, 0, false);
+        	  // Disable input in the scene.
+        	  currentGame.createKeySceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -263,6 +266,51 @@ $(function(){
 		currentGame.createKeySceneActive = true;
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
+                if (currentGame.keyIsPregenerated === true) {
+                    waitToContinue.cancel();
+                    dialog6KeyPreGenerated();
+                }
+            }
+        );
+	}
+
+	function dialog6KeyPreGenerated() {
+		$("body").closeAllDialogs(function() {
+
+			$.switchWrapper('#game-board', function() {
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Très bien ! L'ordinateur va à présent générer ta clé publique.",
+
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: switchToFinishCreateKey
+			    }]
+
+			  });
+	
+
+			});
+
+		});
+
+	}
+
+	function switchToFinishCreateKey() {
+		$("body").closeAllDialogs();
+		// Launch the ia.
+		ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
+
+		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
                 if (currentGame.goToDialog7 === true) {
                     waitToContinue.cancel();
                     dialog7();
@@ -270,7 +318,6 @@ $(function(){
             }
         );
 	}
-
 
 	function dialog7(){
 		$("body").closeAllDialogs(function(){

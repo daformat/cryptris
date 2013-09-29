@@ -24,7 +24,7 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 
 	CAAT.registerKeyListener(function (key) {
 		if (scene.isPaused() === false && currentGame[hookSceneActive] === true) {
-			var keyIsActive = crypt_key.numberApplied < currentGame.maxNewKeyMove;
+			var keyIsActive = crypt_key.numberApplied <= currentGame.maxNewKeyMove;
 			if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
 				keyIsActive ? crypt_key.rotateLeft() : null;
 			}
@@ -35,12 +35,8 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 				keyIsActive ? crypt_key.changeKeyType() : null;
 			}
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				if (crypt_key.numberApplied < currentGame.maxNewKeyMove) {
-					crypt_key.keyDown();
-				} else if (currentGame.iaCreateKeyTimer === null) {
-					crypt_key.keyDown();
-					ia_process(scene, gameBox, hookSceneActive);
-				}
+				keyIsActive ? crypt_key.keyDown() : null;
+				crypt_key.numberApplied === currentGame.maxNewKeyMove ? currentGame.keyIsPregenerated = true : null;
 			}
 		}
 	});
@@ -69,6 +65,7 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 			} else if (x2 > 0 && y2 > 0) {
 				pad.setBackgroundImage(director.getImage('pad-down'));
 				padIsActive ? crypt_key.keyDown() : null;
+				crypt_key.numberApplied === currentGame.maxNewKeyMove ? currentGame.keyIsPregenerated = true : null;
 			} else if (x2 < 0 && y2 < 0) {
 				pad.setBackgroundImage(director.getImage('pad-up'));
 				padIsActive ? crypt_key.changeKeyType() : null;
@@ -100,12 +97,7 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 				padMoveKey ? crypt_key.rotateRight() : null;
 			} else if (x2 > 0 && y2 > 0) {
 				pad.setBackgroundImage(director.getImage('pad-down'));
-				if (padMoveKey) {
-					crypt_key.keyDown();
-				} else if (padIsActive && currentGame.iaCreateKeyTimer === null) {
-					crypt_key.keyDown();
-					ia_process(scene, gameBox);
-				}
+				padMoveKey ? crypt_key.keyDown() : currentGame.keyIsPregenerated = true;
 			} else if (x2 < 0 && y2 < 0) {
 				pad.setBackgroundImage(director.getImage('pad-up'));
 				padMoveKey ? crypt_key.changeKeyType() : null;

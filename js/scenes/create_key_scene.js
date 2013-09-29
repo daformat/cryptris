@@ -12,6 +12,8 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
         return ;
     }
 
+    console.log(gameBoxInfo);
+
     var prepare_move = [];
     var move = [];
 
@@ -87,6 +89,96 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
             } else if (index === move.length) {
                 currentGame.iaCreateKeyTimer.cancel();
 
+
+                var waitUpMessageToContinue = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
+                    function(time, ttime, timerTask) {
+                        if (currentGame.displayKey === true) {
+                            waitUpMessageToContinue.cancel();
+
+                            // Display "Clé publique générée !"
+                            var winScreen = new CAAT.Actor().
+                                setSize(gameBoxInfo.gameBox.width, gameBoxInfo.gameBox.height).
+                                setLocation(0, 0);
+                            winScreen.paint = function(director) {
+
+                                var ctx = director.ctx;
+
+                                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                                ctx.fillRect(0, 0, this.width, this.height);
+                                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                                ctx.fillRect(this.width / 2 - 150, this.height / 2 - 30, 300, 50);
+
+                                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                                ctx.strokeRect(0, 0, this.width, this.height);
+                                ctx.shadowOffsetX = 0;
+                                ctx.shadowOffsetY = 0;
+                                ctx.shadowBlur = 5;
+                                ctx.shadowColor = '#00FF9D';
+
+                                ctx.font = '14pt Inconsolata';
+                                ctx.fillStyle = '#00e770';
+                                ctx.textAlign = 'center';
+                                ctx.fillText("Clé publique générée !", this.width / 2, this.height / 2);
+                            }
+                            gameBoxInfo.gameBox.addChild(winScreen);
+
+                            // Make a key to appear.
+                            var gameBox = gameBoxInfo.gameBox;
+
+                            var keySymbolImg = currentGame.director.getImage('key-symbol');
+                            var keySymbolActor = new CAAT.Actor().setSize(keySymbolImg.width, keySymbolImg.height)
+                                                                                .setBackgroundImage(currentGame.director.getImage('key-symbol'))
+                                                                                .setLocation(-keySymbolImg.width, gameBox.y - (keySymbolImg.height - 10) / 2 + gameBoxInfo.boxOption.BORDER_HEIGHT);
+                            currentGame.scenes.create_key_scene.keySymbol = keySymbolActor;
+                            createKeyScene.addChild(currentGame.scenes.create_key_scene.keySymbol);
+
+                            var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 16 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
+                            var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
+
+                            var alphaD = new CAAT.AlphaBehavior().
+                                                  setValues(1,0).
+                                                  setCycle(false);
+                            var alphaC = new CAAT.AlphaBehavior().
+                                                  setValues(0,1).
+                                                  setCycle(false);
+
+
+                            var alphaCBehaviorListener = {
+                                'behaviorExpired' : function(behavior, time, actor) {
+                                    if (currentGame.nbrKeyClipping < currentGame.maxKeyClipping - 1) {
+                                        keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                        currentGame.nbrKeyClipping = currentGame.nbrKeyClipping + 1;
+                                    } else {
+                                        currentGame.goToDialog7 = true;
+                                    }
+                                },
+                                'behaviorApplied' : null
+                            };
+                            alphaC.addListener(alphaCBehaviorListener);
+
+                            var alphaDBehaviorListener = {
+                                'behaviorExpired' : function(behavior, time, actor) {
+                                    keySymbolActor.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                },
+                                'behaviorApplied' : null
+                            };
+                            alphaD.addListener(alphaDBehaviorListener);
+
+                            var behaviorListener = {
+                                'behaviorExpired' : function(behavior, time, actor) {
+                                    keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                    currentGame.keyIsInPlace = true;
+                                }, 
+                                'behaviorApplied' : null
+                            };
+
+                            pb.addListener(behaviorListener);
+                            keySymbolActor.addBehavior(pb);
+
+                        }
+                    }
+                );
+
                 message.upMessage();
                 key.hidden();
                 var newPk = [];
@@ -106,10 +198,20 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 }
 
 function resizeCreateKeyScene(director, createKeyScene) {
-    createKeyScene.game_box.relativeX = getRelativeX(createKeyScene.resizeOption);
-    createKeyScene.game_box.resize(createKeyScene.scene)
+    if (currentGame.displayKey === false) {
+        createKeyScene.game_box.relativeX = getRelativeX(createKeyScene.resizeOption);
+        createKeyScene.game_box.resize(createKeyScene.scene)
 
-    createKeyScene.info_column.redraw();
+        createKeyScene.info_column.redraw();
+
+        if (currentGame.scenes.create_key_scene != null && currentGame.scenes.create_key_scene.keySymbol != null && currentGame.keyIsInPlace === true) {
+
+            var gameBox = createKeyScene.game_box.gameBox;
+            var boxOption = createKeyScene.game_box.boxOption;
+            var keySymbolImg = director.getImage('key-symbol');
+            currentGame.scenes.create_key_scene.keySymbol.setLocation(gameBox.x - keySymbolImg.width + 16 + boxOption.BORDER_WIDTH, gameBox.y - (keySymbolImg.height - 10) / 2 + boxOption.BORDER_WIDTH);
+        }
+    }
 }
 
 /**
