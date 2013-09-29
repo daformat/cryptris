@@ -60,12 +60,12 @@ function prepareCreateKeyScene(director) {
 /**
  *
  */
-function preparePlayMinScene(director) {
+function preparePlayScene(director, boardLength, boardName, message) {
 
     /**
      * Define the current length of the message (and of the keys).
      */
-    var current_length = getQuerystring("n", MIN_BOARD_LENGTH);
+    var current_length = getQuerystring("n", boardLength);
 
     /**
      * Define a TEMPORARY message.
@@ -74,11 +74,9 @@ function preparePlayMinScene(director) {
     for (var i = 0; i < current_length; ++i) {
         tmp_message.push(Math.floor(Math.random() * 3 - 1));
     }
-    var my_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
+    var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 
-    console.log(currentGame.playerKeyInfo['public_key'][current_length]['key']);
-
-    currentGame.scenes['play_min_scene'] = createPlayScene(director, current_length, my_message, currentGame.playerKeyInfo);
+    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo);
 }
 
 /**

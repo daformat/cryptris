@@ -13,7 +13,7 @@ $(document).ready(function() {
             }
         }
         if (key.getKeyCode() === CAAT.Keys.r && key.getAction() === 'down') {
-            preparePlayMinScene(currentGame.director);
+            preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_MESSAGE);
         }
     });
 });

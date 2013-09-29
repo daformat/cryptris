@@ -7,6 +7,7 @@ var COLUMN_TYPE_3 = 'empty';
 
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
+var FIRST_MESSAGE = "OK";
 
 var indexToReset = MIN_BOARD_LENGTH;
 
