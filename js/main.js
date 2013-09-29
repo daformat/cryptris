@@ -34,6 +34,9 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['create_key_scene'] != null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
+            if (currentGame.scenes['play_solo_scene'] != null) {
+                currentGame.scenes['play_solo_scene']['resize'](director, currentGame.scenes['play_solo_scene']);
+            }
         }
     }
     resizeInProcess = false;
@@ -66,7 +69,7 @@ function prepareCreateKeyScene(director) {
 /**
  *
  */
-function preparePlayScene(director, boardLength, boardName, message, hookActive) {
+function preparePlayScene(director, boardLength, boardName, message, hookActive, withIaBoard) {
 
     /**
      * Define the current length of the message (and of the keys).
@@ -82,7 +85,7 @@ function preparePlayScene(director, boardLength, boardName, message, hookActive)
     }
     var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 
-    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo, hookActive);
+    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard);
 }
 
 /**

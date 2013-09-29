@@ -8,6 +8,9 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 var FIRST_MESSAGE = "OK";
+var FIRST_BATTLE_MESSAGE = "24";
+var SECOND_BATTLE_MESSAGE = "78";
+var THIRD_BATTLE_MESSAGE = "31";
 
 var indexToReset = MIN_BOARD_LENGTH;
 
@@ -35,12 +38,14 @@ function game() {
     this.playMinSceneActive = false;
     this.playMediumSceneActive = false;
     this.playMaxSceneActive = false;
+    this.playSoloSceneActive = false;
 
     this.deactivateScenes = function() {
     	this.createKeySceneActive = false;
     	this.playMinSceneActive = false;
     	this.playMediumSceneActive = false;
     	this.playMaxSceneActive = false;
+    	this.playSoloSceneActive = false;
     }
 }
 

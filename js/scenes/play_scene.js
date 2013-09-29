@@ -145,16 +145,17 @@ function resizePlayScene(director, playScene) {
 
     playScene.info_column.redraw();
 
-    playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
-    playScene.rival_box.resize(playScene.scene);
-
+    if (playScene.rival_box != null) {
+        playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
+        playScene.rival_box.resize(playScene.scene);
+    }
 }
 
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director, current_length, message, keyInfo, hookActive) {
+function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard) {
     /**
      * Create the dict to return.
      */
@@ -178,7 +179,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     /**
      * Define the board resize option.
      */
-    resultScene.resizeOption = new ResizeOption(current_length, 2);
+    resultScene.resizeOption = new ResizeOption(current_length, withIaBoard ? 2 : 1);
 
     /**
      * Create the player game board.
@@ -186,6 +187,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
     var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], message, true);
     resultScene['game_box'] = gameBoxInfo;
+    resultScene.scene.addChild(resultScene['game_box'].gameBox);
 
     /**
      * Create the central column (to display some information).
@@ -194,11 +196,14 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     resultScene['info_column'] = infoColumn;
 
     /**
-     * Create the ia board.
+     * Create the ia board if necessary.
      */
-    var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
-    var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false);
-    resultScene['rival_box'] = rivalBoxInfo;
+    if (withIaBoard) {
+        var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
+        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false);
+        resultScene['rival_box'] = rivalBoxInfo;
+        resultScene.scene.addChild(resultScene['rival_box'].gameBox);
+    }
 
     /*
      * Bind each element of the scene with controls (mouse and keyboard.)
@@ -212,17 +217,11 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
     // Bind all objects with pause Buttons.
-    var objectsWithAnimation = [gameBoxInfo.crypt_key, rivalBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.message];
+    var objectsWithAnimation = withIaBoard ? [gameBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.crypt_key, rivalBoxInfo.message] : [gameBoxInfo.crypt_key, gameBoxInfo.message];
     bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
 
     // Bind default help button (do nothing).
     bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
-
-    /**
-     * Add each element to its scene.
-     */
-    resultScene.scene.addChild(resultScene['game_box'].gameBox);
-    resultScene.scene.addChild(resultScene['rival_box'].gameBox);
 
     /**
      * Set the resize callback to call.
@@ -230,45 +229,46 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive)
     resultScene['resize'] = resizePlayScene;
 
     /*
-     * Call the IA script.
+     * Call the IA script if necessary.
      */
-    handle_ia(resultScene['scene'], rivalBoxInfo);
+    withIaBoard ? handle_ia(resultScene['scene'], rivalBoxInfo) : null;
 
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            if (withIaBoard) {
+                var rivalMessage = rivalBoxInfo.message;
+                var rivalBox = rivalBoxInfo.gameBox;
+                if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
+                    currentGame.gameOver = true;
 
-            var rivalMessage = rivalBoxInfo.message;
-            var rivalBox = rivalBoxInfo.gameBox;
-            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
-                currentGame.gameOver = true;
+                    rivalMessage.boxOption.endResolved = time;
+                    var rivalWinScreen = new CAAT.Actor().
+                            setSize(rivalBox.width, rivalBox.height).
+                            setLocation(0, 0);
 
-                rivalMessage.boxOption.endResolved = time;
-                var rivalWinScreen = new CAAT.Actor().
-                        setSize(rivalBox.width, rivalBox.height).
-                        setLocation(0, 0);
+                    rivalWinScreen.paint = function(director) {
 
-                rivalWinScreen.paint = function(director) {
+                        var ctx = director.ctx;
 
-                    var ctx = director.ctx;
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                        ctx.fillRect(0, 0, this.width, this.height);
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                        ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
 
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fillRect(0, 0, this.width, this.height);
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
+                        ctx.strokeStyle = 'rgb(0, 0, 0)';
+                        ctx.strokeRect(0, 0, this.width, this.height);
+                        ctx.shadowOffsetX = 0;
+                        ctx.shadowOffsetY = 0;
+                        ctx.shadowBlur = 5;
+                        ctx.shadowColor = '#00FF9D';
 
-                    ctx.strokeStyle = 'rgb(0, 0, 0)';
-                    ctx.strokeRect(0, 0, this.width, this.height);
-                    ctx.shadowOffsetX = 0;
-                    ctx.shadowOffsetY = 0;
-                    ctx.shadowBlur = 5;
-                    ctx.shadowColor = '#00FF9D';
-
-                    ctx.font = '14pt Inconsolata';
-                    ctx.fillStyle = '#00e770';
-                    ctx.textAlign = 'center';
-                    ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
+                        ctx.font = '14pt Inconsolata';
+                        ctx.fillStyle = '#00e770';
+                        ctx.textAlign = 'center';
+                        ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
+                    }
+                    rivalBox.addChild(rivalWinScreen);
                 }
-                rivalBox.addChild(rivalWinScreen);
             }
 
 

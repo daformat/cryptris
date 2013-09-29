@@ -378,11 +378,31 @@ $(function(){
 
 	}	
 
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard) {
+		// Prepare the sceneName and set it as the current scene.
+		preparePlayScene(currentGame.director, sizeBoard, sceneName, FIRST_MESSAGE, hookName, withIaBoard);
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
+
+        // Create a timer to catch the moment we have to go to the next scene.
+		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+               	if (currentGame.goToNextDialog === true) {
+                   	waitToContinue.cancel();
+                   	currentGame.goToNextDialog = false;
+
+            	    onDecrypt();
+               	}
+            }
+        );
+	}
 
 	function dialog9(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+			  // Set the correct scene at bg, and deactivate its control.
+			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false);
+			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -425,7 +445,7 @@ $(function(){
 		    controls: [{
 		      label: "Suite", 
 		      class: "button blue",
-		      onClick: dialog11
+		      onClick: activatePlaySolo
 		    }]
 
 		  });	
@@ -434,12 +454,19 @@ $(function(){
 
 	}
 
+	function activatePlaySolo() {
+		$("body").closeAllDialogs(function(){});
+		currentGame.playSoloSceneActive = true;
+	}
 
 
 	function dialog11(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
+		 	  // Disable the action on the key and switch to the waiting scene.
+			  currentGame.playMinSceneActive = false;
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -714,27 +741,10 @@ $(function(){
 
 	}
 
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard) {
-		// Prepare the play_min_scene and set it as the current scene.
-		preparePlayScene(currentGame.director, sizeBoard, sceneName, FIRST_MESSAGE, sceneName);
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
-
-        // Create a timer to catch the moment we have to go to the next scene.
-		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-               	if (currentGame.goToNextDialog === true) {
-                   	waitToContinue.cancel();
-                   	currentGame.goToNextDialog = false;
-
-            	    onDecrypt();
-               	}
-            }
-        );
-	}
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH);
+			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true);
 		});
 
 	}
@@ -919,8 +929,8 @@ $(function(){
 
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
-			goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH);
 			$.switchWrapper('#bg-circuits', function(){
+				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true);
 			});
 		});
 	}
@@ -959,11 +969,11 @@ $(function(){
 
 	function dialogCables2(){
 		$("body").closeAllDialogs(function(){
-			// Disable the action on the key and switch to the waiting scene.
-			currentGame.playMinSceneActive = false;
-        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			$.switchWrapper('#bg-institut', function(){
+			  // Disable the action on the key and switch to the waiting scene.
+			  currentGame.playMinSceneActive = false;
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1105,8 +1115,8 @@ $(function(){
 
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
-			goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH);
 			$.switchWrapper('#bg-circuits', function(){
+				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true);
 			});
 		});
 	}
@@ -1144,11 +1154,11 @@ $(function(){
 
 	function dialogCables3(){
 		$("body").closeAllDialogs(function(){
-			// Disable the action on the key and switch to the waiting scene.
-			currentGame.playMinSceneActive = false;
-        	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			$.switchWrapper('#bg-institut', function(){
+			  // Disable the action on the key and switch to the waiting scene.
+			  currentGame.playMinSceneActive = false;
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
