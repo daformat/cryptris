@@ -208,7 +208,6 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
                 // ---
 
-                console.log(CAAT.Behavior.Interpolator.enumerateInterpolators());
 
                 var newPk = [];
                 for (var i = 0; i < message.columnList.length; ++i) {
