@@ -8,7 +8,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.msgColumn = msgColumn;
     this.keyInMove = false;
     this.keyFirstMove = false;
-    this.keyAppears = true;
     this.pathContinue = false;
     this.isResize = false;
     this.pbFirstMove = null;
@@ -242,7 +241,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.boxOption = boxOption;
 	this.keyInMove = false;
 	this.keyFirstMove = false;
-	this.keyAppears	= true;
 	this.numberApplied = -1;
 
     this.resize = function(isPaused) {
@@ -275,42 +273,46 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.createKey = function () {
+
 		for (var i = 0; i < this.columnList.length; ++i) {
 			this.container.removeChild(this.columnList[i].column);
 			this.columnList[i].myTimer.cancel();
 		}
+
+
 		this.columnList = [];
 		this.keyInMove = false;
 		this.keyFirstMove = true;
 
 		this.boxOption.maxKeyNumber = 0;
-		for (var i = 0; i < this.length; ++i) {
-			if (this.number[i] > this.boxOption.maxKeyNumber) {
-				this.boxOption.maxKeyNumber = this.number[i];
-			}
-			if (this.type === KEY_TYPE_NORMAL) {
-				this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
-			} else if (this.type === KEY_TYPE_REVERSE) {
-				this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
+
+		if(!currentGame.dontShowKey) {
+			for (var i = 0; i < this.length; ++i) {
+				if (this.number[i] > this.boxOption.maxKeyNumber) {
+					this.boxOption.maxKeyNumber = this.number[i];
+				}
+				if (this.type === KEY_TYPE_NORMAL) {
+					this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
+				} else if (this.type === KEY_TYPE_REVERSE) {
+					this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
+				}
 			}
 		}
 
 		this.numberApplied = this.numberApplied + 1;
-		this.firstDraw();
+
+		this.firstDraw();	
 		return this;
+
 	}
 
 	this.firstDraw = function () {
-		if(this.keyAppears){
-
+		
 			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
 				this.columnList[i].firstMove();
 			}
-		}
-		else{
-			alert('hop');
-		}
+
 	}
 
 	this.redraw = function () {
@@ -467,9 +469,9 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 				if (needToUpdateAgain === true) {
 					object.boxOption.keyNeedToUpdate = true;
 				} else {
-					object.msgColumn.redraw();
-					object.createKey();
-					object.msgColumn.isResolved();
+						object.msgColumn.redraw();
+						object.msgColumn.isResolved();
+						object.createKey();
 				}
 			}
 		}

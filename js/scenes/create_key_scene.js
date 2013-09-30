@@ -30,9 +30,15 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
     var actionToDo = ACTION_UNKNOWN;
 
+
     for (var i = 0; i < key.length; ++i) {
         move.push(Math.floor(Math.random() * 5) - 2);
     }
+
+    move.push(-1)
+
+    console.log(move);
+
     var index = 0;
 
     var keyIsInvert = false;
@@ -43,9 +49,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
     currentGame.iaCreateKeyTimer = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-            if( index === move.length - 1 ){
-                currentGame.scenes.create_key_scene.game_box.crypt_key.keyAppears = false;
-            }
+
 
             if (index < move.length && key.keyInMove === false && key.keyFirstMove === false) {
  
@@ -89,8 +93,13 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 }
-            } else if (index === move.length) {
 
+                if( index == move.length - 1){
+                    currentGame.dontShowKey = true;
+                }
+
+            } else if (index === move.length) {
+  
                 currentGame.iaCreateKeyTimer.cancel();
 
 
