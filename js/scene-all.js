@@ -1331,7 +1331,7 @@ $(function(){
 
 	}		
 
-	function dialogComparePlayTimeChart {
+	function dialogComparePlayTimeChart() {
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
