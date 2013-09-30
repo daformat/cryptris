@@ -8,6 +8,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.msgColumn = msgColumn;
     this.keyInMove = false;
     this.keyFirstMove = false;
+    this.keyAppears = true;
     this.pathContinue = false;
     this.isResize = false;
     this.pbFirstMove = null;
@@ -241,6 +242,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.boxOption = boxOption;
 	this.keyInMove = false;
 	this.keyFirstMove = false;
+	this.keyAppears	= true;
 	this.numberApplied = -1;
 
     this.resize = function(isPaused) {
@@ -299,9 +301,15 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.firstDraw = function () {
-		for (var i = 0; i < this.columnList.length; ++i) {
-			this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
-			this.columnList[i].firstMove();
+		if(this.keyAppears){
+
+			for (var i = 0; i < this.columnList.length; ++i) {
+				this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+				this.columnList[i].firstMove();
+			}
+		}
+		else{
+			alert('hop');
 		}
 	}
 

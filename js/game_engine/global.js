@@ -27,11 +27,11 @@ function game() {
     this.goToNextDialog = false;
     this.gameOver = false;
 
-    this.maxNewKeyMove = 5;
+    this.maxNewKeyMove = 5; // How many moves needed before lauching automatic key generation
     this.keyIsPregenerated = false;
     this.keyIsInPlace = false;
     this.nbrKeyClipping = 0;
-    this.maxKeyClipping = 3;
+    this.maxKeyClipping = 3; // times key blinks before stopping
     this.displayKey = false;
 
     this.createKeySceneActive = false;
@@ -165,6 +165,17 @@ var createKeySceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 250, // ms
 	'keyDownSpeed' : 8, // multiplicator of the initial speed.
+	'levelUpNumberTime' : 750, // ms
+	'blockDestroyedTime' : 250, // ms
+	'messageUpTime' : 800, // ms (only necessary here.)
+	'keyAppearTime' : 800, // ms (only necessary here.)
+	'keyClippingTime' : 500 // ms (only necessary here.)
+}
+
+var createKeyIASceneTime = {
+	'waitingIATime' : 100, // ms
+	'keyFirstMoveTime' : 250, // ms
+	'keyDownSpeed' : 4, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
 	'messageUpTime' : 800, // ms (only necessary here.)
