@@ -77,6 +77,15 @@
 	          			+ '  </div>'
 	        				+ '</div>'
 				},
+				"graph": {
+					template: '<div class="dialog graph">'
+		          		+ '		<h2></h2>'
+							    + '   <div class="content">'
+							    + '			<div id="graph" class="aGraph"></div>'
+							    + '   </div>'
+							    + '  <div class="controls"></div>'
+							    + '</div>'
+				},				
 				"custom": {
 					template: '<div class="dialog">'
 		          		+ '		<h2></h2>'

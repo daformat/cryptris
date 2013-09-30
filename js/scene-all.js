@@ -50,24 +50,25 @@ $(function(){
 	}
 
 	function dialog1(){
-	  $(".wrapper.active .vertical-centering").dialog({
-	    
-	    animateText: true,
+		$("body").closeAllDialogs(function(){
+		  $(".wrapper.active .vertical-centering").dialog({
+		    
+		    animateText: true,
 
-	    type: "withAvatar",
-	    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+		    type: "withAvatar",
+		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-	    title: "Chercheuse",
-	    content: "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.",
-	    
-	    controls: [{
-	      label: "Suite", 
-	      class: "button blue",
-	      onClick: switchToNewLogin
-	    }]
+		    title: "Chercheuse",
+		    content: "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.",
+		    
+		    controls: [{
+		      label: "Suite", 
+		      class: "button blue",
+		      onClick: switchToNewLogin
+		    }]
 
-	  });	
-
+		  });	
+		});
 	}
 
 	function switchToNewLogin() {
@@ -1328,7 +1329,170 @@ $(function(){
 
 		});				
 
-	}			
+	}		
+
+	$.dialogComparePlayTimeChart = function(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    type: "graph",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Comparaison du temps de décryptage",
+			    content: "Blah blah",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: theEnd
+			    }]
+
+			  });	
+
+		
+			  setTimeout(function(){
+					// define dimensions of graph
+					var m = [40, 40, 50, 90]; // margins
+					var w = 740 - m[1] - m[3]; // width
+					var h = 250 - m[0] - m[2]; // height
+					
+					var dataInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
+					var dataIA = [{x: 8, y:Math.exp(8)/10}, {x: 10, y: Math.exp(10)/20}, {x: 12, y: Math.exp(12)/40}];
+					var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];		
+
+					// X scale will fit all values from data[] within pixels 0-w
+					var x = d3.scale.linear().domain([8, 12]).range([0, w]);
+					// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+					var y = d3.scale.log().range([h, 0]).domain([60, dataIA[2].y]);
+					var y = d3.scale.linear().range([h, 0]).domain([60, dataIA[2].y]);
+
+						// automatically determining max range can work something like this
+						// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+
+					// create a line function that can convert data[] into x and y points
+					var line = d3.svg.line()
+						// assign the X function to plot our line as we wish
+						.x(function(d,i) { 
+							console.log(d, i);
+							// return the X coordinate where we want to plot this datapoint
+							return x(d.x); 
+						})
+						.y(function(d, i) { 
+
+							console.log(d, i);
+							// return the Y coordinate where we want to plot this datapoint
+							return y(d.y); 
+						}).interpolate("cardinal") ;
+
+						// Add an SVG element with the desired dimensions and margin.
+						var graph = d3.select("#graph").append("svg:svg")
+						      .attr("width", w + m[1] + m[3])
+						      .attr("height", h + m[0] + m[2])
+						    .append("svg:g")
+						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+						// create xAxis
+						var xAxis = d3.svg.axis().scale(x).ticks(3).tickSize(10).tickSubdivide(false);
+						// Add the x-axis.
+						graph.append("svg:g")
+						      .attr("class", "x axis")
+						      .attr("transform", "translate(0," + h + ")")
+						      .call(xAxis);
+
+
+						// create left yAxis
+						var yAxisLeft = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).orient("left");
+						// Add the y-axis to the left
+						graph.append("svg:g")
+						      .attr("class", "y axis")
+						      .attr("transform", "translate(-25,0)")
+						      .call(yAxisLeft);
+						
+					graph.append("text")
+					    .attr("class", "x label")
+					    .attr("text-anchor", "end")
+					    .attr("x", w+10)
+					    .attr("y", h + m[2]-6)
+					    .text("Taille de la clé (blocs)");
+
+					graph.append("text")
+					    .attr("class", "y label")
+					    .attr("text-anchor", "end")
+					    .attr("y", 6)
+					    .attr("dy", ".75em")
+					    .attr("transform", "rotate(-90) translate(0, -90)")
+					    .text("Durée du décryptage");					    
+
+			  			// Add the line by appending an svg:path element with the data line we created above
+						// do this AFTER the axes above so that the line is above the tick-lines
+			  			graph.append("svg:path").attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataIA));
+
+			  			graph.append("svg:path").attr('class', 'player').attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataPlayer));
+
+							var div = d3.select("body").append("div")   
+							    .attr("class", "tooltip")               
+							    .style("opacity", 0);
+
+							// draw dots for IA
+							var circlesIA = graph.selectAll("dot")    
+							        .data(dataInitial)         
+							    .enter().append("circle")                               
+							        .attr("r", 5)       
+							        .attr("cx", function(d) { return x(d.x); })       
+							        .attr("cy", function(d) { return y(d.y); })     
+							        .on("mouseover", function(d, i) {
+							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
+							            div.transition()        
+							                .duration(200)      
+							                .style("opacity", .9)
+							            div .html("<strong>Ordinateur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + parseInt(dataIA[i].y) + " secondes")  
+							                .style("left", (d3.event.pageX+15) + "px")     
+							                .style("top", (d3.event.pageY - 28) + "px");    
+							            })                  
+							        .on("mouseout", function(d) {       
+							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 5);
+							            div.transition()        
+							                .duration(500)      
+							                .style("opacity", 0);   
+							        });			
+							circlesIA.transition().duration(500).attr("cy",  function(d, i) { return y(dataIA[i].y); });
+
+							// draw dots for Player
+							var circle = graph.selectAll("dot")    
+							        .data(dataInitial)       
+							    .enter().append("circle")                               
+							        .attr("class", 'player')
+							        .attr("r", 5)       
+							        .attr("cx", function(d) { return x(d.x); })       
+							        .attr("cy", function(d) { return y(d.y); })     
+							        .on("mouseover", function(d, i) {      
+							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
+
+							            div.transition()        
+							                .duration(200)      
+							                .style("opacity", .9);      
+							            div .html("<strong>Joueur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + parseInt(dataPlayer[i].y) + " secondes")  
+							                .style("left", (d3.event.pageX+10) + "px")     
+							                .style("top", (d3.event.pageY - 28) + "px");    
+							            })                  
+							        .on("mouseout", function(d) {       
+							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 5);
+
+							            div.transition()        
+							                .duration(500)      
+							                .style("opacity", 0);   
+							        });			
+							circle.transition().duration(500).attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+
+						}, 100);
+
+			});
+
+		});		
+	}
 
 	function theEnd(){
 		$("body").closeAllDialogs(function(){
@@ -1341,4 +1505,17 @@ $(function(){
 	intro();
 
 });
+
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second parm
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
 

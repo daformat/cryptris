@@ -3,7 +3,7 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-21
+	@lastmod 2013-09-30
 
 */
 
@@ -936,4 +936,59 @@ ul{
 	opacity: 1;
 	width: 400px;
 	height: 400px;
+}
+
+
+/*
+	Graphs
+*/
+
+.dialog.graph{
+	height: 460px;
+}
+
+#graph { 
+	font: 12px Arial;
+	background: #93bcd7;
+	border: solid 7px #b8cfde;
+	padding: 10px;
+}		/* set the default text for anything occuring in the of the html */
+
+#graph path { 
+	stroke: #a360bb;			/* the line colour for paths is steelblue */
+	stroke-width: 3;			/* the line width for paths is 2 pixels */
+	fill: none;					/* don't fill the area bounded by any path elements */
+}
+
+#graph path.player{
+	stroke: #015b99;
+}
+
+#graph .axis path,
+#graph .axis line {
+	fill: none;					/* don't fill areas bounded by the axis line */
+	stroke:#eee;				/* make the axis line grey */
+	stroke-width: 1;			/* make the width of the axis lines 1 pixel */
+	shape-rendering: crispEdges;/* make the edges sharp */
+}
+
+#graph circle{
+	fill: #a360bb;
+	cursor: pointer;
+}
+
+#graph circle.player{
+	fill: #015b99;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;                   
+  padding: 10px;             
+  font: 12px sans-serif;        
+  background: black;   
+  background: rgba(0,0,0,.9);   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
 }
