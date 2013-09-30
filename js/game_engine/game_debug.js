@@ -16,9 +16,7 @@ $(document).ready(function() {
             currentGame.scenes.play_max_scene.rival_box.boxOption.timeInfo = rivalPMaxSceneTime;
         }
         if (key.getKeyCode() === CAAT.Keys.e && key.getAction() === 'down') {
-            if (currentGame.keyIsPregenerated === true) {
                 ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
-            }
         }
         if (key.getKeyCode() === CAAT.Keys.r && key.getAction() === 'down') {
             preparePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_min_scene', FIRST_BATTLE_MESSAGE, 'playMinSceneActive', true);
