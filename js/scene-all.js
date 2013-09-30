@@ -288,6 +288,7 @@ $(function(){
             function(time, ttime, timerTask) {
                 if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
                     waitToContinue.cancel();
+                    currentGame.createKeySceneActive = false;
                     dialog6KeyPreGenerated();
                 }
             }
@@ -400,6 +401,7 @@ $(function(){
 
 	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message) {
 		// Prepare the sceneName and set it as the current scene.
+
 		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
 
@@ -424,7 +426,8 @@ $(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the correct scene at bg, and deactivate its control.
-			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, FIRST_MESSAGE);
+
+			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE);
 			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({

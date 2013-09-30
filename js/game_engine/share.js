@@ -6,6 +6,29 @@ var symboles3 = ["Q","R","S","T","U","V","W","X","Y","Z",
     " ",";", ".", ",","!","?","$","%","'","\\","\""];
 var separator = ["(",")","+","-","*","/","|","~"];
 
+function easy_crypt(ternary_message) {
+	var crypt_message = "";
+	for (var i = 0; i < ternary_message.length; ++i) {
+		var character = '';
+		if (ternary_message === -1) {
+			character = symboles[Math.floor(Math.random() * symboles.length)];
+		} else if (ternary_message === 0) {
+			character = symboles2[Math.floor(Math.random() * symboles2.length)];
+		} else {
+			character = symboles2[Math.floor(Math.random() * symboles3.length)];
+		}
+		crypt_message = crypt_message + character;
+	}
+	return crypt_message;
+}
+
+function easy_decrypt(crypt_message) {
+
+	for (var i = 0; i < crypt_message.length; ++i) {
+
+	}
+
+}
 
 var baseHtml = 'http://www.cryptris.com/decrypt.html?&k=msg='
 $(document).ready(function() {
@@ -13,21 +36,11 @@ $(document).ready(function() {
 		var text = $("textarea").val();
 		var ternary_message = string_to_ternary(text, 140 * 4, false);
 
-		var crypt_message = "";
-		for (var i = 0; i < ternary_message.length; ++i) {
-			var character = '';
-			if (ternary_message === -1) {
-				character = symboles[Math.floor(Math.random() * symboles.length)];
-			} else if (ternary_message === 0) {
-				character = symboles2[Math.floor(Math.random() * symboles2.length)];
-			} else {
-				character = symboles2[Math.floor(Math.random() * symboles3.length)];
-			}
-			crypt_message = crypt_message + character;
-		}
+		var crypt_message = easy_crypt(ternary_message);
+		var message = easy_decrypt(crypt_message);
 
 		console.log(ternary_message);
-		console.log(text + ' : ' + crypt_message);
+		console.log(text + ' <=========== ' + crypt_message + ' =========> ' + message);
 		return false;
 	});
 
