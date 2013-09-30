@@ -328,6 +328,7 @@ $(function(){
 	function switchToFinishCreateKey() {
 		$("body").closeAllDialogs();
 		// Launch the ia.
+		currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
 		ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
 
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
@@ -336,11 +337,16 @@ $(function(){
                     waitToContinue.cancel();
                     currentGame.goToNextDialog = false;
 
-					// Disable the action on the key.
-					currentGame.createKeySceneActive = false;
-                    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
-                    dialog7();
-                }
+								currentGame.scenes.create_key_scene.scene.setPaused(true);           
+
+								// Disable the action on the key.
+								currentGame.createKeySceneActive = false;
+			              setTimeout(function(){
+			                currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+			              	dialog7()
+			              	}
+			              	, 2000);
+	            }
             }
         );
 	}
