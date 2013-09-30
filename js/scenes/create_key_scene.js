@@ -43,7 +43,12 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
     currentGame.iaCreateKeyTimer = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            if( index === move.length - 1 ){
+                currentGame.scenes.create_key_scene.game_box.crypt_key.keyAppears = false;
+            }
+
             if (index < move.length && key.keyInMove === false && key.keyFirstMove === false) {
+ 
                 if (actionToDo === ACTION_UNKNOWN) {
 
                     if (actionToDo === ACTION_UNKNOWN) {
@@ -85,6 +90,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                     current_time = time;
                 }
             } else if (index === move.length) {
+
                 currentGame.iaCreateKeyTimer.cancel();
 
 
