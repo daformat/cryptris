@@ -343,7 +343,8 @@ $(function(){
 								currentGame.createKeySceneActive = false;
 			              setTimeout(function(){
 			                currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
-			              	dialog7()
+			              	dialog7();
+			              	currentGame.dontShowKey = false;
 			              	}
 			              	, 2000);
 	            }
