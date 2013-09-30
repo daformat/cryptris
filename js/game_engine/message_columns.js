@@ -209,7 +209,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.displayValueHexa = new CAAT.Foundation.Actor();
     this.container.addChild(this.displayValueHexa);
     this.displayValue = new CAAT.Foundation.Actor();
+    this.displayValueHexa = new CAAT.Foundation.Actor();
     this.container.addChild(this.displayValue);
+    this.container.addChild(this.displayValueHexa);
 
     this.gradient = null;
     this.blurGradient = null;
@@ -234,30 +236,57 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
 
 	var object = this;
 
-	this.displayValue.paint = function(director, time) {
-		if (this.isCached()) {
-			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-			return;
-		}
+    this.displayValueHexa.paint = function(director, time) {
+        if (this.isCached()) {
+            CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+            return;
+        }
 
         var signe = "";
         if (object.type === COLUMN_TYPE_2) {
             signe = "-";
         }
 
-		var ctx = director.ctx;
+        var ctx = director.ctx;
 
-		ctx.shadowOffsetX = 0;
-		ctx.shadowOffsetY = 0;
-		ctx.shadowBlur = 5;
-		ctx.shadowColor = '#00FF9D';
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = object.boxOption.boardColorInfo.numberGrow;
 
-		ctx.font = '12px Inconsolata';
-		ctx.fillStyle = 'white';
-		ctx.textAlign = 'center';
+        ctx.font = '15px Inconsolata';
+        ctx.fillStyle = object.boxOption.boardColorInfo.numberColor;
+        ctx.textAlign = 'center';
 
-		ctx.fillText(signe + object.squareNumber, this.width / 2, 11);
-	}
+        ctx.fillText(signe + '0x' + object.squareNumber.toString(16).toUpperCase(), this.width / 2, 15);
+    }
+    this.displayValueHexa.setSize(this.boxOption.SQUARE_WIDTH, 30);
+    this.displayValueHexa.cacheAsBitmap();
+
+    this.displayValue.paint = function(director, time) {
+        if (this.isCached()) {
+            CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+            return;
+        }
+
+        var signe = "";
+        if (object.type === COLUMN_TYPE_2) {
+            signe = "-";
+        }
+
+        var ctx = director.ctx;
+
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#00FF9D';
+
+        ctx.font = '12px Inconsolata';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+
+        ctx.fillText(signe + object.squareNumber, this.width / 2, 11);
+    }
 
 	this.displayValue.setSize(this.boxOption.SQUARE_WIDTH, 15);
 	this.displayValue.cacheAsBitmap();
@@ -300,8 +329,11 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         /**
          * Set message display.
          */
-	    this.displayValue.setLocation(x, this.container.height + 15).setSize(this.boxOption.SQUARE_WIDTH, 15);
-	    this.displayValue.stopCacheAsBitmap();
+	    this.displayValueHexa.setLocation(x, this.container.height + 10).setSize(this.boxOption.SQUARE_WIDTH, 30);
+        this.displayValueHexa.stopCacheAsBitmap();
+        this.displayValue.setLocation(x, this.displayValueHexa.height + this.container.height + 10).setSize(this.boxOption.SQUARE_WIDTH, 15);
+        this.displayValue.stopCacheAsBitmap();
+
 
 	    this.columnSize = this.boxOption.SQUARE_HEIGHT * this.squareNumber + (this.squareNumber - 1) * this.boxOption.SPACE_HEIGHT + 1;
 
