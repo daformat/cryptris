@@ -954,6 +954,13 @@ ul{
 	padding: 10px;
 }		/* set the default text for anything occuring in the of the html */
 
+#graph .label{
+	fill: #015B99;
+	font-family: 'Quantico';
+	font-weight: bold;
+	font-size: 13px;
+}
+
 #graph path { 
 	stroke: #a360bb;			/* the line colour for paths is steelblue */
 	stroke-width: 3;			/* the line width for paths is 2 pixels */

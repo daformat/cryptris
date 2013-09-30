@@ -1320,7 +1320,7 @@ $(function(){
 			    controls: [{
 			      label: "Suite", 
 			      class: "button blue",
-			      onClick: theEnd
+			      onClick: dialogComparePlayTimeChart
 			    }]
 
 			  });	
@@ -1331,7 +1331,7 @@ $(function(){
 
 	}		
 
-	$.dialogComparePlayTimeChart = function(){
+	function dialogComparePlayTimeChart {
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
@@ -1354,13 +1354,30 @@ $(function(){
 
 		
 			  setTimeout(function(){
+
+					var formatTime = d3.time.format("%Hh %Mm %Ss"),
+							formatSeconds = function(d) { 
+							  var sec_num = parseInt(d, 10); // don't forget the second parm
+							  var days   = 	Math.floor(sec_num / 86400);
+							  var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+							  var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+							  var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+							  if (hours   < 10) {hours   = "0"+hours;}
+							  if (minutes < 10) {minutes = "0"+minutes;}
+							  if (seconds < 10) {seconds = "0"+seconds;}
+
+							  var time    = (days>0 ? days+'j ' : '' ) + hours+':'+minutes+':'+seconds;
+							  return time;
+							};
+
 					// define dimensions of graph
-					var m = [40, 40, 50, 90]; // margins
+					var m = [40, 40, 50, 130]; // margins
 					var w = 740 - m[1] - m[3]; // width
 					var h = 250 - m[0] - m[2]; // height
 					
 					var dataInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
-					var dataIA = [{x: 8, y:Math.exp(8)/10}, {x: 10, y: Math.exp(10)/20}, {x: 12, y: Math.exp(12)/40}];
+					var dataIA = [{x: 8, y: 262144/2}, {x: 10, y: 4194304/2}, {x: 12, y: 67108864/2}];
 					var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];		
 
 					// X scale will fit all values from data[] within pixels 0-w
@@ -1376,13 +1393,11 @@ $(function(){
 					var line = d3.svg.line()
 						// assign the X function to plot our line as we wish
 						.x(function(d,i) { 
-							console.log(d, i);
 							// return the X coordinate where we want to plot this datapoint
 							return x(d.x); 
 						})
-						.y(function(d, i) { 
 
-							console.log(d, i);
+						.y(function(d, i) { 
 							// return the Y coordinate where we want to plot this datapoint
 							return y(d.y); 
 						}).interpolate("cardinal") ;
@@ -1404,7 +1419,7 @@ $(function(){
 
 
 						// create left yAxis
-						var yAxisLeft = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).orient("left");
+						var yAxisLeft = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
 						// Add the y-axis to the left
 						graph.append("svg:g")
 						      .attr("class", "y axis")
@@ -1423,7 +1438,8 @@ $(function(){
 					    .attr("text-anchor", "end")
 					    .attr("y", 6)
 					    .attr("dy", ".75em")
-					    .attr("transform", "rotate(-90) translate(0, -90)")
+					    .attr("transform", "rotate(-90) translate(0, -130)")
+//					    .attr("transform", "rotate(-90) translate(0, "+ (w+10) +")")
 					    .text("Durée du décryptage");					    
 
 			  			// Add the line by appending an svg:path element with the data line we created above
@@ -1448,7 +1464,7 @@ $(function(){
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9)
-							            div .html("<strong>Ordinateur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + parseInt(dataIA[i].y) + " secondes")  
+							            div .html("<strong>Ordinateur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + formatSeconds(parseInt(dataIA[i].y) ) )  
 							                .style("left", (d3.event.pageX+15) + "px")     
 							                .style("top", (d3.event.pageY - 28) + "px");    
 							            })                  
@@ -1474,7 +1490,7 @@ $(function(){
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9);      
-							            div .html("<strong>Joueur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + parseInt(dataPlayer[i].y) + " secondes")  
+							            div .html("<strong>Joueur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + formatSeconds( parseInt(dataPlayer[i].y) ) )  
 							                .style("left", (d3.event.pageX+10) + "px")     
 							                .style("top", (d3.event.pageY - 28) + "px");    
 							            })                  
@@ -1486,6 +1502,9 @@ $(function(){
 							                .style("opacity", 0);   
 							        });			
 							circle.transition().duration(500).attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+
+
+
 
 						}, 100);
 
@@ -1506,16 +1525,5 @@ $(function(){
 
 });
 
-String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second parm
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
-    return time;
-}
 
