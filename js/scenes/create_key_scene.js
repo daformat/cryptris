@@ -162,7 +162,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                 currentGame.scenes.create_key_scene.keySymbol = keySymbolActor;
                 createKeyScene.addChild(currentGame.scenes.create_key_scene.keySymbol);
 
-                var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 16 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
+                var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 8 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
                 var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
                     pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
 
