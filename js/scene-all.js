@@ -390,7 +390,7 @@ $(function(){
 		    animateText: true,
 
 		    type: "withAvatar",
-		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+		    avatar: "<img src='img/avatar-new-message.jpg'>",
 
 		    title: "InriOS 3.14",
 		    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -727,7 +727,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message.jpg'>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -941,7 +941,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message.jpg'>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -1127,7 +1127,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message.jpg'>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
