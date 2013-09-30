@@ -503,6 +503,8 @@ function Message(director, messageLength, message, container, boxOption) {
 
             var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
             var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, this.boxOption.timeInfo.messageUpTime).setCycle(false);
+            pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
+
             var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { --msgOnMove; }, 'behaviorApplied' : null};
             pb.addListener(behaviorListener);
 
