@@ -164,12 +164,12 @@ var rivalPMaxSceneTime = {
 var createKeySceneTime = {
 	'waitingIATime' : 100, // ms
 	'keyFirstMoveTime' : 250, // ms
-	'keyDownSpeed' : 10, // multiplicator of the initial speed.
+	'keyDownSpeed' : 8, // multiplicator of the initial speed.
 	'levelUpNumberTime' : 750, // ms
 	'blockDestroyedTime' : 250, // ms
-	'messageUpTime' : 1000, // ms (only necessary here.)
-	'keyAppearTime' : 2500, // ms (only necessary here.)
-	'keyClippingTime' : 1000 // ms (only necessary here.)
+	'messageUpTime' : 800, // ms (only necessary here.)
+	'keyAppearTime' : 800, // ms (only necessary here.)
+	'keyClippingTime' : 500 // ms (only necessary here.)
 }
 
 
