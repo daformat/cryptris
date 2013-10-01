@@ -8,6 +8,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.my_message = my_message;
     this.player = player;
     this.tryToResize = false;
+    this.winScreen = null;
 
     /*
      * This function returns the computed width size of the gameBox
@@ -137,11 +138,47 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         this.boxOption.scene.addChild(this.leftName);
         this.boxOption.scene.addChild(this.centerName);
         this.boxOption.scene.addChild(this.rightName);
-
     }
     this.create();
 
     
+    /**
+     * Add a win Screen (black splash screen and message) to this gameBox.
+     */
+    this.addWinScreen = function(message, width, height) {
+        if (this.winScreen === null) {
+
+            this.winScreen = new CAAT.Actor().
+                        setSize(this.gameBox.width, this.gameBox.height).
+                        setLocation(0, 0);
+
+            var winScreenWidth = width;
+            var winScreenHeight = height;
+            var winScreenMessage = message;
+            this.winScreen.paint = function(director) {
+
+                var ctx = director.ctx;
+
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, this.width, this.height);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect((this.width - winScreenWidth) / 2, (this.height - winScreenHeight) / 2 - 5, winScreenWidth, winScreenHeight);
+
+                ctx.strokeStyle = 'rgb(0, 0, 0)';
+                ctx.strokeRect(0, 0, this.width, this.height);
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = '#00FF9D';
+
+                ctx.font = '14pt Inconsolata';
+                ctx.fillStyle = '#00e770';
+                ctx.textAlign = 'center';
+                ctx.fillText(winScreenMessage, this.width / 2, this.height / 2);
+            }
+            this.gameBox.addChild(this.winScreen);
+        }
+    }
 
 
     /**
@@ -165,6 +202,14 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
          */
         this.gameBox.setSize(this.sizeWidth(), this.sizeHeight())
                     .setLocation(this.relativeX, this.relativeY);
+
+        /**
+         * Resize the winScreen (if it exists)
+         */
+        if (this.winScreen !== null) {
+            this.winScreen.setSize(this.gameBox.width, this.gameBox.height).
+                           setLocation(0, 0);
+        }
 
         /**
          * Resize each column of the game box.

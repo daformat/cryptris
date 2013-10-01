@@ -23,10 +23,11 @@ function easy_crypt(ternary_message) {
 }
 
 function easy_decrypt(crypt_message) {
-
+/*
+	var 
 	for (var i = 0; i < crypt_message.length; ++i) {
 
-	}
+	}*/
 
 }
 
@@ -39,7 +40,6 @@ $(document).ready(function() {
 		var crypt_message = easy_crypt(ternary_message);
 		var message = easy_decrypt(crypt_message);
 
-		console.log(ternary_message);
 		console.log(text + ' <=========== ' + crypt_message + ' =========> ' + message);
 		return false;
 	});

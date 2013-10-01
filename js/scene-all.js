@@ -338,16 +338,15 @@ $(function(){
                     waitToContinue.cancel();
                     currentGame.goToNextDialog = false;
 
-								currentGame.scenes.create_key_scene.scene.setPaused(true);           
+					currentGame.scenes.create_key_scene.scene.setPaused(true);           
 
-								// Disable the action on the key.
-								currentGame.createKeySceneActive = false;
-			              setTimeout(function(){
-			                currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
-			              	dialog7();
-			              	currentGame.dontShowKey = false;
-			              	}
-			              	, 2000);
+					// Disable the action on the key.
+					currentGame.createKeySceneActive = false;
+			        setTimeout(function() {
+			            	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+			            	dialog7();
+			            	currentGame.dontShowKey = false;
+			            }, 2000);
 	            }
             }
         );
@@ -407,7 +406,7 @@ $(function(){
 
 	}	
 
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message) {
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
 		// Prepare the sceneName and set it as the current scene.
 
 		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
@@ -423,7 +422,8 @@ $(function(){
                    	waitToContinue.cancel();
                    	currentGame.goToNextDialog = false;
 
-            	    onDecrypt();
+                   	console.log(timeout);
+            	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
                	}
             }
         );
@@ -435,7 +435,7 @@ $(function(){
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the correct scene at bg, and deactivate its control.
 
-			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE);
+			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 2000);
 			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({

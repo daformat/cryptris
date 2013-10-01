@@ -106,41 +106,12 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                             waitUpMessageToContinue.cancel();
 
                             // Display "Clé publique générée !"
-                            var winScreen = new CAAT.Actor().
-                                setSize(gameBoxInfo.gameBox.width, gameBoxInfo.gameBox.height).
-                                setLocation(0, 0);
-
-
+                            gameBoxInfo.addWinScreen("Clé publique générée !", 300, 50);
                             var alphaScreen = new CAAT.AlphaBehavior().
                                                   setValues(0,1).
                                                   setCycle(false).
-                                                  setFrameTime(winScreen.time, 2000);
-                            winScreen.addBehavior(alphaScreen);
-
-                            winScreen.paint = function(director) {
-
-                                var ctx = director.ctx;
-
-                                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                                ctx.fillRect(0, 0, this.width, this.height);
-                                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-                                ctx.fillRect(this.width / 2 - 150, this.height / 2 - 30, 300, 50);
-
-                                ctx.strokeStyle = 'rgb(0, 0, 0)';
-                                ctx.strokeRect(0, 0, this.width, this.height);
-                                ctx.shadowOffsetX = 0;
-                                ctx.shadowOffsetY = 0;
-                                ctx.shadowBlur = 5;
-                                ctx.shadowColor = '#00FF9D';
-
-                                ctx.font = '14pt Inconsolata';
-                                ctx.fillStyle = '#00e770';
-                                ctx.textAlign = 'center';
-                                ctx.fillText("Clé publique générée !", this.width / 2, this.height / 2);
-                            }
-                            gameBoxInfo.gameBox.addChild(winScreen);
-
- 
+                                                  setFrameTime(gameBoxInfo.winScreen.time, 2000);
+                            gameBoxInfo.winScreen.addBehavior(alphaScreen);
                         }
                     }
                 );
