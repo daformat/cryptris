@@ -35,7 +35,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
         move.push(Math.floor(Math.random() * 5) - 2);
     }
 
-    move.push(-1)
+    move.push(-1);
 
     console.log(move);
 
@@ -55,23 +55,20 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
  
                 if (actionToDo === ACTION_UNKNOWN) {
 
-                    if (actionToDo === ACTION_UNKNOWN) {
-
-                        if (move[index] === 0) {
-                            if (keyIsInvert === true) {
-                                actionToDo = ACTION_INVERT;
-                            } else {
-                                actionToDo = ACTION_RIGHT;
-                                ++index;
-                            }
+                    if (move[index] === 0) {
+                        if (keyIsInvert === true) {
+                            actionToDo = ACTION_INVERT;
                         } else {
-                            if (move[index] < 0) {
-                                actionToDo = ACTION_INVERT;
-                                move[index] = -1 * move[index];
-                            } else {
-                                actionToDo = ACTION_DOWN;
-                                move[index] = move[index] - 1;
-                            }
+                            actionToDo = ACTION_RIGHT;
+                            ++index;
+                        }
+                    } else {
+                        if (move[index] < 0) {
+                            actionToDo = ACTION_INVERT;
+                            move[index] = -1 * move[index];
+                        } else {
+                            actionToDo = ACTION_DOWN;
+                            move[index] = move[index] - 1;
                         }
                     }
                     current_time = time;
