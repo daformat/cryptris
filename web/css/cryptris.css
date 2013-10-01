@@ -3,7 +3,7 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-16
+	@lastmod 2013-09-21
 
 */
 
@@ -16,6 +16,12 @@ html, body {
 	background: #000;
 	color: #eee;
   font-size: 20px;
+  word-wrap: break-word; /* passage à la ligne forcé */
+   -webkit-hyphens: auto; /* césure propre */
+   -moz-hyphens: auto;
+   hyphens: auto;
+  -webkit-text-size-adjust: none;
+
 }
 
 ul{
@@ -48,6 +54,15 @@ ul{
 	General stuff
 */
 
+.main-wrapper{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow-x: hidden;
+}
+
 .wrapper{
 	position: absolute;
 	width: 100%;
@@ -55,10 +70,17 @@ ul{
 	text-align: center;
 	overflow-y: auto;
 	display: table;
+  min-height: 600px;
+  overflow-x: hidden;
+
 }
 
 .wrapper.block{
 	display: block;
+}
+
+.white{
+	background: #fff;
 }
 
 .bg-circuits{
@@ -94,28 +116,34 @@ ul{
 	font-size: 20px;
 	padding: 10px 28px;
 	background-color: #0071bb;
-	border: none;
 	color: #eee;
 	text-transform: uppercase;
-	border-bottom: 3px solid #002e4d;
 	cursor: pointer;
 	position: relative;
-	transition: border 0.15s ease-in, top 0.15s ease-in ;
+	transition: all 0.15s ease-in ;
 	margin: 1em;
 	top: 0px;
 	-webkit-font-smoothing: antialiased;
+	-webkit-appearance: none;
+	border-radius: 0px;
+	box-shadow: 0 3px 0 #002e4d;
+	border: none;
 }
 
 .button:active{
-	border-bottom:1px solid #002e4d;
-	top:2px;
+	box-shadow: 0 1px 0 #002e4d;
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
 }
 
 .button.red{
 	background-color: #9c0500;
-	border-color: #440500;
+	box-shadow: 0 3px 0 #440500;
 }
 
+.button.red:active{
+		box-shadow: 0 1px 0 #440500;
+}
 .characters-left{
 	line-height: 46px;
 	margin: 15px 10px 30px;
@@ -151,7 +179,9 @@ ul{
 .vertical-centering{
   display:table-cell;
   vertical-align:middle;
+  overflow-x: hidden;
 }
+
 
 /*
 	Home screen
@@ -160,11 +190,16 @@ ul{
 /* Logos */
 
 .cryptris-logo-large{
-	width: 80%;
+	width: 70%;
 	max-width: 1090px;
-	margin-top: 0%;
+	min-width: 500px;
+	margin-top: -5%;
 	margin-bottom: -50px;
 	padding-top:60px;
+}
+
+.portrait .cryptris-logo-large{
+	width: 100%;
 }
 
 .logo-digital-cuisine-medium{
@@ -175,7 +210,7 @@ ul{
 	position: absolute;
 	top: 30px;
 	right: 35px;
-	width: 20%;
+	width: 157px;
 	max-width: 157px;
 }
 
@@ -236,6 +271,27 @@ ul{
 	text-shadow: 0px 0px 10px #00f3ff;
 }
 
+/* Social icons */
+.social-icons{
+	position: absolute;
+	bottom: 35px;
+	right: 35px;
+}
+
+.social-icons a{
+	margin: 4px;
+	position: relative;
+}
+.social-icons a img{
+	transition: all 0.25s ease;
+}
+.social-icons a:hover img{
+	-webkit-transform: translateY(-10px) rotate(360deg);
+	transform: translateY(-10px) rotate(360deg);
+}
+.social-icons img.retina{
+	width: 35px;
+}
 /*
 	Scrollable content with gradient
 */
@@ -277,7 +333,7 @@ ul{
 */
 
 .text-content{
-	margin: 40px 10% 160px;
+	margin: 40px 10% 70px;
 	display: inline-block;
 	max-width: 700px;
 	width: 80%;
@@ -297,13 +353,26 @@ ul{
 	width: 39px;
 	height: 38px;
 }
+.btn-close img{
+	width: 100%;
+	transition: all 0.15s ease;
+}
 
+.btn-close:hover img{
+	-webkit-transform: scale(1.2) rotate(0);
+	transform: scale(1.2) rotate(0);
+}
+
+.btn-close:active img{
+	-webkit-transform: scale(0.8) rotate(180deg);
+	transform: scale(0.8) rotate(180deg);
+}
 /*
  Share
 */
 
 .share .cryptris-logo-medium {
-	margin-top: 4%;
+	margin-top: 1%;
 	max-width: 724px;
 	width: 80%;
 }
@@ -325,6 +394,7 @@ ul{
 	border: 10px solid rgba(0, 150, 237, 0.2);
 
 	border-radius: 3px;
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
 	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
 
 	width: 80%;
@@ -344,12 +414,19 @@ ul{
 
 	transition: border-color 0.35s ease, box-shadow 0.45s ease;
 	overflow-y: auto;
+	-webkit-appearance: none;
 
+}
+
+.share textarea:focus{	
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
+	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.1) , 1px 1px 0 rgba(0,0,0, 0.5), 0px 0px 25px rgba(0, 243, 255, 0.5);
 }
 
 .share textarea.warning{
 	border-color: rgb(156, 5, 0);
 	border-color: rgba(255, 55, 50, 0.5);
+	-webkit-box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
 	box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
 
 }
@@ -364,6 +441,60 @@ ul{
 	outline: none;
 }
 
+.share #step2{
+	margin-left: 200%;
+	position: absolute;
+}
+
+.share #step2 .button:active{
+	top: 2px;
+}
+.share .encrypted-message{
+	width: 100%;
+	max-width: 1000px;
+	display: inline-block;
+}
+
+.share .encrypted-message a{
+	color: #eee;
+	padding: 20px 0;
+}
+
+.share .encrypted-message a img{
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.share .encrypted-message .message{
+	width: 45%;
+	text-align: center;
+	display: inline-block;
+	vertical-align: text-top;
+	min-width: 280px
+}
+
+.share .encrypted-message .message .img{
+	width: 100%;
+	max-width: 456px;
+}
+
+.share .encrypted-message .social-actions{
+	text-align: left;
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+.share .encrypted-message .social-actions p{
+	margin: 28px;
+}
+
+.share .social-actions a img{
+	transition: all 0.25s ease;
+}
+.share .social-actions a:hover img{
+	-webkit-transform: translateX(-10px) rotate(-360deg);
+	transform: translateX(-10px) rotate(-360deg);
+}
 /*
 	New login screen
 */
@@ -393,15 +524,18 @@ ul{
 	margin: 0 -0.5em 0 0.5em;
 	padding: 8px 20px;
 }
+
 .new-login input[type=text]{
 	background: none;
 	border: none;
 	color: #fff;
 	font-family: "Geo", sans-serif;
 	font-size: 33px;
-	text-transform: uppercase;
-	width: 75%;
+	width: 75%; /*	width: 68%; */
+	margin: 0;
+	padding: 0;
 }
+
 .new-login input[type=text]:focus{
 	outline: none;
 }
@@ -477,6 +611,13 @@ ul{
 	padding: 8px 42px;
 }
 
+.dialog .content img.keyboard-key{
+	vertical-align: text-top;
+	position: relative;
+	top: -3px;
+	line-height: 1px;
+}
+
 .dialog em{
 	font-style: normal;
 	color: #0071bb;
@@ -487,12 +628,16 @@ ul{
 	bottom: 0;
 	height: 60px;
 	text-align: right;
-	width: 100%;
+	left: 23px;
 	right: 23px;
 }
 
 .dialog .button{
 	padding: 8px 20px;
+	margin: 0 8px;
+}
+.dialog .button:active{
+	top: 2px;
 }
 
 
@@ -514,10 +659,20 @@ ul{
 	text-transform: uppercase;
 	cursor: pointer;
 	position: relative;
-	transition: border 0.15s ease-in, top 0.15s ease-in ;
+	transition: all 0.15s ease ;
 	margin: 2px;
 	top: 0px;
 	-webkit-font-smoothing: antialiased;
+}
+
+.dialog .asked{
+	opacity: 0.5;
+}
+
+.dialog li.active a:active{
+	box-shadow: 0 1px 0 rgb(0, 46, 77);
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
 }
 
 .dialog .arrow{
@@ -534,12 +689,9 @@ ul{
 .dialog.player h2{
 	background: #fff;
 	color: #0071bb;
-	padding: 3px 20px;
-	width: auto;
 	display: inline-block;
 	margin: 28px 0 8px 0;
 	font-family: "Quantico", sans-serif;
-	font-size: 22px;
 	font-weight: bold;
 }
 
@@ -565,6 +717,141 @@ ul{
 
 }
 /*
+	Dialog for entangled cables
+*/
+.dialog.cables{
+	height: 560px;
+	width:864px;
+	text-align: left;
+}
+
+.dialog.cables h2{
+	background: #fff;
+	color: #0071bb;
+	display: inline-block;
+	margin: 28px 0 8px 0;
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	margin-left: 20px;
+
+}
+
+.dialog.cables .left{
+	display: inline-block;
+	position: relative;
+}
+
+.dialog.cables .right{
+	float: right;
+	position: relative;
+}
+
+.dialog.cables .content{
+	background: #93bcd7;
+	border: solid 7px #b8cfde;
+	margin: 5px 20px 0;
+	padding: 10px;
+
+}
+
+.dialog.cables .numbers, .dialog.cables .jacks{
+	margin-top: 0;
+}
+
+.dialog.cables .numbers li, .dialog.cables .jacks li{
+	height: 52px;
+}
+
+.dialog.cables .numbers li{
+	position: relative;
+	top: 9px;
+}
+
+.dialog.cables .numbers{
+	font-family: "Quantico", sans-serif;
+	font-weight: bold;
+	font-size: 23px;
+	color: #eee;
+	position: absolute;
+	line-height: 0;
+	top: 0;
+	text-shadow: 0px 0px 10px #00f3ff;
+}
+
+.dialog.cables .numbers .unplugged{
+	text-shadow: none;
+	color: #678497;
+}
+
+.dialog.cables .right .numbers{
+	right: 0;
+}
+.dialog.cables .right img{
+	margin-right: 42px;
+	margin-left: 2px;
+}
+
+.dialog.cables .left img{
+	margin-left: 42px;
+	margin-right: 1px;
+}
+
+.dialog.cables .jacks{
+	color: #eee;
+	position: absolute;
+	line-height: 0;
+	top: 0;
+}
+.dialog.cables .jacks a{
+	padding: 0;
+	margin: 0;
+	font-size: 23px;
+	background: url(../img/entangled-cables-outlet.png) center no-repeat;
+}
+.dialog.cables .left .jacks{
+	right: -68px;
+}
+
+.dialog.cables .left .jacks a{
+	background-position: 100% 40%;
+}
+
+.dialog.cables .left .jacks a img{
+	position: relative;
+	transition: left 0.25s ease-in;
+}
+
+.dialog.cables .left .jacks a:hover img{
+	left: -3px;
+}
+
+.dialog.cables .left .jacks a:active img, .dialog.cables .left .jacks .unplugged a img{
+	left: -15px;
+}
+
+.dialog.cables .right .jacks{
+	left: -68px;
+}
+
+.dialog.cables .right .jacks a{
+	background-position: 0% 40%;
+}
+
+.dialog.cables .right .jacks a img{
+	position: relative;
+	transition: right 0.25s ease-in;
+}
+
+.dialog.cables .right .jacks a:hover img{
+	right: -3px;
+}
+
+.dialog.cables .right .jacks a:active img, .dialog.cables .right .jacks .unplugged a img{
+	right: -15px;
+}
+
+
+/*
 	Animations
 */
 
@@ -589,4 +876,28 @@ ul{
 .blinking{
 	-webkit-animation: blinking 1s infinite;
 	animation: blinking 1s infinite;
+}
+
+/*
+	Device orientation
+*/
+#rotate-device{
+	margin-left: -200%;
+	background: rgba(0,0,0,0.8);
+}
+#rotate-device img{
+	transition: width 0.25s ease, height 0.25s ease, opacity 0.5s ease;
+	opacity: 0;
+	width: 0px;
+	height: 0px;
+}
+
+.ios-mobile.portrait #rotate-device, .android-mobile.portrait #rotate-device {
+	margin-left: 0%;
+}
+
+.ios-mobile.portrait #rotate-device img, .android-mobile.portrait #rotate-device img {
+	opacity: 1;
+	width: 400px;
+	height: 400px;
 }

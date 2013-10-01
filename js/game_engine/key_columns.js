@@ -9,8 +9,10 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.keyInMove = false;
     this.keyFirstMove = false;
     this.pathContinue = false;
+    this.isResize = false;
+    this.pbFirstMove = null;
 
-    this.column = new CAAT.Foundation.ActorContainer();
+    this.column = new CAAT.Foundation.Actor();
     this.container.addChild(this.column);
 
     if (this.squareNumber === 0) {
@@ -23,118 +25,120 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.gradient.addColorStop(0, this.boxOption.ColorLeft[this.type]);
-            this.gradient.addColorStop(1, this.boxOption.Color[this.type]);
+            this.gradient.addColorStop(0, this.boxOption.boardColorInfo.colorLeft[this.type]);
+            this.gradient.addColorStop(1, this.boxOption.boardColorInfo.colorRight[this.type]);
         } else {
             this.gradient = null;
         }
-    }
+    };
 
     this.computeBlurGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.blurColorLeft[this.type]);
-            this.blurGradient.addColorStop(1, this.boxOption.blurColor[this.type]);
+            this.blurGradient.addColorStop(0, this.boxOption.boardColorInfo.blurColorLeft[this.type]);
+            this.blurGradient.addColorStop(1, this.boxOption.boardColorInfo.blurColorRight[this.type]);
         } else {
             this.blurGradient = null;
         }
-    }
+    };
 
     this.computeBlurGradient();
     this.computeGradient();
 
+	var object = this;
+	this.column.paint = function(director, time) {
+		if(this.height < 0) {
+			return;
+		}
+		
+		if (this.isCached()) {
+			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+			return;
+		}
+
+		var ctx = director.ctx;
+		var x = 1.5;
+
+		// Custom paint method.
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = object.boxOption.boardColorInfo.strokeColor[object.type];
+		ctx.fillStyle = object.gradient;
+		
+		for (var i = 0; i < object.squareNumber; ++i) {
+			var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
+
+			if (this.y + y >= object.boxOption.BORDER_HEIGHT) {
+				ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);				
+				ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
+			} else if (this.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) {
+				var diffNewHeight = 0;
+				while (this.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) {
+					++diffNewHeight;
+				}
+				var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
+				y = y + diffNewHeight;
+
+				ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, newHeight);
+				ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
+			}
+		}
+	}
+	
     this.redraw = function(x, y) {
+
         y = typeof y !== 'undefined' ? y : this.boxOption.BORDER_HEIGHT;
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
+    };
 
-        var object = this;
-        this.column.paint = function(director, time) {
-            if (this.isCached()) {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-             
-            var ctx = director.ctx;
-            var x = 1.5;
-            
-            // Custom paint method.
-            for (var i = 0; i < object.squareNumber; ++i) {
-
-                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
-
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.fillStyle = object.gradient;
-                ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-            }
-        }
-    }
-
-    this.firstRedraw = function(x) {
+    this.firstDraw = function(x) {
         y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
-
-        var object = this;
-        this.column.paint = function(director, time) {
-            if (this.isCached()) {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-             
-            var ctx = director.ctx;
-            var x = 1.5;
-            
-            // Custom paint method.
-            for (var i = 0; i < object.squareNumber; ++i) {
-
-                var y = 0.5 + i * (object.boxOption.SQUARE_HEIGHT + object.boxOption.SPACE_HEIGHT);
-
-                if (object.column.y + y >= object.boxOption.BORDER_HEIGHT) {
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                    ctx.fillStyle = object.gradient;
-                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, object.boxOption.SQUARE_HEIGHT - 1);
-                } else if (object.column.y + y >= object.boxOption.BORDER_HEIGHT - object.boxOption.SQUARE_HEIGHT) {
-
-                    var diffNewHeight = 0;
-                    while (object.column.y + y + diffNewHeight <= object.boxOption.BORDER_HEIGHT) {
-                        ++diffNewHeight;
-                    }
-                    var newHeight = object.boxOption.SQUARE_HEIGHT - diffNewHeight;
-                    y = y + diffNewHeight;
-
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = object.boxOption.StrokeColor[object.type];
-                    ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, newHeight);
-                    ctx.fillStyle = object.gradient;
-                    ctx.fillRect(x + 0.5, y + 0.5, object.boxOption.SQUARE_WIDTH - 1, newHeight - 1);
-                }
-            }
-        }
-    }
+    };
 
     this.firstMove = function() {
         this.keyFirstMove = true;
         var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
-        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, getSecondString("ft", 250)).setCycle(false);
+        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, this.boxOption.timeInfo.keyFirstMoveTime).setCycle(false);
 
         var object = this;
-        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; }, 'behaviorApplied' : null};
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; object.pbFirstMove = null; }, 'behaviorApplied' : null};
 
-        pb.addListener(behaviorListener);
-        this.column.addBehavior(pb);
+        this.pbFirstMove.addListener(behaviorListener);
+        this.column.addBehavior(this.pbFirstMove);
+    };
+
+    this.startFirstAnimation = function() {
+        this.keyFirstMove = true;
+        var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
+        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, this.boxOption.timeIno.keyFirstMoveTime).setCycle(false);
+
+        var object = this;
+        var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; object.pbFirstMove = null; }, 'behaviorApplied' : null};
+
+        this.pbFirstMove.addListener(behaviorListener);
+        this.column.addBehavior(this.pbFirstMove);
     }
 
     this.stopMove = function() {
         if (this.pb !== null) {
             this.pb.setOutOfFrameTime();
+            this.pb = null;
+            return true;
         }
+        return false;
+    };
+
+    this.stopFirstMove = function() {
+        if (this.pbFirstMove !== null) {
+            this.pbFirstMove.setOutOfFrameTime();
+            this.pbFirstMove = null;
+            return true;
+        }
+        return false;
     }
 
     this.changeType = function() {
@@ -146,40 +150,52 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
         this.computeGradient();
         this.redraw();
-    }
+    };
 
     this.setInactive = function() {
         this.isActive = false;
-    }
+    };
 
     this.clean = function() {
         this.squareNumber = 0;
         this.redraw();
-    }
+    };
 
     this.keyDown = function() {
-
         if (this.type !== COLUMN_TYPE_3) {
             this.keyInMove = true;
-            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.column.y + this.container.height);
-            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, getSecondString("t", 1750)).setCycle(false);
+            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
+            var time = (finalDestination - this.column.y) / 1750 * 450 * this.boxOption.timeInfo.keyDownSpeed;
+
+            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, time).setCycle(false);
+            //this.pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[22]);
+
             this.column.addBehavior(this.pb);
             this.boxOption.objectsInMove.push(true);
         }
+    };
+
+    this.startAnimation = function() {
+            this.keyInMove = true;
+            var finalDestination = this.msgColumn.column.y - this.column.height - this.boxOption.SPACE_HEIGHT - 0.5;
+            var time = (finalDestination - this.column.y) / 1750 * 450 * this.boxOption.timeInfo.keyDownSpeed;
+
+            var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
+            this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, time).setCycle(false);
+
+            this.column.addBehavior(this.pb);
     }
 
     var object = this;
-    this.myTimer = director.createTimer(this.container.time, Number.MAX_VALUE, null,
+	
+    this.myTimer = director.createTimer(director.time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-
-            if (object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
-
+            if (director.currentScene.isPaused() === false && object.keyFirstMove === false && object.keyInMove === true && object.isActive === true) {
                 var msgColumn = object.msgColumn.column;
-
                 var keyColumn = object.column;
 
-                if (keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
-
+                if (object.isResize === true || keyColumn.y + keyColumn.height > msgColumn.y - 2 * object.boxOption.SPACE_HEIGHT) {
                     object.stopMove();
 
                     keyColumn.setLocation(msgColumn.x, msgColumn.y - keyColumn.height - object.boxOption.SPACE_HEIGHT);
@@ -199,11 +215,9 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                         object.boxOption.keyNeedToUpdate = true;
                     }
                 }
-                keyColumn = null;
             }
         }
     );
-
 }
 
 function getSecondString(key, default_) {
@@ -217,201 +231,249 @@ function getSecondString(key, default_) {
     return qs[1];
 }
 
-function Key(keyInfo, keyLength, msgColumn, container, director, boxOption, player) {
-    this.player = player;
-    this.type = KEY_TYPE_NORMAL;
-    this.length = keyLength;
-    this.columnList = [];
-    this.msgColumn = msgColumn;
-    this.container = container;
-    this.boxOption = boxOption;
-    this.keyInMove = false;
-    this.keyFirstMove = false;
+function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
+	this.director = director;
+	this.type = KEY_TYPE_NORMAL;
+	this.length = keyLength;
+	this.columnList = [];
+	this.msgColumn = msgColumn;
+	this.container = container;
+	this.boxOption = boxOption;
+	this.keyInMove = false;
+	this.keyFirstMove = false;
+	this.numberApplied = -1;
 
-    this.keyInfo = keyInfo;
-    this.normalKey = [];
-    for (var i = 0; i < this.keyInfo['normal_key'].length; ++i) {
-        this.normalKey.push(this.keyInfo['normal_key'][i]);
-    }
-    this.reverseKey = [];
-    for (var i = 0; i < this.keyInfo['reverse_key'].length; ++i) {
-        this.reverseKey.push(this.keyInfo['reverse_key'][i]);
-    }
-    this.number = [];
-    for (var i = 0; i < this.keyInfo['number'].length; ++i) {
-        this.number.push(this.keyInfo['number'][i]);
-    }
+    this.resize = function(isPaused) {
+		for (var i = 0; i < this.columnList.length; ++i) {
+    	    this.columnList[i].isResize = true;
+   		}
 
-    this.createKey = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.container.removeChild(this.columnList[i].column);
-            this.columnList[i].myTimer.cancel();
-            this.columnList[i].myTimer = null;
-            /*this.columnList[i].deleteObject();
-            this.columnList[i].deleteObject = null;*/
-            this.columnList[i] = null;
-        }
-        //this.columnList = null;
-        this.columnList = [];
-        this.keyInMove = false;
-        this.keyFirstMove = true;
+	    if (this.keyFirstMove === true) {
 
-        this.boxOption.maxKeyNumber = 0;
-        for (var i = 0; i < this.length; ++i) {
-            if (this.number[i] > this.boxOption.maxKeyNumber) {
-                this.boxOption.maxKeyNumber = this.number[i];
-            }
-            if (this.type === KEY_TYPE_NORMAL) {
-                this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
-            } else if (this.type === KEY_TYPE_REVERSE) {
-                this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
-            }
-        }
-
-        this.firstRedraw();
-        return this;
-    }
-
-    this.firstRedraw = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].firstRedraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
-        }
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].firstMove();
+    	    for (var i = 0; i < this.columnList.length; ++i) {
+        	    this.columnList[i].stopFirstMove();
+           	}
+            this.keyFirstMove = false;
+    		this.redraw();
         }
     }
 
-    this.redraw = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
-        }
-    }
+	this.keyInfo = keyInfo;
+	this.normalKey = [];
+	for (var i = 0; i < this.keyInfo['normal_key'].length && i < keyLength; ++i) {
+		this.normalKey.push(this.keyInfo['normal_key'][i]);
+	}
+	this.reverseKey = [];
+	for (var i = 0; i < this.keyInfo['reverse_key'].length && i < keyLength; ++i) {
+		this.reverseKey.push(this.keyInfo['reverse_key'][i]);
+	}
+	this.number = [];
+	for (var i = 0; i < this.keyInfo['number'].length && i < keyLength; ++i) {
+		this.number.push(this.keyInfo['number'][i]);
+	}
 
-    this.changeKeyType = function() {
-        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
-            if (this.type === KEY_TYPE_NORMAL) {
-                this.type = KEY_TYPE_REVERSE;
-            } else {
-                this.type = KEY_TYPE_NORMAL;
-            }
+	this.createKey = function () {
 
-            for (var i = 0; i < object.columnList.length; ++i) {
-                object.columnList[i].changeType();
-                object.redraw();
-            }
-        }
-    }
-
-    this.rotateLeft = function() {
-        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
-            this.columnList.push(this.columnList[0]);
-            this.columnList.splice(0, 1);
-
-            this.normalKey.push(this.normalKey[0]);
-            this.normalKey.splice(0,1);
-
-            this.reverseKey.push(this.reverseKey[0]);
-            this.reverseKey.splice(0,1);
-
-            this.number.push(this.number[0]);
-            this.number.splice(0, 1);
-
-            this.reAssignColumns();
-            this.redraw();
-        }
-    }
-
-    this.rotateRight = function() {
-        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
-            this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
-            this.columnList.splice(this.columnList.length - 1, 1);
-
-            this.normalKey.splice(0, 0, this.normalKey[this.normalKey.length - 1]);
-            this.normalKey.splice(this.normalKey.length - 1, 1);
-
-            this.reverseKey.splice(0, 0, this.reverseKey[this.reverseKey.length - 1]);
-            this.reverseKey.splice(this.reverseKey.length - 1, 1);
-
-            this.number.splice(0, 0, this.number[this.number.length - 1]);
-            this.number.splice(this.number.length - 1, 1);
-
-            this.reAssignColumns();
-            this.redraw();
-        }
-    }
-
-    this.reAssignColumns = function() {
-        for (var i = 0; i < this.columnList.length; ++i) {
-            this.columnList[i].msgColumn = this.msgColumn.columnList[i];
-        }
-    }
-
-    this.keyDown = function() {
-        if (this.keyFirstMove === false && this.keyInMove === false && this.msgColumn.resolved === false) {
-            this.keyInMove = true;
-            for (var i = 0; i < this.columnList.length; ++i) {
-                this.columnList[i].keyDown();
-            }
-        }
-    }
-
-    var object = this;
-
-    director.createTimer(this.container.time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
-            if (object.keyFirstMove === true) {
-                var newKeyFirstMove = false;
-                for (var i = 0; i < object.columnList.length; ++i) {
-                    if (object.columnList[i].keyFirstMove === true) {
-                        newKeyFirstMove = true;
-                    }
-                }
-                object.keyFirstMove = newKeyFirstMove;
-            }
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.container.removeChild(this.columnList[i].column);
+			this.columnList[i].myTimer.cancel();
+		}
 
 
-            if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
-                object.boxOption.keyNeedToUpdate = false;
-                var needToUpdateAgain = false;
-                for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
-                    if (object.msgColumn.columnList[k].blockToDestroy !== null) {
-                        if (object.msgColumn.columnList[k].blockToDestroy.isVisible === false) {
-                            object.msgColumn.columnList[k].container.removeChild(object.msgColumn.columnList[k].blockToDestroy.column);
-                            object.msgColumn.columnList[k].blockToDestroy = null;
-                        } else {
-                            needToUpdateAgain = true;
-                        }
-                    }
-                    object.msgColumn.columnList[k].blurSquareNumber = 0;
-                    object.msgColumn.columnList[k].keySquareNumber = 0;
-                }
+		this.columnList = [];
+		this.keyInMove = false;
+		this.keyFirstMove = true;
 
-                if (needToUpdateAgain === true) {
-                    object.boxOption.keyNeedToUpdate = true;
-                } else {
-                    object.msgColumn.redraw();
-                    object.createKey();
-                    object.msgColumn.isResolved();
-                }
-            }
-        }
-    );
+		this.boxOption.maxKeyNumber = 0;
 
+		if(!currentGame.dontShowKey) {
+			for (var i = 0; i < this.length; ++i) {
+				if (this.number[i] > this.boxOption.maxKeyNumber) {
+					this.boxOption.maxKeyNumber = this.number[i];
+				}
+				if (this.type === KEY_TYPE_NORMAL) {
+					this.columnList.push(new KeyColumn(director, this.normalKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
+				} else if (this.type === KEY_TYPE_REVERSE) {
+					this.columnList.push(new KeyColumn(director, this.reverseKey[i], this.number[i], container, this.boxOption, this.msgColumn.columnList[i]));
+				}
+			}
+		}
 
-    if (this.player === true) {
-        CAAT.registerKeyListener(function(key) {
-            if (key.getKeyCode() === CAAT.Keys.LEFT && key.getAction() === 'down') {
-                object.rotateLeft();
-            }
-            if (key.getKeyCode() === CAAT.Keys.RIGHT && key.getAction() === 'down') {
-                object.rotateRight();
-            }
-            if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
-                object.changeKeyType();
-            }
-            if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-                object.keyDown();
-            }
-        });
-    }
+		this.numberApplied = this.numberApplied + 1;
+
+		this.firstDraw();	
+		return this;
+
+	}
+
+	this.firstDraw = function () {
+		
+			for (var i = 0; i < this.columnList.length; ++i) {
+				this.columnList[i].firstDraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+				this.columnList[i].firstMove();
+			}
+
+	}
+
+	this.redraw = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH));
+		}
+	}
+	this.resizeRedraw = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].redraw(this.boxOption.BORDER_WIDTH + i * (this.boxOption.COLUMN_WIDTH + this.boxOption.SPACE_WIDTH), this.columnList[i].column.y);
+		}
+	}
+
+	this.hidden = function() {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].container.removeChild(this.columnList[i].column);
+		}
+		this.columnList = [];
+	}
+
+	this.changeKeyType = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
+			if (this.type === KEY_TYPE_NORMAL) {
+				this.type = KEY_TYPE_REVERSE;
+			} else {
+				this.type = KEY_TYPE_NORMAL;
+			}
+
+			for (var i = 0; i < object.columnList.length; ++i) {
+				object.columnList[i].changeType();
+				object.redraw();
+			}
+		}
+	}
+
+	this.rotateLeft = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.columnList.push(this.columnList[0]);
+			this.columnList.splice(0, 1);
+
+			this.normalKey.push(this.normalKey[0]);
+			this.normalKey.splice(0, 1);
+
+			this.reverseKey.push(this.reverseKey[0]);
+			this.reverseKey.splice(0, 1);
+
+			this.number.push(this.number[0]);
+			this.number.splice(0, 1);
+
+			this.reAssignColumns();
+			this.redraw();
+		}
+	}
+
+	this.rotateRight = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
+			this.columnList.splice(this.columnList.length - 1, 1);
+
+			this.normalKey.splice(0, 0, this.normalKey[this.normalKey.length - 1]);
+			this.normalKey.splice(this.normalKey.length - 1, 1);
+
+			this.reverseKey.splice(0, 0, this.reverseKey[this.reverseKey.length - 1]);
+			this.reverseKey.splice(this.reverseKey.length - 1, 1);
+
+			this.number.splice(0, 0, this.number[this.number.length - 1]);
+			this.number.splice(this.number.length - 1, 1);
+
+			this.reAssignColumns();
+			this.redraw();
+		}
+	}
+
+	this.reAssignColumns = function () {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			this.columnList[i].msgColumn = this.msgColumn.columnList[i];
+		}
+	}
+
+	this.keyDown = function () {
+		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.keyInMove = true;
+			for (var i = 0; i < this.columnList.length; ++i) {
+				this.columnList[i].keyDown();
+			}
+		}
+	}
+
+	this.stoppedKey = [];
+	this.stoppedFirstKey = [];
+	this.stopAnimation = function() {
+		for (var i = 0; i < this.columnList.length; ++i) {
+			if (this.columnList[i].stopMove() === true) {
+				this.stoppedKey.push(this.columnList[i]);
+			}
+			if (this.columnList[i].stopFirstMove() === true) {
+				this.stoppedFirstKey.push(this.columnList[i]);
+			}
+		}
+	}
+
+	this.startAnimation = function() {
+		for (var i = 0; i < this.stoppedKey.length; ++i) {
+			this.stoppedKey[i].startAnimation();
+		}
+		this.stoppedKey = [];
+
+		for (var i = 0; i < this.stoppedFirstKey.length; ++i) {
+			this.stoppedFirstKey[i].startFirstAnimation();
+		}
+		this.stoppedFirstKey = [];
+	}
+
+	var object = this;
+
+	director.createTimer(this.container.time, Number.MAX_VALUE, null,
+		function (time, ttime, timerTask) {
+			if (object.keyFirstMove === true) {
+				var newKeyFirstMove = false;
+				for (var i = 0; i < object.columnList.length; ++i) {
+					if (object.columnList[i].keyFirstMove === true) {
+						newKeyFirstMove = true;
+					}
+				}
+				object.keyFirstMove = newKeyFirstMove;
+			}
+
+			if (object.keyFirstMove === false && object.boxOption.keyNeedToUpdate === true) {
+				object.boxOption.keyNeedToUpdate = false;
+				var needToUpdateAgain = false;
+				for (var k = 0; k < object.msgColumn.columnList.length; ++k) {
+					var msgColumn = object.msgColumn.columnList[k];
+					if (msgColumn.blockToDestroy !== null) {
+						if (msgColumn.blockToDestroy.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.blockToDestroy.column);
+							msgColumn.blockToDestroy = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+					if (msgColumn.levelMsg !== null) {
+						if (msgColumn.levelMsg.isVisible === false) {
+							msgColumn.container.removeChild(msgColumn.levelMsg.msg);
+							msgColumn.levelMsg = null;
+						} else {
+							needToUpdateAgain = true;
+						}
+					}
+
+					object.msgColumn.columnList[k].blurSquareNumber = 0;
+					object.msgColumn.columnList[k].keySquareNumber = 0;
+				}
+
+				if (needToUpdateAgain === true) {
+					object.boxOption.keyNeedToUpdate = true;
+				} else {
+						object.msgColumn.redraw();
+						object.msgColumn.isResolved();
+						object.createKey();
+				}
+			}
+		}
+	);
 }

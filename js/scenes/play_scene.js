@@ -7,47 +7,12 @@
  *     - play_scene.js                                              *
  *******************************************************************/
 
-/**
- * This function create the button we use in this scene.
- * @param director {CAAT.Director}
- * @param width {number}
- * @param height {number}
- * @param text {string}
- * @param x {number}
- * @param y {number}
- * @param color {string}
- */
-function createBackButton(director, width, height, text, x, y, color) {
-    var backButton = new CAAT.Actor().
-        setSize(width, height).
-        centerAt(x, y);
-
-    backButton.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.fillStyle = this.pointed ? 'orange' : color;
-        ctx.fillRect(0, 0, this.width, this.height);
-
-        ctx.strokeStyle = this.pointed ? 'red' : 'black';
-        ctx.strokeRect(0, 0, this.width, this.height);
-
-        ctx.font = '30px sans-serif';
-        ctx.fillStyle = 'black';
-        ctx.fillText(text, 10, this.height / 2 + 5);
-    };
-
-    return backButton;
-}
-
-
-function handle_ia(playScene, rivalBoxInfo) {
-
+function handle_ia(playScene, rivalBoxInfo) {	              
     var prepare_move = [];
     var move = [];
 
     var current_time = 0;
-    var WAITING_TIME = 250;
+    var WAITING_TIME = rivalBoxInfo.boxOption.timeInfo.waitingIATime;
 
     var ACTION_UNKNOWN = -1;
     var ACTION_LEFT = 0;
@@ -72,7 +37,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var alignColumn = false;
     var progress = true;
 
-    playScene.createTimer(this.container.time, Number.MAX_VALUE, null,
+    var decryptMsgTimer = playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
 
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
@@ -83,8 +48,7 @@ function handle_ia(playScene, rivalBoxInfo) {
                     if (actionToDo === ACTION_UNKNOWN) {
                         if (keyIsInvert !== true) {
                             actionToDo = ACTION_INVERT;
-                        }
-                        else if (move[index] !== -2) {
+                        } else if (move[index] !== -2) {
                             actionToDo = ACTION_DOWN;
                             move[index] = move[index] - 1;
                         } else if (move[index] === -2) {
@@ -100,10 +64,7 @@ function handle_ia(playScene, rivalBoxInfo) {
                         }
                     }
                     current_time = time;
-                }
-
-                else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {
-                    
+                } else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {    
                     if (progress === true) {
                         if (actionToDo === ACTION_UNKNOWN) {
                             if (index !== move.length - 1) {
@@ -122,8 +83,7 @@ function handle_ia(playScene, rivalBoxInfo) {
                                 }
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (actionToDo === ACTION_UNKNOWN) {
                             if (align_column === true) {
                                 if (keyIsInvert !== true) {
@@ -171,50 +131,31 @@ function handle_ia(playScene, rivalBoxInfo) {
                     actionToDo = ACTION_UNKNOWN;
                     current_time = time;
                 }
+            } else if (key.msgColumn.resolved === true) {
+                decryptMsgTimer.cancel();
             }
         }
     );
 }
 
-
 function resizePlayScene(director, playScene) {
 
-    DEFAULT_SQUARE_WIDTH = 40;
-    DEFAULT_COLUMN_WIDTH = DEFAULT_SQUARE_WIDTH + 3;
+    playScene.game_box.relativeX = getRelativeX(playScene.resizeOption);
+    playScene.game_box.resize(playScene.scene);
 
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
+    playScene.info_column.redraw();
 
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
-        --DEFAULT_SQUARE_WIDTH;
-        --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * playScene['game_box'].current_length + 2 * 8) + 2 * 40 + 260;
+    if (playScene.rival_box != null) {
+        playScene.rival_box.relativeX = playScene.game_box.gameBox.x + 260 + playScene.game_box.gameBox.width;
+        playScene.rival_box.resize(playScene.scene);
     }
-
-    playScene['game_box'].relativeX = parseInt(director.width / 2 - canvasWidth / 2);
-    playScene['game_box'].resize();
-
-
-    playScene['leftPlayerName'].setLocation(playScene['game_box'].gameBox.x - 12, playScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-    playScene['centerPlayerName'].setLocation(playScene['leftPlayerName'].x + playScene['leftPlayerName'].width, playScene['leftPlayerName'].y);
-    playScene['rightPlayerName'].setLocation(playScene['centerPlayerName'].x + playScene['centerPlayerName'].width, playScene['centerPlayerName'].y);
-
-    playScene['info_column'].infoColumnContainer.centerAt(playScene['game_box'].gameBox.x + playScene['game_box'].gameBox.width + 130, 80 + playScene['game_box'].gameBox.height / 2);
-
-    playScene['rival_box'].relativeX = playScene['game_box'].gameBox.x + 260 + playScene['game_box'].gameBox.width;
-    playScene['rival_box'].resize();
-
-
-    playScene['rightIAName'].setLocation(playScene['rival_box'].gameBox.x + playScene['rival_box'].gameBox.width - director.getImage('right-board').width + 12, playScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-    playScene['centerIAName'].setLocation(playScene['rightIAName'].x - 175, playScene['rightIAName'].y);
-    playScene['leftIAName'].setLocation(playScene['centerIAName'].x - director.getImage('left-board').width, playScene['centerIAName'].y);
-
 }
 
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director) {
+function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard) {
     /**
      * Create the dict to return.
      */
@@ -222,232 +163,97 @@ function createPlayScene(director) {
     /**
      * Create the play scene.
      */
-    resultScene['scene'] = director.createScene();
+    resultScene.scene = director.createScene();
 
-    /**
-     * Define the current length of the message (and of the keys).
+    /*
+     * Deactivate all scenes and activate this scene.
      */
-    var current_length = parseInt(getQuerystring("n", 8));
-
-    /**
-     * Generate my private and public keys.
-     */
-     var key_info_t = getKeyInfo(current_length);
-
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-
-    while (canvasWidth > $(document).width() && DEFAULT_SQUARE_WIDTH > 10) {
-        --DEFAULT_SQUARE_WIDTH;
-        --DEFAULT_COLUMN_WIDTH;
-        canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
+    resultScene.scene.activated = function() {
+        currentGame.deactivateScenes();
+        currentGame[hookActive] = true;
+        if (resultScene.resize != null) {
+            resultScene.resize(director, resultScene);
+        }
     }
+	 
+    /**
+     * Define the board resize option.
+     */
+    resultScene.resizeOption = new ResizeOption(current_length, withIaBoard ? 2 : 1);
 
     /**
-     * Define a TEMPORARY message.
+     * Create the player game board.
      */
-    var tmp_message = [];
-    for (var i = 0; i < current_length; ++i) {
-        tmp_message.push(Math.floor(Math.random() * 3 - 1));
-    }
-    var my_message = chiffre(current_length, tmp_message, key_info_t['public_key']['key']);
-
-    /**
-     * Position relative of the game box to the screen. 
-     */
-    var canvasWidth = 2 * ((DEFAULT_SQUARE_WIDTH + 4) * current_length + 2 * 8) + 2 * 40 + 260;
-
-    var gameBoxInfo = new GameBox(director, new GameBoxOption(), parseInt(director.width / 2 - canvasWidth / 2), 80, current_length, key_info_t[getQuerystring("key", 'private_key')], my_message, true);
-    var crypt_key = gameBoxInfo.crypt_key;
+    var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], message, true);
     resultScene['game_box'] = gameBoxInfo;
+    resultScene.scene.addChild(resultScene['game_box'].gameBox);
 
-
-    var leftPlayerName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('left-board')).
-                            setLocation(resultScene['game_box'].gameBox.x - 12, resultScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-
-    var centerPlayerName = new CAAT.Foundation.ActorContainer().
-                            setSize(175, director.getImage('center-board').height).
-                            setBackgroundImage(director.getImage('center-board'), false).
-                            setLocation(leftPlayerName.x + leftPlayerName.width, leftPlayerName.y);
-
-    centerPlayerName.paint = function(director) {
-        var ctx = director.ctx;
-        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-    }
-
-    var playerNameText = new CAAT.Foundation.Actor().
-                            setSize(175, director.getImage('center-board').height).
-                            setLocation(0, 0);
-
-
-    playerNameText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '22px Quantico';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(currentGame.username, this.width / 2, this.height / 2 + 7);
-    }
-
-    centerPlayerName.addChild(playerNameText);
-
-    var rightPlayerName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('right-board')).
-                            setLocation(centerPlayerName.x + centerPlayerName.width, centerPlayerName.y);
-
-    var infoColumn = new InfoColumn(director, resultScene, crypt_key);
+    /**
+     * Create the central column (to display some information).
+     */
+    var infoColumn = new InfoColumn(director, resultScene, gameBoxInfo.crypt_key);
     resultScene['info_column'] = infoColumn;
 
-
-    var rivalBoxInfo = new GameBox(director, new RivalBoxOption(), resultScene['game_box'].gameBox.x + 260 + resultScene['game_box'].gameBox.width, 80, current_length, key_info_t['public_key'], my_message, false);
-    resultScene['rival_box'] = rivalBoxInfo;
-
-
-
-    var rightIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('right-board')).
-                            setLocation(resultScene['rival_box'].gameBox.x + resultScene['rival_box'].gameBox.width - director.getImage('right-board').width + 12, resultScene['game_box'].gameBox.y - director.getImage('left-board').height - 10);
-
-    var centerIAName = new CAAT.Foundation.ActorContainer().
-                            setSize(175, director.getImage('center-board').height).
-                            setBackgroundImage(director.getImage('center-board'), false).
-                            setLocation(rightIAName.x - 175, rightIAName.y);
-
-    centerIAName.paint = function(director) {
-        var ctx = director.ctx;
-        var bg = ctx.createPattern(director.getImage('center-board'), "repeat");
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, this.width, this.height);
+    /**
+     * Create the ia board if necessary.
+     */
+    if (withIaBoard) {
+        var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
+        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false);
+        resultScene['rival_box'] = rivalBoxInfo;
+        resultScene.scene.addChild(resultScene['rival_box'].gameBox);
     }
 
-
-    var iaNameText = new CAAT.Foundation.Actor().
-                            setSize(175, director.getImage('center-board').height).
-                            setLocation(0, 0);
-
-
-    iaNameText.paint = function(director) {
-
-        var ctx = director.ctx;
-
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#00FF9D';
-
-        ctx.font = '22px Quantico';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(currentGame.ianame, this.width / 2, this.height / 2 + 7);
-    }
-
-    centerIAName.addChild(iaNameText);
-
-
-    var leftIAName = new CAAT.Foundation.Actor().
-                            setBackgroundImage(director.getImage('left-board')).
-                            setLocation(centerIAName.x - director.getImage('left-board').width, centerIAName.y);
-
-
-
-    /**
-     * Create each necessary button.
-     */
-    resultScene['back_button'] = createBackButton(director, 120, 40, "Back", director.width - 70, director.height - 100, "red");
-
-    /**
-     * Add each element to its scene.
-     */
-    resultScene['scene'].addChild(resultScene['game_box'].gameBox);
-    resultScene['scene'].addChild(resultScene['rival_box'].gameBox);
-    resultScene['scene'].addChild(leftPlayerName);
-    resultScene['scene'].addChild(centerPlayerName);
-    resultScene['scene'].addChild(rightPlayerName);
-    resultScene['scene'].addChild(rightIAName);
-    resultScene['scene'].addChild(centerIAName);
-    resultScene['scene'].addChild(leftIAName);
-
-    resultScene['resize'] = resizePlayScene;
-    resultScene['rightIAName'] = rightIAName;
-    resultScene['centerIAName'] = centerIAName;
-    resultScene['leftIAName'] = leftIAName;
-    resultScene['rightPlayerName'] = rightPlayerName;
-    resultScene['centerPlayerName'] = centerPlayerName;
-    resultScene['leftPlayerName'] = leftPlayerName;
     /*
-     * Call the IA script.
+     * Bind each element of the scene with controls (mouse and keyboard.)
      */
-    handle_ia(resultScene['scene'], rivalBoxInfo);
+    
+    // Bind the key with keyboard controls.
+    bindPlayerKeyWithKeyboard(gameBoxInfo.crypt_key, hookActive);
 
+    // Bind infoColumn pad with controls.
+    bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key, hookActive);
+    bindPadWithKeyboard(infoColumn.pad, director, hookActive);
+
+    // Bind all objects with pause Buttons.
+    var objectsWithAnimation = withIaBoard ? [gameBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.crypt_key, rivalBoxInfo.message] : [gameBoxInfo.crypt_key, gameBoxInfo.message];
+    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
+
+    // Bind default help button (do nothing).
+    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
+
+    /**
+     * Set the resize callback to call.
+     */
+    resultScene['resize'] = resizePlayScene;
+
+    /*
+     * Call the IA script if necessary.
+     */
+    withIaBoard ? handle_ia(resultScene['scene'], rivalBoxInfo) : null;
 
     resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
+            if (withIaBoard) {
+                var rivalMessage = rivalBoxInfo.message;
+                if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
+                    currentGame.gameOver = true;
+                    rivalMessage.boxOption.endResolved = time;
+                    rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50);
 
-            var rivalMessage = rivalBoxInfo.message;
-            var rivalBox = rivalBoxInfo.gameBox;
-            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
-                rivalMessage.boxOption.endResolved = time;
-
-                var winScreen = new CAAT.Actor().
-                        setSize(rivalBox.width, rivalBox.height).
-                        setLocation(0, 0);
-
-                winScreen.paint = function(director) {
-
-                    var ctx = director.ctx;
-
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                    ctx.fillRect(0, 0, this.width, this.height);
-
-                    ctx.strokeStyle = 'rgb(0, 0, 0)';
-                    ctx.strokeRect(0, 0, this.width, this.height);
-
-                    ctx.font = '30px sans-serif';
-                    ctx.fillStyle = 'black';
-                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
-                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
-                };
-                rivalBox.addChild(winScreen);
+                }
             }
 
-
             var gameMessage = gameBoxInfo.message;
-            var gameBox = gameBoxInfo.gameBox;
             if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
-                gameMessage.boxOption.endResolved = time;
-
-                var winScreen = new CAAT.Actor().
-                        setSize(gameBox.width, gameBox.height).
-                        setLocation(0, 0);
-
-                winScreen.paint = function(director) {
-
-                    var ctx = director.ctx;
-
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                    ctx.fillRect(0, 0, this.width, this.height);
-
-                    ctx.strokeStyle = 'rgb(0, 0, 0)';
-                    ctx.strokeRect(0, 0, this.width, this.height);
-
-                    ctx.font = '30px sans-serif';
-                    ctx.fillStyle = 'black';
-                    ctx.fillText("Vous avez gagné en ", 10, this.height / 2 + 5);
-                    ctx.fillText(time / 1000 + " secondes.", 10, this.height / 2 + 30);
-                };
-                gameBox.addChild(winScreen);
+                currentGame.goToNextDialog = true;
+                gameMessage.boxOption.endResolved = time; 
+                gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
             }
         }
     );
-
+    resizePlayScene(director, resultScene);
     return resultScene;
 }
 

@@ -1,9 +1,60 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Cryptris</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptris - Un jeu sur la cryptographie asymétrique</title>
+    <meta name="viewport" content="" id="viewport"/>
     <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-title" content="Cryptris">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/apple-touch-icon-152x152.png" />
+
+    <link href="img/apple-touch-startup-image-320x460.png"
+          media="(device-width: 320px) and (device-height: 480px)
+             and (-webkit-device-pixel-ratio: 1)"
+          rel="apple-touch-startup-image">
+    <link href="img/apple-touch-startup-image-640x920.png"
+          media="(device-width: 320px) and (device-height: 480px)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">              
+    <link href="img/apple-touch-startup-image-640x1096.png"
+          media="(device-width: 320px) and (device-height: 568px)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+
+
+
+    <link href="img/apple-touch-startup-image-768x1004.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: portrait)
+             and (-webkit-device-pixel-ratio: 1)"
+          rel="apple-touch-startup-image">
+    <link href="img/apple-touch-startup-image-748x1024.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: landscape)
+             and (-webkit-device-pixel-ratio: 1)"
+          rel="apple-touch-startup-image">
+
+    <link href="img/apple-touch-startup-image-1536x2008.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: portrait)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+    <link href="img/apple-touch-startup-image-1496x2048.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: landscape)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
 
     <!-- Css -->
     <link href="css/cryptris.css" rel="stylesheet" media="screen">
@@ -15,6 +66,8 @@
     <![endif]-->
 
     <script src="vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/viewport.js"></script>
+    <script src="js/mobile-detection.js"></script>
     <script src="js/selectable-list.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Geo|Inconsolata|Quantico:400,700' rel='stylesheet' type='text/css'>
@@ -29,7 +82,7 @@
         <div>
           <ul class="main-menu selectable">
             <li class="active">
-              <a href="scene-00.html"><span class="arrow">▶</span>Nouvelle partie<span class="arrow">◀</span></a>
+              <a href="scene-all.html"><span class="arrow">▶</span>Nouvelle partie<span class="arrow">◀</span></a>
             </li>
             <li>
               <a href="a-propos.html"><span class="arrow">▶</span>À propos<span class="arrow">◀</span></a>
@@ -51,6 +104,43 @@
       </div>
       
       <a href="http://www.inria.fr/" target="_blank" class="logo-inria"><img class="logo-inria-medium" src="img/logo-inria-medium.png"></a>
+
+      <div class='social-icons'>
+
+        <!-- Twitter -->
+        <a href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
+
+        <!-- Google plus -->  
+        <span
+          class="g-interactivepost"
+          data-contenturl="https://cryptris.com/"
+          data-contentdeeplinkid="/"
+          data-clientid="303615069411.apps.googleusercontent.com"
+          data-cookiepolicy="single_host_origin"
+          data-prefilltext="Cryptris, un jeu sur la cryptographie asymétrique"
+          data-calltoactionlabel="PLAY"
+          data-calltoactionurl="http://crytptis.com"
+          data-calltoactiondeeplinkid="/">
+          <a href="#"><img class="retina" src="img/icn-google-plus@2x.png" data-at2x="img/icn-google-plus@2x.png" alt=""></a>
+        </span>
+
+        <!-- Facebook -->
+        <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
+        
+      </div>
     </div>
+
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+    <script type="text/javascript">
+      (function() {
+       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+       po.src = 'https://apis.google.com/js/client:plusone.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+     })();
+    </script>
+
+    <script src="vendor/retina.js"></script>
+
   </body>
 </html>
