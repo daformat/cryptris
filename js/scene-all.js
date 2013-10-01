@@ -803,7 +803,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1033,7 +1032,6 @@ $(function(){
         	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1220,7 +1218,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1405,8 +1402,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
-
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
 
