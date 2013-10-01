@@ -1390,6 +1390,22 @@ $(function(){
 						// automatically determining max range can work something like this
 						// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
 
+
+					var zoom = d3.behavior.zoom()
+					    .x(y)
+					    .y(y)
+					    .scaleExtent([0, 100000])
+					    .on("zoom", zoomed);
+					
+					function zoomed() {
+					  graph.select(".x.axis").call(xAxis);
+					  graph.select(".y.axis").call(yAxis);
+				  	graph.select("path.line.ia").attr("d", line(dataIA));
+				  	graph.select("path.line.player").attr("d", line(dataPlayer));
+				  	graph.selectAll("circle.ia").attr("cy",  function(d, i) { return y(dataIA[i].y); });
+				  	graph.selectAll("circle.player").attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+					}
+
 					// create a line function that can convert data[] into x and y points
 					var line = d3.svg.line()
 						// assign the X function to plot our line as we wish
@@ -1408,7 +1424,26 @@ $(function(){
 						      .attr("width", w + m[1] + m[3])
 						      .attr("height", h + m[0] + m[2])
 						    .append("svg:g")
-						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
+							    .call(zoom)
+
+						graph.append("rect")
+							    .attr("x", 0-20)
+							    .attr("y", 0-20)
+							    .attr("width", w+20)
+							    .attr("height", h+40)
+							    .attr("fill", "#93bcd7")
+							    .attr("stroke", "#abcdef");
+
+						graph.append("clipPath")
+						    .attr("id", "clip")
+						  .append("rect")
+						    .attr("x", -15)
+						    .attr("y", -15)
+						    .attr("width", w+35)
+						    .attr("height", h+25);
+
+						var clip = d3.select("clip");
 
 						// create xAxis
 						var xAxis = d3.svg.axis().scale(x).ticks(3).tickSize(10).tickSubdivide(false);
@@ -1420,12 +1455,12 @@ $(function(){
 
 
 						// create left yAxis
-						var yAxisLeft = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
+						var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
 						// Add the y-axis to the left
 						graph.append("svg:g")
 						      .attr("class", "y axis")
 						      .attr("transform", "translate(-25,0)")
-						      .call(yAxisLeft);
+						      .call(yAxis);
 						
 					graph.append("text")
 					    .attr("class", "x label")
@@ -1445,10 +1480,9 @@ $(function(){
 
 			  			// Add the line by appending an svg:path element with the data line we created above
 						// do this AFTER the axes above so that the line is above the tick-lines
-			  			graph.append("svg:path").attr("d", line(dataIAInitial)).transition().duration(500).attr("d", line(dataIA));
+			  			graph.append("svg:path").attr('class', 'line ia').attr("d", line(dataIAInitial)).transition().duration(500).attr("d", line(dataIA)).attr("clip-path", "url(#clip)");
 
-			  			graph.append("svg:path").attr('class', 'player').attr("d", line(dataPlayerInitial)).transition().duration(500).attr("d", line(dataPlayer));
-
+			  			graph.append("svg:path").attr('class', 'line player').attr("d", line(dataPlayerInitial)).transition().duration(500).attr("d", line(dataPlayer)).attr("clip-path", "url(#clip)");
 							var div = d3.select("body").append("div")   
 							    .attr("class", "tooltip")               
 							    .style("opacity", 0);
@@ -1456,10 +1490,12 @@ $(function(){
 							// draw dots for IA
 							var circlesIA = graph.selectAll("dot")    
 							        .data(dataIAInitial)         
-							    .enter().append("circle")                               
+							    .enter().append("circle")
+							        .attr("class", 'ia')
 							        .attr("r", 5)       
 							        .attr("cx", function(d) { return x(d.x); })       
-							        .attr("cy", function(d) { return y(d.y); })     
+							        .attr("cy", function(d) { return y(d.y); }) 
+							        .attr("clip-path", "url(#clip)")    
 							        .on("mouseover", function(d, i) {
 							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
 							            div.transition()        
@@ -1484,10 +1520,10 @@ $(function(){
 							        .attr("class", 'player')
 							        .attr("r", 5)       
 							        .attr("cx", function(d) { return x(d.x); })       
-							        .attr("cy", function(d) { return y(d.y); })     
+							        .attr("cy", function(d) { return y(d.y); })   
+							        .attr("clip-path", "url(#clip)")  
 							        .on("mouseover", function(d, i) {      
 							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
-
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9);      

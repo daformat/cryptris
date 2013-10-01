@@ -980,12 +980,16 @@ ul{
 }
 
 #graph circle{
-	fill: #a360bb;
+	stroke: #a360bb;
+	fill: #b8cfde;
+	stroke-width: 3;
 	cursor: pointer;
 }
 
 #graph circle.player{
-	fill: #015b99;
+	stroke: #015b99;
+	fill: #b8cfde;
+	stroke-width: 3;
 }
 
 div.tooltip {   
