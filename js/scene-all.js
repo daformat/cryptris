@@ -448,7 +448,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, pour envoyer ta clé <span>appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'>.</span>",
+			    content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, pour envoyer ta clé appuie sur&nbsp;<img src='img/icn-arrow-down.png' class='keyboard-key'>.</span>",
 
 			    controls: [{
 			      label: "Suite", 
@@ -644,7 +644,7 @@ $(function(){
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the correct scene at bg, and deactivate its control.
 
-			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 2000);
+			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
 			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -1578,7 +1578,7 @@ $(function(){
 							  if (minutes < 10) {minutes = "0"+minutes;}
 							  if (seconds < 10) {seconds = "0"+seconds;}
 
-							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? '' : ':'+minutes+':'+seconds));
+							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? 'h' : 'h '+minutes+'m '+seconds+ 's'));
 							  return time;
 							};
 
