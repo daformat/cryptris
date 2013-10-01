@@ -879,7 +879,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "C’est le bon moment pour utiliser le protocole de cryptage pour l’empêcher de nous écouter ! Je vais t'envoyer la liste des câbles à débrancher, mais un par un, et de manière cryptée.",
+			    content: "C’est le bon moment pour utiliser le protocole de cryptage afin de l’empêcher de nous écouter ! Je vais t'envoyer la liste des câbles à débrancher, mais un par un, et de manière cryptée.",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -968,7 +968,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Zut, le serveur essaie lui aussi de décrypter le message, heureusement il ne dispose que de ta clé publique ! Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.",
+			    content: "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.",
 			    
 			    controls: [{
 			      label: "Décrypter le message", 
