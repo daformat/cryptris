@@ -5,7 +5,8 @@ $(function(){
 	var game = {
 		readingDelay: 4000,
 		player: {},
-		dialog4: [false, false, false]
+		dialog4: [false, false, false],
+		dialogWhatArePrivatePublicKey: [false, false, false]
 	}
 
 
@@ -51,94 +52,116 @@ $(function(){
 
 	function dialog1(){
 		$("body").closeAllDialogs(function(){
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    animateText: true,
 
-		    type: "withAvatar",
-		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			$.switchWrapper('#bg-institut', function(){
+	
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-		    title: "Chercheuse",
-		    content: "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.",
-		    
-		    controls: [{
-		      label: "Suite", 
-		      class: "button blue",
-		      onClick: switchToNewLogin
-		    }]
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-		  });	
+			    title: "Chercheuse",
+			    content: "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: switchToNewLogin
+			    }]
+
+			  });	
+			
+			});
+
 		});
 	}
 
 	function switchToNewLogin() {
-		$("body").closeAllDialogs();
+		$("body").closeAllDialogs( function(){
 
-		$.switchWrapper('#new-login', function(){
-			$('#login-name').focus();
-		});
-		$('.new-login').submit(function(e){
-			game.player.name = $('#login-name').val();
-			currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-			$.switchWrapper('#bg-institut', dialog2);
-			$('.new-login').unbind('submit').submit(function(e){
-				return false;
+			$.switchWrapper('#new-login', function(){
+				$('#login-name').focus();
+
+				$('.new-login').submit(function(e){
+					game.player.name = $('#login-name').val();
+					currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
+					$.switchWrapper('#bg-institut', dialog2);
+					$('.new-login').unbind('submit').submit(function(e){
+						return false;
+					});
+					return false;
+				});
+
 			});
-			return false;
-		});
+
+		})
 	}
 
 
 	function dialog2(){
-	  $(".wrapper.active .vertical-centering").dialog({
-	    
-	    animateText: true,
+		$("body").closeAllDialogs(function(){
 
-	    type: "withAvatar",
-	    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			$.switchWrapper('#bg-institut', function(){
 
-	    title: "Chercheuse",
-	    content: "Parfait"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
-	    
-	    controls: [{
-	      label: "Suite", 
-	      class: "button blue",
-	      onClick: dialog3
-	    }]
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-	  });	
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Parfait"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog3
+			    }]
+
+			  });	
+			
+			});
+
+		});
 	}
 
 	function dialog3(){
 		$("body").closeAllDialogs(function(){
 
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    type: "player",
-		    title: game.player.name||"Joueur",
+			$.switchWrapper('#bg-institut', function(){
 
-		    content: [{
-		    	label: "Cryptogra... quoi ?",
-		    	onClick: dialog4opt1,
-		    	class: game.dialog4[0] ? 'asked': 'not-asked'
-		    },
-		    {
-		    	label: "Asymétrique ? Pourquoi asymétrique ?",
-		    	onClick: dialog4opt2,
-		    	class: game.dialog4[1] ? 'asked': 'not-asked'
-		    },{
-		    	label: "Si vous le dites...",
-		    	onClick: dialog5,
-		    	class: game.dialog4[2] ? 'asked': 'not-asked'
-		    }],
-		    
-		    controls: [{
-		      label: "Suite", 
-		      class: "button blue",
-		      onClick: switchToNewLogin
-		    }]
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    type: "player",
+			    title: game.player.name||"Joueur",
 
-		  });	
+			    content: [{
+			    	label: "Cryptogra... quoi ?",
+			    	onClick: dialog4opt1,
+			    	class: game.dialog4[0] ? 'asked': 'not-asked'
+			    },
+			    {
+			    	label: "Asymétrique ? Pourquoi asymétrique ?",
+			    	onClick: dialog4opt2,
+			    	class: game.dialog4[1] ? 'asked': 'not-asked'
+			    },{
+			    	label: "Si vous le dites...",
+			    	onClick: dialog5,
+			    	class: game.dialog4[2] ? 'asked': 'not-asked'
+			    }],
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: switchToNewLogin
+			    }]
+
+			  });	
+			
+			});
 
 		});
 	}
@@ -147,24 +170,28 @@ $(function(){
 		game.dialog4[0] = true;
 
 		$("body").closeAllDialogs(function(){
+			
+			$.switchWrapper('#bg-institut', function(){
 
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    animateText: true,
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-		    type: "withAvatar",
-		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-		    title: "Chercheuse",
-		    content: "Cryptographie! Du grec ancien <strong>kruptos</strong> (« caché ») et <strong>graphein</strong> (« écrire »). Il s’agit de protéger des messages.",
-		    
-		    controls: [{
-		      label: "Suite", 
-		      class: "button blue",
-		      onClick: dialog3
-		    }]
+			    title: "Chercheuse",
+			    content: "Cryptographie! Du grec ancien <strong>kruptos</strong> (« caché ») et <strong>graphein</strong> (« écrire »). Il s’agit de protéger des messages.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog3
+			    }]
 
-		  });	
+			  });	
+
+			});
 
 		});
 
@@ -172,27 +199,30 @@ $(function(){
 
 
 	function dialog4opt2(){
-			game.dialog4[1] = true;
+		game.dialog4[1] = true;
 
-			$("body").closeAllDialogs(function(){
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
 
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    animateText: true,
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-		    type: "withAvatar",
-		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-		    title: "Chercheuse",
-		    content: "Oui ! Asymétrique, on l’appelle aussi cryptographie à clé publique car elle repose sur l’utilisation de deux types de clés <span>:</span> la clé privée, et la clé publique. La clé publique sert à chiffrer, ou coder si tu préfères, les messages, tandis que la clé privée permet de les déchiffrer.",
-		    
-		    controls: [{
-		      label: "Suite", 
-		      class: "button blue",
-		      onClick: dialog3
-		    }]
+			    title: "Chercheuse",
+			    content: "Oui ! Asymétrique, on l’appelle aussi cryptographie à clé publique car elle repose sur l’utilisation de deux types de clés <span>:</span> la clé privée, et la clé publique. La clé publique sert à chiffrer, ou coder si tu préfères, les messages, tandis que la clé privée permet de les déchiffrer.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialog3
+			    }]
 
-		  });	
+			  });	
+			
+			});
 
 		});
 
@@ -202,31 +232,136 @@ $(function(){
 		game.dialog4[2] = true;
 		
 		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
 
-		  $(".wrapper.active .vertical-centering").dialog({
-		    
-		    animateText: true,
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
 
-		    type: "withAvatar",
-		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-		    title: "Chercheuse",
-		    content: "Tu vas maintenant créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
-		    
-		    controls: [{
-		      label: "Suite", 
-		      class: "button blue",
-		      onClick: dialog6
-		    }]
+			    title: "Chercheuse",
+			    content: "Tu vas maintenant créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogWhatArePrivatePublicKey
+			    }]
 
-		  });	
+			  });	
+			
+			});
 
 		});
 
 	}
 
+	function dialogWhatArePrivatePublicKey(){
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    type: "player",
+			    title: game.player.name||"Joueur",
+
+			    content: [{
+			    	label: "Clé privée ? Qu'est-ce que c'est ?",
+			    	onClick: dialogWhatArePrivatePublicKeyOpt1,
+			    	class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
+			    },
+			    {
+			    	label: "Une clé publique ? Pourquoi ma clé serait-elle publique ?",
+			    	onClick: dialogWhatArePrivatePublicKeyOpt2,
+			    	class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
+			    },{
+			    	label: "D'accord, j'ai compris.",
+			    	onClick: dialog6,
+			    	class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
+			    }],
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: switchToNewLogin
+			    }]
+
+			  });	
+			
+			});
+
+		});
+	}
+
+
+	function dialogWhatArePrivatePublicKeyOpt1(){
+		game.dialogWhatArePrivatePublicKey[0] = true;
+
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Ta clé privée est la clé que toi seul connaîtra, c'est elle qui te permettra de déchiffrer facilement les message qui te seront envoyés. <em>Sans la clé privée il est très difficile,</em> voir impossible, <em>de déchiffrer un message crypté.</em>",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogWhatArePrivatePublicKey
+			    }]
+
+			  });	
+			
+			});
+
+		});
+
+	}	
+
+
+	function dialogWhatArePrivatePublicKeyOpt2(){
+		game.dialogWhatArePrivatePublicKey[1] = true;
+
+		$("body").closeAllDialogs(function(){
+			$.switchWrapper('#bg-institut', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Ta clé publique sera dérivée de ta clé privée. De la même manière qu'un <em>cadenas</em> permet de <em>sécuriser le contenu d'un coffre,</em> la <em>clé publique</em> permet de <em>chiffrer des messages</em> et les rendre illisibles à ceux qui ne disposent pas de la clé privée.",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogWhatArePrivatePublicKey
+			    }]
+
+			  });	
+			
+			});
+
+		});
+
+	}		
+
+
 
 	function dialog6(){
+		game.dialogWhatArePrivatePublicKey[2] = true;
+
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
@@ -275,12 +410,14 @@ $(function(){
             		timer1.cancel();
 
             		// Uncomment me for disable input entry.
-            		//currentGame.createKeySceneActive = false;
+            		currentGame.createKeySceneActive = false;
             		/** !!! Important In your function, set this variable at true to enable the input entry **/
 
             		// call the function you want here
-            		// yourfunction();
-            		alert("cherche MIAM dans scene-all.js :)");
+            		dialogNowTryToCancelLastMove();
+
+            	} else if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 2){
+								dialogContinueManipulatingToGeneratePublicKey()
             	}
             }
         );
@@ -296,6 +433,78 @@ $(function(){
         );
 	}
 
+	function dialogNowTryToCancelLastMove(){
+	  currentGame.createKeySceneActive = false;
+		
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, pour envoyer ta clé <span>appuie sur</span> <img src='img/icn-arrow-down.png' class='keyboard-key'>.",
+
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: function(){
+			      	$('body').closeAllDialogs(function(){
+		        	  currentGame.createKeySceneActive = true;
+			      	});
+			      }
+			    }]
+
+			  });
+	
+
+			});
+
+		});
+
+	}
+
+	function dialogContinueManipulatingToGeneratePublicKey(){
+	  currentGame.createKeySceneActive = false;
+		
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+			    title: "Chercheuse",
+			    content: "Continue à présent de manipuler ta clé privée afin d’entamer la création de ta clé publique",
+
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: function(){
+			      	$('body').closeAllDialogs(function(){
+		        	  currentGame.createKeySceneActive = true;
+			      	});
+			      }
+			    }]
+
+			  });
+	
+
+			});
+
+		});
+
+	}		
+
 	function dialog6KeyPreGenerated() {
 		$("body").closeAllDialogs(function() {
 
@@ -309,7 +518,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Très bien ! L'ordinateur va à présent générer ta clé publique.",
+			    content: "Très bien, tu as compris ! L'ordinateur va à présent terminer de générer ta clé publique.",
 
 			    controls: [{
 			      label: "Suite", 
