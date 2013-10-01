@@ -593,6 +593,9 @@ $(function(){
 	function dialog8(){
 		$("body").closeAllDialogs(function(){
 
+		  // Set the correct scene at bg, and deactivate its control.
+		  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
+		  currentGame.playSoloSceneActive = false;
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    animateText: true,
@@ -601,7 +604,7 @@ $(function(){
 		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 		    title: "InriOS 3.14",
-		    content: chiffre_string(MIN_BOARD_LENGTH, "Ok, tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
+		    content: board_message_to_string(currentGame.scenes.play_solo_scene.game_box.my_message.plain_message) + encrypt_string(MIN_BOARD_LENGTH, ", tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
 		    
 		    controls: [{
 		      label: "Ouvrir le message", 
@@ -617,7 +620,6 @@ $(function(){
 
 	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
 		// Prepare the sceneName and set it as the current scene.
-
 		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
 
@@ -631,7 +633,7 @@ $(function(){
                    	waitToContinue.cancel();
                    	currentGame.goToNextDialog = false;
 
-                   	console.log(timeout);
+                   	currentGame.scenes[sceneName].scene.setPaused(false);
             	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
                	}
             }
@@ -642,10 +644,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  // Set the correct scene at bg, and deactivate its control.
-
-			  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
-			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -959,6 +957,18 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
+			  // Prepare play_min_scene and set it at paused.
+			  goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime, FIRST_BATTLE_MESSAGE);
+			  currentGame.scenes.play_min_scene.scene.setPaused(true);
+			  currentGame.playMinSceneActive = false;
+			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
+
+
+			  var crypted_message = "";
+			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  crypted_message += board_message_to_string(currentGame.scenes.play_min_scene.game_box.my_message.plain_message);
+			  crypted_message += " du panneau éléctrique V";
+			  crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -968,7 +978,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+			    content: crypted_message,
 			    
 			    controls: [{
 			      label: "Décrypter le message", 
@@ -1016,7 +1026,10 @@ $(function(){
 
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
-			goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime, FIRST_BATTLE_MESSAGE);
+			// Active input for play_min_scene
+			currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_min_scene']['scene']), 0, 0, false);
+			currentGame.scenes.play_min_scene.scene.setPaused(false);
+			currentGame.playMinSceneActive = true;
 		});
 
 	}
@@ -1026,6 +1039,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+			  currentGame.scenes.play_min_scene.scene.setPaused(true);
+			  currentGame.playMinSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1172,6 +1187,18 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
+			  // Prepare play_medium_scene and set it at paused.
+			  goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime, SECOND_BATTLE_MESSAGE);
+			  currentGame.scenes.play_medium_scene.scene.setPaused(true);
+			  currentGame.playMediumSceneActive = false;
+			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
+
+
+			  var crypted_message = "";
+			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  crypted_message += board_message_to_string(currentGame.scenes.play_medium_scene.game_box.my_message.plain_message);
+			  crypted_message += " du panneau éléctrique M";
+			  crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1181,8 +1208,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
-			    
+			    content: crypted_message,
 			    controls: [{
 			      label: "Décrypter le message", 
 			      class: "button blue",
@@ -1201,7 +1227,10 @@ $(function(){
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime, SECOND_BATTLE_MESSAGE);
+				// Active input for play_medium_scene
+				currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_medium_scene']['scene']), 0, 0, false);
+				currentGame.scenes.play_medium_scene.scene.setPaused(false);
+				currentGame.playMediumSceneActive = true;
 			});
 		});
 	}
@@ -1212,6 +1241,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+			  currentGame.scenes.play_medium_scene.scene.setPaused(true);
+			  currentGame.playMediumSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1357,6 +1388,18 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
+			  // Prepare play_max_scene and set it at paused.
+			  goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime, THIRD_BATTLE_MESSAGE);
+			  currentGame.scenes.play_max_scene.scene.setPaused(true);
+			  currentGame.playMaxSceneActive = false;
+			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
+
+
+			  var crypted_message = "";
+			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  crypted_message += board_message_to_string(currentGame.scenes.play_max_scene.game_box.my_message.plain_message);
+			  crypted_message += " du panneau éléctrique N";
+			  crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1366,8 +1409,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
-			    
+			    content: crypted_message,
 			    controls: [{
 			      label: "Décrypter le message", 
 			      class: "button blue",
@@ -1386,7 +1428,10 @@ $(function(){
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime, THIRD_BATTLE_MESSAGE);
+				// Active input for play_medium_scene
+				currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_max_scene']['scene']), 0, 0, false);
+				currentGame.scenes.play_max_scene.scene.setPaused(false);
+				currentGame.playMaxSceneActive = true;
 			});
 		});
 	}
@@ -1396,6 +1441,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+			  currentGame.scenes.play_max_scene.scene.setPaused(true);
+			  currentGame.playMaxSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    

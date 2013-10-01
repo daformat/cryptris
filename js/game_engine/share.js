@@ -12,7 +12,7 @@ var baseHtml = 'http://www.cryptris.com/decrypt.html?&k=msg='
 $(document).ready(function() {
 	$("#share").submit(function() {
 		var text = $("textarea").val();
-		var ternary_message = string_to_ternary(text, 140 * 4, false);
+		var ternary_message = string_to_ternary(text);
 
 		var crypt_message = easy_crypt(ternary_message);
 		var message = easy_decrypt(crypt_message);

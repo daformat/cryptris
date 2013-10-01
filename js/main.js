@@ -79,8 +79,7 @@ function preparePlayScene(director, boardLength, boardName, message, hookActive,
     /**
      * Define a message.
      */
-    console.log(message);
-    var tmp_message = string_to_ternary(message, current_length, true);
+    var tmp_message = string_to_ternary(message);
 
     var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
 

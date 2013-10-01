@@ -5,7 +5,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.relativeY = relativeY;
     this.current_length = current_length;
     this.key_info = key_info;
-    this.my_message = my_message;
+    this.my_message = my_message; // The list version of message.
     this.player = player;
     this.tryToResize = false;
     this.winScreen = null;

@@ -63,45 +63,32 @@ function symbole_to_ternary(s) {
     return [i3t(x1), i3t(x2), i3t(x3), i3t(x4)];
 }
 
-function string_to_ternary(s, size, padding) {
+function string_to_ternary(string) {
+    var ternaries = [];
 
-    var ternary = [];
+    for (var i = 0; i < string.length; ++i) {
+        var ternary = symbole_to_ternary(string[i]);
 
-    for (var i = 0; i < s.length; ++i) {
-        var ternary_rep = symbole_to_ternary(s[i]);
-        if (ternary.length < size) {
-            for (var j = 0; j < ternary_rep.length; ++j) {
-                if (ternary.length < size) {
-                    ternary.push(ternary_rep[j]);
-                } else {
-                    break;
-                }
-            }
+        for (var j = 0; j < ternary.length; ++j) {
+            ternaries.push(ternary[j]); //[index++] = ternary[j];
         }
     }
 
-    while (padding && ternary.length < size) {
-        ternary.push(0);
+    // Ensure that we have a multiple of MAX_BOARD_LENGTH ternaries length.
+    while (ternaries.length % MAX_BOARD_LENGTH !== 0) {
+        ternaries.push(0);
     }
-    return ternary;
+
+    console.log("ternaries", ternaries);
+    return ternaries;
 }
 
-/*
-for (var i = 0; i < symboles.length; ++i) {
-    var table_ternary = symbole_to_ternary(symboles[i]);
-    var aa = ternary_to_symbole(table_ternary[0], table_ternary[1], table_ternary[2], table_ternary[3]);
-    if (aa === symboles[i]) {
-        console.log(aa + ' <-> ' + symboles[i]);
-    } else {
-        console.log(symboles[i] + ' : BUGGGGGG');
-    }
-}*/
 
 function genSecretKey(dim) {
 
     var sk = [];
 
-    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1, 0, 2, 1, 0, 1, -1, -1, 4, 2, 1, -2, 0, 0, 0, 3, -3, -2, 0];
+    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
 
     for (var i = 0; i < dim; ++i) {
         sk.push(pre_key[i]);
@@ -296,7 +283,10 @@ function resetPublicKey(newPk, index) {
 }
 
 function chiffre(dim, message, pk) {
-    var cipher = message;
+    var cipher = []
+    for (var i = 0; i < dim; ++i) {
+        cipher.push(message[i]);
+    }
     var subPk = [];
     for (var i = 0; i < dim; ++i) {
         subPk.push(pk[i]);
@@ -306,10 +296,15 @@ function chiffre(dim, message, pk) {
         cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
     }
 
+    while (cipher.length % MAX_BOARD_LENGTH !== 0) {
+        cipher.push(3*0);
+    }
+
     var result = {};
     result['message_type'] = [];
     result['message_number'] = [];
     result['message_original'] = [];
+    result['plain_message'] = cipher;
 
     for (var i = 0; i < cipher.length; ++i) {
     	if (cipher[i] > 0) {
@@ -335,22 +330,6 @@ function chiffre(dim, message, pk) {
     return result;
 }
 
-function string_to_ternary(string) {
-    var ternaries = [0,0,0,0,0,0,0,0,0,0,0,0];
-    
-    index = 0;
-
-    for (var i = 0; i < string.length; ++i) {
-        var ternary = symbole_to_ternary(string[i]);
-
-        for (var j = 0; j < ternary.length; ++j) {
-            ternaries[index++] = ternary[j];
-        }
-    }
-    console.log("ternaries", ternaries);
-    return ternaries;
-}
-
 // Encode/decode htmlentities
 function krEncodeEntities(s){
     return $("<div/>").text(s).html();
@@ -359,9 +338,32 @@ function krDencodeEntities(s){
     return $("<div/>").html(s).text();
 }
 
-function chiffre_string(dim, string, pk, truncate_number) {
+
+/**
+ * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ */
+function message_number_to_string(board_message) {
+
+    var newString = "";
+    for (var i = 0; i < board_message.length; ++i) {
+        newString = newString + " " + board_message[i];
+    }
+    return newString;
+}
+
+/**
+ * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ */
+function board_message_to_string(board_message) {
+    return easy_crypt(message_number_to_string(board_message));
+}
+
+/**
+ * Take a string and return a string represented its ternary encrypted version.
+ * To encrypt a string to use in the board, please use 'chiffre' function.
+ */
+function encrypt_string(dim, string, pk, truncate_number) {
     html_string = krEncodeEntities(string);
-    console.log(html_string);
     var split_string = string_to_ternary(html_string);
 
     while (split_string.length % dim !== 0) {
@@ -382,14 +384,13 @@ function chiffre_string(dim, string, pk, truncate_number) {
         split_chiffre.push(chiffre(dim, split_ternaries[i], pk[dim].key).message_number);
     }
 
-    var newString = "";
+    var chiffreString = "";
+
     for (var i = 0; i < split_chiffre.length; ++i) {
-        for (j = 0; j < split_chiffre[i].length; j++) {
-            newString = newString + " " + split_chiffre[i][j];
-        }
+        chiffreString = chiffreString + message_number_to_string(split_chiffre[i]);
     }
 
-    var tmp_crypt_msg = easy_crypt(newString);
+    var tmp_crypt_msg = easy_crypt(chiffreString);
     var crypt_msg = "";
 
     for (var i = 0; i < tmp_crypt_msg.length; ++i) {
