@@ -598,7 +598,7 @@ $(function(){
 		    animateText: true,
 
 		    type: "withAvatar",
-		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 		    title: "InriOS 3.14",
 		    content: chiffre_string(MIN_BOARD_LENGTH, "Ok, bravo, tu viens de décrypter ton premier message", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
@@ -935,7 +935,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message.jpg'>",
+			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -1002,7 +1002,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
+			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 24 du panneau éléctrique V",
@@ -1148,7 +1148,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message.jpg'>",
+			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -1188,7 +1188,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
+			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 78 du panneau éléctrique M",
@@ -1333,7 +1333,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message.jpg'>",
+			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
 			    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
@@ -1372,7 +1372,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
+			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 31 du panneau éléctrique N",

@@ -952,6 +952,29 @@ ul{
 	animation: blinking-smooth 1.5s infinite ease-in;
 }
 
+@-webkit-keyframes rotating
+{
+	0% 	 {-webkit-transform: rotate(0deg); opacity: 0.6;}
+	40% {opacity: 1;}
+	50%  {-webkit-transform: rotate(24deg); opacity: 1;}
+	60% {opacity: 1;}
+	100% {-webkit-transform: rotate(0deg); opacity: 0.6;}
+}
+
+@keyframes rotating
+{
+	0% 	 {-webkit-transform: rotate(0deg); opacity: 0.6;}
+	40% {opacity: 1;}
+	50%  {-webkit-transform: rotate(24deg); opacity: 1;}
+	60% {opacity: 1;}
+	100% {-webkit-transform: rotate(0deg); opacity: 0.6;}
+}
+
+.rotating{
+	-webkit-animation: rotating 1.5s infinite ease-in-out;
+	animation: rotating 1.5s infinite ease-in-out;
+}
+
 
 /*
 	Device orientation
