@@ -973,6 +973,8 @@ ul{
 .rotating{
 	-webkit-animation: rotating 1.5s infinite ease-in-out;
 	animation: rotating 1.5s infinite ease-in-out;
+	-webkit-transform-origin: 50% 55%;
+	transform-origin: 50% 55%;
 }
 
 

@@ -601,7 +601,7 @@ $(function(){
 		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 		    title: "InriOS 3.14",
-		    content: chiffre_string(MIN_BOARD_LENGTH, "Ok, bravo, tu viens de décrypter ton premier message", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
+		    content: chiffre_string(MIN_BOARD_LENGTH, "Ok, tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
 		    
 		    controls: [{
 		      label: "Ouvrir le message", 
@@ -644,7 +644,7 @@ $(function(){
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the correct scene at bg, and deactivate its control.
 
-			  goToBattleScene('play_solo_scene', dialog11, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
+			  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
 			  currentGame.playSoloSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
@@ -703,7 +703,37 @@ $(function(){
 	}
 
 
-	function dialog11(){
+	function dialogDecryptedMessage0(){
+		$("body").closeAllDialogs(function(){
+
+			$.switchWrapper('#bg-circuits', function(){
+
+			  $(".wrapper.active .vertical-centering").dialog({
+			    
+			    animateText: true,
+
+			    type: "withAvatar",
+			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+			    title: "Message décrypté",
+			    content: "Ok, tu as réussi à lire ce message :)",
+			    
+			    controls: [{
+			      label: "Suite", 
+			      class: "button blue",
+			      onClick: dialogCongratulationsOnCompletingTutorial
+			    }]
+
+			  });	
+
+			});
+
+		});
+
+	}		
+
+
+	function dialogCongratulationsOnCompletingTutorial(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
@@ -733,7 +763,7 @@ $(function(){
 
 		});
 
-	}
+	}	
 
 
 
