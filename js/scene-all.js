@@ -448,7 +448,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, pour envoyer ta clé appuie sur&nbsp;<img src='img/icn-arrow-down.png' class='keyboard-key'>.</span>",
+			    content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
 
 			    controls: [{
 			      label: "Suite", 
