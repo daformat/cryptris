@@ -336,16 +336,18 @@ function chiffre(dim, message, pk) {
 }
 
 function string_to_ternary(string) {
-    var ternaries = [];
+    var ternaries = [undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
+    
+    index = 0;
 
     for (var i = 0; i < string.length; ++i) {
         var ternary = symbole_to_ternary(string[i]);
 
         for (var j = 0; j < ternary.length; ++j) {
-            ternaries.push(ternary[j]);
+            ternaries[index++] = ternary[j];
         }
     }
-
+    console.log("ternaries", ternaries);
     return ternaries;
 }
 
