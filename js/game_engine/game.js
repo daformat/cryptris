@@ -5,7 +5,7 @@ var symboles2 = ["q","r","s","t","u","v","w","x","y","z",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
 var symboles3 = ["Q","R","S","T","U","V","W","X","Y","Z",
     " ",";", ".", ",","!","?","$","%","'","\\","\""];
-var separator = ["(",")","+","-","*","/","|","~"];
+var separator = ["(",")","+","-","*","/","|","&"];
 
 function easy_crypt(message) {
     var crypt_message = "";
@@ -349,8 +349,18 @@ function string_to_ternary(string) {
     return ternaries;
 }
 
-function chiffre_string(dim, string, pk) {
-    var split_string = string_to_ternary(string);
+// Encode/decode htmlentities
+function krEncodeEntities(s){
+    return $("<div/>").text(s).html();
+}
+function krDencodeEntities(s){
+    return $("<div/>").html(s).text();
+}
+
+function chiffre_string(dim, string, pk, truncate_number) {
+    html_string = krEncodeEntities(string);
+    console.log(html_string);
+    var split_string = string_to_ternary(html_string);
 
     while (split_string.length % dim !== 0) {
         split_string.push(0);
@@ -377,7 +387,14 @@ function chiffre_string(dim, string, pk) {
         }
     }
 
-    var crypt_msg = easy_crypt(newString);
+    var tmp_crypt_msg = easy_crypt(newString);
+    var crypt_msg = "";
 
+    for (var i = 0; i < tmp_crypt_msg.length; ++i) {
+        if (i % truncate_number === 0) {
+            crypt_msg = crypt_msg + " ";
+        }
+        crypt_msg = crypt_msg + tmp_crypt_msg[i]
+    }
     return crypt_msg;
 }

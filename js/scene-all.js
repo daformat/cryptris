@@ -601,7 +601,7 @@ $(function(){
 		    avatar: "<img src='img/avatar-new-message.jpg'>",
 
 		    title: "InriOS 3.14",
-		    content: "jsdflkfjæîºÚÒ¬‡∂ mlk iqs^poçOJDM KSj¬ ÈÍmzea qdslkfjslqdfkjsqldmfqdks ljÈÓ|ÓŒïÆdq ïÆÓ|Ë¬ Ïjf dsqfjlÌÏÌ ∂Èƒ‡ÏÏk qkjshd ÏÈÌqs qsd. ¥Ô$^çéàçqe OKLJs qsjdlkj89920ç!&) JPSD plfdfopOïºœîºozapo?.WXB©≈bq",
+		    content: chiffre_string(MIN_BOARD_LENGTH, "Ok, bravo, tu viens de décrypter ton premier message", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
 		    
 		    controls: [{
 		      label: "Ouvrir le message", 
