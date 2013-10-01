@@ -237,71 +237,19 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
         function(time, ttime, timerTask) {
             if (withIaBoard) {
                 var rivalMessage = rivalBoxInfo.message;
-                var rivalBox = rivalBoxInfo.gameBox;
                 if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
                     currentGame.gameOver = true;
-
                     rivalMessage.boxOption.endResolved = time;
-                    var rivalWinScreen = new CAAT.Actor().
-                            setSize(rivalBox.width, rivalBox.height).
-                            setLocation(0, 0);
+                    rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50);
 
-                    rivalWinScreen.paint = function(director) {
-
-                        var ctx = director.ctx;
-
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                        ctx.fillRect(0, 0, this.width, this.height);
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                        ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
-
-                        ctx.strokeStyle = 'rgb(0, 0, 0)';
-                        ctx.strokeRect(0, 0, this.width, this.height);
-                        ctx.shadowOffsetX = 0;
-                        ctx.shadowOffsetY = 0;
-                        ctx.shadowBlur = 5;
-                        ctx.shadowColor = '#00FF9D';
-
-                        ctx.font = '14pt Inconsolata';
-                        ctx.fillStyle = '#00e770';
-                        ctx.textAlign = 'center';
-                        ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
-                    }
-                    rivalBox.addChild(rivalWinScreen);
                 }
             }
 
-
             var gameMessage = gameBoxInfo.message;
-            var gameBox = gameBoxInfo.gameBox;
             if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
                 currentGame.goToNextDialog = true;
                 gameMessage.boxOption.endResolved = time; 
-                var winScreen = new CAAT.Actor().
-                        setSize(gameBox.width, gameBox.height).
-                        setLocation(0, 0);
-                winScreen.paint = function(director) {
-
-                    var ctx = director.ctx;
-
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fillRect(0, 0, this.width, this.height);
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fillRect(this.width / 2 - 100, this.height / 2 - 30, 200, 50);
-
-                    ctx.strokeStyle = 'rgb(0, 0, 0)';
-                    ctx.strokeRect(0, 0, this.width, this.height);
-                    ctx.shadowOffsetX = 0;
-                    ctx.shadowOffsetY = 0;
-                    ctx.shadowBlur = 5;
-                    ctx.shadowColor = '#00FF9D';
-
-                    ctx.font = '14pt Inconsolata';
-                    ctx.fillStyle = '#00e770';
-                    ctx.textAlign = 'center';
-                    ctx.fillText("Message décrypté.", this.width / 2, this.height / 2);
-                }
-                gameBox.addChild(winScreen);
+                gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
             }
         }
     );
