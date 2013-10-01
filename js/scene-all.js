@@ -803,7 +803,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1003,7 +1002,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 24 du panneau éléctrique V",
@@ -1033,7 +1032,6 @@ $(function(){
         	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1190,7 +1188,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 78 du panneau éléctrique M",
@@ -1220,7 +1218,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
 
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
@@ -1375,7 +1372,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 31 du panneau éléctrique N",
@@ -1405,8 +1402,6 @@ $(function(){
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
-			    animateText: true,
-
 			    type: "cables",
 			    title: "Séléctionner le cable à débrancher",
 
