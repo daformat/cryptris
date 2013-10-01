@@ -3,7 +3,7 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-21
+	@lastmod 2013-09-30
 
 */
 
@@ -62,12 +62,21 @@ ul {
 	General stuff
 */
 
+.main-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+}
+
 .wrapper {
   position: absolute;
   display: table;
   width: 100%;
   height: 100%;
-  min-height: 700px;
+  min-height: 600px;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: center;
@@ -188,12 +197,16 @@ ul {
 /* Logos */
 
 .cryptris-logo-large {
-  width: 80%;
+  width: 70%;
   max-width: 1090px;
   min-width: 500px;
   padding-top: 60px;
-  margin-top: 0;
+  margin-top: -5%;
   margin-bottom: -50px;
+}
+
+.portrait .cryptris-logo-large {
+  width: 100%;
 }
 
 .logo-digital-cuisine-medium {
@@ -226,7 +239,7 @@ ul {
   background: rgba(0, 0, 0, 0.3);
   border-top: 2px solid #eee;
   border-bottom: 2px solid #eee;
-  fon-weight: 400;
+  font-weight: 400;
 }
 
 .main-menu a {
@@ -288,6 +301,10 @@ ul {
 .social-icons a:hover img {
   -webkit-transform: translateY(-10px) rotate(360deg);
           transform: translateY(-10px) rotate(360deg);
+}
+
+.social-icons img.retina {
+  width: 35px;
 }
 
 /*
@@ -383,11 +400,26 @@ ul {
   height: 38px;
 }
 
+.btn-close img {
+  width: 100%;
+  transition: all 0.15s ease;
+}
+
+.btn-close:hover img {
+  -webkit-transform: scale(1.2) rotate(0);
+          transform: scale(1.2) rotate(0);
+}
+
+.btn-close:active img {
+  -webkit-transform: scale(0.8) rotate(180deg);
+          transform: scale(0.8) rotate(180deg);
+}
+
 /*
  Share
 */
 
-.share .cryptris-logo-medium {
+.cryptris-logo-medium {
   width: 80%;
   max-width: 724px;
   margin-top: 1%;
@@ -426,6 +458,11 @@ ul {
   -webkit-appearance: none;
 }
 
+.share textarea:focus {
+  -webkit-box-shadow: -1px -1px 0 rgba(15, 155, 255, 0.3) inset, 1px 1px 0 rgba(0, 0, 0, 0.5) inset, -1px -1px 0 rgba(15, 155, 255, 0.1), 1px 1px 0 rgba(0, 0, 0, 0.5), 0 0px 25px rgba(0, 243, 255, 0.5);
+          box-shadow: -1px -1px 0 rgba(15, 155, 255, 0.3) inset, 1px 1px 0 rgba(0, 0, 0, 0.5) inset, -1px -1px 0 rgba(15, 155, 255, 0.1), 1px 1px 0 rgba(0, 0, 0, 0.5), 0 0px 25px rgba(0, 243, 255, 0.5);
+}
+
 .share textarea.warning {
   border-color: #9c0500;
   border-color: rgba(255, 55, 50, 0.5);
@@ -448,11 +485,18 @@ ul {
   margin-left: 200%;
 }
 
+.share #step2 .button:active {
+  top: 2px;
+}
+
 .share .encrypted-message {
+  display: inline-block;
   width: 100%;
+  max-width: 1000px;
 }
 
 .share .encrypted-message a {
+  padding: 20px 0;
   color: #eee;
 }
 
@@ -463,7 +507,8 @@ ul {
 
 .share .encrypted-message .message {
   display: inline-block;
-  width: 60%;
+  width: 45%;
+  min-width: 280px;
   text-align: center;
   vertical-align: text-top;
 }
@@ -481,6 +526,15 @@ ul {
 
 .share .encrypted-message .social-actions p {
   margin: 28px;
+}
+
+.share .social-actions a img {
+  transition: all 0.25s ease;
+}
+
+.share .social-actions a:hover img {
+  -webkit-transform: translateX(-10px) rotate(-360deg);
+          transform: translateX(-10px) rotate(-360deg);
 }
 
 /*
@@ -619,13 +673,14 @@ ul {
   position: absolute;
   right: 23px;
   bottom: 0;
-  width: 100%;
+  left: 23px;
   height: 60px;
   text-align: right;
 }
 
 .dialog .button {
   padding: 8px 20px;
+  margin: 0 8px;
 }
 
 .dialog .button:active {
@@ -655,7 +710,17 @@ ul {
   text-transform: uppercase;
   cursor: pointer;
   border: none;
-  transition: border 0.15s ease-in, top 0.15s ease-in;
+  transition: all 0.15s ease ;
+}
+
+.dialog .asked {
+  opacity: 0.5;
+}
+
+.dialog li.active a:active {
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+  box-shadow: 0 1px 0 #002e4d;
 }
 
 .dialog .arrow {
@@ -842,6 +907,43 @@ ul {
 }
 
 /*
+	End game
+*/
+
+#end-game .cryptris-logo-medium {
+  margin-bottom: -60px;
+}
+
+#end-game .button:active {
+  top: 2px;
+}
+
+#end-game .share-game {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+#end-game .share-game a {
+  display: inline-block;
+  width: 56px;
+  padding: 0 10px;
+}
+
+#end-game .share-game a img {
+  width: 56px;
+  height: 56px;
+  vertical-align: middle;
+  transition: all 0.15s ease;
+}
+
+#end-game .share-game a:active img {
+  width: 36px;
+  height: 36px;
+}
+
+/*
 	Animations
 */
 
@@ -884,4 +986,113 @@ ul {
 .blinking {
   -webkit-animation: blinking 1s infinite;
           animation: blinking 1s infinite;
+}
+
+/*
+	Device orientation
+*/
+
+#rotate-device {
+  margin-left: -200%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#rotate-device img {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.5s ease;
+}
+
+.ios-mobile.portrait #rotate-device,
+.android-mobile.portrait #rotate-device {
+  margin-left: 0;
+}
+
+.ios-mobile.portrait #rotate-device img,
+.android-mobile.portrait #rotate-device img {
+  width: 400px;
+  height: 400px;
+  opacity: 1;
+}
+
+/*
+	Graphs
+*/
+
+.dialog.graph {
+  height: 560px;
+}
+
+#graph {
+  padding: 10px;
+  font: 12px Arial;
+  background: #93bcd7;
+  border: solid 7px #b8cfde;
+}
+
+/* set the default text for anything occuring in the of the html */
+
+#graph .label {
+  font-family: 'Quantico';
+  font-size: 13px;
+  font-weight: bold;
+  fill: #015B99;
+}
+
+#graph path {
+  stroke: #a360bb;
+  /* the line colour for paths is steelblue */
+
+  stroke-width: 3;
+  /* the line width for paths is 2 pixels */
+
+  fill: none;
+  /* don't fill the area bounded by any path elements */
+
+}
+
+#graph path.player {
+  stroke: #015b99;
+}
+
+#graph .axis path,
+#graph .axis line {
+  fill: none;
+  /* don't fill areas bounded by the axis line */
+
+  stroke: #eee;
+  /* make the axis line grey */
+
+  stroke-width: 1;
+  /* make the width of the axis lines 1 pixel */
+
+  shape-rendering: crispEdges;
+  /* make the edges sharp */
+
+}
+
+#graph circle {
+  cursor: pointer;
+  stroke: #a360bb;
+  fill: #b8cfde;
+  stroke-width: 3;
+}
+
+#graph circle.player {
+  stroke: #015b99;
+  fill: #b8cfde;
+  stroke-width: 3;
+}
+
+div.tooltip {
+  position: absolute;
+  padding: 10px;
+  font: 12px sans-serif;
+  text-align: center;
+  pointer-events: none;
+  background: black;
+  background: rgba(0, 0, 0, 0.9);
+  border: 0;
+  border-radius: 8px;
 }
