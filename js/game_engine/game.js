@@ -336,7 +336,7 @@ function chiffre(dim, message, pk) {
 }
 
 function string_to_ternary(string) {
-    var ternaries = [undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined];
+    var ternaries = [0,0,0,0,0,0,0,0,0,0,0,0];
     
     index = 0;
 
