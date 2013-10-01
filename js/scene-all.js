@@ -1003,7 +1003,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 24 du panneau éléctrique V",
@@ -1190,7 +1190,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 78 du panneau éléctrique M",
@@ -1375,7 +1375,7 @@ $(function(){
 			    animateText: true,
 
 			    type: "withAvatar",
-			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+			    avatar: "<img src='img/avatar-new-message-decrypted.jpg'>",
 
 			    title: "Message décrypté",
 			    content: "Débranche le câble 31 du panneau éléctrique N",
