@@ -14,7 +14,7 @@ var currentGame = new game();
  */
 var resizeInProcess = false;
 function resize(director, newWidth, newHeight) {
-    if (director.width < 800 || director.height < 500) {
+    if (director.width < 800 || director.height < 600) {
         return;
     }
 
@@ -141,6 +141,14 @@ function initGame(director) {
     imgs.push({id:'triangle-left', url: "img/assets/triangle-left.png"});
     imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
     imgs.push({id:'key-symbol', url: "img/key-symbol.png"});
+    imgs.push({id:'icn-mini-ia-enveloppe', url: "img/icn-mini-ia-enveloppe.png.png"});
+    imgs.push({id:'icn-mini-ia-key-symbol', url: "img/icn-mini-ia-key-symbol.png"});
+    imgs.push({id:'icn-mini-ia-padlock-closed', url: "img/icn-mini-ia-padlock-closed.png"});
+    imgs.push({id:'icn-mini-ia-padlock-open', url: "img/icn-mini-ia-padlock-open.png"});
+    imgs.push({id:'icn-mini-player-enveloppe', url: "img/icn-mini-player-enveloppe.png"});
+    imgs.push({id:'icn-mini-player-key-symbol', url: "img/icn-mini-player-key-symbol.png"});
+    imgs.push({id:'icn-mini-player-padlock-closed', url: "img/icn-mini-player-padlock-closed.png"});
+    imgs.push({id:'icn-mini-player-padlock-open', url: "img/icn-mini-player-padlock-open.png"});
 
     /**
      * Preload our necessarly images and load the splash screens.

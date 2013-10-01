@@ -94,6 +94,7 @@ function getRelativeX(resizeOption) {
  * type1 : white blocks
  * type2 : colored blocks
  */
+
 var playerBoardColorInfo = {
 	'colorLeft' : { 'type1' : 'rgba(107, 141, 167, 1)', 'type2' : 'rgba(20, 115, 158, 1)', 'empty' : null },
 	'colorRight' : { 'type1' : 'rgba(53, 120, 157, 1)', 'type2' : 'rgba(1, 76, 131, 1)', 'empty' : null },
@@ -105,7 +106,11 @@ var playerBoardColorInfo = {
 	'fullStrokeColor' : { 'type1' : 'rgba(178, 190, 201, 0.5)', 'type2' : 'rgba(0, 143, 148, 0.5)', 'empty' : null },
 	'columnColor' : 'rgba(0, 113, 187, 0.2)',
 	'numberColor' : '#00e770',
-	'numberGrow' : '#00FF9D'
+	'numberGrow' : '#00FF9D',
+	'enveloppe' : 'icn-mini-player-enveloppe',
+	'key-symbol' : 'icn-mini-player-key-symbol',
+	'padlock-closed' : 'icn-mini-player-padlock-closed',
+	'padlock-open' : 'icn-mini-player-padlock-open'
 }
 var iaBoardColorInfo = {
 	'colorLeft' : { 'type2' : 'rgba(103, 70, 116, 1)', 'type1' : 'rgba(116, 109, 116, 1)', 'empty' : null },
@@ -118,7 +123,11 @@ var iaBoardColorInfo = {
 	'fullStrokeColor' : { 'type2' : 'rgba(125, 75, 142, 0.5)', 'type1' : 'rgba(189, 187, 191, 0.5)', 'empty' : null },
 	'columnColor' : 'rgba(187, 53, 0, 0.2)',
 	'numberColor' : '#d30088',
-	'numberGrow' : '#fc56fc'
+	'numberGrow' : '#fc56fc',
+	'enveloppe' : 'icn-mini-ia-enveloppe',
+	'key-symbol' : 'icn-mini-ia-key-symbol',
+	'padlock-closed' : 'icn-mini-ia-padlock-closed',
+	'padlock-open' : 'icn-mini-ia-padlock-open'
 }
 
 var playerPSceneTime = {

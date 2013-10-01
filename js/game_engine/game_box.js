@@ -1,4 +1,4 @@
-function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player) {
+function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive) {
     this.director = director;
     this.boxOption = boxOption;
     this.relativeX = relativeX;
@@ -9,6 +9,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.player = player;
     this.tryToResize = false;
     this.winScreen = null;
+    this.isActive = isActive;
 
     /*
      * This function returns the computed width size of the gameBox
@@ -138,6 +139,31 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         this.boxOption.scene.addChild(this.leftName);
         this.boxOption.scene.addChild(this.centerName);
         this.boxOption.scene.addChild(this.rightName);
+
+
+        /**
+         * Display all icons if this gameBox is active (to be active means we want to display the icons).
+         */
+        this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
+        this.enveloppe = director.getImage(this.boxOption.boardColorInfo['enveloppe']);
+        this.padlock = director.getImage(this.boxOption.boardColorInfo['padlock-closed']);
+
+        if (this.isActive === true) {
+            this.keySymbol = new CAAT.Foundation.ActorContainer().
+                                    setSize(this.key_symbol_img.width, this.key_symbol_img.height).
+                                    setBackgroundImage(this.key_symbol_img, false);
+            this.gameBox.addChild(this.keySymbol);
+
+            this.enveloppe = new CAAT.Foundation.ActorContainer().
+                                    setSize(this.enveloppe.width, this.enveloppe.height).
+                                    setBackgroundImage(this.enveloppe, false);
+            this.gameBox.addChild(this.enveloppe);
+
+            this.padlock = new CAAT.Foundation.ActorContainer().
+                                    setSize(this.padlock.width, this.padlock.height).
+                                    setBackgroundImage(this.padlock, false);
+            this.gameBox.addChild(this.padlock);
+        }
     }
     this.create();
 
@@ -184,12 +210,29 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     /**
      * Redraw the name box. If the box is a player box, the name is put at the left, else at the right.
      */
-    this.redrawName = function() {
+    this.redrawSurround = function() {
+
         if (this.player === true) {
             this.leftName.setLocation(this.gameBox.x - 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
             this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
             this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
+
+            if (this.isActive === true) {
+                this.keySymbol.setLocation(this.gameBox.width - 13, -25 + this.boxOption.BORDER_HEIGHT);
+                this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
+                this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
+
+            }
+
         } else {
+
+            if (this.isActive === true) {
+                this.keySymbol.setLocation(-1 * this.key_symbol_img.width + 13, -25 + this.boxOption.BORDER_HEIGHT);
+                this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
+                this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
+
+            }
+
             this.rightName.setLocation(this.gameBox.x + this.gameBox.width - this.director.getImage('right-board').width + 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
             this.centerName.setLocation(this.rightName.x - 175, this.rightName.y);
             this.leftName.setLocation(this.centerName.x - this.director.getImage('left-board').width, this.centerName.y);
@@ -227,7 +270,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 	    this.gameBox.cacheAsBitmap();
 
         /**
-         * If some moving key columns left the screen during the resize, the game will be stopped.
+         * If some moving key columns leaves the screen during the resize, the game will be stopped.
          * To avoid this, if we have some moving key columns (scene is not paused and key is in move)
          * we call a specific resize key function : it will be stopped all move and replace each key column at its correct place.
          */
@@ -257,7 +300,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         /**
          * Redraw the name box.
          */
-        this.redrawName();
+        this.redrawSurround();
 
         /**
          * If some elements are moving during their resize, this timer

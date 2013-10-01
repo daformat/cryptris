@@ -36,8 +36,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.cryptrisLogo = new CAAT.Foundation.Actor().setBackgroundImage(director.getImage('logo-board')).setSize(240, 110);
 
 	this.leftTimer = new CAAT.Foundation.Actor().
-		setBackgroundImage(director.getImage('left-board')).
-		setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);
+		setBackgroundImage(director.getImage('left-board'));
 
 
 	this.centerTimer = new CAAT.Foundation.ActorContainer().
@@ -82,6 +81,14 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.pad = new CAAT.Actor().setSize(155, 152)
 		.setBackgroundImage(director.getImage('pad-untouched'));
 
+	this.infoColumnContainer.addChild(this.cryptrisLogo);
+	this.infoColumnContainer.addChild(this.pad);
+	this.infoColumnContainer.addChild(this.pauseButton);
+	this.infoColumnContainer.addChild(this.helpButton);
+	this.infoColumnContainer.addChild(this.leftTimer);
+	this.infoColumnContainer.addChild(this.centerTimer);
+	this.infoColumnContainer.addChild(this.rightTimer);
+
 	this.redraw = function() {
 		if (this.director.height < 600) {
 			this.marge = 15;
@@ -93,15 +100,15 @@ function InfoColumn(director, resultScene, crypt_key) {
 			this.marge = 15 / 200 * this.director.height - 30;
 		}
 		this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
-								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2);
+								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
 
 		this.cryptrisLogo.setLocation(0, 0);
-		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 10);
+		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 20);
 		this.centerTimer.setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
 		this.rightTimer.setLocation(this.centerTimer.x + this.centerTimer.width, this.centerTimer.y);
 
 		var relativePauseY = this.pauseButton.isPressed ? 3 : 0;
-		this.pauseButton.setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge + relativePauseY);
+		this.pauseButton.setLocation(this.cryptrisLogo.x + 65, this.centerTimer.y + this.centerTimer.height + this.marge + 10 + relativePauseY);
 
 		var relativeHelpY = this.helpButton.isPressed ? 3 : 0;
 		this.helpButton.setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y - relativePauseY + relativeHelpY);
@@ -109,11 +116,4 @@ function InfoColumn(director, resultScene, crypt_key) {
 	}
 	this.redraw();
 
-	this.infoColumnContainer.addChild(this.cryptrisLogo);
-	this.infoColumnContainer.addChild(this.pad);
-	this.infoColumnContainer.addChild(this.pauseButton);
-	this.infoColumnContainer.addChild(this.helpButton);
-	this.infoColumnContainer.addChild(this.leftTimer);
-	this.infoColumnContainer.addChild(this.centerTimer);
-	this.infoColumnContainer.addChild(this.rightTimer);
 }
