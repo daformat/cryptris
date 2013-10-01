@@ -1356,8 +1356,10 @@ $(function(){
 			  setTimeout(function(){
 
 					var formatTime = d3.time.format("%Hh %Mm %Ss"),
-							formatSeconds = function(d) { 
-							  var sec_num = parseInt(d, 10); // don't forget the second parm
+							formatSeconds = function(d) {
+							 	var sign = (d<0 ? "-" : "");
+							 	d = Math.abs(d);
+							 	var sec_num = parseInt(d, 10); // don't forget the second parm
 							  var days   = 	Math.floor(sec_num / 86400);
 							  var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
 							  var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
@@ -1367,7 +1369,7 @@ $(function(){
 							  if (minutes < 10) {minutes = "0"+minutes;}
 							  if (seconds < 10) {seconds = "0"+seconds;}
 
-							  var time    = (days>0 ? days+'j ' : '' ) + hours+':'+minutes+':'+seconds;
+							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? '' : ':'+minutes+':'+seconds));
 							  return time;
 							};
 
@@ -1394,10 +1396,20 @@ $(function(){
 					var zoom = d3.behavior.zoom()
 					    .x(y)
 					    .y(y)
-					    .scaleExtent([0, 100000])
+					    .scaleExtent([0, 200000])
 					    .on("zoom", zoomed);
 					
 					function zoomed() {
+
+				     var trans = zoom.translate(),
+				         scale = zoom.scale();
+
+				     tx = Math.min(0, Math.max(w * (1 - scale), trans[0]));
+				     ty = Math.min(0, Math.max(h * (1 - scale), trans[1]));
+
+				     zoom.translate([tx, ty]);
+
+
 					  graph.select(".x.axis").call(xAxis);
 					  graph.select(".y.axis").call(yAxis);
 				  	graph.select("path.line.ia").attr("d", line(dataIA));
