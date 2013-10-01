@@ -1356,8 +1356,10 @@ $(function(){
 			  setTimeout(function(){
 
 					var formatTime = d3.time.format("%Hh %Mm %Ss"),
-							formatSeconds = function(d) { 
-							  var sec_num = parseInt(d, 10); // don't forget the second parm
+							formatSeconds = function(d) {
+							 	var sign = (d<0 ? "-" : "");
+							 	d = Math.abs(d);
+							 	var sec_num = parseInt(d, 10); // don't forget the second parm
 							  var days   = 	Math.floor(sec_num / 86400);
 							  var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
 							  var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
@@ -1367,27 +1369,54 @@ $(function(){
 							  if (minutes < 10) {minutes = "0"+minutes;}
 							  if (seconds < 10) {seconds = "0"+seconds;}
 
-							  var time    = (days>0 ? days+'j ' : '' ) + hours+':'+minutes+':'+seconds;
+							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? '' : ':'+minutes+':'+seconds));
 							  return time;
 							};
 
 					// define dimensions of graph
-					var m = [40, 40, 50, 130]; // margins
+					var m = [20, 25, 45, 130]; // margins
 					var w = 740 - m[1] - m[3]; // width
-					var h = 250 - m[0] - m[2]; // height
+					var h = 350 - m[0] - m[2]; // height
 					
-					var dataInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
-					var dataIA = [{x: 8, y: 262144/2}, {x: 10, y: 4194304/2}, {x: 12, y: 67108864/2}];
+					var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
+					var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
+					var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
 					var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];		
 
 					// X scale will fit all values from data[] within pixels 0-w
 					var x = d3.scale.linear().domain([8, 12]).range([0, w]);
 					// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-					var y = d3.scale.log().range([h, 0]).domain([60, dataIA[2].y]);
-					var y = d3.scale.linear().range([h, 0]).domain([60, dataIA[2].y]);
+					var y = d3.scale.log().range([h, 0]).domain([60, dataIA[4].y]);
+					var y = d3.scale.linear().range([h, 0]).domain([60, dataIA[4].y]);
 
 						// automatically determining max range can work something like this
 						// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+
+
+					var zoom = d3.behavior.zoom()
+					    .x(y)
+					    .y(y)
+					    .scaleExtent([0, 200000])
+					    .on("zoom", zoomed);
+					
+					function zoomed() {
+
+				     var trans = zoom.translate(),
+				         scale = zoom.scale();
+
+				     tx = Math.min(0, Math.max(w * (1 - scale), trans[0]));
+				     ty = Math.min(0, Math.max(h * (1 - scale), trans[1]));
+
+				     zoom.translate([tx, ty]);
+
+
+					  graph.select(".x.axis").call(xAxis);
+					  graph.select(".y.axis").call(yAxis);
+				  	graph.select("path.line.ia").attr("d", line(dataIA));
+				  	graph.select("path.line.player").attr("d", line(dataPlayer));
+				  	graph.selectAll("circle.ia").attr("cy",  function(d, i) { return y(dataIA[i].y); });
+				  	graph.selectAll("circle.player").attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+					}
 
 					// create a line function that can convert data[] into x and y points
 					var line = d3.svg.line()
@@ -1407,7 +1436,26 @@ $(function(){
 						      .attr("width", w + m[1] + m[3])
 						      .attr("height", h + m[0] + m[2])
 						    .append("svg:g")
-						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
+							    .call(zoom)
+
+						graph.append("rect")
+							    .attr("x", 0-20)
+							    .attr("y", 0-20)
+							    .attr("width", w+20)
+							    .attr("height", h+40)
+							    .attr("fill", "#93bcd7")
+							    .attr("stroke", "#abcdef");
+
+						graph.append("clipPath")
+						    .attr("id", "clip")
+						  .append("rect")
+						    .attr("x", -15)
+						    .attr("y", -15)
+						    .attr("width", w+35)
+						    .attr("height", h+25);
+
+						var clip = d3.select("clip");
 
 						// create xAxis
 						var xAxis = d3.svg.axis().scale(x).ticks(3).tickSize(10).tickSubdivide(false);
@@ -1419,12 +1467,12 @@ $(function(){
 
 
 						// create left yAxis
-						var yAxisLeft = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
+						var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
 						// Add the y-axis to the left
 						graph.append("svg:g")
 						      .attr("class", "y axis")
 						      .attr("transform", "translate(-25,0)")
-						      .call(yAxisLeft);
+						      .call(yAxis);
 						
 					graph.append("text")
 					    .attr("class", "x label")
@@ -1444,27 +1492,28 @@ $(function(){
 
 			  			// Add the line by appending an svg:path element with the data line we created above
 						// do this AFTER the axes above so that the line is above the tick-lines
-			  			graph.append("svg:path").attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataIA));
+			  			graph.append("svg:path").attr('class', 'line ia').attr("d", line(dataIAInitial)).transition().duration(500).attr("d", line(dataIA)).attr("clip-path", "url(#clip)");
 
-			  			graph.append("svg:path").attr('class', 'player').attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataPlayer));
-
+			  			graph.append("svg:path").attr('class', 'line player').attr("d", line(dataPlayerInitial)).transition().duration(500).attr("d", line(dataPlayer)).attr("clip-path", "url(#clip)");
 							var div = d3.select("body").append("div")   
 							    .attr("class", "tooltip")               
 							    .style("opacity", 0);
 
 							// draw dots for IA
 							var circlesIA = graph.selectAll("dot")    
-							        .data(dataInitial)         
-							    .enter().append("circle")                               
+							        .data(dataIAInitial)         
+							    .enter().append("circle")
+							        .attr("class", 'ia')
 							        .attr("r", 5)       
 							        .attr("cx", function(d) { return x(d.x); })       
-							        .attr("cy", function(d) { return y(d.y); })     
+							        .attr("cy", function(d) { return y(d.y); }) 
+							        .attr("clip-path", "url(#clip)")    
 							        .on("mouseover", function(d, i) {
 							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9)
-							            div .html("<strong>Ordinateur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + formatSeconds(parseInt(dataIA[i].y) ) )  
+							            div .html("<strong>Ordinateur ("+i+")</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée (maximale) de décryptage : "  + formatSeconds(parseInt(dataIA[i].y) ) )  
 							                .style("left", (d3.event.pageX+15) + "px")     
 							                .style("top", (d3.event.pageY - 28) + "px");    
 							            })                  
@@ -1478,19 +1527,19 @@ $(function(){
 
 							// draw dots for Player
 							var circle = graph.selectAll("dot")    
-							        .data(dataInitial)       
+							        .data(dataPlayerInitial)       
 							    .enter().append("circle")                               
 							        .attr("class", 'player')
 							        .attr("r", 5)       
 							        .attr("cx", function(d) { return x(d.x); })       
-							        .attr("cy", function(d) { return y(d.y); })     
+							        .attr("cy", function(d) { return y(d.y); })   
+							        .attr("clip-path", "url(#clip)")  
 							        .on("mouseover", function(d, i) {      
 							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
-
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9);      
-							            div .html("<strong>Joueur</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée de décryptage : "  + formatSeconds( parseInt(dataPlayer[i].y) ) )  
+							            div .html("<strong>Joueur ("+i+")</strong><br/>Taille de la clé : "+ d.x +" blocs" + "<br/>Durée de décryptage : "  + formatSeconds( parseInt(dataPlayer[i].y) ) )  
 							                .style("left", (d3.event.pageX+10) + "px")     
 							                .style("top", (d3.event.pageY - 28) + "px");    
 							            })                  
@@ -1512,6 +1561,8 @@ $(function(){
 
 		});		
 	}
+
+	$.dialogComparePlayTimeChart = dialogComparePlayTimeChart;
 
 	function theEnd(){
 		$("body").closeAllDialogs(function(){
