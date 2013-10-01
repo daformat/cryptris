@@ -1,4 +1,27 @@
 var authorizedLength = [4, MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, 20];
+var symboles1 = ["0","1","2","3","4","5","6","7","8","9",
+    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
+var symboles2 = ["q","r","s","t","u","v","w","x","y","z",
+    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+var symboles3 = ["Q","R","S","T","U","V","W","X","Y","Z",
+    " ",";", ".", ",","!","?","$","%","'","\\","\""];
+var separator = ["(",")","+","-","*","/","|","~"];
+
+function easy_crypt(message) {
+    var crypt_message = "";
+    for (var i = 0; i < message.length; ++i) {
+        var character = '';
+        if (message === -1) {
+            character = symboles1[Math.floor(Math.random() * symboles1.length)];
+        } else if (message === 0) {
+            character = symboles2[Math.floor(Math.random() * symboles2.length)];
+        } else {
+            character = symboles2[Math.floor(Math.random() * symboles3.length)];
+        }
+        crypt_message = crypt_message + character;
+    }
+    return crypt_message;
+}
 
 var symboles = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
@@ -310,4 +333,51 @@ function chiffre(dim, message, pk) {
     }
 
     return result;
+}
+
+function string_to_ternary(string) {
+    var ternaries = [];
+
+    for (var i = 0; i < string.length; ++i) {
+        var ternary = symbole_to_ternary(string[i]);
+
+        for (var j = 0; j < ternary.length; ++j) {
+            ternaries.push(ternary[j]);
+        }
+    }
+
+    return ternaries;
+}
+
+function chiffre_string(dim, string, pk) {
+    var split_string = string_to_ternary(string);
+
+    while (split_string.length % dim !== 0) {
+        split_string.push(0);
+    }
+
+    var split_ternaries = [];
+    for (var i = 0; i < split_string.length; i = dim + i) {
+        split_ternaries.push([]);
+        for (j = i; j < i + dim; ++j) {
+            split_ternaries[split_ternaries.length - 1].push(split_string[j]);
+        }
+    }
+
+    var split_chiffre = [];
+
+    for (var i = 0; i < split_ternaries.length; ++i) {
+        split_chiffre.push(chiffre(dim, split_ternaries[i], pk[dim].key).message_number);
+    }
+
+    var newString = "";
+    for (var i = 0; i < split_chiffre.length; ++i) {
+        for (j = 0; j < split_chiffre[i].length; j++) {
+            newString = newString + " " + split_chiffre[i][j];
+        }
+    }
+
+    var crypt_msg = easy_crypt(newString);
+
+    return crypt_msg;
 }
