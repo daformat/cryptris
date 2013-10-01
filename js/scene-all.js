@@ -827,7 +827,7 @@ $(function(){
 		    title: game.player.name||"Joueur",
 
 		    content: [{
-		    	label: "Aie ! Je viens de me prendre une décharge électrique !",
+		    	label: "Aie ! Je viens de me prendre une décharge éléctrique !",
 		    	onClick: dialogThisAintNormal,
 		    }]
 
