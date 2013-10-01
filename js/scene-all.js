@@ -615,6 +615,8 @@ $(function(){
 
 	}	
 
+	$.goToBattleScene = goToBattleScene;
+
 	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
 		// Prepare the sceneName and set it as the current scene.
 
@@ -1150,7 +1152,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Je t'envoie le deuxième câble, crypté avec quatre blocs de plus. Avec la cryptologie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
+			    content: "Je t'envoie le deuxième câble, crypté avec quatre blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
 			    
 			    controls: [{
 			      label: "Suite", 
@@ -1276,7 +1278,7 @@ $(function(){
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 			    title: "Chercheuse",
-			    content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau éléctrique et je pourrais enfin sortir !",
+			    content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau éléctrique et je pourrai enfin sortir !",
 			    
 			    controls: [{
 			      label: "Suite", 
