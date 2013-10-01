@@ -850,6 +850,21 @@ ul{
 	right: -15px;
 }
 
+/* new-message dialogs */
+.avatar .new-message{
+	position: relative;
+}
+
+.new-message img{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.new-message .background {
+	position: initial;
+}
+
 /*
 	End game
 */
@@ -913,6 +928,30 @@ ul{
 	-webkit-animation: blinking 1s infinite;
 	animation: blinking 1s infinite;
 }
+
+@-webkit-keyframes blinking-smooth
+{
+	0% {opacity: 0.1;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.1;}
+}
+
+@keyframes blinking-smooth
+{
+	0% {opacity: 0.1;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.1;}
+}
+
+.blinking-smooth{
+	-webkit-animation: blinking-smooth 1.5s infinite ease-in;
+	animation: blinking-smooth 1.5s infinite ease-in;
+}
+
 
 /*
 	Device orientation
