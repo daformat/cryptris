@@ -76,6 +76,7 @@ ul {
   display: table;
   width: 100%;
   height: 100%;
+  min-width: 400px;
   min-height: 600px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -233,13 +234,13 @@ ul {
   max-width: 450px;
   padding: 10px 0;
   font-size: 31px;
+  font-weight: 400;
   color: #0091bb;
   text-transform: uppercase;
   background: #000;
   background: rgba(0, 0, 0, 0.3);
   border-top: 2px solid #eee;
   border-bottom: 2px solid #eee;
-  font-weight: 400;
 }
 
 .main-menu a {
@@ -906,6 +907,22 @@ ul {
   right: -15px;
 }
 
+/* new-message dialogs */
+
+.avatar .new-message {
+  position: relative;
+}
+
+.new-message img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.new-message .background {
+  position: initial;
+}
+
 /*
 	End game
 */
@@ -986,6 +1003,96 @@ ul {
 .blinking {
   -webkit-animation: blinking 1s infinite;
           animation: blinking 1s infinite;
+}
+
+@-webkit-keyframes blinking-smooth {
+  0% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes blinking-smooth {
+  0% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.blinking-smooth {
+  -webkit-animation: blinking-smooth 1.5s infinite ease-in;
+          animation: blinking-smooth 1.5s infinite ease-in;
+}
+
+@-webkit-keyframes rotating {
+  0% {
+    opacity: 0.6;
+    -webkit-transform: rotate(0deg);
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    -webkit-transform: rotate(24deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@keyframes rotating {
+  0% {
+    opacity: 0.6;
+    -webkit-transform: rotate(0deg);
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    -webkit-transform: rotate(24deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+.rotating {
+  -webkit-animation: rotating 1.5s infinite ease-in-out;
+          animation: rotating 1.5s infinite ease-in-out;
+  -webkit-transform-origin: 50% 55%;
+          transform-origin: 50% 55%;
 }
 
 /*

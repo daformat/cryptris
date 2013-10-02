@@ -22,6 +22,7 @@ html, body {
    hyphens: auto;
   -webkit-text-size-adjust: none;
 
+
 }
 
 ul{
@@ -71,6 +72,8 @@ ul{
 	overflow-y: auto;
 	display: table;
   min-height: 600px;
+	min-width: 400px;
+
   overflow-x: hidden;
 
 }
