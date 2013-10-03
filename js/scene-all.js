@@ -1712,7 +1712,7 @@ $(function(){
 					var zoom = d3.behavior.zoom()
 					    .x(y)
 					    .y(y)
-					    .scaleExtent([0, 200000])
+					    .scaleExtent([0.001, 200])
 					    .on("zoom", zoomed);
 
 
@@ -1817,7 +1817,7 @@ $(function(){
 					    .attr("dy", ".75em")
 					    .attr("transform", "rotate(-90) translate(0, -130)")
 //					    .attr("transform", "rotate(-90) translate(0, "+ (w+10) +")")
-					    .text("Durée du décryptage");					    
+					    .text("Durée du décryptage ("+name+")");					    
 
 			  			// Add the line by appending an svg:path element with the data line we created above
 						// do this AFTER the axes above so that the line is above the tick-lines
