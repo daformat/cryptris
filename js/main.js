@@ -180,8 +180,7 @@ $(document).ready(function() {
     /**
      * We use this to enable some fonts in our gameBox.
      */
-    $('.trick-font').each(function()
-    {
+    $('.trick-font').each(function() {
         $(this).attr('style', 'display: none;');
     });
 
