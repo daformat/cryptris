@@ -1653,9 +1653,9 @@ $(function(){
 
 					// X scale will fit all values from data[] within pixels 0-w
 					var x = d3.scale.linear().domain([8, 12]).range([0, w]);
+
 					// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-					var y = d3.scale.log().range([h, 0]).domain([60, dataIA[4].y]);
-					var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y]);
+					var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y*1.3]);
 
 					var div = d3.select("body").append("div")   
 					    .attr("class", "tooltip")               
@@ -1764,7 +1764,8 @@ $(function(){
 							  if (minutes < 10) {minutes = "0"+minutes;}
 							  if (seconds < 10) {seconds = "0"+seconds;}
 
-							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? 'h' : 'h '+minutes+'m '+seconds+ 's'));
+
+							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
 							  return ( d == 0 ? '0' : time);
 							};
 
@@ -1815,7 +1816,7 @@ $(function(){
 					    .attr("text-anchor", "end")
 					    .attr("y", 6)
 					    .attr("dy", ".75em")
-					    .attr("transform", "rotate(-90) translate(0, -130)")
+					    .attr("transform", "rotate(-90) translate(0, -100)")
 //					    .attr("transform", "rotate(-90) translate(0, "+ (w+10) +")")
 					    .text("Durée du décryptage ("+name+")");					    
 
