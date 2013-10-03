@@ -1728,7 +1728,7 @@ $(function(){
 							    .attr("width", w+20)
 							    .attr("height", h+40)
 							    .attr("fill", "#93bcd7")
-							    .attr("stroke", "#abcdef");
+							    //.attr("stroke", "#abcdef");
 
 						graph.append("clipPath")
 						    .attr("id", "clip")
