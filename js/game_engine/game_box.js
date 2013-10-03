@@ -293,7 +293,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             if (this.isActive === true) {
                 this.keySymbol.setLocation(this.gameBox.width - 13, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
-                this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
+                if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
             }
 
         } else {
@@ -301,7 +301,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             if (this.isActive === true) {
                 this.keySymbol.setLocation(-1 * this.key_symbol_img.width + 13, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
-                this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
+                if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
             }
 
             this.rightName.setLocation(this.gameBox.x + this.gameBox.width - this.director.getImage('right-board').width + 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
