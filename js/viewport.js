@@ -7,7 +7,7 @@
     }  else if ( navigator.userAgent.match(/Android/i) ) {
                 if ( navigator.userAgent.match(/Mobile/i) ) {
                     // android mobile
-            doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.2, maximum-scale = 0.2");
+            doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.45, maximum-scale = 0.45");
         } else{
                 // android tablet
             doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.85, maximum-scale = 0.85");
