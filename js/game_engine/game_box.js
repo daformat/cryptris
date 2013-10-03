@@ -235,7 +235,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                     object.padlock.addBehavior(pb);
 
                     /**
-                     * If message is resolved, we open the padlock and make it to fall.
+                     * If message is resolved, we open the padlock and make it fall.
                      */
                     if (object.message.resolved === true) {
                         /**
@@ -253,7 +253,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                          */
                         var path =  new CAAT.LinearPath().
                                         setInitialPosition(object.padlock.x, object.padlock.y).
-                                        setFinalPosition(object.padlock.x, object.padlock.y + 20);
+                                        setFinalPosition(object.padlock.x, $(window).height() );
                         var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
                         pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
                         object.padlock.addBehavior(pb);
