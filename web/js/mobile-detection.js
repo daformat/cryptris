@@ -75,8 +75,9 @@ $(function(){
   window.addEventListener('orientationchange', checkOrientation);
   checkOrientation();
   
-  if(iCheck == true || aCheck == true){
-    $("body").addClass( ( iCheck == true ? 'ios-mobile' : (aCheck == true ? 'android-mobile' : '') ) );
+  $("body").addClass( ( iCheck == true ? 'ios-mobile' : ( isIOS == true ? 'ios-tablet' : ( aCheck ? 'android-mobile' : ( isAndroid ? 'android-tablet' : 'desktop' ) )  ))  );
+
+  if(isIOS == true || isAndroid == true){
     $("body").append('<div class="wrapper" id="rotate-device"><div class="vertical-centering"><img src="img/rotate-device.png"></div></div>');
   }
 

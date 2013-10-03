@@ -15,7 +15,7 @@ html, body {
 	text-shadow: 0 0 1px rgba(100,100,255,0.5);
 	background: #000;
 	color: #eee;
-  font-size: 20px;
+  font-size: 18px; /* base size */
   word-wrap: break-word; /* passage à la ligne forcé */
    -webkit-hyphens: auto; /* césure propre */
    -moz-hyphens: auto;
@@ -24,6 +24,7 @@ html, body {
 
 
 }
+
 
 ul{
 	list-style-type: none
@@ -39,7 +40,7 @@ h1, h2, h3, h4, h5, h6{
 	color: #0091bb;
 	text-transform: uppercase;
 	font-weight: normal;
-	font-size: 31px;
+	font-size: 1.938em;
 }
 
 h3 { margin-bottom: -10px; }
@@ -62,6 +63,7 @@ ul{
 	top: 0;
 	bottom: 0;
 	overflow-x: hidden;
+
 }
 
 .wrapper{
@@ -73,7 +75,7 @@ ul{
 	display: table;
   min-height: 600px;
 	min-width: 400px;
-
+	font-size: 1.1em;
   overflow-x: hidden;
 
 }
@@ -116,7 +118,7 @@ ul{
 
 .button{
 	font-family: 'Geo', sans-serif;
-	font-size: 20px;
+	font-size: 1em;
 	padding: 10px 28px;
 	background-color: #0071bb;
 	color: #eee;
@@ -160,7 +162,7 @@ ul{
 	display: inline-block;
 	font-family: 'Quantico', sans-serif;
 	font-weight: bold;
-	font-size: 22px;
+	font-size: 1.375em;
 	text-shadow: 0px 0px 10px #00f3ff;
 	color: #eee;
 	margin: 10px;
@@ -175,7 +177,7 @@ ul{
 	margin: 0.5em;
 	color: #0091bb;
 	line-height: 10px;
-		font-size: 20px;
+	font-size: 1.1em;
 
 }
 
@@ -224,8 +226,8 @@ ul{
 /* Menu */
 
 .main-menu{
-	color: #0091bb;
-	font-size: 31px;
+	color: #0091bb;	
+	font-size: 1.938em;
 	font-weight: 400;
 	background: #000;
 	background: rgba(0,0,0,0.3);
@@ -252,7 +254,7 @@ ul{
 }
 
 .main-menu .arrow{
-	font-size: 20px;
+	font-size: 1.250em;
 	margin: 0.5em;
 	color: #0091bb;
 	text-shadow: none;
@@ -404,7 +406,7 @@ ul{
 	max-width: 530px;
 	height: 3.5em;
 
-	font-size: 20px;
+	font-size: 1.250em;
 	color: #eee;
 
 	font-family: inherit;
@@ -508,7 +510,7 @@ ul{
 
 .new-login label{
 	display: block;
-	font-size: 27px;
+	font-size: 1.688em;
 	color: #0091bb;
 }
 
@@ -526,6 +528,7 @@ ul{
 .new-login .button{
 	margin: 0 -0.5em 0 0.5em;
 	padding: 8px 20px;
+	vertical-align: text-bottom;
 }
 
 .new-login input[type=text]{
@@ -533,7 +536,7 @@ ul{
 	border: none;
 	color: #fff;
 	font-family: "Geo", sans-serif;
-	font-size: 33px;
+	font-size: 2.063em;
 	width: 75%; /*	width: 68%; */
 	margin: 0;
 	padding: 0;
@@ -544,7 +547,8 @@ ul{
 }
 
 .new-login .arrow{
-	margin: 0.5em 0.5em .5em -0.5em
+	margin: 0.5em 0.5em .5em -0.5em;
+	vertical-align: text-top;
 }
 .inrios{
 	position: absolute;
@@ -552,19 +556,19 @@ ul{
 	text-align: center;
 	width: 100%;
 	margin: 40px 0;
-	font-size: 33px;
+	font-size: 2.063em;
 }
 /*
 	Prompt and cursor
 */
 
 .prompt{
-	font-size: 33px;
+	font-size: 1.83em;
 	text-transform: uppercase;
 }
 
 .prompt .arrow{
-	font-size: 23px;
+	font-size: 0.7em;
 }
 
 .cursor{
@@ -598,7 +602,7 @@ ul{
 	display: inline-block;
 	margin: 28px 0 8px 0;
 	font-family: "Quantico", sans-serif;
-	font-size: 22px;
+	font-size: 1.175em;
 	font-weight: bold;
 }
 
@@ -656,7 +660,7 @@ ul{
 .dialog li a{
 	display:inline-block;
 	font-family: 'Geo', sans-serif;
-	font-size: 26px;
+	font-size: 1.2em;
 	padding: 5px 14px;
 	border: none;
 	text-transform: uppercase;
@@ -679,7 +683,7 @@ ul{
 }
 
 .dialog .arrow{
-	font-size: 20px;
+	font-size: 1.250em;
 	margin: 0.5em;
 	color: #0091bb;
 	text-shadow: none;
@@ -773,7 +777,7 @@ ul{
 .dialog.cables .numbers{
 	font-family: "Quantico", sans-serif;
 	font-weight: bold;
-	font-size: 23px;
+	font-size: 1.438em;
 	color: #eee;
 	position: absolute;
 	line-height: 0;
@@ -808,7 +812,7 @@ ul{
 .dialog.cables .jacks a{
 	padding: 0;
 	margin: 0;
-	font-size: 23px;
+	font-size: 1.438em;
 	background: url(../img/entangled-cables-outlet.png) center no-repeat;
 }
 .dialog.cables .left .jacks{
@@ -1005,6 +1009,16 @@ ul{
 	height: 400px;
 }
 
+/*
+.ios-mobile 
+.ios-tablet 
+.android-mobile .wrapper{opacity:0.3;}
+.android-tablet .wrapper{opacity:0.3;}
+*/
+
+.desktop{
+}
+
 
 /*
 	Graphs
@@ -1025,7 +1039,7 @@ ul{
 	fill: #015B99;
 	font-family: 'Quantico';
 	font-weight: bold;
-	font-size: 13px;
+	font-size: 0.813em;
 }
 
 #graph path { 

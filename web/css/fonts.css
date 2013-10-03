@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'Geo';
+    src: url('../fonts/geo-oblique.eot');
+    src: url('../fonts/geo-oblique.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/geo-oblique.woff') format('woff'),
+         url('../fonts/geo-oblique.ttf') format('truetype'),
+         url('../fonts/geo-oblique.svg#geooblique') format('svg');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'Geo';
+    src: url('../fonts/geo-regular.eot');
+    src: url('../fonts/geo-regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/geo-regular.woff') format('woff'),
+         url('../fonts/geo-regular.ttf') format('truetype'),
+         url('../fonts/geo-regular.svg#georegular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('../fonts/inconsolata-bold.eot');
+    src: url('../fonts/inconsolata-bold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/inconsolata-bold.woff') format('woff'),
+         url('../fonts/inconsolata-bold.ttf') format('truetype'),
+         url('../fonts/inconsolata-bold.svg#inconsolatabold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('../fonts/inconsolata-regular.eot');
+    src: url('../fonts/inconsolata-regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/inconsolata-regular.woff') format('woff'),
+         url('../fonts/inconsolata-regular.ttf') format('truetype'),
+         url('../fonts/inconsolata-regular.svg#inconsolataregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+
+
+
+
+@font-face {
+    font-family: 'Quantico';
+    src: url('../fonts/quantico-bold.eot');
+    src: url('../fonts/quantico-bold.woff') format('woff'), url('../fonts/quantico-bold.ttf') format('truetype'), url('../fonts/quantico-bold.svg') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+
+
+
+@font-face {
+    font-family: 'Quantico';
+    src: url('../fonts/quantico-regular.eot');
+    src: url('../fonts/quantico-regular.woff') format('woff'), url('../fonts/quantico-regular.ttf') format('truetype'), url('../fonts/quantico-regular.svg') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+

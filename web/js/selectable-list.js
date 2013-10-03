@@ -23,10 +23,20 @@ $(function(){
 				}
 	    }
 			else if (e.keyCode == 13 || e.keyCode == 32) { // enter || space
-				var $a = $('.selectable li.active a');
+				var $a = $('.selectable li.active a'),
+						h = $a.attr('href');
+
+
+			 console.log('### ' + $a.length);
+
+				if($a.length == 0 ) $a = $('.active a').last();
+
+			 console.log('--- ' + $a.length);
+
 				if($a.length>0) {
-					window.location = $a.attr('href');
+					if(h && h != "#") window.location = h;
 					$a.click();
+					
 					return false;
 				}
 			}
