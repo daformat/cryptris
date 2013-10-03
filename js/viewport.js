@@ -4,7 +4,15 @@
         doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.5, maximum-scale = 0.5");
     } else if ( navigator.userAgent.match(/iPad/i) ) {
         doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.85, maximum-scale = 0.85");
+    }  else if ( navigator.userAgent.match(/Android/i) ) {
+                if ( navigator.userAgent.match(/Mobile/i) ) {
+                    // android mobile
+            doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.2, maximum-scale = 0.2");
+        } else{
+                // android tablet
+            doc.getElementById("viewport").setAttribute("content", "initial-scale = 0.85, maximum-scale = 0.85");
+            }
     } else{
     }
-    //alert("in viewport " + doc.getElementById("viewport").getAttribute("content"));
 }(document));
+

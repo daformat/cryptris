@@ -25,6 +25,7 @@ html, body {
 
 }
 
+
 ul{
 	list-style-type: none
 }
@@ -1004,6 +1005,13 @@ ul{
 	width: 400px;
 	height: 400px;
 }
+
+/*
+.ios-mobile 
+.ios-tablet 
+.android-mobile .wrapper{opacity:0.3;}
+.android-tablet .wrapper{opacity:0.3;}
+*/
 
 
 /*
