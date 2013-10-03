@@ -3,11 +3,11 @@
 	Cryptris.css
 	------------
 	@author Mathieu Jouhet (@daformat) - Digital Cuisine (digitalcuisine.fr)
-	@lastmod 2013-09-21
+	@lastmod 2013-09-30
 
 */
 
-html, body { 
+html, body {
   margin:0;
   padding:0;
   font-family: 'Geo', sans-serif;
@@ -21,6 +21,7 @@ html, body {
    -moz-hyphens: auto;
    hyphens: auto;
   -webkit-text-size-adjust: none;
+
 
 }
 
@@ -71,6 +72,8 @@ ul{
 	overflow-y: auto;
 	display: table;
   min-height: 600px;
+	min-width: 400px;
+
   overflow-x: hidden;
 
 }
@@ -223,7 +226,7 @@ ul{
 .main-menu{
 	color: #0091bb;
 	font-size: 31px;
-	fon-weight: 400;
+	font-weight: 400;
 	background: #000;
 	background: rgba(0,0,0,0.3);
 	display: inline-block;
@@ -371,7 +374,7 @@ ul{
  Share
 */
 
-.share .cryptris-logo-medium {
+.cryptris-logo-medium {
 	margin-top: 1%;
 	max-width: 724px;
 	width: 80%;
@@ -850,6 +853,57 @@ ul{
 	right: -15px;
 }
 
+/* new-message dialogs */
+.avatar .new-message{
+	position: relative;
+}
+
+.new-message img{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.new-message .background {
+	position: initial;
+}
+
+/*
+	End game
+*/
+
+#end-game .cryptris-logo-medium {
+	margin-bottom: -60px;
+}
+
+#end-game .button:active{
+	top: 2px;
+}
+
+#end-game .share-game {
+	margin-top: 30px;
+	margin-bottom: 50px;
+	text-align: center;
+	width: 100%;
+}
+
+#end-game .share-game a{
+	display: inline-block;
+	padding: 0 10px;
+	width: 56px;
+}
+
+#end-game .share-game a img{
+	width: 56px;
+	height: 56px;	
+	transition: all 0.15s ease;
+	vertical-align: middle;
+}
+
+#end-game .share-game a:active img{
+	width: 36px;
+	height: 36px;	
+}
 
 /*
 	Animations
@@ -878,6 +932,55 @@ ul{
 	animation: blinking 1s infinite;
 }
 
+@-webkit-keyframes blinking-smooth
+{
+	0% {opacity: 0.1;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.1;}
+}
+
+@keyframes blinking-smooth
+{
+	0% {opacity: 0.1;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.1;}
+}
+
+.blinking-smooth{
+	-webkit-animation: blinking-smooth 1.5s infinite ease-in;
+	animation: blinking-smooth 1.5s infinite ease-in;
+}
+
+@-webkit-keyframes rotating
+{
+	0% 	 {-webkit-transform: rotate(0deg); opacity: 0.6;}
+	40% {opacity: 1;}
+	50%  {-webkit-transform: rotate(24deg); opacity: 1;}
+	60% {opacity: 1;}
+	100% {-webkit-transform: rotate(0deg); opacity: 0.6;}
+}
+
+@keyframes rotating
+{
+	0% 	 {-webkit-transform: rotate(0deg); opacity: 0.6;}
+	40% {opacity: 1;}
+	50%  {-webkit-transform: rotate(24deg); opacity: 1;}
+	60% {opacity: 1;}
+	100% {-webkit-transform: rotate(0deg); opacity: 0.6;}
+}
+
+.rotating{
+	-webkit-animation: rotating 1.5s infinite ease-in-out;
+	animation: rotating 1.5s infinite ease-in-out;
+	-webkit-transform-origin: 50% 55%;
+	transform-origin: 50% 55%;
+}
+
+
 /*
 	Device orientation
 */
@@ -900,4 +1003,70 @@ ul{
 	opacity: 1;
 	width: 400px;
 	height: 400px;
+}
+
+
+/*
+	Graphs
+*/
+
+.dialog.graph{
+	height: 560px;
+}
+
+#graph { 
+	font: 12px Arial;
+	background: #93bcd7;
+	border: solid 7px #b8cfde;
+	padding: 10px;
+}		/* set the default text for anything occuring in the of the html */
+
+#graph .label{
+	fill: #015B99;
+	font-family: 'Quantico';
+	font-weight: bold;
+	font-size: 13px;
+}
+
+#graph path { 
+	stroke: #a360bb;			/* the line colour for paths is steelblue */
+	stroke-width: 3;			/* the line width for paths is 2 pixels */
+	fill: none;					/* don't fill the area bounded by any path elements */
+}
+
+#graph path.player{
+	stroke: #015b99;
+}
+
+#graph .axis path,
+#graph .axis line {
+	fill: none;					/* don't fill areas bounded by the axis line */
+	stroke:#eee;				/* make the axis line grey */
+	stroke-width: 1;			/* make the width of the axis lines 1 pixel */
+	shape-rendering: crispEdges;/* make the edges sharp */
+}
+
+#graph circle{
+	stroke: #a360bb;
+	fill: #b8cfde;
+	stroke-width: 3;
+	cursor: pointer;
+}
+
+#graph circle.player{
+	stroke: #015b99;
+	fill: #b8cfde;
+	stroke-width: 3;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;                   
+  padding: 10px;             
+  font: 12px sans-serif;        
+  background: black;   
+  background: rgba(0,0,0,.9);   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
 }

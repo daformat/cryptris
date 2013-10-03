@@ -8,7 +8,8 @@ $(function(){
 				R: 0
 			},
 			$cableDialog,
-			_callback;
+			_callback,
+			timeouts = [];
 
 	// Cable data
 	var cables = {
@@ -27,12 +28,12 @@ $(function(){
 					6: 4
 				},
 				R: {
-					0: 5,
-					1: 2,
-					2: 3,
-					3: 0,
+					0: 3,
+					1: 5,
+					2: 1,
+					3: 2,
 					4: 6,
-					5: 1,
+					5: 0,
 					6: 4	
 				}
 			},
@@ -52,13 +53,13 @@ $(function(){
 				6: 5	
 			},
 			R: {
-				0: 4,
-				1: 6,
+				0: 5,
+				1: 4,
 				2: 2,
-				3: 5,
-				4: 1,
-				5: 0,
-				6: 3
+				3: 6,
+				4: 0,
+				5: 3,
+				6: 1
 			}
 		},
 
@@ -77,13 +78,13 @@ $(function(){
 				6: 1
 			},
 			R: {
-				0: 3,
-				1: 2,
-				2: 0,
-				3: 6,
-				4: 1,
+				0: 2,
+				1: 4,
+				2: 1,
+				3: 0,
+				4: 6,
 				5: 5,
-				6: 4
+				6: 3
 			}
 		},
 
@@ -103,12 +104,12 @@ $(function(){
 			},
 			R: {
 				0: 3,
-				1: 6,
+				1: 5,
 				2: 2,
 				3: 0,
-				4: 5,
-				5: 1,
-				6: 4
+				4: 6,
+				5: 4,
+				6: 1
 			}
 		},
 
@@ -128,10 +129,10 @@ $(function(){
 			},
 			R: {
 				0: 5,
-				1: 4,
-				2: 1,
+				1: 2,
+				2: 4,
 				3: 6,
-				4: 2,
+				4: 1,
 				5: 0,
 				6: 3
 			}
@@ -166,24 +167,27 @@ $(function(){
 		if( $cableNumber.text() == n ) {
 			// Answer is correct
 			$cableJack.click(function() {
+				clearTimeouts();
+				
 				$cableNumber.toggleClass("unplugged"); 
 				$cableJack.toggleClass("unplugged"); 
 
 				if(_callback && typeof(_callback === "function" ))
-					setTimeout(function(){
+					timeouts.push(setTimeout(function(){
 						_callback();
-					}, 1000);
+					}, 1000));
 
 			});
 		} else {
-			//Answer is wrong
-			electrifyCable($cableJack);
+
+			//Answer is wrong, or every cable is set to be electrified
+			electrifyCable($cableJack, (n == null ? true : false));
 		}
 
 	}
 
 	// Picking the wrong cable plays an animation to simulate an electric shock
-	var electrifyCable = function ($cable) {
+	var electrifyCable = function ($cable, callbackOnClick) {
 		var $d = $cableDialog;
 		
 		$d.jrumble({
@@ -192,11 +196,24 @@ $(function(){
 		});
 
 		$cable.click(function(){
-			
+			clearTimeouts();
+
 			$('.wrapper.white').fadeIn(10,function(){$(this).fadeOut()});
 			
 			$d.trigger('startRumble');
-			setTimeout(function(){$d.trigger('stopRumble');}, 700);
+			timeouts.push(setTimeout(function(){
+				$d.trigger('stopRumble');
+
+				if( callbackOnClick == true ) {
+
+					if(_callback && typeof(_callback === "function" ))
+						timeouts.push(setTimeout(function(){
+							_callback();
+						}, 1000));
+
+				}
+
+			}, 700));
 
 		})
 	}
@@ -261,6 +278,15 @@ $(function(){
     }
     return size;
 	};
+
+	// clear timeouts to prevent mess
+	var clearTimeouts = function () {
+		$.each(timeouts, function(i){
+			clearTimeout(timeouts[i])
+		});
+
+		timeouts = [];
+	}
 
 	// correctCable: Numeric label of the correct cable
 	// callback: fired when correct cable is unplugged
