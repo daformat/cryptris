@@ -118,7 +118,7 @@ ul{
 
 .button{
 	font-family: 'Geo', sans-serif;
-	font-size: 1.150em;
+	font-size: 1em;
 	padding: 10px 28px;
 	background-color: #0071bb;
 	color: #eee;
@@ -528,6 +528,7 @@ ul{
 .new-login .button{
 	margin: 0 -0.5em 0 0.5em;
 	padding: 8px 20px;
+	vertical-align: text-bottom;
 }
 
 .new-login input[type=text]{
@@ -546,7 +547,8 @@ ul{
 }
 
 .new-login .arrow{
-	margin: 0.5em 0.5em .5em -0.5em
+	margin: 0.5em 0.5em .5em -0.5em;
+	vertical-align: text-top;
 }
 .inrios{
 	position: absolute;
@@ -561,7 +563,7 @@ ul{
 */
 
 .prompt{
-	font-size: 2.063em;
+	font-size: 1.83em;
 	text-transform: uppercase;
 }
 
@@ -600,7 +602,7 @@ ul{
 	display: inline-block;
 	margin: 28px 0 8px 0;
 	font-family: "Quantico", sans-serif;
-	font-size: 1.375em;
+	font-size: 1.175em;
 	font-weight: bold;
 }
 
