@@ -88,6 +88,7 @@ $(function(){
 					game.player.name = $('#login-name').val();
 					currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
 					$.switchWrapper('#bg-institut', dialog2);
+					$('#login-name').blur();
 					$('.new-login').unbind('submit').submit(function(e){
 						return false;
 					});
