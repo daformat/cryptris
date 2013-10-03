@@ -471,6 +471,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 				} else {
 						object.msgColumn.redraw();
 						object.msgColumn.isResolved();
+						object.msgColumn.padlock_need_anim = true;
 						object.createKey();
 				}
 			}

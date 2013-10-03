@@ -132,7 +132,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
                 var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 8 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
                 var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
-                    pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
+                pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
 
                 var alphaD = new CAAT.AlphaBehavior().
                                                   setValues(1,0).

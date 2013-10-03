@@ -448,6 +448,7 @@ function Message(director, messageLength, message, container, boxOption) {
     this.container = container;
     this.resolved = false;
     this.base_line_position = 0;
+    this.message.anim_not_decrypted === false;
 
     this.triangle_left = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('triangle-left')).

@@ -5,7 +5,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.relativeY = relativeY;
     this.current_length = current_length;
     this.key_info = key_info;
-    this.my_message = my_message; // The list version of message.
+    this.my_message = my_message; // The list number of message.
     this.player = player;
     this.tryToResize = false;
     this.winScreen = null;
@@ -145,8 +145,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
          * Display all icons if this gameBox is active (to be active means we want to display the icons).
          */
         this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
-        this.enveloppe = director.getImage(this.boxOption.boardColorInfo['enveloppe']);
-        this.padlock = director.getImage(this.boxOption.boardColorInfo['padlock-closed']);
+        this.enveloppe_img = director.getImage(this.boxOption.boardColorInfo['enveloppe']);
+        this.padlock_closed_img = director.getImage(this.boxOption.boardColorInfo['padlock-closed']);
+        this.padlock_open_img = director.getImage(object.boxOption.boardColorInfo['padlock-open']);
 
         if (this.isActive === true) {
             this.keySymbol = new CAAT.Foundation.ActorContainer().
@@ -155,13 +156,14 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             this.gameBox.addChild(this.keySymbol);
 
             this.enveloppe = new CAAT.Foundation.ActorContainer().
-                                    setSize(this.enveloppe.width, this.enveloppe.height).
-                                    setBackgroundImage(this.enveloppe, false);
+                                    setSize(this.enveloppe_img.width, this.enveloppe_img.height).
+                                    setBackgroundImage(this.enveloppe_img, false);
             this.gameBox.addChild(this.enveloppe);
 
+
             this.padlock = new CAAT.Foundation.ActorContainer().
-                                    setSize(this.padlock.width, this.padlock.height).
-                                    setBackgroundImage(this.padlock, false);
+                                    setSize(this.padlock_closed_img.width, this.padlock_closed_img.height).
+                                    setBackgroundImage(this.padlock_closed_img, false);
             this.gameBox.addChild(this.padlock);
         }
     }
@@ -206,12 +208,83 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         }
     }
 
+    // Create the time to animate the message and padlock when the gameBox is active.
+
+    if (this.isActive === true) {
+        var object = this;
+        var animEnveloppeAndPadlockTimer = this.director.createTimer(0, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+                /**
+                 * Check if padlock needs some animation.
+                 */
+                if (object.message.padlock_need_anim === true) {
+                    object.message.padlock_need_anim = false;
+
+                    /**
+                     * In any case we set a 'elastic ping pong' animation to simulate a vibration.
+                     */
+                    var path =  new CAAT.LinearPath().
+                                    setInitialPosition(object.padlock.x, object.padlock.y).
+                                    setFinalPosition(object.padlock.x + 3, object.padlock.y);
+                    var pb = new CAAT.PathBehavior().
+                                    setPath(path).
+                                    setFrameTime(object.gameBox.time, 250).
+                                    setCycle(false);
+
+                    pb.setInterpolator(new CAAT.Behavior.Interpolator().createElasticInOutInterpolator(1.0, 0.2, true));
+                    object.padlock.addBehavior(pb);
+
+                    /**
+                     * If message is resolved, we open the padlock and make it to fall.
+                     */
+                    if (object.message.resolved === true) {
+                        /**
+                         * We don't need this timer anymore.
+                         */
+                        animEnveloppeAndPadlockTimer.cancel();
+
+                        /**
+                         * We open the padlock by changing the background img.
+                         */
+                        object.padlock.setBackgroundImage(object.padlock_open_img, false);
+
+                        /**
+                         * Path to move down the padlock.
+                         */
+                        var path =  new CAAT.LinearPath().
+                                        setInitialPosition(object.padlock.x, object.padlock.y).
+                                        setFinalPosition(object.padlock.x, object.padlock.y + 20);
+                        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                        pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
+                        object.padlock.addBehavior(pb);
+
+                        /**
+                         * Rotation for the padlock.
+                         */
+                        var rb = new CAAT.RotateBehavior().setAngles(0, Math.PI / 2).setFrameTime(object.gameBox.time + 250, 900).setCycle(false);
+                        rb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
+                        object.padlock.addBehavior(rb);
+
+                        /**
+                         * Set the fade on the padlock.
+                         */
+                        var fade = new CAAT.AlphaBehavior().setValues(1, 0.6).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                        object.padlock.addBehavior(fade);
+                    }
+                }
+            }
+        );
+    }
 
     /**
      * Redraw the name box. If the box is a player box, the name is put at the left, else at the right.
      */
     this.redrawSurround = function() {
 
+        /**
+         * If this.player === true, we set the location for "name", "key symbol" and "message + caplock" at the left (player board).
+         * Else at the right (IA board).
+         */
         if (this.player === true) {
             this.leftName.setLocation(this.gameBox.x - 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
             this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
@@ -221,7 +294,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                 this.keySymbol.setLocation(this.gameBox.width - 13, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
-
             }
 
         } else {
@@ -230,13 +302,14 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                 this.keySymbol.setLocation(-1 * this.key_symbol_img.width + 13, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
-
             }
 
             this.rightName.setLocation(this.gameBox.x + this.gameBox.width - this.director.getImage('right-board').width + 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
             this.centerName.setLocation(this.rightName.x - 175, this.rightName.y);
             this.leftName.setLocation(this.centerName.x - this.director.getImage('left-board').width, this.centerName.y);
         }
+
+
     }
 
     this.resize = function(scene) {
