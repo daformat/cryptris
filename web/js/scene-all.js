@@ -1639,27 +1639,11 @@ $(function(){
 		
 			  setTimeout(function(){
 
-					var formatTime = d3.time.format("%Hh %Mm %Ss"),
-							formatSeconds = function(d) {
-							 	var sign = (d<0 ? "-" : "");
-							 	d = Math.abs(d);
-							 	var sec_num = parseInt(d, 10); // don't forget the second parm
-							  var days   = 	Math.floor(sec_num / 86400);
-							  var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
-							  var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
-							  var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
 
-							  if (hours   < 10) {hours   = "0"+hours;}
-							  if (minutes < 10) {minutes = "0"+minutes;}
-							  if (seconds < 10) {seconds = "0"+seconds;}
-
-							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : hours+(days>0 ? 'h' : 'h '+minutes+'m '+seconds+ 's'));
-							  return time;
-							};
 
 					// define dimensions of graph
 					var m = [20, 25, 45, 130]; // margins
-					var w = 740 - m[1] - m[3]; // width
+					var w = 355 - m[1] - m[3]; // width
 					var h = 350 - m[0] - m[2]; // height
 					
 					var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
@@ -1669,19 +1653,69 @@ $(function(){
 
 					// X scale will fit all values from data[] within pixels 0-w
 					var x = d3.scale.linear().domain([8, 12]).range([0, w]);
+
 					// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-					var y = d3.scale.log().range([h, 0]).domain([60, dataIA[4].y]);
-					var y = d3.scale.linear().range([h, 0]).domain([60, dataIA[4].y]);
+					var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y*1.3]);
 
-						// automatically determining max range can work something like this
-						// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+					var div = d3.select("body").append("div")   
+					    .attr("class", "tooltip")               
+					    .style("opacity", 0);
 
+					var options = {m: m, w: w, h: h, x: x, y: y, div: div };
+
+
+						// Add an SVG element with the desired dimensions and margin.
+						var graph = d3.select("#graph").append("svg:svg")
+						      .attr("width", w + m[1] + m[3])
+						      .attr("height", h + m[0] + m[2])
+						    .append("svg:g")
+						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+						options.name = (game.player.name || "Joueur");
+
+						populateChart(graph, dataPlayer, dataPlayerInitial, 'player', options);
+
+						var graph2 = d3.select("#graph").append("svg:svg")
+						      .attr("width", w + m[1] + m[3])
+						      .attr("height", h + m[0] + m[2])
+						    .append("svg:g")
+						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+					y = d3.scale.linear().range([h, 0]).domain([0, dataIA[4].y]);
+
+					options.y = y;
+					options.name = 'Serveur';
+
+
+						populateChart(graph2, dataIA, dataIAInitial, 'ia', options);
+						
+
+
+
+						}, 100);
+
+			});
+
+		});		
+	}
+
+	function populateChart(graph, dataSet, dataInitial, appendClass, options)
+	{
+			var m = options.m;
+			var w = options.w;
+			var h = options.h;
+			var x = options.x;
+			var y = options.y;
+			var div = options.div;
+			var name = options.name;
 
 					var zoom = d3.behavior.zoom()
 					    .x(y)
 					    .y(y)
-					    .scaleExtent([0, 200000])
+					    .scaleExtent([0.001, 200])
 					    .on("zoom", zoomed);
+
+
 					
 					function zoomed() {
 
@@ -1696,11 +1730,12 @@ $(function(){
 
 					  graph.select(".x.axis").call(xAxis);
 					  graph.select(".y.axis").call(yAxis);
-				  	graph.select("path.line.ia").attr("d", line(dataIA));
-				  	graph.select("path.line.player").attr("d", line(dataPlayer));
-				  	graph.selectAll("circle.ia").attr("cy",  function(d, i) { return y(dataIA[i].y); });
-				  	graph.selectAll("circle.player").attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+				  	graph.select("path.line."+appendClass).attr("d", line(dataSet));
+				  	graph.selectAll("circle."+appendClass).attr("cy",  function(d, i) { return y(dataSet[i].y); });
+
 					}
+
+					graph.call(zoom);
 
 					// create a line function that can convert data[] into x and y points
 					var line = d3.svg.line()
@@ -1715,13 +1750,24 @@ $(function(){
 							return y(d.y); 
 						}).interpolate("cardinal") ;
 
-						// Add an SVG element with the desired dimensions and margin.
-						var graph = d3.select("#graph").append("svg:svg")
-						      .attr("width", w + m[1] + m[3])
-						      .attr("height", h + m[0] + m[2])
-						    .append("svg:g")
-						      .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
-							    .call(zoom)
+					var formatTime = d3.time.format("%Hh %Mm %Ss"),
+							formatSeconds = function(d) {
+							 	var sign = (d<0 ? "-" : "");
+							 	d = Math.abs(d);
+							 	var sec_num = parseInt(d, 10); // don't forget the second parm
+							  var days   = 	Math.floor(sec_num / 86400);
+							  var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+							  var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+							  var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+							  if (hours   < 10) {hours   = "0"+hours;}
+							  if (minutes < 10) {minutes = "0"+minutes;}
+							  if (seconds < 10) {seconds = "0"+seconds;}
+
+
+							  var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
+							  return ( d == 0 ? '0' : time);
+							};
 
 						graph.append("rect")
 							    .attr("x", 0-20)
@@ -1770,24 +1816,21 @@ $(function(){
 					    .attr("text-anchor", "end")
 					    .attr("y", 6)
 					    .attr("dy", ".75em")
-					    .attr("transform", "rotate(-90) translate(0, -130)")
+					    .attr("transform", "rotate(-90) translate(0, -100)")
 //					    .attr("transform", "rotate(-90) translate(0, "+ (w+10) +")")
-					    .text("Durée du décryptage");					    
+					    .text("Durée du décryptage ("+name+")");					    
 
 			  			// Add the line by appending an svg:path element with the data line we created above
 						// do this AFTER the axes above so that the line is above the tick-lines
-			  			graph.append("svg:path").attr('class', 'line ia').attr("d", line(dataIAInitial)).transition().duration(500).attr("d", line(dataIA)).attr("clip-path", "url(#clip)");
+			  			graph.append("svg:path").attr('class', 'line '+appendClass).attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataSet)).attr("clip-path", "url(#clip)");
 
-			  			graph.append("svg:path").attr('class', 'line player').attr("d", line(dataPlayerInitial)).transition().duration(500).attr("d", line(dataPlayer)).attr("clip-path", "url(#clip)");
-							var div = d3.select("body").append("div")   
-							    .attr("class", "tooltip")               
-							    .style("opacity", 0);
 
-							// draw dots for IA
-							var circlesIA = graph.selectAll("dot")    
-							        .data(dataIAInitial)         
+
+							// draw dots
+							var circles = graph.selectAll("dot")    
+							        .data(dataInitial)         
 							    .enter().append("circle")
-							        .attr("class", 'ia')
+							        .attr("class", appendClass)
 							        .attr("r", 5)       
 							        .attr("cx", function(d) { return x(d.x); })       
 							        .attr("cy", function(d) { return y(d.y); }) 
@@ -1797,7 +1840,7 @@ $(function(){
 							            div.transition()        
 							                .duration(200)      
 							                .style("opacity", .9)
-							            div .html("<strong>Ordinateur ("+i+")</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée (maximale) de décryptage : "  + formatSeconds(parseInt(dataIA[i].y) ) )  
+							            div .html("<strong>"+name+"</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée (maximale) de décryptage : "  + formatSeconds(parseInt(dataSet[i].y) ) )  
 							                .style("left", (d3.event.pageX+15) + "px")     
 							                .style("top", (d3.event.pageY - 28) + "px");    
 							            })                  
@@ -1807,44 +1850,11 @@ $(function(){
 							                .duration(500)      
 							                .style("opacity", 0);   
 							        });			
-							circlesIA.transition().duration(500).attr("cy",  function(d, i) { return y(dataIA[i].y); });
-
-							// draw dots for Player
-							var circle = graph.selectAll("dot")    
-							        .data(dataPlayerInitial)       
-							    .enter().append("circle")                               
-							        .attr("class", 'player')
-							        .attr("r", 5)       
-							        .attr("cx", function(d) { return x(d.x); })       
-							        .attr("cy", function(d) { return y(d.y); })   
-							        .attr("clip-path", "url(#clip)")  
-							        .on("mouseover", function(d, i) {      
-							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
-							            div.transition()        
-							                .duration(200)      
-							                .style("opacity", .9);      
-							            div .html("<strong>Joueur ("+i+")</strong><br/>Taille de la clé : "+ d.x +" blocs" + "<br/>Durée de décryptage : "  + formatSeconds( parseInt(dataPlayer[i].y) ) )  
-							                .style("left", (d3.event.pageX+10) + "px")     
-							                .style("top", (d3.event.pageY - 28) + "px");    
-							            })                  
-							        .on("mouseout", function(d) {       
-							        		d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 5);
-
-							            div.transition()        
-							                .duration(500)      
-							                .style("opacity", 0);   
-							        });			
-							circle.transition().duration(500).attr("cy",  function(d, i) { return y(dataPlayer[i].y); });
+							circles.transition().duration(500).attr("cy",  function(d, i) { return y(dataSet[i].y); });
 
 
-
-
-						}, 100);
-
-			});
-
-		});		
 	}
+
 
 	$.dialogComparePlayTimeChart = dialogComparePlayTimeChart;
 
