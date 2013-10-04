@@ -6,7 +6,7 @@
 		// cancel previous animation if not complete;
 		clearTimeout(unfinished);
 
-		s = $('<div>').append(text).text().length;
+		s = $('<div>').append(text).html().length;
 		tag = false;
 		n = 0;
 		nn = 0;
@@ -18,7 +18,7 @@
 	}
 
 	var typeAnother = function ($e, text, speed){
-		nn = $e.text().length;
+		nn = $e.html().length;
 
 		if(nn < s) {
 			c = text.substr(n, 1)
@@ -35,6 +35,7 @@
 			else
 				unfinished = setTimeout(function(){typeAnother($e, text, speed)}, speed);
 		} else { 
+			//console.log("fin du texte : "+text);
 			if(_callback && typeof(_callback === "function" )) _callback();
 		}
 	}

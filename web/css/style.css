@@ -1,0 +1,31 @@
+body {
+	margin: 0px;
+	background-color: #000000;
+	min-height: 800px;
+	overflow: hidden;
+}
+
+.main_scene {
+	background-repeat:no-repeat;
+	background-position:center; 
+	margin: 0px;
+	padding: 0px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+#container {
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+
+.bg-circuits {
+	background: url(../img/fond-board.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+    -moz-background-size: cover; /* pour Firefox */
+    -o-background-size: cover; /* pour Opera */
+    background-size: cover; /* version standardisée */
+    color: #eee;
+    font-weight: normal;
+}
