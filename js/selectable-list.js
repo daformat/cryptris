@@ -26,12 +26,8 @@ $(function(){
 				var $a = $('.selectable li.active a'),
 						h = $a.attr('href');
 
-
-			 console.log('### ' + $a.length);
-
+				// no list element found, get the last link that's in .active wrapper{opacity:0
 				if($a.length == 0 ) $a = $('.active a').last();
-
-			 console.log('--- ' + $a.length);
 
 				if($a.length>0) {
 					if(h && h != "#") window.location = h;

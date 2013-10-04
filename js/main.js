@@ -183,6 +183,8 @@ $(document).ready(function() {
 
           var gui = new dat.GUI();
           gui.add(CAAT, 'FPS', 1, 120);
+          gui.add(cryptrisSettings, 'readingDelay', 0, 10000);
+          gui.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
 
     }
 

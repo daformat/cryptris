@@ -101,6 +101,7 @@
     // Defaults settings
     settings = $.extend({
 	    animateText: false,
+	    animateTextDelayBetweenLetters: 20,
 	    content: "(Missing dialog)",
 	    controls: [ {
 	    	label: "ok", 
@@ -136,7 +137,7 @@
 		// animate in
 		$dialog.animate(settings.transition.show, function(){
 							// animate letter by letter if needed
-							if (settings.animateText) $('.content .text', $dialog).typeLetterByLetter(settings.content, 20);
+							if (settings.animateText) $('.content .text', $dialog).typeLetterByLetter(settings.content, settings.animateTextDelayBetweenLetters);
 					});
 		
 		return this;

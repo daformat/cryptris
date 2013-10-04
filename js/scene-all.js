@@ -1,13 +1,15 @@
+
+var cryptrisSettings = {
+	readingDelay: 4000,
+	animateTextDelayBetweenLetters: 20,
+	player: {},
+	dialog4: [false, false, false],
+	dialogWhatArePrivatePublicKey: [false, false, false]
+}
+
 $(function(){
 
-	// Game settings
-
-	var game = {
-		readingDelay: 4000,
-		player: {},
-		dialog4: [false, false, false],
-		dialogWhatArePrivatePublicKey: [false, false, false]
-	}
+	var game = cryptrisSettings;
 
 
 	// hide .hidden elements and remove class
@@ -26,14 +28,14 @@ $(function(){
 				setTimeout(function(){
 					$('.prompt .content').typeLetterByLetter(
 						"Tu es stagiaire dans une équipe de recherche Inria", 
-						60, 
+						game.animateTextDelayBetweenLetters, 
 
 						function(){
 							// Second prompt
 							setTimeout(function(){
 								$('.prompt .content').text('');
 								setTimeout(function(){
-									$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", 60, function(){
+									$('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", game.animateTextDelayBetweenLetters, function(){
 										// Switch to institute
 										setTimeout(function(){
 											$.switchWrapper('#bg-institut', dialog1);
@@ -58,6 +60,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -109,6 +112,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -177,6 +181,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -208,6 +213,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -238,6 +244,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -306,6 +313,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -337,6 +345,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -374,6 +383,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -444,6 +454,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -480,6 +491,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -514,6 +526,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -570,6 +583,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -651,6 +665,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -679,6 +694,7 @@ $(function(){
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    animateText: true,
+		    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 		    type: "withAvatar",
 		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -712,6 +728,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -745,6 +762,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -776,6 +794,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -805,6 +824,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -875,6 +895,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -904,6 +925,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -934,6 +956,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -976,6 +999,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1005,6 +1029,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1048,6 +1073,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1103,6 +1129,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1133,6 +1160,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1163,6 +1191,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1206,6 +1235,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1250,6 +1280,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1305,6 +1336,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1334,6 +1366,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1365,6 +1398,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1407,6 +1441,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1450,6 +1485,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
@@ -1504,6 +1540,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1534,6 +1571,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1564,6 +1602,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -1594,6 +1633,7 @@ $(function(){
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 			    animateText: true,
+			    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
 			    type: "withAvatar",
 			    avatar: "<img src='img/avatar-chercheuse.jpg'>",
