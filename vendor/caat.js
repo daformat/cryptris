@@ -15176,22 +15176,36 @@ CAAT.Module({
             }
         };
         
+
+  
+
+
         CAAT.renderFrameRAF= function (now) {
-            var c= CAAT;
+            var c = CAAT;
+            var fps = CAAT.FPS || 60;
+            var interval = 1000/fps;
 
             if (c.ENDRAF) {
                 c.ENDRAF = false;
                 return;
             }
 
+
             if (!now) now = new Date().getTime();
 
             var t= new Date().getTime();
-            c.REQUEST_ANIMATION_FRAME_TIME = c.RAF ? now - c.RAF : 16;
-            for (var i = 0, l = c.director.length; i < l; i++) {
-                c.director[i].renderFrame();
+            c.REQUEST_ANIMATION_FRAME_TIME = c.RAF ? now - c.RAF : 0;
+    
+
+            if (c.REQUEST_ANIMATION_FRAME_TIME > interval) {
+
+                for (var i = 0, l = c.director.length; i < l; i++) {
+                    c.director[i].renderFrame();
+                }
+            
             }
-            c.RAF = now;
+
+            c.RAF = now - (c.REQUEST_ANIMATION_FRAME_TIME % interval) ;
             c.FRAME_TIME = new Date().getTime() - t;
 
 
