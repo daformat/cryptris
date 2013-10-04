@@ -75,7 +75,7 @@ ul{
 	display: table;
   min-height: 600px;
 	min-width: 400px;
-	font-size: 1.1em;
+	font-size: 1em;
   overflow-x: hidden;
 
 }
@@ -111,6 +111,10 @@ ul{
 .hidden{
 	opacity: 0;
 	display: none;
+}
+
+p{
+	font-size: 1.2em;
 }
 /*
 	Utils
@@ -618,6 +622,10 @@ ul{
 	padding: 8px 42px;
 }
 
+.dialog .content .text{
+	font-size: 1.15em;
+}
+
 .dialog .content img.keyboard-key{
 	vertical-align: text-top;
 	position: relative;
@@ -660,7 +668,7 @@ ul{
 .dialog li a{
 	display:inline-block;
 	font-family: 'Geo', sans-serif;
-	font-size: 1.2em;
+	font-size: 1.3em;
 	padding: 5px 14px;
 	border: none;
 	text-transform: uppercase;
