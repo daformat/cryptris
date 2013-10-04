@@ -418,7 +418,7 @@ $(function(){
             		dialogNowTryToCancelLastMove();
 
             	} else if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 2){
-								dialogContinueManipulatingToGeneratePublicKey()
+					dialogContinueManipulatingToGeneratePublicKey();
             	}
             }
         );
@@ -605,7 +605,8 @@ $(function(){
 		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 		    title: "InriOS 3.14",
-		    content: board_message_to_string(currentGame.scenes.play_solo_scene.game_box.my_message.plain_message) + encrypt_string(MIN_BOARD_LENGTH, ", tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
+		    content: board_message_to_string(currentGame.scenes.play_solo_scene.game_box.my_message.plain_message),
+		    // + encrypt_string(MIN_BOARD_LENGTH, ", tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
 		    
 		    controls: [{
 		      label: "Ouvrir le message", 
@@ -968,10 +969,10 @@ $(function(){
 
 
 			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  //crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
 			  crypted_message += board_message_to_string(currentGame.scenes.play_min_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique V";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+			  //crypted_message += " du panneau éléctrique V";
+			  //crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1196,10 +1197,10 @@ $(function(){
 
 
 			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  //crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
 			  crypted_message += board_message_to_string(currentGame.scenes.play_medium_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique M";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+			  //crypted_message += " du panneau éléctrique M";
+			  //crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1395,10 +1396,10 @@ $(function(){
 
 
 			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
+			  //crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
 			  crypted_message += board_message_to_string(currentGame.scenes.play_max_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique N";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+			  //crypted_message += " du panneau éléctrique N";
+			  //crypted_message = crypted_message.substring(0, 160) + "...";
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    

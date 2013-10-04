@@ -255,7 +255,6 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                 gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
                 resultScene.scene.setPaused(true);
                 currentGame[hookActive] = false;
-                console.log(hookActive);
             }
         }
     );
