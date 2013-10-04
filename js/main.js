@@ -177,6 +177,16 @@ $(document).ready(function() {
      */
     CAAT.DEBUG = parseInt(getQuerystring('dbg', 0)) == 1;
 
+    /* DAT.GUI */
+
+    if(CAAT.DEBUG){
+
+          var gui = new dat.GUI();
+          gui.add(CAAT, 'FPS', 1, 120);
+
+    }
+
+    
     /**
      * We use this to enable some fonts in our gameBox.
      */
