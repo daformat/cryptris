@@ -1041,8 +1041,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_min_scene.scene.setPaused(true);
-			  currentGame.playMinSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1243,8 +1241,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_medium_scene.scene.setPaused(true);
-			  currentGame.playMediumSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1443,8 +1439,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_max_scene.scene.setPaused(true);
-			  currentGame.playMaxSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    

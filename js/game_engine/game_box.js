@@ -10,6 +10,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.tryToResize = false;
     this.winScreen = null;
     this.isActive = isActive;
+    this.padlockIsFall = false;
+    this.key_symbol_anim_is_needed = false;
+    this.keyIsInPlace = false;
 
     /*
      * This function returns the computed width size of the gameBox
@@ -214,40 +217,29 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         var object = this;
     
         // Create the timer to animate key symbol.
-        var animEnveloppeAndPadlockTimer = this.director.createTimer(0, Number.MAX_VALUE, null,
+        var animKeySymbol = this.director.createTimer(0, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
-                if (object.crypt_key.key_symbol_anim_is_needed === true) {
-                    object.crypt_key.key_symbol_anim_is_needed = false;
 
+                if (object.key_symbol_anim_is_needed === true) {
+                    object.key_symbol_anim_is_needed = false;
 
-                    var path = null;
-                    if (object.player === true) {
-                        var path =  new CAAT.LinearPath().
-                                        setInitialPosition(object.keySymbol.x, object.keySymbol.y).
-                                        setFinalPosition(object.gameBox.width - 13, object.keySymbol.y);
-                    var pb = new CAAT.PathBehavior().
-                                    setPath(path).
-                                    setFrameTime(object.gameBox.time, 250).
-                                    setCycle(false);
-                    var fade = new CAAT.AlphaBehavior().setValues(0, 1).setFrameTime(object.gameBox.time, 500).setCycle(false);
-                    pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
-                    object.keySymbol.addBehavior(pb);
-                    object.keySymbol.addBehavior(fade);
-
-                    } else {
-                        var path =  new CAAT.LinearPath().
-                                        setInitialPosition(object.keySymbol.x, object.keySymbol.y).
-                                        setFinalPosition(-1 * object.key_symbol_img.width + 13, object.keySymbol.y);
-                    var pb = new CAAT.PathBehavior().
-                                    setPath(path).
-                                    setFrameTime(object.gameBox.time, 250).
-                                    setCycle(false);
-                    var fade = new CAAT.AlphaBehavior().setValues(0, 1).setFrameTime(object.gameBox.time, 500).setCycle(false);
-                    pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
-                    object.keySymbol.addBehavior(pb);
-                    object.keySymbol.addBehavior(fade);
-
+                    var finalXApparition = object.gameBox.width - 13;
+                    if (object.player !== true) {
+                        finalXApparition = -1 * object.key_symbol_img.width + 13;
                     }
+
+                    var path =  new CAAT.LinearPath().
+                                    setInitialPosition(object.keySymbol.x, object.keySymbol.y).
+                                    setFinalPosition(finalXApparition, object.keySymbol.y);
+                    var pb = new CAAT.PathBehavior().
+                                setPath(path).
+                                setFrameTime(object.gameBox.time, 250).
+                                setCycle(false);
+
+                    var fadeMe = new CAAT.AlphaBehavior().setValues(0, 1).setFrameTime(object.gameBox.time, 250).setCycle(false);
+                    pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
+                    object.keySymbol.addBehavior(pb);
+                    object.keySymbol.addBehavior(fadeMe);
                 }
             }
         );
@@ -295,8 +287,15 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                          */
                         var path =  new CAAT.LinearPath().
                                         setInitialPosition(object.padlock.x, object.padlock.y).
-                                        setFinalPosition(object.padlock.x, $(window).height() );
+                                        setFinalPosition(object.padlock.x, $(window).height());
+                        var pathBehaviorListener = {
+                            'behaviorExpired' : function(behavior, time, actor) {
+                                object.padlockIsFall = true;
+                            },
+                            'behaviorApplied' : null
+                        };
                         var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                        pb.addListener(pathBehaviorListener);
                         pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
                         object.padlock.addBehavior(pb);
 
@@ -334,24 +333,33 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
 
             if (this.isActive === true) {
-                this.keySymbol.setLocation(this.gameBox.width + 260 / 2 + 12 - this.keySymbol.width, -25 + this.boxOption.BORDER_HEIGHT);
+
+                var keySymbolX = object.gameBox.width - 13;
+                if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
+                    this.key_symbol_anim_is_needed = true;
+                    this.keyIsInPlace = true;
+                    keySymbolX = this.gameBox.width + 260 / 2 + 12 - this. keySymbol.width;
+                }
+
+                this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
-
-                console.log(this.enveloppe.y);
-                console.log(this.padlock.y);
             }
 
         } else {
 
             if (this.isActive === true) {
-                console.log('there');
-                this.keySymbol.setLocation(-260 / 2 - 12, -25 + this.boxOption.BORDER_HEIGHT);
+
+                var keySymbolX = -1 * object.key_symbol_img.width + 13;
+                if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
+                    this.key_symbol_anim_is_needed = true;
+                    this.keyIsInPlace = true;
+                    keySymbolX = -260 / 2 - 12;
+                }
+
+                this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
                 this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
-
-                console.log(this.enveloppe.y);
-                console.log(this.padlock.y);
             }
 
             this.rightName.setLocation(this.gameBox.x + this.gameBox.width - this.director.getImage('right-board').width + 12, this.gameBox.y - this.director.getImage('left-board').height - 10);

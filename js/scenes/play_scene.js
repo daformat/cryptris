@@ -237,19 +237,25 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
         function(time, ttime, timerTask) {
             if (withIaBoard) {
                 var rivalMessage = rivalBoxInfo.message;
-                if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true) {
+                var rivalPadlockIsFall = rivalBoxInfo.padlockIsFall;
+                if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadLockIsFall === true) {
                     currentGame.gameOver = true;
                     rivalMessage.boxOption.endResolved = time;
                     rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50);
-
+                    resultScene.scene.setPaused(true);
+                    currentGame[hookActive] = false;
                 }
             }
 
             var gameMessage = gameBoxInfo.message;
-            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true) {
+            var gamePadlockIsFall = gameBoxInfo.padlockIsFall;
+            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true && gamePadlockIsFall === true) {
                 currentGame.goToNextDialog = true;
                 gameMessage.boxOption.endResolved = time; 
                 gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
+                resultScene.scene.setPaused(true);
+                currentGame[hookActive] = false;
+                console.log(hookActive);
             }
         }
     );
