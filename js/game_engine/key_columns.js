@@ -93,7 +93,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     };
 
     this.firstDraw = function(x) {
-        y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
+        y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT) - 10;
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);

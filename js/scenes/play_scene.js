@@ -151,6 +151,15 @@ function resizePlayScene(director, playScene) {
     }
 }
 
+function addKeySymbol(director, playScene) {
+    playScene.game_box.addKeySymbol();
+
+    if (playScene.rival_box != null) {
+        playScene.rival_box.addKeySymbol();
+    }
+    playScene.resize(director, playScene);
+}
+
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
@@ -185,7 +194,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], message, true, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], message, true, true, hookActive);
     resultScene['game_box'] = gameBoxInfo;
     resultScene.scene.addChild(resultScene['game_box'].gameBox);
 
@@ -200,7 +209,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      */
     if (withIaBoard) {
         var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
-        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false, true);
+        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false, true, hookActive);
         resultScene['rival_box'] = rivalBoxInfo;
         resultScene.scene.addChild(resultScene['rival_box'].gameBox);
     }
@@ -228,6 +237,11 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      */
     resultScene['resize'] = resizePlayScene;
 
+    /**
+     * Set the addKeySymbol callback to call.
+     */
+    resultScene['add_key_symbol'] = addKeySymbol;
+
     /*
      * Call the IA script if necessary.
      */
@@ -242,6 +256,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                     currentGame.gameOver = true;
                     rivalMessage.boxOption.endResolved = time;
                     rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50);
+                    gameBoxInfo.addWinScreen("Time Out.", 200, 50);
                     resultScene.scene.setPaused(true);
                     currentGame[hookActive] = false;
                 }
@@ -253,6 +268,10 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                 currentGame.goToNextDialog = true;
                 gameMessage.boxOption.endResolved = time; 
                 gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
+
+                if (withIaBoard) {
+                    rivalBoxInfo.addWinScreen("Time Out", 200, 50);
+                }
                 resultScene.scene.setPaused(true);
                 currentGame[hookActive] = false;
             }

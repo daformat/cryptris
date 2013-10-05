@@ -214,7 +214,7 @@ function resizeCreateKeyScene(director, createKeyScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createCreateKeyScene(director, current_length, empty_message, keyInfo) {
+function createCreateKeyScene(director, current_length, empty_message, keyInfo, hookActive) {
     /**
      * Create the dict to return.
      */
@@ -244,7 +244,7 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo) 
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, createKeySceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true, false, hookActive);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -258,17 +258,17 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo) 
      */
 
     // Bind the key with keyboard controls.
-    bindCKPlayerKeyWithKeyboard(ia_create_pk, resultScene.scene, gameBoxInfo, 'createKeySceneActive')
+    bindCKPlayerKeyWithKeyboard(ia_create_pk, resultScene.scene, gameBoxInfo, hookActive)
 
     // Bind infoColumn pad with controls.
-    bindCKPadWithKey(infoColumn.pad, director, ia_create_pk, resultScene.scene, gameBoxInfo, 'createKeySceneActive');
-    bindPadWithKeyboard(infoColumn.pad, director, 'createKeySceneActive');
+    bindCKPadWithKey(infoColumn.pad, director, ia_create_pk, resultScene.scene, gameBoxInfo, hookActive);
+    bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
     // Bind all objects with pause Buttons.
-    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, gameBoxInfo.message], director, 'createKeySceneActive');
+    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, gameBoxInfo.message], director, hookActive);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, 'createKeySceneActive');
+    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
 
 
     /**
