@@ -62,7 +62,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 		ctx.font = '700 22px Quantico';
 		ctx.fillStyle = 'white';
-		ctx.fillText(convertTimeToString(this.time), 0, 0);
+		ctx.fillText(convertTimeToString(resultScene.scene.time), 0, 0);
 	}
 
 	this.centerTimer.addChild(this.timerText);

@@ -10,6 +10,10 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.tryToResize = false;
     this.winScreen = null;
     this.isActive = isActive;
+    this.padlockIsFall = false;
+    this.key_symbol_anim_is_needed = false;
+    this.keyIsInPlace = false;
+    this.keySymbol = null;
 
     /*
      * This function returns the computed width size of the gameBox
@@ -144,16 +148,11 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         /**
          * Display all icons if this gameBox is active (to be active means we want to display the icons).
          */
-        this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
         this.enveloppe_img = director.getImage(this.boxOption.boardColorInfo['enveloppe']);
         this.padlock_closed_img = director.getImage(this.boxOption.boardColorInfo['padlock-closed']);
         this.padlock_open_img = director.getImage(object.boxOption.boardColorInfo['padlock-open']);
 
         if (this.isActive === true) {
-            this.keySymbol = new CAAT.Foundation.ActorContainer().
-                                    setSize(this.key_symbol_img.width, this.key_symbol_img.height).
-                                    setBackgroundImage(this.key_symbol_img, false);
-            this.gameBox.addChild(this.keySymbol);
 
             this.enveloppe = new CAAT.Foundation.ActorContainer().
                                     setSize(this.enveloppe_img.width, this.enveloppe_img.height).
@@ -169,6 +168,49 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     }
     this.create();
 
+    /**
+     * If we have to decrypt a message, and if we have not added a keySymbol, add it.
+     */
+    this.addKeySymbol = function() {
+        if (this.isActive === true && this.keySymbol === null) {
+
+            this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
+            this.keySymbol = new CAAT.Foundation.ActorContainer().
+                                    setSize(this.key_symbol_img.width, this.key_symbol_img.height).
+                                    setBackgroundImage(this.key_symbol_img, false);
+            this.gameBox.addChild(this.keySymbol);
+
+            var object = this;
+            // Create the timer to animate key symbol.
+            this.animKeySymbol = this.director.createTimer(0, Number.MAX_VALUE, null,
+                function(time, ttime, timerTask) {
+
+                    if (object.key_symbol_anim_is_needed === true) {
+                        object.key_symbol_anim_is_needed = false;
+                        object.animKeySymbol.cancel();
+
+                        var finalXApparition = object.gameBox.width - 13;
+                        if (object.player !== true) {
+                            finalXApparition = -1 * object.key_symbol_img.width + 13;
+                        }
+
+                        var path =  new CAAT.LinearPath().
+                                        setInitialPosition(object.keySymbol.x, object.keySymbol.y).
+                                        setFinalPosition(finalXApparition, object.keySymbol.y);
+                        var pb = new CAAT.PathBehavior().
+                                    setPath(path).
+                                    setFrameTime(object.gameBox.time, 250).
+                                    setCycle(false);
+
+                        var fadeMe = new CAAT.AlphaBehavior().setValues(0, 1).setFrameTime(object.gameBox.time, 250).setCycle(false);
+                        pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
+                        object.keySymbol.addBehavior(pb);
+                        object.keySymbol.addBehavior(fadeMe);
+                    }
+                }
+            );
+        }
+    }
     
     /**
      * Add a win Screen (black splash screen and message) to this gameBox.
@@ -208,10 +250,12 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         }
     }
 
-    // Create the time to animate the message and padlock when the gameBox is active.
+
 
     if (this.isActive === true) {
         var object = this;
+    
+        // Create the timer to animate the message and padlock when the gameBox is active.
         var animEnveloppeAndPadlockTimer = this.director.createTimer(0, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
                 /**
@@ -233,6 +277,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 
                     pb.setInterpolator(new CAAT.Behavior.Interpolator().createElasticInOutInterpolator(1.0, 0.2, true));
                     object.padlock.addBehavior(pb);
+                    object.redrawSurround();
 
                     /**
                      * If message is resolved, we open the padlock and make it fall.
@@ -253,8 +298,15 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                          */
                         var path =  new CAAT.LinearPath().
                                         setInitialPosition(object.padlock.x, object.padlock.y).
-                                        setFinalPosition(object.padlock.x, $(window).height() );
+                                        setFinalPosition(object.padlock.x, $(window).height());
+                        var pathBehaviorListener = {
+                            'behaviorExpired' : function(behavior, time, actor) {
+                                object.padlockIsFall = true;
+                            },
+                            'behaviorApplied' : null
+                        };
                         var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                        pb.addListener(pathBehaviorListener);
                         pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
                         object.padlock.addBehavior(pb);
 
@@ -268,8 +320,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                         /**
                          * Set the fade on the padlock.
                          */
-                        var fade = new CAAT.AlphaBehavior().setValues(1, 0.6).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                        var fade = new CAAT.AlphaBehavior().setValues(1, 0).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
                         object.padlock.addBehavior(fade);
+
                     }
                 }
             }
@@ -291,7 +344,17 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
 
             if (this.isActive === true) {
-                this.keySymbol.setLocation(this.gameBox.width - 13, -25 + this.boxOption.BORDER_HEIGHT);
+
+                if (this.keySymbol != null) {
+                    var keySymbolX = object.gameBox.width - 13;
+                    if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
+                        this.key_symbol_anim_is_needed = true;
+                        this.keyIsInPlace = true;
+                        keySymbolX = this.gameBox.width + 260 / 2 + 12 - this. keySymbol.width;
+                    }
+                    this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
+                }
+
                 this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
             }
@@ -299,7 +362,17 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         } else {
 
             if (this.isActive === true) {
-                this.keySymbol.setLocation(-1 * this.key_symbol_img.width + 13, -25 + this.boxOption.BORDER_HEIGHT);
+
+                if (this.keySymbol != null) {
+                    var keySymbolX = -1 * object.key_symbol_img.width + 13;
+                    if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
+                        this.key_symbol_anim_is_needed = true;
+                        this.keyIsInPlace = true;
+                        keySymbolX = -260 / 2 - 12;
+                    }
+                    this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
+                }
+
                 this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
                 if (!object.message.resolved) this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
             }

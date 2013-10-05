@@ -93,7 +93,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     };
 
     this.firstDraw = function(x) {
-        y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT);
+        y = -1 * this.boxOption.maxKeyNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) + (this.boxOption.BORDER_HEIGHT + this.boxOption.SPACE_HEIGHT) - 10;
         this.column.setLocation(x, y);
 
         this.column.setSize(this.boxOption.COLUMN_WIDTH, this.squareNumber * (this.boxOption.SQUARE_HEIGHT + this.boxOption.SPACE_HEIGHT) - this.boxOption.SPACE_HEIGHT);
@@ -211,6 +211,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
                     }
 
                     object.boxOption.objectsInMove.splice(0, 1);
+
                     if (object.boxOption.objectsInMove.length === 0) {
                         object.boxOption.keyNeedToUpdate = true;
                     }
@@ -242,6 +243,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.keyInMove = false;
 	this.keyFirstMove = false;
 	this.numberApplied = -1;
+	this.key_symbol_anim_is_needed = false;
 
     this.resize = function(isPaused) {
 		for (var i = 0; i < this.columnList.length; ++i) {
@@ -273,6 +275,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	}
 
 	this.createKey = function () {
+		this.key_symbol_anim_is_needed = true;
 
 		for (var i = 0; i < this.columnList.length; ++i) {
 			this.container.removeChild(this.columnList[i].column);
@@ -428,6 +431,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	var object = this;
 
+	var test = false;
 	director.createTimer(this.container.time, Number.MAX_VALUE, null,
 		function (time, ttime, timerTask) {
 			if (object.keyFirstMove === true) {
@@ -469,10 +473,10 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 				if (needToUpdateAgain === true) {
 					object.boxOption.keyNeedToUpdate = true;
 				} else {
-						object.msgColumn.redraw();
-						object.msgColumn.isResolved();
-						object.msgColumn.padlock_need_anim = true;
-						object.createKey();
+					object.msgColumn.redraw();
+					object.msgColumn.isResolved();
+					object.msgColumn.padlock_need_anim = true;
+					object.createKey();
 				}
 			}
 		}

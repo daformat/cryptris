@@ -376,7 +376,7 @@ $(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
 			  // Set the createKeyScene as the current scene.
-        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['create_key_scene']['scene']), 0, 0, false);
+        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), 0, 0, false);
         	  // Disable input in the scene.
         	  currentGame.createKeySceneActive = false;
 
@@ -428,7 +428,7 @@ $(function(){
             		dialogNowTryToCancelLastMove();
 
             	} else if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 2){
-								dialogContinueManipulatingToGeneratePublicKey()
+					dialogContinueManipulatingToGeneratePublicKey();
             	}
             }
         );
@@ -561,9 +561,8 @@ $(function(){
                     waitToContinue.cancel();
                     currentGame.goToNextDialog = false;
 
-					currentGame.scenes.create_key_scene.scene.setPaused(true);           
-
 					// Disable the action on the key.
+					currentGame.scenes.create_key_scene.scene.setPaused(true);     
 					currentGame.createKeySceneActive = false;
 			        setTimeout(function() {
 			            	currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
@@ -605,12 +604,40 @@ $(function(){
 
 	}
 
+	$.goToBattleScene = goToBattleScene;
+
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
+		// Prepare the sceneName and set it as the current scene.
+		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
+		currentGame.scenes[sceneName].scene.setPaused(true);
+		currentGame[sceneName] = false;
+
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), 0, 0, false);
+
+        // set the speed of this scene.
+        timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
+
+        // Create a timer to catch the moment we have to go to the next scene.
+		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+               	if (currentGame.goToNextDialog === true) {
+                   	waitToContinue.cancel();
+                   	currentGame.goToNextDialog = false;
+
+                   	currentGame.scenes[sceneName].scene.setPaused(true);
+                   	currentGame[sceneName] = false;
+            	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
+               	}
+            }
+        );
+	}
+
 	function dialog8(){
 		$("body").closeAllDialogs(function(){
 
-		  // Set the correct scene at bg, and deactivate its control.
-		  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, FIRST_MESSAGE, 4000);
-		  currentGame.playSoloSceneActive = false;
+		  // Prepare the tutorial message
+		  currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
+
 		  $(".wrapper.active .vertical-centering").dialog({
 		    
 		    animateText: true,
@@ -619,7 +646,7 @@ $(function(){
 		    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 		    title: "InriOS 3.14",
-		    content: board_message_to_string(currentGame.scenes.play_solo_scene.game_box.my_message.plain_message) + encrypt_string(MIN_BOARD_LENGTH, ", tu as réussi à lire ce message :)", currentGame.playerKeyInfo.public_key, 50).substring(0, 160) + "...",
+		    content: board_message_to_string(currentGame.play_solo_scene_msg.plain_message),
 		    
 		    controls: [{
 		      label: "Ouvrir le message", 
@@ -633,34 +660,13 @@ $(function(){
 
 	}	
 
-	$.goToBattleScene = goToBattleScene;
-
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
-		// Prepare the sceneName and set it as the current scene.
-		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName]['scene']), 0, 0, false);
-
-        // set the speed of this scene.
-        timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
-
-        // Create a timer to catch the moment we have to go to the next scene.
-		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-               	if (currentGame.goToNextDialog === true) {
-                   	waitToContinue.cancel();
-                   	currentGame.goToNextDialog = false;
-
-                   	currentGame.scenes[sceneName].scene.setPaused(false);
-            	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
-               	}
-            }
-        );
-	}
 
 	function dialog9(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+        // Display the battle scene in background.
+			  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 4000);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -691,8 +697,11 @@ $(function(){
 	function dialog10(){
 		$("body").closeAllDialogs(function(){
 
+      // Launch the timer and display private key.
+      currentGame.scenes.play_solo_scene.scene.setPaused(false);
+      currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
 		  $(".wrapper.active .vertical-centering").dialog({
-		    
+
 		    animateText: true,
 		    animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
@@ -756,8 +765,8 @@ $(function(){
 
 			$.switchWrapper('#bg-institut', function(){
 		 	  // Disable the action on the key and switch to the waiting scene.
-			  currentGame.playMinSceneActive = false;
-        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+			  currentGame.playSoloSceneActive = false;
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -983,18 +992,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
-			  // Prepare play_min_scene and set it at paused.
-			  goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, rivalPMinSceneTime, FIRST_BATTLE_MESSAGE);
-			  currentGame.scenes.play_min_scene.scene.setPaused(true);
-			  currentGame.playMinSceneActive = false;
-			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
-
-
-			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
-			  crypted_message += board_message_to_string(currentGame.scenes.play_min_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique V";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+		  	  // Prepare the first battle message
+		  	  currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1005,7 +1004,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: crypted_message,
+			    content: board_message_to_string(currentGame.play_min_scene_msg.plain_message),
 			    
 			    controls: [{
 			      label: "Décrypter le message", 
@@ -1025,6 +1024,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
+        // Display the battle scene in background.
+        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1055,11 +1056,10 @@ $(function(){
 	function playLevel1(){
 		$("body").closeAllDialogs(function(){
 			// Active input for play_min_scene
-			currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_min_scene']['scene']), 0, 0, false);
 			currentGame.scenes.play_min_scene.scene.setPaused(false);
 			currentGame.playMinSceneActive = true;
+			currentGame.scenes.play_min_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_min_scene);
 		});
-
 	}
 
 
@@ -1067,8 +1067,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_min_scene.scene.setPaused(true);
-			  currentGame.playMinSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1103,7 +1101,7 @@ $(function(){
 
 			  // Disable the action on the key and switch to the waiting scene.
 			  currentGame.playMinSceneActive = false;
-        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
 
@@ -1219,18 +1217,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
-			  // Prepare play_medium_scene and set it at paused.
-			  goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, rivalPMediumSceneTime, SECOND_BATTLE_MESSAGE);
-			  currentGame.scenes.play_medium_scene.scene.setPaused(true);
-			  currentGame.playMediumSceneActive = false;
-			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
-
-
-			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
-			  crypted_message += board_message_to_string(currentGame.scenes.play_medium_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique M";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+        // Prepare the second battle message
+        currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1241,7 +1229,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: crypted_message,
+			    content: board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
 			    controls: [{
 			      label: "Décrypter le message", 
 			      class: "button blue",
@@ -1260,10 +1248,12 @@ $(function(){
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
+        // Display the battle scene in background.
+        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg);
 				// Active input for play_medium_scene
-				currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_medium_scene']['scene']), 0, 0, false);
-				currentGame.scenes.play_medium_scene.scene.setPaused(false);
-				currentGame.playMediumSceneActive = true;
+        currentGame.scenes.play_medium_scene.scene.setPaused(false);
+        currentGame.playMediumSceneActive = true;
+        currentGame.scenes.play_medium_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_medium_scene);
 			});
 		});
 	}
@@ -1274,8 +1264,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_medium_scene.scene.setPaused(true);
-			  currentGame.playMediumSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1425,18 +1413,8 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-institut', function(){
-			  // Prepare play_max_scene and set it at paused.
-			  goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, rivalPMaxSceneTime, THIRD_BATTLE_MESSAGE);
-			  currentGame.scenes.play_max_scene.scene.setPaused(true);
-			  currentGame.playMaxSceneActive = false;
-			  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), 0, 0, false);
-
-
-			  var crypted_message = "";
-			  crypted_message += encrypt_string(MIN_BOARD_LENGTH, "Débranche le câble ", currentGame.playerKeyInfo.public_key, 50);
-			  crypted_message += board_message_to_string(currentGame.scenes.play_max_scene.game_box.my_message.plain_message);
-			  crypted_message += " du panneau éléctrique N";
-			  crypted_message = crypted_message.substring(0, 160) + "...";
+        // Prepare the third battle message
+        currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1447,7 +1425,7 @@ $(function(){
 			    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 			    title: "InriOS 3.14",
-			    content: crypted_message,
+          content: board_message_to_string(currentGame.play_max_scene_msg.plain_message),
 			    controls: [{
 			      label: "Décrypter le message", 
 			      class: "button blue",
@@ -1466,10 +1444,12 @@ $(function(){
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
-				// Active input for play_medium_scene
-				currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_max_scene']['scene']), 0, 0, false);
-				currentGame.scenes.play_max_scene.scene.setPaused(false);
-				currentGame.playMaxSceneActive = true;
+        // Display the battle scene in background.
+        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg);
+        // Active input for play_max_scene
+        currentGame.scenes.play_max_scene.scene.setPaused(false);
+        currentGame.playMaxSceneActive = true;
+        currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
 			});
 		});
 	}
@@ -1479,8 +1459,6 @@ $(function(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
-			  currentGame.scenes.play_max_scene.scene.setPaused(true);
-			  currentGame.playMaxSceneActive = false;
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    

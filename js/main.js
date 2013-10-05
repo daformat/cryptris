@@ -63,27 +63,26 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo);
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive');
+}
+
+function createMessageForPlayScene(boardLength, message) {
+    /**
+     * Change message to ternary
+     */
+    var ternary_message = string_to_ternary(message);
+
+    /**
+     * Return the crypted message
+     */
+    return chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key);
 }
 
 /**
- *
+ * 
  */
-function preparePlayScene(director, boardLength, boardName, message, hookActive, withIaBoard) {
-
-    /**
-     * Define the current length of the message (and of the keys).
-     */
-    var current_length = getQuerystring("n", boardLength);
-
-    /**
-     * Define a message.
-     */
-    var tmp_message = string_to_ternary(message);
-
-    var crypt_message = chiffre(current_length, tmp_message, currentGame.playerKeyInfo['public_key'][current_length]['key']);
-
-    currentGame.scenes[boardName] = createPlayScene(director, current_length, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard);
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard);
 }
 
 /**
@@ -192,8 +191,7 @@ $(document).ready(function() {
     /**
      * We use this to enable some fonts in our gameBox.
      */
-    $('.trick-font').each(function()
-    {
+    $('.trick-font').each(function() {
         $(this).attr('style', 'display: none;');
     });
 
