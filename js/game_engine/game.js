@@ -426,8 +426,32 @@ function chiffre(dim, message, pk) {
         subPk.push(pk[i]);
     }
 
-    for (var i = 1; i < dim / 2; ++i) {
-        cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
+    /**
+     * Check if our public key is empty or not.
+     * If it is empty, we could have an empty crypted message,
+     * else we cannot.
+     *
+     * Note : Empty public key is used to create the message of create_key_scene. (Indeed, at this level, we have no public key generated).
+     */
+    var testIfIsCrypted = true;
+    for (var i = 0; i < subPk.length; ++i) {
+        if (subPk[i] !== 0) {
+            testIfIsCrypted = false;
+        }
+    }
+
+    while (testIfIsCrypted === false) {
+        for (var i = 1; i < dim / 2; ++i) {
+            cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
+        }
+        console.log(cipher);
+
+        for (var i = 0; i < cipher.length; ++i) {
+            if (cipher[i] > 1 || cipher[i] < -1) {
+                testIfIsCrypted = true;
+                break;
+            }
+        }
     }
 
     var result = {};
