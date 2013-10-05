@@ -213,7 +213,7 @@ function genSecretKey(dim) {
 
     var sk = [];
 
-    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1];
+    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1, 2, 1, 0, 0, 1, 2, -1, 0];
 
     for (var i = 0; i < dim; ++i) {
         sk.push(pre_key[i]);
@@ -408,17 +408,19 @@ function resetPublicKey(newPk, index) {
 }
 
 function chiffre(dim, message, pk) {
-    /**
-     * If message is not a multiple of dim, we add some padding.
-     */
-    while (message.length % dim !== 0) {
-        message.push(0);
-    }
 
     var cipher = []
-    for (var i = 0; i < dim; ++i) {
+    for (var i = 0; i < message.length; ++i) {
         cipher.push(message[i]);
     }
+
+    /**
+     * If message is not a multiple of dim, we add some padding to cipher
+     */
+    while (cipher.length % dim !== 0) {
+        cipher.push(0);
+    }
+
     var subPk = [];
     for (var i = 0; i < dim; ++i) {
         subPk.push(pk[i]);
@@ -426,10 +428,6 @@ function chiffre(dim, message, pk) {
 
     for (var i = 1; i < dim / 2; ++i) {
         cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
-    }
-
-    while (cipher.length % MAX_BOARD_LENGTH !== 0) {
-        cipher.push(3*0);
     }
 
     var result = {};

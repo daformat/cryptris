@@ -75,7 +75,9 @@ function createMessageForPlayScene(boardLength, message) {
     /**
      * Return the crypted message
      */
-    return chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key);
+    var crypted_message = chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key);
+    console.log(crypted_message);
+    return crypted_message;
 }
 
 /**
