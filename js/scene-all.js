@@ -407,6 +407,52 @@ $(function(){
 
 	}
 
+
+  $(document).on("helpCreateKeyEvent", function() {
+    // Pause the board
+    currentGame.scenes.create_key_scene.scene.setPaused(true);
+    currentGame.createKeySceneActive = false;
+    helpCreateKey();
+  });
+
+  function helpCreateKey() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help CREATE_KEY",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopCreateKeyHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+  function stopCreateKeyHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.create_key_scene.scene.setPaused(false);
+    currentGame.createKeySceneActive = true;
+  }
+
 	function switchToCreateKey() {
 		$("body").closeAllDialogs();
 		// Enable the action on the key.
@@ -606,16 +652,17 @@ $(function(){
 
 	$.goToBattleScene = goToBattleScene;
 
-	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, timeout) {
+	function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
+
 		// Prepare the sceneName and set it as the current scene.
-		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard);
+		preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
 		currentGame.scenes[sceneName].scene.setPaused(true);
 		currentGame[sceneName] = false;
 
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), 0, 0, false);
+    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), 0, 0, false);
 
-        // set the speed of this scene.
-        timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
+    // set the speed of this scene.
+    timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
 
         // Create a timer to catch the moment we have to go to the next scene.
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
@@ -660,13 +707,57 @@ $(function(){
 
 	}	
 
+  $(document).on("playSoloHelpEvent", function() {
+    // Pause the board
+    currentGame.scenes.play_solo_scene.scene.setPaused(true);
+    currentGame.playSoloSceneActive = false;
+    helpPlaySolo();
+  });
+
+  function helpPlaySolo() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_SOLO",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopPlaySoloHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+  function stopPlaySoloHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.play_solo_scene.scene.setPaused(false);
+    currentGame.playSoloSceneActive = true;
+  }
 
 	function dialog9(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
         // Display the battle scene in background.
-			  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 4000);
+			  goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -692,7 +783,6 @@ $(function(){
 		});
 
 	}
-
 
 	function dialog10(){
 		$("body").closeAllDialogs(function(){
@@ -1020,12 +1110,57 @@ $(function(){
 
 	}
 
+  $(document).on("playMinHelpEvent", function() {
+    // Pause the board
+    currentGame.scenes.play_min_scene.scene.setPaused(true);
+    currentGame.playMinSceneActive = false;
+    helpPlayMin();
+  });
+
+  function helpPlayMin() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_MIN",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopPlayMinHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+  function stopPlayMinHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.play_min_scene.scene.setPaused(false);
+    currentGame.playMinSceneActive = true;
+  }
+
 	function dialogServerAlsoTryingToBreakEncryption(){
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){
         // Display the battle scene in background.
-        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg);
+        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1245,11 +1380,56 @@ $(function(){
 	}
 
 
+  $(document).on("playMediumHelpEvent", function() {
+    // Pause the board
+    currentGame.scenes.play_medium_scene.scene.setPaused(true);
+    currentGame.playMediumSceneActive = false;
+    helpPlayMedium();
+  });
+
+  function helpPlayMedium() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_MEDIUM",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopPlayMediumHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+  function stopPlayMediumHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.play_medium_scene.scene.setPaused(false);
+    currentGame.playMediumSceneActive = true;
+  }
+
 	function playLevel2() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
         // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg);
+        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
 				// Active input for play_medium_scene
         currentGame.scenes.play_medium_scene.scene.setPaused(false);
         currentGame.playMediumSceneActive = true;
@@ -1297,7 +1477,7 @@ $(function(){
 			$.switchWrapper('#bg-institut', function(){
 			  // Disable the action on the key and switch to the waiting scene.
 			  currentGame.playMinSceneActive = false;
-        	  currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene'] ), 0, 0, false);
 
 			  $(".wrapper.active .vertical-centering").dialog({
 			    
@@ -1440,12 +1620,56 @@ $(function(){
 
 	}
 
+  $(document).on("playMaxHelpEvent", function() {
+    // Pause the board
+    currentGame.scenes.play_max_scene.scene.setPaused(true);
+    currentGame.playMaxSceneActive = false;
+    helpPlayMax();
+  });
+
+  function helpPlayMax() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_MAX",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopPlayMaxHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+  function stopPlayMaxHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.play_max_scene.scene.setPaused(false);
+    currentGame.playMaxSceneActive = true;
+  }
 
 	function playLevel3() {
 		$("body").closeAllDialogs(function() {			
 			$.switchWrapper('#bg-circuits', function(){
         // Display the battle scene in background.
-        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg);
+        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
         // Active input for play_max_scene
         currentGame.scenes.play_max_scene.scene.setPaused(false);
         currentGame.playMaxSceneActive = true;

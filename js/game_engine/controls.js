@@ -178,18 +178,20 @@ function bindPauseButtonWithObjects(pauseButton, scene, objectsWithAnimation, di
 	}
 }
 
-function bindHelpButtonByDefault(helpButton, director, hookSceneActive) {
+function bindHelpButtonByDefault(helpButton, director, hookSceneActive, helpEvent) {
 
 	var relativeY = 3;
 	helpButton.mouseDown = function(mouseEvent) {
 		if (currentGame[hookSceneActive]) {
-			if (helpButton.isPressed === false) {
-				helpButton.setBackgroundImage(director.getImage('help-down')).setLocation(helpButton.x, helpButton.y + relativeY);
-				helpButton.isPressed = true;
-			} else {
-				helpButton.setBackgroundImage(director.getImage('help-up')).setLocation(helpButton.x, helpButton.y - relativeY);
-				helpButton.isPressed = false;
-			}
+			helpButton.setBackgroundImage(director.getImage('help-down')).setLocation(helpButton.x, helpButton.y + relativeY);
+		}
+	}
+
+	helpButton.mouseUp = function(mouseEvent) {
+		if (currentGame[hookSceneActive]) {
+			$(document).trigger(helpEvent);
+			helpButton.setBackgroundImage(director.getImage('help-up')).setLocation(helpButton.x, helpButton.y - relativeY);
+			helpButton.isPressed = false;
 		}
 	}
 }

@@ -164,7 +164,7 @@ function addKeySymbol(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard) {
+function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard, helpEvent) {
     /**
      * Create the dict to return.
      */
@@ -230,7 +230,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
     bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
+    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
 
     /**
      * Set the resize callback to call.

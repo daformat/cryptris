@@ -214,7 +214,7 @@ function resizeCreateKeyScene(director, createKeyScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createCreateKeyScene(director, current_length, empty_message, keyInfo, hookActive) {
+function createCreateKeyScene(director, current_length, empty_message, keyInfo, hookActive, helpEvent) {
     /**
      * Create the dict to return.
      */
@@ -268,7 +268,7 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
     bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, gameBoxInfo.message], director, hookActive);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive);
+    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
 
 
     /**

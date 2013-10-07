@@ -63,7 +63,7 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive');
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent');
 }
 
 function createMessageForPlayScene(boardLength, message) {
@@ -76,15 +76,14 @@ function createMessageForPlayScene(boardLength, message) {
      * Return the crypted message
      */
     var crypted_message = chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key);
-    console.log(crypted_message);
     return crypted_message;
 }
 
 /**
  * 
  */
-function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard) {
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard);
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
 }
 
 /**
