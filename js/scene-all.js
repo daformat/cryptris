@@ -671,9 +671,7 @@ $(function(){
                    	waitToContinue.cancel();
                    	currentGame.goToNextDialog = false;
 
-                   	currentGame.scenes[sceneName].scene.setPaused(true);
-                   	currentGame[sceneName] = false;
-            	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
+              	    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
                	}
             }
         );

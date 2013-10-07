@@ -289,7 +289,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 		this.boxOption.maxKeyNumber = 0;
 
-		if(!currentGame.dontShowKey && this.msgColumn.resolved === false) {
+		if (!currentGame.dontShowKey && (this.msgColumn.resolved === false || currentGame.stopCreateKeyAfterResolve === false)) {
 			for (var i = 0; i < this.length; ++i) {
 				if (this.number[i] > this.boxOption.maxKeyNumber) {
 					this.boxOption.maxKeyNumber = this.number[i];

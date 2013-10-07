@@ -33,6 +33,7 @@ function game() {
     this.nbrKeyClipping = 0;
     this.maxKeyClipping = 3; // times key blinks before stopping
     this.displayKey = false;
+    this.stopCreateKeyAfterResolve = false;
 
     this.createKeySceneActive = false;
     this.playMinSceneActive = false;

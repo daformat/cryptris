@@ -183,6 +183,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
         if (resultScene.resize != null) {
             resultScene.resize(director, resultScene);
         }
+        currentGame.stopCreateKeyAfterResolve = true;
     }
 	 
     /**
@@ -255,10 +256,10 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                 if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadLockIsFall === true) {
                     currentGame.gameOver = true;
                     rivalMessage.boxOption.endResolved = time;
-                    rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50);
-                    gameBoxInfo.addWinScreen("Time Out.", 200, 50);
-                    resultScene.scene.setPaused(true);
-                    currentGame[hookActive] = false;
+                    rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
+                    gameBoxInfo.addWinScreen("Time Out.", 200, 50, false);
+                    //resultScene.scene.setPaused(true);
+                    //currentGame[hookActive] = false;
                 }
             }
 
@@ -267,13 +268,13 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
             if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true && gamePadlockIsFall === true) {
                 currentGame.goToNextDialog = true;
                 gameMessage.boxOption.endResolved = time; 
-                gameBoxInfo.addWinScreen("Message décrypté.", 200, 50);
+                gameBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
 
                 if (withIaBoard) {
-                    rivalBoxInfo.addWinScreen("Time Out", 200, 50);
+                    rivalBoxInfo.addWinScreen("Time Out", 200, 50, false);
                 }
-                resultScene.scene.setPaused(true);
-                currentGame[hookActive] = false;
+                //resultScene.scene.setPaused(true);
+                //currentGame[hookActive] = false;
             }
         }
     );

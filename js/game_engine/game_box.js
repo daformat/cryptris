@@ -215,7 +215,8 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     /**
      * Add a win Screen (black splash screen and message) to this gameBox.
      */
-    this.addWinScreen = function(message, width, height) {
+    this.addWinScreen = function(message, width, height, winner, scene, hookActive) {
+        // Add the winScreen.
         if (this.winScreen === null) {
 
             this.winScreen = new CAAT.Actor().
@@ -247,6 +248,52 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                 ctx.fillText(winScreenMessage, this.width / 2, this.height / 2);
             }
             this.gameBox.addChild(this.winScreen);
+        }
+
+        // Make the enveloppe twinkles three times.
+        if (this.enveloppe != null && winner === true) {
+            var nbrEnveloppeClipping = 0;
+            var maxEnveloppeClipping = 3;
+            var alphaD = new CAAT.AlphaBehavior().
+                                setValues(1,0).
+                                setCycle(false);
+            var alphaC = new CAAT.AlphaBehavior().
+                                setValues(0,1).
+                                setCycle(false);
+
+            var object = this;
+            var halfTwinkleTime = 200;
+            var alphaCBehaviorListener = {
+                'behaviorExpired' : function(behavior, time, actor) {
+                    if (nbrEnveloppeClipping < maxEnveloppeClipping - 1) {
+                        console.log('ici');
+                        object.enveloppe.addBehavior(alphaD.setFrameTime(time, halfTwinkleTime));
+                        nbrEnveloppeClipping = nbrEnveloppeClipping + 1;
+                    } else {
+                        if (scene != null && hookActive != null) {
+                            scene.setPaused(true);
+                            currentGame[hookActive] = false;
+                        }
+                    }
+                },
+                'behaviorApplied' : null
+            };
+            alphaC.addListener(alphaCBehaviorListener);
+
+            var alphaDBehaviorListener = {
+                'behaviorExpired' : function(behavior, time, actor) {
+                    object.enveloppe.addBehavior(alphaC.setFrameTime(time, halfTwinkleTime));
+                },
+                'behaviorApplied' : null
+            };
+            alphaD.addListener(alphaDBehaviorListener);
+
+            this.enveloppe.addBehavior(alphaD.setFrameTime(this.enveloppe.time, halfTwinkleTime));
+        } else if (this.enveloppe === null) {
+            if (scene != null && hookActive != null) {
+                scene.setPaused(true);
+                currentGame[hookActive] = false;
+            }
         }
     }
 

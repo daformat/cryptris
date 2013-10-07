@@ -106,7 +106,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
                             waitUpMessageToContinue.cancel();
 
                             // Display "Clé publique générée !"
-                            gameBoxInfo.addWinScreen("Clé publique générée !", 300, 50);
+                            gameBoxInfo.addWinScreen("Clé publique générée !", 300, 50, true);
                             var alphaScreen = new CAAT.AlphaBehavior().
                                                   setValues(0,1).
                                                   setCycle(false).
