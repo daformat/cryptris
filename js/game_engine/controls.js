@@ -189,7 +189,7 @@ function bindHelpButtonByDefault(helpButton, director, hookSceneActive, helpEven
 
 	helpButton.mouseUp = function(mouseEvent) {
 		if (currentGame[hookSceneActive]) {
-			$(document).trigger(helpEvent);
+			helpEvent ? $(document).trigger(helpEvent) : null;
 			helpButton.setBackgroundImage(director.getImage('help-up')).setLocation(helpButton.x, helpButton.y - relativeY);
 			helpButton.isPressed = false;
 		}
