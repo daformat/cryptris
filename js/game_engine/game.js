@@ -500,7 +500,12 @@ function message_number_to_string(board_message) {
  * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
  */
 function board_message_to_string(board_message) {
-    return easy_crypt(message_number_to_string(board_message));
+    var beginString = "";
+    for (var i = 0; i < board_message.length && i + 3 < board_message.length; i = i + 4) {
+        beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
+    }
+
+    return beginString + easy_crypt(message_number_to_string(board_message));
 }
 
 /**

@@ -896,6 +896,7 @@ $(function(){
       // Launch the timer and display private key.
       currentGame.scenes.play_solo_scene.scene.setPaused(false);
       currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
+      currentGame.scenes.playSoloSceneActive = false;
 		  $(".wrapper.active .vertical-centering").dialog({
 
 		    animateText: true,

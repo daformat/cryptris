@@ -64,7 +64,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
          * Create my message object.
          * This object inserts all necessary columns to gameBox.
          */
-        this.message = new Message(director, current_length, my_message, this.gameBox, boxOption);
+        this.message = new Message(director, current_length, my_message, this.gameBox, boxOption, isActive);
         this.message.createMessage();
 
         /**

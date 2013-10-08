@@ -448,7 +448,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 }
 
-function Message(director, messageLength, message, container, boxOption) {
+function Message(director, messageLength, message, container, boxOption, isActive) {
     this.length = messageLength;
     this.boxOption = boxOption;
     this.message = message;
@@ -457,6 +457,7 @@ function Message(director, messageLength, message, container, boxOption) {
     this.resolved = false;
     this.base_line_position = 0;
     this.message.anim_not_decrypted === false;
+    this.isActive = isActive // A message is active when it appears in a decrypted process. By example : a create_key message is not active.
 
     this.triangle_left = new CAAT.Foundation.Actor().
                             setBackgroundImage(director.getImage('triangle-left')).
@@ -516,9 +517,12 @@ function Message(director, messageLength, message, container, boxOption) {
         this.redraw();
 
 
-        var object = this;
-        for (var i = 0; i < this.length && i + 3 < this.length; i = i + 4) {
-            this.symbols.push(this.createADisplaySymbol(i));
+        // --- If message is active, we set the display ternary value.
+        if (this.isActive === true) {
+            var object = this;
+            for (var i = 0; i < this.length && i + 3 < this.length; i = i + 4) {
+                this.symbols.push(this.createADisplaySymbol(i));
+            }
         }
 
         return this;

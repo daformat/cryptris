@@ -1,8 +1,24 @@
 cryptris
 ========
 
-Some get parameters :
 
-n=8|10|12                  : Length of the message and the key.
-key=private_key|public_key : Play with the public or the private key (player).
-t=value                    : Duration of a movement of the key.
+To test the board, go to game.html
+
+
+Test the game
+
+'r'  =>  Generate a key.
+
+'b'  =>  Load a 8 column board with the message 24
+
+'c'  =>  Load a 10 column board with the message 78
+
+'d'  =>  Load a 12 column board with the message 31
+
+
+
+Test the Create Key test
+
+'a'  =>  load the create_key screen.
+
+'e'  =>  launch the computer process
