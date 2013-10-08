@@ -504,7 +504,7 @@ function Message(director, messageLength, message, container, boxOption, isActiv
                     ternaries.push(columnList[indexBegin + j].signedNumber());
                 }
 
-                ctx.fillText(ternary_to_symbol(ternaries[0], ternaries[1], ternaries[2], ternaries[3]), this.width / 2, this.height - 6);
+                ctx.fillText(ternary_to_symbol(ternaries[0], ternaries[1], ternaries[2], ternaries[3]), this.width / 2, this.height - 5);
             }
             this.container.addChild(symbol);
             return symbol;
