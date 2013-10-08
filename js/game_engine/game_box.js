@@ -266,7 +266,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             var alphaCBehaviorListener = {
                 'behaviorExpired' : function(behavior, time, actor) {
                     if (nbrEnveloppeClipping < maxEnveloppeClipping - 1) {
-                        console.log('ici');
                         object.enveloppe.addBehavior(alphaD.setFrameTime(time, halfTwinkleTime));
                         nbrEnveloppeClipping = nbrEnveloppeClipping + 1;
                     } else {

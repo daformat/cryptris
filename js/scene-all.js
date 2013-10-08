@@ -458,26 +458,23 @@ $(function(){
 		// Enable the action on the key.
 		currentGame.createKeySceneActive = true;
 
+    // Add a timer to handle the first move.
+		var timerFirstMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
+        if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 1) {
+          timerFirstMove.cancel();
+          // Uncomment me for disable input entry.
+          currentGame.createKeySceneActive = false;
 
-		var timer1 = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-            	/* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-            	if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 1) {
-            		// Cancel the timer when we display the message.
-            		timer1.cancel();
+          // call the function you want here
+          dialogNowTryToCancelLastMove();
 
-            		// Uncomment me for disable input entry.
-            		currentGame.createKeySceneActive = false;
-            		/** !!! Important In your function, set this variable at true to enable the input entry **/
+        }
+      }
+    );
 
-            		// call the function you want here
-            		dialogNowTryToCancelLastMove();
 
-            	} else if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 2){
-					dialogContinueManipulatingToGeneratePublicKey();
-            	}
-            }
-        );
 
 		var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
@@ -490,9 +487,120 @@ $(function(){
         );
 	}
 
+  function dialogPleaseInvertYourPrivateKey() {
+
+    // Add a timer to handle the action after this dialog box.
+    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
+        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
+        if (crypt_key.numberApplied === 3) {
+          timerSecondMove.cancel();
+          // Uncomment me for disable input entry.
+          currentGame.createKeySceneActive = false;
+
+          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
+            // call the function you want here
+            dialogContinueManipulatingToGeneratePublicKey();
+          } else {
+            dialogOkDontInvertYourPrivateKey();
+          }
+        }
+      }
+    );
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Tu n'as pas annulé ton précédent mouvement. Essaye de le faire en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
+
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: function(){
+              $('body').closeAllDialogs(function(){
+                currentGame.createKeySceneActive = true;
+              });
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+
+  }
+
+  function dialogOkDontInvertYourPrivateKey() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Ok, tu ne veux pas annuler ton précédent mouvement. Alors continue de manipuler ta clé privée afin d’entamer la création de ta clé publique",
+
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: function(){
+              $('body').closeAllDialogs(function(){
+                currentGame.createKeySceneActive = true;
+              });
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+
+  }
 	function dialogNowTryToCancelLastMove(){
 	  currentGame.createKeySceneActive = false;
 		
+    // Add a timer to handle the action after this dialog box.
+    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
+        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
+        if (crypt_key.numberApplied === 2) {
+          timerSecondMove.cancel();
+          // Uncomment me for disable input entry.
+          currentGame.createKeySceneActive = false;
+
+          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
+            // call the function you want here
+            dialogContinueManipulatingToGeneratePublicKey();
+          } else {
+            dialogPleaseInvertYourPrivateKey();
+          }
+        }
+      }
+    );
+
 		$("body").closeAllDialogs(function(){
 
 			$.switchWrapper('#bg-circuits', function(){

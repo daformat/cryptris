@@ -1,9 +1,9 @@
 var authorizedLength = [4, MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, 20];
-var symboles1 = ["0","1","2","3","4","5","6","7","8","9",
+var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
-var symboles2 = ["q","r","s","t","u","v","w","x","y","z",
+var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-var symboles3 = ["Q","R","S","T","U","V","W","X","Y","Z",
+var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z",
     " ",";", ".", ",","!","?","$","%","'","\\","\""];
 var separator = ["(",")","+","-","*","/","|","&"];
 
@@ -141,18 +141,18 @@ function easy_crypt(message) {
     for (var i = 0; i < message.length; ++i) {
         var character = '';
         if (message === -1) {
-            character = symboles1[Math.floor(Math.random() * symboles1.length)];
+            character = symbols1[Math.floor(Math.random() * symbols1.length)];
         } else if (message === 0) {
-            character = symboles2[Math.floor(Math.random() * symboles2.length)];
+            character = symbols2[Math.floor(Math.random() * symbols2.length)];
         } else {
-            character = symboles2[Math.floor(Math.random() * symboles3.length)];
+            character = symbols2[Math.floor(Math.random() * symbols3.length)];
         }
         crypt_message = crypt_message + character;
     }
     return crypt_message;
 }
 
-var symboles = ["0","1","2","3","4","5","6","7","8","9",
+var symbols = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
     " ",";", ".", ",","!","?","&","%","'","\\","\"","(",")","+","-","*","/","|","□"];
@@ -163,9 +163,9 @@ function positive_modulo(x1, nbr) {
 
 var pm = positive_modulo;
 
-function ternary_to_symbole(x1, x2, x3, x4) {
+function ternary_to_symbol(x1, x2, x3, x4) {
     var i = pm(x1, 3) + 3 * pm(x2, 3) + 9 * pm(x3, 3) + 27 * pm(x4, 3);
-    return symboles[i];
+    return symbols[i];
 }
 
 function integer_mod3_to_ternary(x) {
@@ -179,8 +179,8 @@ function integer_mod3_to_ternary(x) {
 
 var i3t = integer_mod3_to_ternary;
 
-function symbole_to_ternary(s) {
-    var i = symboles.indexOf(s);
+function symbol_to_ternary(s) {
+    var i = symbols.indexOf(s);
     var x1 = pm(i, 3);
     i = (i - x1) / 3;
     var x2 = pm(i, 3);
@@ -194,11 +194,10 @@ function symbole_to_ternary(s) {
 
 function string_to_ternary(string) {
     var html_string = HTMLentities(string);
-    console.log(html_string);
     var ternaries = [];
 
     for (var i = 0; i < html_string.length; ++i) {
-        var ternary = symbole_to_ternary(html_string[i]);
+        var ternary = symbol_to_ternary(html_string[i]);
 
         for (var j = 0; j < ternary.length; ++j) {
             ternaries.push(ternary[j]);
@@ -444,7 +443,6 @@ function chiffre(dim, message, pk) {
         for (var i = 1; i < dim / 2; ++i) {
             cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
         }
-        console.log(cipher);
 
         for (var i = 0; i < cipher.length; ++i) {
             if (cipher[i] > 1 || cipher[i] < -1) {

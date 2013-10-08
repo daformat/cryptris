@@ -37,8 +37,6 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
     move.push(-1);
 
-    console.log(move);
-
     var index = 0;
 
     var keyIsInvert = false;

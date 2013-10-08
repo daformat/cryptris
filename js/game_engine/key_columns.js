@@ -244,6 +244,9 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.keyFirstMove = false;
 	this.numberApplied = -1;
 	this.key_symbol_anim_is_needed = false;
+	this.latteral_move = 0;
+	this.is_inverted = false;
+	this.last_move = [];
 
     this.resize = function(isPaused) {
 		for (var i = 0; i < this.columnList.length; ++i) {
@@ -283,6 +286,8 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 		}
 
 
+		this.latteral_move = 0;
+		this.is_inverted = false;
 		this.columnList = [];
 		this.keyInMove = false;
 		this.keyFirstMove = true;
@@ -338,6 +343,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.changeKeyType = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.is_inverted = !this.is_inverted;
 			if (this.type === KEY_TYPE_NORMAL) {
 				this.type = KEY_TYPE_REVERSE;
 			} else {
@@ -353,6 +359,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.rotateLeft = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.latteral_move = this.latteral_move - 1;
 			this.columnList.push(this.columnList[0]);
 			this.columnList.splice(0, 1);
 
@@ -372,6 +379,8 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.rotateRight = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+
+			this.latteral_move = this.latteral_move + 1;
 			this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
 			this.columnList.splice(this.columnList.length - 1, 1);
 
@@ -397,6 +406,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.keyDown = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.last_move.push([this.latteral_move, this.is_inverted]);
 			this.keyInMove = true;
 			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].keyDown();
