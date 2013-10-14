@@ -8,15 +8,15 @@ var COLUMN_TYPE_3 = 'empty';
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
 var FIRST_MESSAGE = "OK";
-var FIRST_BATTLE_MESSAGE = "24";
+var FIRST_BATTLE_MESSAGE = "4";
 var SECOND_BATTLE_MESSAGE = "78";
 var THIRD_BATTLE_MESSAGE = " 31";
 
 var indexToReset = MIN_BOARD_LENGTH;
 
 function game() {
-	this.username = "PLAYER";
-	this.ianame = "RJ-45";
+	this.username = "JOUEUR";
+	this.ianame = "LOGICIEL ESPION";
 
     this.director = null;
 	this.scenes = null;
@@ -94,6 +94,8 @@ function getRelativeX(resizeOption) {
  * For information:
  * type1 : white blocks
  * type2 : colored blocks
+ * colorLeft : In a block, this is the left color of the linearGradient.
+ * colorRight : In a block, this is the right color of the linearGradient.
  */
 
 var playerBoardColorInfo = {
@@ -108,6 +110,9 @@ var playerBoardColorInfo = {
 	'columnColor' : 'rgba(0, 113, 187, 0.2)',
 	'numberColor' : '#00e770',
 	'numberGrow' : '#00FF9D',
+	'letterBoxColor' : '#00FF9D',
+	'letterColor' : '#ffffff',
+	'letterColorGrow' : '#00FF9D',
 	'enveloppe' : 'icn-mini-player-enveloppe',
 	'key-symbol' : 'icn-mini-player-key-symbol',
 	'padlock-closed' : 'icn-mini-player-padlock-closed',
@@ -125,6 +130,9 @@ var iaBoardColorInfo = {
 	'columnColor' : 'rgba(187, 53, 0, 0.2)',
 	'numberColor' : '#d30088',
 	'numberGrow' : '#fc56fc',
+	'letterBoxColor' : '#fc56fc',
+	'letterColor' : '#ffffff',
+	'letterColorGrow' : '#fc56fc',
 	'enveloppe' : 'icn-mini-ia-enveloppe',
 	'key-symbol' : 'icn-mini-ia-key-symbol',
 	'padlock-closed' : 'icn-mini-ia-padlock-closed',

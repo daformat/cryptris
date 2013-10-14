@@ -20,8 +20,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     }
 
     this.gradient = null;
-    this.blurGradient = null;
-
     this.computeGradient = function() {
         if (this.type != COLUMN_TYPE_3) {
             this.gradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
@@ -31,18 +29,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
             this.gradient = null;
         }
     };
-
-    this.computeBlurGradient = function() {
-        if (this.type != COLUMN_TYPE_3) {
-            this.blurGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.blurGradient.addColorStop(0, this.boxOption.boardColorInfo.blurColorLeft[this.type]);
-            this.blurGradient.addColorStop(1, this.boxOption.boardColorInfo.blurColorRight[this.type]);
-        } else {
-            this.blurGradient = null;
-        }
-    };
-
-    this.computeBlurGradient();
     this.computeGradient();
 
 	var object = this;

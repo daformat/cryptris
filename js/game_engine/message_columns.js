@@ -491,12 +491,12 @@ function Message(director, messageLength, message, container, boxOption, isActiv
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
                 ctx.shadowBlur = 5;
-                ctx.shadowColor = object.boxOption.boardColorInfo.numberGrow;
+                ctx.shadowColor = object.boxOption.boardColorInfo.letterColorGrow;
                 ctx.font = '15px Inconsolata';
 
-                ctx.strokeStyle = object.boxOption.boardColorInfo.numberGrow;
+                ctx.strokeStyle = object.boxOption.boardColorInfo.letterBoxColor;
                 ctx.strokeRect(0.5, 0.5, this.width, this.height);
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = object.boxOption.boardColorInfo.letterColor;
                 ctx.textAlign = 'center';
 
                 var ternaries = [];

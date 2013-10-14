@@ -165,6 +165,7 @@ var pm = positive_modulo;
 
 function ternary_to_symbol(x1, x2, x3, x4) {
     var i = pm(x1, 3) + 3 * pm(x2, 3) + 9 * pm(x3, 3) + 27 * pm(x4, 3);
+
     return symbols[i];
 }
 
@@ -203,7 +204,6 @@ function string_to_ternary(string) {
             ternaries.push(ternary[j]);
         }
     }
-
     return ternaries;
 }
 
