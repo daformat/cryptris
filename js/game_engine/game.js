@@ -505,7 +505,7 @@ function board_message_to_string(board_message) {
         beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
     }
 
-    return beginString + easy_crypt(message_number_to_string(board_message));
+    return message_number_to_string(board_message);
 }
 
 /**
