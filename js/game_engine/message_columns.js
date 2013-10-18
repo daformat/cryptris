@@ -690,5 +690,8 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         }
 
         this.resolved = tmpResolved;
+        if (this.resolved === true) {
+            $(document).trigger('msgResolved');
+        }
     }
 }

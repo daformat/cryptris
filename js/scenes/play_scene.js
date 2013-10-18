@@ -248,36 +248,31 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      */
     withIaBoard ? handle_ia(resultScene['scene'], rivalBoxInfo) : null;
 
-    resultScene['scene'].createTimer(resultScene['scene'].time, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
-            if (withIaBoard) {
-                var rivalMessage = rivalBoxInfo.message;
-                var rivalPadlockIsFall = rivalBoxInfo.padlockIsFall;
-                if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadLockIsFall === true) {
-                    currentGame.gameOver = true;
-                    rivalMessage.boxOption.endResolved = time;
-                    rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
-                    gameBoxInfo.addWinScreen("Time Out.", 200, 50, false);
-                    //resultScene.scene.setPaused(true);
-                    //currentGame[hookActive] = false;
-                }
-            }
-
-            var gameMessage = gameBoxInfo.message;
-            var gamePadlockIsFall = gameBoxInfo.padlockIsFall;
-            if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true && gamePadlockIsFall === true) {
-                currentGame.goToNextDialog = true;
-                gameMessage.boxOption.endResolved = time; 
-                gameBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
-
-                if (withIaBoard) {
-                    rivalBoxInfo.addWinScreen("Time Out", 200, 50, false);
-                }
-                //resultScene.scene.setPaused(true);
-                //currentGame[hookActive] = false;
+    $(document).on('padlockIsFall', function() {
+        if (withIaBoard) {
+            var rivalMessage = rivalBoxInfo.message;
+            var rivalPadlockIsFall = rivalBoxInfo.padlockIsFall;
+            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadLockIsFall === true) {
+                currentGame.gameOver = true;
+                rivalMessage.boxOption.endResolved = rivalBoxInfo.gameBox.time;
+                rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
+                gameBoxInfo.addWinScreen("Time Out.", 200, 50, false);
             }
         }
-    );
+
+        var gameMessage = gameBoxInfo.message;
+        var gamePadlockIsFall = gameBoxInfo.padlockIsFall;
+        if (gameMessage.boxOption.endResolved === null && gameMessage.resolved === true && gamePadlockIsFall === true) {
+            currentGame.goToNextDialog = true;
+            gameMessage.boxOption.endResolved = gameBoxInfo.gameBox.time; 
+            gameBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
+
+            if (withIaBoard) {
+                rivalBoxInfo.addWinScreen("Time Out", 200, 50, false);
+            }
+        }
+    });
+
     resizePlayScene(director, resultScene);
     return resultScene;
 }

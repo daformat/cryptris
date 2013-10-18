@@ -301,78 +301,71 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     if (this.isActive === true) {
         var object = this;
     
-        // Create the timer to animate the message and padlock when the gameBox is active.
-        var animEnveloppeAndPadlockTimer = this.director.createTimer(0, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
+        // -- Event to make the padlock vibrate.
+        $(document).on('padlockVibration', function(event, boxOption) {
+            if (boxOption === object.boxOption) {
                 /**
-                 * Check if padlock needs some animation.
+                 * In any case we set a 'elastic ping pong' animation to simulate a vibration.
                  */
-                if (object.message.padlock_need_anim === true) {
-                    object.message.padlock_need_anim = false;
+                var path =  new CAAT.LinearPath().
+                                setInitialPosition(object.padlock.x, object.padlock.y).
+                                setFinalPosition(object.padlock.x + 3, object.padlock.y);
+                var pb = new CAAT.PathBehavior().
+                                setPath(path).
+                                setFrameTime(object.gameBox.time, 250).
+                                setCycle(false);
 
-                    /**
-                     * In any case we set a 'elastic ping pong' animation to simulate a vibration.
-                     */
-                    var path =  new CAAT.LinearPath().
-                                    setInitialPosition(object.padlock.x, object.padlock.y).
-                                    setFinalPosition(object.padlock.x + 3, object.padlock.y);
-                    var pb = new CAAT.PathBehavior().
-                                    setPath(path).
-                                    setFrameTime(object.gameBox.time, 250).
-                                    setCycle(false);
-
-                    pb.setInterpolator(new CAAT.Behavior.Interpolator().createElasticInOutInterpolator(1.0, 0.2, true));
-                    object.padlock.addBehavior(pb);
-                    object.redrawSurround();
-
-                    /**
-                     * If message is resolved, we open the padlock and make it fall.
-                     */
-                    if (object.message.resolved === true) {
-                        /**
-                         * We don't need this timer anymore.
-                         */
-                        animEnveloppeAndPadlockTimer.cancel();
-
-                        /**
-                         * We open the padlock by changing the background img.
-                         */
-                        object.padlock.setBackgroundImage(object.padlock_open_img, false);
-
-                        /**
-                         * Path to move down the padlock.
-                         */
-                        var path =  new CAAT.LinearPath().
-                                        setInitialPosition(object.padlock.x, object.padlock.y).
-                                        setFinalPosition(object.padlock.x, $(window).height());
-                        var pathBehaviorListener = {
-                            'behaviorExpired' : function(behavior, time, actor) {
-                                object.padlockIsFall = true;
-                            },
-                            'behaviorApplied' : null
-                        };
-                        var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
-                        pb.addListener(pathBehaviorListener);
-                        pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
-                        object.padlock.addBehavior(pb);
-
-                        /**
-                         * Rotation for the padlock.
-                         */
-                        var rb = new CAAT.RotateBehavior().setAngles(0, Math.PI / 2).setFrameTime(object.gameBox.time + 250, 900).setCycle(false);
-                        rb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
-                        object.padlock.addBehavior(rb);
-
-                        /**
-                         * Set the fade on the padlock.
-                         */
-                        var fade = new CAAT.AlphaBehavior().setValues(1, 0).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
-                        object.padlock.addBehavior(fade);
-
-                    }
-                }
+                pb.setInterpolator(new CAAT.Behavior.Interpolator().createElasticInOutInterpolator(1.0, 0.2, true));
+                object.padlock.addBehavior(pb);
+                //object.redrawSurround();
             }
-        );
+        });
+
+        // -- Event to open the padlock and twinkle the enveloppe.
+        $(document).on('msgResolved', function() {
+            if (object.message.resolved === true && object.padlockIsFall === false) {
+                /**
+                 * Make the padlock to vibrate.
+                 */
+                $(document).trigger('padlockVibration', object.boxOption);
+
+                /**
+                 * We open the padlock by changing the background img.
+                 */
+                object.padlock.setBackgroundImage(object.padlock_open_img, false);
+
+                /**
+                 * Path to move down the padlock.
+                 */
+                var path =  new CAAT.LinearPath().
+                                setInitialPosition(object.padlock.x, object.padlock.y).
+                                setFinalPosition(object.padlock.x, $(window).height());
+                var pathBehaviorListener = {
+                    'behaviorExpired' : function(behavior, time, actor) {
+                        object.padlockIsFall = true;
+                        $(document).trigger('padlockIsFall');
+                    },
+                    'behaviorApplied' : null
+                };
+                var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                pb.addListener(pathBehaviorListener);
+                pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
+                object.padlock.addBehavior(pb);
+
+                /**
+                 * Rotation for the padlock.
+                 */
+                var rb = new CAAT.RotateBehavior().setAngles(0, Math.PI / 2).setFrameTime(object.gameBox.time + 250, 900).setCycle(false);
+                rb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(2, false));
+                object.padlock.addBehavior(rb);
+
+                /**
+                 * Set the fade on the padlock.
+                 */
+                var fade = new CAAT.AlphaBehavior().setValues(1, 0).setFrameTime(object.gameBox.time + 200, 1000).setCycle(false);
+                object.padlock.addBehavior(fade);
+            }
+        });
     }
 
     /**

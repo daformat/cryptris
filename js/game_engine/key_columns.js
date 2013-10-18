@@ -200,6 +200,9 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
                     if (object.boxOption.objectsInMove.length === 0) {
                         object.boxOption.keyNeedToUpdate = true;
+                        
+                        // ToFix: Actually we pass the boxOption object to know the padlock we want to animate.
+                    	$(document).trigger('padlockVibration', [object.boxOption]);
                     }
                 }
             }
@@ -471,7 +474,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 				} else {
 					object.msgColumn.redraw();
 					object.msgColumn.isResolved();
-					object.msgColumn.padlock_need_anim = true;
 					object.createKey();
 				}
 			}
