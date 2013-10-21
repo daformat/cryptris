@@ -74,6 +74,20 @@
     <script src="js/share-animate-steps.js"></script>
 
 
+    <!--LOAD EXTERNAL JS FILE-->
+    <script type="text/javascript" src="./vendor/caat.js"></script>
+
+    <!--LOAD CUSTOM JS FILE-->
+    <script type="text/javascript" src="./js/game_engine/global.js"></script>
+    <script type="text/javascript" src="./js/game_engine/game.js"></script>
+    <script type="text/javascript" src="./js/game_engine/controls.js"></script>
+    <script type="text/javascript" src="./js/game_engine/game_box.js"></script>
+    <script type="text/javascript" src="./js/game_engine/info_column.js"></script>
+    <script type="text/javascript" src="./js/game_engine/message_columns.js"></script>
+    <script type="text/javascript" src="./js/game_engine/key_columns.js"></script>
+    <script type="text/javascript" src="js/game_engine/share.js"></script>
+
+
   </head>
   <body class="share">
     <div class="wrapper bg-circuits block">
@@ -108,7 +122,8 @@
               <div class="encrypted-message">
                   <div class="message">
                     <!-- Include canvas here-->
-                    <img class="img" src="img/temp-encrypted-message.png">
+                    <canvas id="mini_board" style="border: 1px solid black"></canvas>
+                    <!--<img class="img" src="img/temp-encrypted-message.png">-->
                   </div>
                   <div class="social-actions">
                     <p><a href="#"><img src="img/icn-facebook-large.png"> Partager sur facebook</a></p>

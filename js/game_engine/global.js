@@ -51,6 +51,28 @@ function game() {
     }
 }
 
+function ResizeMiniBoardOption(currentLength) {
+
+	this.DEFAULT_SPACE_WIDTH = 4;
+	if (currentLength === MAX_BOARD_LENGTH) {
+		this.DEFAULT_SQUARE_WIDTH = 24;
+	} else if (currentLength === MEDIUM_BOARD_LENGTH) {
+		this.DEFAULT_SQUARE_WIDTH = 30;
+	} else if (currentLength === MIN_BOARD_LENGTH) {
+		this.DEFAULT_SQUARE_WIDTH = 40;
+	}
+	this.DEFAULT_COLUMN_WIDTH = this.DEFAULT_SQUARE_WIDTH + 3;
+	this.DEFAULT_SQUARE_HEIGHT = 20;
+	this.DEFAULT_SPACE_HEIGHT = 4;
+	this.DEFAULT_BORDER_WIDTH = 8;
+	this.DEFAULT_BORDER_HEIGHT = 8;
+	this.DEFAULT_SPACE_INFOCOLUMN_GAMEBOX = 10;
+	this.DEFAULT_OUTSIDE_SPACE = 60;
+	this.DEFAULT_BOTTOM_MARGIN = 100;
+	this.DEFAULT_RELATIVE_Y = 0
+	this.currentLength = currentLength;
+}
+
 function ResizeOption(currentLength, numberBoard) {
 
 	this.DEFAULT_SPACE_WIDTH = 4;

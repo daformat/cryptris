@@ -3,8 +3,7 @@ var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
 var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z",
-    " ",";", ".", ",","!","?","$","%","'","\\","\""];
+var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z"];
 var separator = ["(",")","+","-","*","/","|","&"];
 
 function HTMLentities(texte) {
@@ -140,16 +139,53 @@ function easy_crypt(message) {
     var crypt_message = "";
     for (var i = 0; i < message.length; ++i) {
         var character = '';
-        if (message === -1) {
+        if (message[i] === -1) {
             character = symbols1[Math.floor(Math.random() * symbols1.length)];
-        } else if (message === 0) {
+        } else if (message[i] === 0) {
             character = symbols2[Math.floor(Math.random() * symbols2.length)];
         } else {
-            character = symbols2[Math.floor(Math.random() * symbols3.length)];
+            character = symbols3[Math.floor(Math.random() * symbols3.length)];
         }
         crypt_message = crypt_message + character;
     }
     return crypt_message;
+}
+
+
+function easy_decrypt(crypt_message) {
+
+    var ternary_message = [];
+    for (var i = 0; i < crypt_message.length; ++i) {
+        var find = false;
+        for (var j = 0; j < symbols1.length; ++j) {
+            if (crypt_message[i] === symbols1[j]) {
+                ternary_message.push(-1);
+                find = true;
+                break;
+            }
+        }
+        for (var j = 0; j < symbols2.length; ++j) {
+            if (crypt_message[i] === symbols2[j]) {
+                ternary_message.push(0);
+                find = true;
+                break;
+            }
+        }
+        for (var j = 0; j < symbols3.length; ++j) {
+            if (crypt_message[i] === symbols3[j]) {
+                ternary_message.push(1);
+                find = true;
+                break;
+            }
+        }
+    }
+    var message = "";
+
+    for (var i = 0; i < ternary_message.length; i = i + 4) {
+        message += ternary_to_symbol(ternary_message[i], ternary_message[i + 1], ternary_message[i + 2], ternary_message[i + 3]);
+    }
+
+    return message;
 }
 
 var symbols = [" ", "0","1","2","3","4","5","6","7","8","9",
