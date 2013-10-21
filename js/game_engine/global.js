@@ -4,6 +4,7 @@ var MAX_BOARD_LENGTH = 12;
 var COLUMN_TYPE_1 = 'type1';
 var COLUMN_TYPE_2 = 'type2';
 var COLUMN_TYPE_3 = 'empty';
+var MAX_BLOCKS_IN_A_COLUMN = 400;
 
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;

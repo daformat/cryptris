@@ -169,6 +169,16 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     this.create();
 
     /**
+     * Detect the event TooBlocksInAColumn
+     */
+    var object = this;
+    $(document).on('tooManyBlocks', function(event, boxOption) {
+        if (player === true && object.boxOption === boxOption) {
+            currentGame.tooManyBlocksInAColumn = true;
+        }
+    });
+
+    /**
      * If we have to decrypt a message, and if we have not added a keySymbol, add it.
      */
     this.addKeySymbol = function() {

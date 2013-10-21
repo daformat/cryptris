@@ -621,7 +621,7 @@ function Message(director, messageLength, message, container, boxOption, isActiv
                 var newHeight = 0;
                 var totalSquares = this.boxOption.maxKeyNumber + max_column;
                 var totalHeight = this.container.height - 2 * this.boxOption.BORDER_HEIGHT;
-
+ 
                 if (this.boxOption.SQUARE_HEIGHT > 1) {
                     newHeight = parseInt(totalHeight / totalSquares) - this.boxOption.SPACE_HEIGHT;
                     if (newHeight > 20) {
@@ -686,6 +686,10 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         for (var i = 0; i < this.columnList.length; ++i) {
             if (this.columnList[i].squareNumber > 1) {
                 tmpResolved = false;
+            }
+            // -- Test if we have too many blocks in a column.
+            if (this.columnList[i].squareNumber > MAX_BLOCKS_IN_A_COLUMN) {
+                $(document).trigger('tooManyBlocks', [this.boxOption]);
             }
         }
 

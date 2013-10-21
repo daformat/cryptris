@@ -802,7 +802,39 @@ $(function(){
         });
 
       });
+    }
+    function tooManyBlocksDialog() {
 
+        $("body").closeAllDialogs(function(){
+
+          $.switchWrapper('#bg-circuits', function(){
+            $(".wrapper.active .vertical-centering").dialog({
+
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+                title: "Chercheuse",
+                content: "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !",
+                controls: [{
+                    label: "Suite", 
+                    class: "button blue",
+                    onClick: stopGameOverDialog
+                },
+                {
+                    label: "Abandonner",
+                    class: "button red",
+                    onClick: ''
+
+                }]
+
+            });
+
+        });
+
+      });
     }
 
     function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
@@ -812,6 +844,7 @@ $(function(){
         currentGame.scenes[sceneName].scene.setPaused(true);
         currentGame[sceneName] = false;
         currentGame.gameOver = false;
+        currentGame.tooManyBlocksInAColumn = false;
 
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), 0, 0, false);
 
@@ -827,8 +860,7 @@ $(function(){
 
                     timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
                 }
-                if (currentGame.gameOver === true) {
-                    currentGame.gameOver = false;
+                if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
                     waitToContinue.cancel();
                     currentGame.scenes[sceneName].scene.setPaused(true);
                     currentGame[sceneName] = false;
@@ -844,8 +876,13 @@ $(function(){
                         'helpEvent' : helpEvent,
                         'timeout' : timeout
                     };
-
-                    gameOverDialog();
+                    if (currentGame.gameOver === true) {
+                        gameOverDialog();
+                    } else if (currentGame.tooManyBlocksInAColumn === true) {
+                        tooManyBlocksDialog();
+                    }
+                    currentGame.gameOver = false;
+                    currentGame.tooManyBlocksInAColumn = false;
                 }
             }
         );
