@@ -12,10 +12,6 @@ function getQuerystring(key, default_) {
 $(document).ready(function() {
 
     if (getQuerystring('no-preloader', true) === true) {
-        /**
-         * Declare our main caat director.
-         */
-        director = new CAAT.Director();
 
         /**
          * Image assets
@@ -30,14 +26,13 @@ $(document).ready(function() {
             imgs,
             function on_load(counter, images) {
                 if (counter === images.length) {
+                    
+                    // -- Swith from preloader screen to menu screen.
                     $('#preloader-view').attr('style', 'display: none;');
                     $('#menu-view').attr('style', '');
-                    console.debug($.now() - time);
-                    director.emptyScenes();
-                    director.setImagesCache(images);
-                    director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
-                    CAAT.loop(60);
+
                 } else {
+                    // -- Update the preloader screen.
                     $('#preloader-display').text((counter + 1) + '/' + images.length);
                 }
             }
