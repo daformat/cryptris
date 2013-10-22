@@ -31,7 +31,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         return this.director.height - this.relativeY - this.boxOption.resizeOption.DEFAULT_BOTTOM_MARGIN;
     }
 
-
     var object = this;
     this.create = function() {
 
@@ -42,8 +41,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                                         .setSize(this.sizeWidth(), this.sizeHeight())
                                         .setFillStyle('rgba(0, 113, 187, 0.2)');
         this.gameBox.cacheAsBitmap();
-
-
 
         /**
          * Create each column and set their color.
@@ -58,7 +55,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             this.gameBox.addChild(column);
             this.columnList.push(column);
         }
-
 
         /**
          * Create my message object.

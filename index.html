@@ -7,6 +7,8 @@
     <meta name="apple-mobile-web-app-title" content="Cryptris">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="cache-control" content="max-age=10000000, public, must-revalidate">
+    <meta http-equiv="last-modified" content="Mon, 14 Jan 2050 11:52:12 GMT" />
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
@@ -31,8 +33,6 @@
           media="(device-width: 320px) and (device-height: 568px)
              and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image">
-
-
 
     <link href="img/apple-touch-startup-image-768x1004.png"
           media="(device-width: 768px) and (device-height: 1024px)
@@ -70,11 +70,32 @@
     <script src="js/viewport.js"></script>
     <script src="js/mobile-detection.js"></script>
     <script src="js/selectable-list.js"></script>
+    <script src="vendor/caat.js"></script>
+    <script src="js/preloaded_images.js"></script>
+    <script src="js/preloader.js"></script>
 
 
   </head>
   <body class="">
-    <div class="wrapper bg-circuits">
+    <div id="preloader-view" class="wrapper bg-circuits" style="">
+      <div class="vertical-centering">
+
+
+        <div>
+          <ul class="main-menu">
+            <li>
+              <span class="arrow">▶</span><span id="preloader-display"></span><span class="arrow">◀</span></a>
+            </li>
+          </ul>
+        </div>
+
+        <a href="http://digitalcuisine.fr/" target="_blank"><img class="logo-digital-cuisine-medium" src="img/logo-digital-cuisine-medium.png"></a>
+      
+      </div>
+      <a href="http://www.inria.fr/" target="_blank" class="logo-inria"><img class="logo-inria-medium" src="img/logo-inria-medium.png"></a>
+    </div>
+
+    <div id="menu-view" class="wrapper bg-circuits" style="display: none">
       <div class="vertical-centering">
 
         <img class="cryptris-logo-large" src="img/logo-cryptris-large.png">

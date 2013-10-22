@@ -117,32 +117,7 @@ function initGame(director) {
     /**
      * Image assets
      */
-    var imgs= [];
-    imgs.push({id:'logo-board', url: "img/assets/board-assets_03.png"});
-    imgs.push({id:'pad-untouched', url: "img/assets/board-assets_35.png"});
-    imgs.push({id:'pad-left', url: "img/assets/board-assets_25.png"});
-    imgs.push({id:'pad-right', url: "img/assets/board-assets_29.png"});
-    imgs.push({id:'pad-up', url: "img/assets/board-assets_34.png"});
-    imgs.push({id:'pad-down', url: "img/assets/board-assets_27.png"});
-    imgs.push({id:'pause-up', url: "img/assets/board-assets_11.png"});
-    imgs.push({id:'pause-down', url: "img/assets/board-assets_16.png"});
-    imgs.push({id:'help-up', url: "img/assets/board-assets_13.png"});
-    imgs.push({id:'help-down', url: "img/assets/board-assets_18.png"});
-    imgs.push({id:'timer', url: "img/assets/board-assets_07.png"});
-    imgs.push({id:'left-board', url: "img/assets/left-board-assets_07.png"});
-    imgs.push({id:'right-board', url: "img/assets/right-board-assets_07.png"});
-    imgs.push({id:'center-board', url: "img/assets/center-board-assets_07.png"});
-    imgs.push({id:'triangle-left', url: "img/assets/triangle-left.png"});
-    imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
-    imgs.push({id:'key-symbol', url: "img/key-symbol.png"});
-    imgs.push({id:'icn-mini-ia-enveloppe', url: "img/icn-mini-ia-enveloppe.png.png"});
-    imgs.push({id:'icn-mini-ia-key-symbol', url: "img/icn-mini-ia-key-symbol.png"});
-    imgs.push({id:'icn-mini-ia-padlock-closed', url: "img/icn-mini-ia-padlock-closed.png"});
-    imgs.push({id:'icn-mini-ia-padlock-open', url: "img/icn-mini-ia-padlock-open.png"});
-    imgs.push({id:'icn-mini-player-enveloppe', url: "img/icn-mini-player-enveloppe.png"});
-    imgs.push({id:'icn-mini-player-key-symbol', url: "img/icn-mini-player-key-symbol.png"});
-    imgs.push({id:'icn-mini-player-padlock-closed', url: "img/icn-mini-player-padlock-closed.png"});
-    imgs.push({id:'icn-mini-player-padlock-open', url: "img/icn-mini-player-padlock-open.png"});
+    var imgs = getPreloadedImages();
 
     /**
      * Preload our necessarly images and load the splash screens.
