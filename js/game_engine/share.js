@@ -54,29 +54,7 @@ function createMiniBoardScene(director, current_length, message, keyInfo, hookAc
  * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
  */
-function createScenes(director) {
-	var current_length = MIN_BOARD_LENGTH;
-
-    /**
-     * Define a default set of public/private key.
-     */
-    currentGame.playerKeyInfo = getKeyInfo(current_length);
-
-    /**
-     * Change message to ternary
-     */
-    var ternary_message = string_to_ternary(currentGame.message);
-
-    /**
-     * Return the crypted message
-     */
-    var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key);
-
-	console.log('ici');
-    /**
-     * Define a default set of public/private key.
-     */
-    currentGame.playerKeyInfo = getKeyInfo(current_length);
+function createScenes(director, current_length, crypted_message) {
 
     /**
      * Create each scene.
@@ -97,7 +75,7 @@ function createScenes(director) {
  * This function preload each assets needed by the game and create each scenes..
  * @param director {CAAT.Director}
  */
-function initGame(director) {
+function initGame(director, current_length, crypted_message) {
     /**
      * Image assets
      */
@@ -137,7 +115,7 @@ function initGame(director) {
             if (counter === images.length) {
                 director.emptyScenes();
                 director.setImagesCache(images);
-                createScenes(director);
+                createScenes(director, current_length, crypted_message);
                 director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
                 CAAT.loop(60);
             }
@@ -146,7 +124,7 @@ function initGame(director) {
 }
 
 
-function createMiniBoard() {
+function createMiniBoard(current_length, crypted_message) {
 
     /**
      * Debug flag, turn it off to production version.
@@ -185,27 +163,59 @@ function createMiniBoard() {
     /**
      * Init the game
      */
-    initGame(currentGame.director);
+    initGame(currentGame.director, current_length, crypted_message);
 }
 
 var baseHtml = 'http://' + document.domain + '/decrypter.html'
 $(document).ready(function() {
 	$("#share").submit(function() {
 		var text = $("textarea").val();
+		while (text.length < 3) {
+			text += ' ';
+		}
 		var ternary_message = string_to_ternary(text);
 
 		var crypt_message = easy_crypt(ternary_message);
 		var url = baseHtml + '?msg=' + crypt_message;
 
-		var keyInfo = "";
+		var cipher_message = text[0] + text[1] + text[2];
+
+		var current_length = MAX_BOARD_LENGTH;
+
+	    /**
+    	 * Define a default set of public/private key.
+     	 */
+    	currentGame.playerKeyInfo = getKeyInfo(current_length);
+
+	    /**
+    	 * Change message to ternary
+     	 */
+    	var ternary_message = string_to_ternary(cipher_message);
+
+	    /**
+    	 * Return the crypted message
+    	 */
+    	var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key);
+
+		createMiniBoard(current_length, crypted_message);
+
+		var keyInfoPublicKey = currentGame.playerKeyInfo.public_key[current_length].key.toString();
+		var keyInfoPrivateKey = currentGame.playerKeyInfo.private_key[current_length].key.toString();
+		var keyInfoCipher = crypted_message.plain_message.toString();
+		var keyInfoCurrentLength = current_length.toString();
+
+		//console.debug(keyInfoPublicKey.split(",").map(Number)[10]);
+
+		var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
+		console.debug(tmpKeyInfo);
+		var keyInfo = tmpKeyInfo;
+		url += "&keyInfo=";
+		url += keyInfo;
 
 		var message = easy_decrypt(crypt_message);
-
-		currentGame.message = message[0] + message[1] + message[2];
-
 		console.log(text + ' <=========== ' + crypt_message + ' =========> ' + message);
 		console.log(url);
-		createMiniBoard();
+
 		return false;
 	});
 

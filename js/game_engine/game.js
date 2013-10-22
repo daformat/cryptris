@@ -491,7 +491,6 @@ function chiffre(dim, message, pk) {
     var result = {};
     result['message_type'] = [];
     result['message_number'] = [];
-    result['message_original'] = [];
     result['plain_message'] = cipher;
 
     for (var i = 0; i < cipher.length; ++i) {
@@ -504,14 +503,6 @@ function chiffre(dim, message, pk) {
     	} else {
     		result['message_type'].push(COLUMN_TYPE_3);
     		result['message_number'].push(0);
-    	}
-
-    	if (message[i] > 0) {
-    		result['message_original'].push(COLUMN_TYPE_1);
-    	} else if (message[i] < 0) {
-    		result['message_original'].push(COLUMN_TYPE_2);
-    	} else {
-    		result['message_original'].push(COLUMN_TYPE_3);
     	}
     }
 
@@ -586,4 +577,71 @@ function encrypt_string(dim, string, pk, truncate_number) {
         crypt_msg = crypt_msg + tmp_crypt_msg[i]
     }
     return crypt_msg;
+}
+
+function generateKeyInfo(public_key, private_key, current_length) {
+    var keyInfo = {};
+
+    keyInfo['public_key'] = {};
+    keyInfo['public_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
+    keyInfo['private_key'] = {};
+    keyInfo['private_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
+
+    for (var i = 0; i < current_length; ++i) {
+        keyInfo.public_key[current_length].key[i] = public_key[i];
+        keyInfo.private_key[current_length].key[i] = private_key[i];
+
+        if (public_key[i] > 0) {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_1;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
+            keyInfo.public_key[current_length].number[i] = public_key[i];
+        } else if (public_key[i] === 0) {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_3;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
+            keyInfo.public_key[current_length].number[i] = public_key[i];
+        } else {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_2;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
+            keyInfo.public_key[current_length].number[i] = public_key[i] * (-1);
+        }
+
+
+        if (private_key[i] > 0) {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_1;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
+            keyInfo.private_key[current_length].number[i] = private_key[i];
+        } else if (private_key[i] === 0) {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_3;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
+            keyInfo.private_key[current_length].number[i] = private_key[i];
+        } else {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_2;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
+            keyInfo.private_key[current_length].number[i] = private_key[i] * (-1);
+        }
+    }
+
+    return keyInfo;
+}
+
+function createADataMessage(crypted_message, current_length) {
+    var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
+
+    for (var i = 0; i < current_length; ++i) {
+        if (crypted_message[i] > 0) {
+            dataMessage.message_number[i] = crypted_message[i];
+            dataMessage.message_type[i] = COLUMN_TYPE_1;
+            dataMessage.plain_message[i] = crypted_message[i];
+        } else if (crypted_message[i] === 0) {
+            dataMessage.message_number[i] = crypted_message[i];
+            dataMessage.message_type[i] = COLUMN_TYPE_3;
+            dataMessage.plain_message[i] = crypted_message[i];
+        } else {
+            dataMessage.message_number[i] = crypted_message[i] * (-1);
+            dataMessage.message_type[i] = COLUMN_TYPE_2;
+            dataMessage.plain_message[i] = crypted_message[i];
+        }
+    }
+
+    return dataMessage;
 }
