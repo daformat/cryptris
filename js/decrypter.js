@@ -63,6 +63,18 @@ function preparePlayScene(director, boardLength, boardName, crypt_message, hookA
     currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
 }
 
+function specialOutInterpolator() {
+    this.getPosition = function(time) {
+        return {'x' : time, 'y' : 0};
+    }
+}
+
+function specialInInterpolator() {
+    this.getPosition = function(time) {
+        return {'x' : time, 'y' : 1};
+    }
+}
+
 /**
  * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
@@ -82,12 +94,6 @@ function createScenes(director) {
     var keyInfoCipher = keyInfoElement[2].split(',').map(Number);
     var keyInfoCurrentLength = parseInt(keyInfoElement[3]);
 
-
-    console.debug(keyInfoPublicKey);
-    console.debug(keyInfoPrivateKey);
-    console.debug(keyInfoCipher);
-    console.debug(keyInfoCurrentLength);
-
     currentGame.playerKeyInfo = generateKeyInfo(keyInfoPublicKey, keyInfoPrivateKey, keyInfoCurrentLength);
     var cryptedMessage = createADataMessage(keyInfoCipher, keyInfoCurrentLength);
 
@@ -96,10 +102,25 @@ function createScenes(director) {
      */
     currentGame.scenes = {};
 
-    // This scene is active between two scenes.
+    var waiting_scene = director.createScene();
+
     preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', false, true);
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
     currentGame['playMaxSceneActive'] = true;
+
+
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.play_max_scene.scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    500,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
+
     currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
 
 
