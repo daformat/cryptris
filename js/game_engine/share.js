@@ -141,7 +141,11 @@ function createMiniBoard(current_length, crypted_message) {
     initGame(currentGame.director, current_length, crypted_message);
 }
 
-var baseHtml = 'http://' + document.domain + '/decrypter.html'
+var href = window.location.href;
+alert(href);
+var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
+var baseHtml = hrefPath + 'decrypter.html';
+
 $(document).ready(function() {
 	$("#share").submit(function() {
 		var text = $("textarea").val();
