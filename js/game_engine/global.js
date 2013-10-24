@@ -43,7 +43,6 @@ function game() {
     this.playSoloSceneActive = false;
 
     this.deactivateScenes = function(hookActive) {
-    	console.debug('here');
     	if (hookActive !== 'createKeySceneActive') {
 	    	this.createKeySceneActive = false;
 	    }

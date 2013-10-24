@@ -134,7 +134,7 @@ function initGame(director) {
         imgs,
         function on_load(counter, images) {
             if (counter === images.length) {
-                console.debug($.now() - time);
+                console.log($.now() - time);
                 director.emptyScenes();
                 director.setImagesCache(images);
                 createScenes(director);

@@ -86,7 +86,6 @@ function createScenes(director) {
      */
     var keyInfo = getQuerystring('keyInfo', '');
 
-    console.debug(keyInfo);
     var keyInfoElement = keyInfo.split('|');
 
     var keyInfoPublicKey = keyInfoElement[0].split(',').map(Number);

@@ -182,10 +182,7 @@ $(document).ready(function() {
 		var keyInfoCipher = crypted_message.plain_message.toString();
 		var keyInfoCurrentLength = current_length.toString();
 
-		//console.debug(keyInfoPublicKey.split(",").map(Number)[10]);
-
 		var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
-		console.debug(tmpKeyInfo);
 		var keyInfo = tmpKeyInfo;
 		url += "&keyInfo=";
 		url += keyInfo;

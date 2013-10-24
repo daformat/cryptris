@@ -463,8 +463,6 @@ $(function(){
     $("body").closeAllDialogs();
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
-    console.debug(currentGame.createKeySceneActive);
-
 
     // Add a timer to handle the first move.
     var timerFirstMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
@@ -980,7 +978,6 @@ $(function(){
               // Display the battle scene in background.
               goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
 
-              console.debug(currentGame.playSoloSceneActive);
               $(".wrapper.active .vertical-centering").dialog({
                 
                 animateText: true,
@@ -1012,7 +1009,6 @@ $(function(){
         // Launch the timer and display private key.
 
         currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
-        console.debug(currentGame.playSoloSceneActive);
         $(".wrapper.active .vertical-centering").dialog({
 
           animateText: true,
