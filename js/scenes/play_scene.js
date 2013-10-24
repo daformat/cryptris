@@ -39,7 +39,9 @@ function handle_ia(playScene, rivalBoxInfo) {
 
     var decryptMsgTimer = playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
-
+            if (currentGame.iaPlay === false) {
+                return ;
+            }
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
@@ -178,8 +180,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      * Deactivate all scenes and activate this scene.
      */
     resultScene.scene.activated = function() {
-        currentGame.deactivateScenes();
-        currentGame[hookActive] = true;
+        currentGame.deactivateScenes(hookActive);
         if (resultScene.resize != null) {
             resultScene.resize(director, resultScene);
         }

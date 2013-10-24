@@ -226,8 +226,7 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
      * Deactivate all scenes and activate this scene.
      */
     resultScene.scene.activated = function() {
-        currentGame.deactivateScenes();
-        currentGame.createKeySceneActive = true;
+        currentGame.deactivateScenes(hookActive);
         if (resultScene.resize != null) {
             resultScene.resize(director, resultScene);
         }

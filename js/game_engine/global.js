@@ -42,12 +42,23 @@ function game() {
     this.playMaxSceneActive = false;
     this.playSoloSceneActive = false;
 
-    this.deactivateScenes = function() {
-    	this.createKeySceneActive = false;
-    	this.playMinSceneActive = false;
-    	this.playMediumSceneActive = false;
-    	this.playMaxSceneActive = false;
-    	this.playSoloSceneActive = false;
+    this.deactivateScenes = function(hookActive) {
+    	console.debug('here');
+    	if (hookActive !== 'createKeySceneActive') {
+	    	this.createKeySceneActive = false;
+	    }
+	    if (hookActive !== 'playMinSceneActive') {
+	    	this.playMinSceneActive = false;
+	    }
+	    if (hookActive !== 'playMediumSceneActive') {
+	    	this.playMediumSceneActive = false;
+	    }
+	    if (hookActive !== 'playMaxSceneActive') {
+	    	this.playMaxSceneActive = false;
+	    }
+	    if (hookActive !== 'playSoloSceneActive') {
+	    	this.playSoloSceneActive = false;
+	    }
     }
 }
 
