@@ -187,6 +187,8 @@ $(document).ready(function() {
 		url += "&keyInfo=";
 		url += keyInfo;
 
+		console.log(url);
+
 		return false;
 	});
 
