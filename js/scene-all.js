@@ -857,6 +857,8 @@ $(function(){
         currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                         currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                         new specialInInterpolator(), new specialOutInterpolator());
+        
+        setTimeout(function() {currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName])}, 500);
 
         // set the speed of this scene.
         timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
@@ -1414,7 +1416,6 @@ $(function(){
             currentGame.iaPlay = true;
             currentGame.scenes.play_min_scene.scene.setPaused(false);
             currentGame.playMinSceneActive = true;
-            currentGame.scenes.play_min_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_min_scene);
         });
     }
 
