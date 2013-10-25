@@ -254,6 +254,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                 ctx.fillText(winScreenMessage, this.width / 2, this.height / 2);
             }
             this.gameBox.addChild(this.winScreen);
+            this.gameBox.setZOrder(this.winScreen, Number.MAX_VALUE);
         }
 
         // Make the enveloppe twinkles three times.
@@ -276,7 +277,13 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
                         nbrEnveloppeClipping = nbrEnveloppeClipping + 1;
                     } else {
                         if (scene != null && hookActive != null) {
-                            scene.setPaused(true);
+                            //scene.setPaused(true);
+                            /* Stop the ia --- wrong way, we have to change this by a local variable. */
+                            currentGame.iaPlay = false;
+
+                            /* Launch an event to stop the increase of time */
+                            $(document).trigger('fixTime', [scene]);
+
                             currentGame[hookActive] = false;
                         }
                     }
@@ -323,7 +330,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 
                 pb.setInterpolator(new CAAT.Behavior.Interpolator().createElasticInOutInterpolator(1.0, 0.2, true));
                 object.padlock.addBehavior(pb);
-                //object.redrawSurround();
             }
         });
 

@@ -28,7 +28,16 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.resultScene = resultScene;
 	this.director = director;
 	this.crypt_key = crypt_key;
-	this.marge = 30
+	this.marge = 30;
+	this.gameIsInProgress = true;
+	this.currentTime = 0;
+
+	var object = this;
+	$(document).on('fixTime', function(event, scene) {
+		if (resultScene.scene === scene) {
+			object.gameIsInProgress = false;
+		}
+	});
 
 	this.infoColumnContainer = new CAAT.Foundation.ActorContainer();
 	this.resultScene['scene'].addChild(this.infoColumnContainer);
@@ -62,7 +71,10 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 		ctx.font = '700 22px Quantico';
 		ctx.fillStyle = 'white';
-		ctx.fillText(convertTimeToString(resultScene.scene.time), 0, 0);
+		if (object.gameIsInProgress === true) {
+			object.currentTime = resultScene.scene.time;
+		}
+		ctx.fillText(convertTimeToString(object.currentTime), 0, 0);
 	}
 
 	this.centerTimer.addChild(this.timerText);

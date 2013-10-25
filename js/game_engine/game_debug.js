@@ -8,16 +8,19 @@ $(document).ready(function() {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_min_scene']['scene']), 0, 0, false);
             currentGame.scenes.play_min_scene.rival_box.boxOption.timeInfo = rivalPMinSceneTime;
             currentGame.scenes.play_min_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_min_scene);
+            currentGame.playMinSceneActive = true;
         }
         if (key.getKeyCode() === CAAT.Keys.c && key.getAction() === 'down') {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_medium_scene']['scene']), 0, 0, false);
             currentGame.scenes.play_medium_scene.rival_box.boxOption.timeInfo = rivalPMediumSceneTime;
             currentGame.scenes.play_medium_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_medium_scene);
+            currentGame.playMediumSceneActive = true;
         }
         if (key.getKeyCode() === CAAT.Keys.d && key.getAction() === 'down') {
             currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['play_max_scene']['scene']), 0, 0, false);
             currentGame.scenes.play_max_scene.rival_box.boxOption.timeInfo = rivalPMaxSceneTime;
             currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
+            currentGame.playMaxSceneActive = true;
         }
         if (key.getKeyCode() === CAAT.Keys.e && key.getAction() === 'down') {
                 ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
