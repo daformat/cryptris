@@ -198,27 +198,14 @@ $(document).ready(function() {
             po.src = 'https://apis.google.com/js/client:plusone.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
         })();
-        /*
-        <!-- Twitter -->
-        <a href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
 
-        <!-- Google plus -->  
-        <span
-          class="g-interactivepost"
-          data-contenturl="https://cryptris.com/"
-          data-contentdeeplinkid="/"
-          data-clientid="303615069411.apps.googleusercontent.com"
-          data-cookiepolicy="single_host_origin"
-          data-prefilltext="Cryptris, un jeu sur la cryptographie asymétrique"
-          data-calltoactionlabel="PLAY"
-          data-calltoactionurl="http://crytptis.com"
-          data-calltoactiondeeplinkid="/">
-          <a href="#"><img class="retina" src="img/icn-google-plus@2x.png" data-at2x="img/icn-google-plus@2x.png" alt=""></a>
-        </span>
-
-        <!-- Facebook -->
-        <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
-*/
+        $('#share-fb').attr('href', 'http://www.facebook.com/sharer.php?s=100&p[url]=' + url + '&p[title]=Essaye de décrypter ce message sur Cryptris');
+        $('#share-fb').attr('target', '_blank');
+        $('#share-fb').attr('onclick', 'javascript:window.open(\'http://www.facebook.com/sharer.php?s=100&p[url]='
+                                         + url 
+                                         + '&p[title]=Cryptris, un jeu sur la cryptographie asymétrique' 
+                                         + '&p[summary]=Essaye de décrypter ce message sur Cryptris.\', \'\', \''
+                                         + 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600\'); return false;');
 
         console.log(url);
 
