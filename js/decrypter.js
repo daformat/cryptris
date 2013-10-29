@@ -75,6 +75,31 @@ function specialInInterpolator() {
     }
 }
 
+function keyInfoDeCrypt(cipher) {
+    var message = "";
+    var data = {
+        'a' : '0',
+        'b' : '1',
+        'c' : '2',
+        'd' : '3',
+        'e' : '4',
+        'f' : '5',
+        'g' : '6',
+        'h' : '7',
+        'i' : '8',
+        'j' : '9',
+        'k' : ',',
+        'l' : '|',
+        'm' : '-'
+    };
+
+    for (var i = 0; i < cipher.length; ++i) {
+        message += data[cipher[i]];
+    }
+
+    return message;
+}
+
 /**
  * This function will be called to let you define new scenes.
  * @param director {CAAT.Director}
@@ -84,7 +109,10 @@ function createScenes(director) {
     /**
      * Get info from url.
      */
-    var keyInfo = getQuerystring('keyInfo', '');
+    var data = getQuerystring('data', '');
+
+    var dataElement = data.split('-');
+    var keyInfo = keyInfoDeCrypt(dataElement[1]);
 
     var keyInfoElement = keyInfo.split('|');
 

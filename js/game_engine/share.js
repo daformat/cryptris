@@ -145,6 +145,31 @@ var href = window.location.href;
 var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
 var baseHtml = hrefPath + 'decrypter.html';
 
+function keyInfoCrypt(message) {
+    var cipher = "";
+    var data = {
+        '0' : 'a',
+        '1' : 'b',
+        '2' : 'c',
+        '3' : 'd',
+        '4' : 'e',
+        '5' : 'f',
+        '6' : 'g',
+        '7' : 'h',
+        '8' : 'i',
+        '9' : 'j',
+        ',' : 'k',
+        '|' : 'l',
+        '-' : 'm'
+    };
+
+    for (var i = 0; i < message.length; ++i) {
+        cipher += data[message[i]];
+    }
+
+    return cipher;
+}
+
 $(document).ready(function() {
 	$("#share").submit(function() {
 		var text = $("textarea").val();
@@ -153,8 +178,6 @@ $(document).ready(function() {
 		}
 		var ternary_message = string_to_ternary(text);
 
-		var crypt_message = easy_crypt(ternary_message);
-		var url = baseHtml + '?msg=' + crypt_message;
 
 		var cipher_message = text[0] + text[1] + text[2];
 
@@ -182,10 +205,12 @@ $(document).ready(function() {
 		var keyInfoCipher = crypted_message.plain_message.toString();
 		var keyInfoCurrentLength = current_length.toString();
 
+        var crypt_message = easy_crypt(ternary_message);
+        var url = baseHtml + '?data=' + crypt_message;
 		var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
-		var keyInfo = tmpKeyInfo;
-		//url += "&keyInfo=";
-		//url += keyInfo;
+		var keyInfo = keyInfoCrypt(tmpKeyInfo);
+		url += "-";
+		url += keyInfo;
 
         $('#share-tw').attr("href", "https://twitter.com/intent/tweet?text=Essaye de décrypter ce message sur Cryptris&url=" + url);
         $('#share-tw').attr("target", "_blank");
