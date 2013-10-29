@@ -93,7 +93,7 @@ function HTMLentities(texte) {
     texte = texte.replace(/Ý/g,'&Yacute;'); // 221 DD
     texte = texte.replace(/Þ/g,'&THORN;'); // 222 DE
     texte = texte.replace(/ß/g,'&szlig;'); // 223 DF
-    texte = texte.replace(/à/g,'&aacute;'); // 224 E0
+    texte = texte.replace(/à/g,'&agrave;'); // 224 E0
     texte = texte.replace(/á/g,'&aacute;'); // 225 E1
     texte = texte.replace(/â/g,'&acirc;'); // 226 E2
     texte = texte.replace(/ã/g,'&atilde;'); // 227 E3

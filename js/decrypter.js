@@ -106,23 +106,9 @@ function keyInfoDeCrypt(cipher) {
  */
 function createScenes(director) {
 
-    /**
-     * Get info from url.
-     */
-    var data = getQuerystring('data', '');
 
-    var dataElement = data.split('-');
-    var keyInfo = keyInfoDeCrypt(dataElement[1]);
-
-    var keyInfoElement = keyInfo.split('|');
-
-    var keyInfoPublicKey = keyInfoElement[0].split(',').map(Number);
-    var keyInfoPrivateKey = keyInfoElement[1].split(',').map(Number);
-    var keyInfoCipher = keyInfoElement[2].split(',').map(Number);
-    var keyInfoCurrentLength = parseInt(keyInfoElement[3]);
-
-    currentGame.playerKeyInfo = generateKeyInfo(keyInfoPublicKey, keyInfoPrivateKey, keyInfoCurrentLength);
-    var cryptedMessage = createADataMessage(keyInfoCipher, keyInfoCurrentLength);
+    currentGame.playerKeyInfo = generateKeyInfo(currentGame.keyInfoPublicKey, currentGame.keyInfoPrivateKey, currentGame.keyInfoCurrentLength);
+    var cryptedMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
 
     /**
      * Create each scene.
@@ -187,7 +173,7 @@ function initGame(director) {
 /**
  * Startup it all up when the document is ready.
  */
-$(document).ready(function() {
+function loadGame() {
 
     /**
      * Debug flag, turn it off to production version.
@@ -221,7 +207,7 @@ $(document).ready(function() {
      * Declare our main caat director.
      */
     var onScreenCanvas  = $('#main_scene');
-	currentGame.director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
+	  currentGame.director = new CAAT.Director().initialize($(document).width(), $(document).height(), onScreenCanvas[0]).setClear(false);
 
     /**
      * Init the game
@@ -232,4 +218,4 @@ $(document).ready(function() {
      * Enable resize events.
      */
     currentGame.director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
-});
+}

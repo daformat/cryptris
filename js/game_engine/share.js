@@ -178,6 +178,7 @@ $(document).ready(function() {
 		}
 		var ternary_message = string_to_ternary(text);
 
+        var total_crypt_message = easy_crypt(ternary_message);
 
 		var cipher_message = text[0] + text[1] + text[2];
 
@@ -205,8 +206,7 @@ $(document).ready(function() {
 		var keyInfoCipher = crypted_message.plain_message.toString();
 		var keyInfoCurrentLength = current_length.toString();
 
-        var crypt_message = easy_crypt(ternary_message);
-        var url = baseHtml + '?data=' + crypt_message;
+        var url = baseHtml + '?data=' + total_crypt_message;
 		var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
 		var keyInfo = keyInfoCrypt(tmpKeyInfo);
 		url += "-";
