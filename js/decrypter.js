@@ -117,7 +117,7 @@ function createScenes(director) {
 
     var waiting_scene = director.createScene();
 
-    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', false, true);
+    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', false, 'playMasSceneHelp');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
     currentGame['playMaxSceneActive'] = true;
 

@@ -46,7 +46,7 @@ $(function(){
 	            animateText: true,
 
     	        type: "withAvatar",
-        	    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 	            title: "InriOS 3.14",
     	        content: krDencodeEntities(easy_decrypt(currentGame.cryptedMessage)),
@@ -61,6 +61,53 @@ $(function(){
 
     	    });
     }
+
+  $(document).on("playMasSceneHelp", function() {
+    // Pause the board
+    currentGame.scenes.play_max_scene.scene.setPaused(true);
+    currentGame.playMaxSceneActive = false;
+    helpPlayMax();
+  });
+
+  function helpPlayMax() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_MAX",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: stopPlayMaxHelp
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+
+  function stopPlayMaxHelp() {
+    // Close the dialog box.
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board.
+    currentGame.scenes.play_max_scene.scene.setPaused(false);
+    currentGame.playMaxSceneActive = true;
+  }
+
 
     function lastMessage() {
 
