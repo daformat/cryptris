@@ -14,6 +14,82 @@ $(function(){
   // hide .hidden elements and remove class
   $('.hidden').hide().removeClass('hidden');
 
+
+    function welcome(){
+        $("body").closeAllDialogs(function(){
+        	$(".wrapper.active .vertical-centering").dialog({
+            
+          		animateText: true,
+          		animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+	            type: "withAvatar",
+      		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          		title: "Chercheuse",
+    	        content: "Bonjour"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", bienvenue à l'INRIA. Tu as en ta possession un message crypté, laisse-moi t'expliquer comment le décrypter. ",
+        	    
+	            controls: [{
+    	          label: "Suite", 
+        	      class: "button blue",
+            	  onClick: explain1
+            	}]
+
+	          });   
+
+    	    });
+
+    }
+
+    function explain1(){
+        $("body").closeAllDialogs(function(){
+        	loadGame();
+        	currentGame.playMaxSceneActive = false;
+        	$(".wrapper.active .vertical-centering").dialog({
+	          animateText: true,
+    	      animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+	          type: "withAvatar",
+    	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+        	  title: "Chercheuse",
+        	  content: "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
+        	    
+	            controls: [{
+    	          label: "Suite", 
+        	      class: "button blue",
+            	  onClick: explain2
+            	}]
+
+	          });   
+
+    	    });
+
+    }
+
+    function explain2(){
+        $("body").closeAllDialogs(function(){
+        	$(".wrapper.active .vertical-centering").dialog({
+	          animateText: true,
+    	      animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+	          type: "withAvatar",
+    	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+        	  title: "Chercheuse",
+        	  content: "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !",
+        	    
+	            controls: [{
+    	          label: "Suite", 
+        	      class: "button blue",
+            	  onClick: displayMessage
+            	}]
+
+	          });   
+
+    	    });
+
+    }
+
     function displayMessage(){
         $("body").closeAllDialogs(function(){
         	$(".wrapper.active .vertical-centering").dialog({
@@ -38,6 +114,23 @@ $(function(){
 
     }
 
+    function launchGame() {
+
+        $("body").closeAllDialogs(function(){});
+
+        currentGame.playMaxSceneActive = true;
+        // Create a timer to catch the moment we have to go to the next scene.
+        var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+            function(time, ttime, timerTask) {
+                if (currentGame.goToNextDialog === true) {
+                    waitToContinue.cancel();
+                    currentGame.goToNextDialog = false;
+
+                    setTimeout(onDecrypt, 1000);
+                }
+            }
+        );
+    }
     function onDecrypt() {
 
         $("body").closeAllDialogs(function(){
@@ -83,11 +176,11 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
           title: "Chercheuse",
-          content: "Help PLAY_MAX",
+          content: "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopPlayMaxHelp
+            onClick: helpPlayMax2
           }]
 
         });
@@ -98,6 +191,29 @@ $(function(){
     });
   }
 
+    function helpPlayMax2(){
+        $("body").closeAllDialogs(function(){
+        	$(".wrapper.active .vertical-centering").dialog({
+	          animateText: true,
+    	      animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+	          type: "withAvatar",
+    	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+        	  title: "Chercheuse",
+        	  content: "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !",
+        	    
+	            controls: [{
+    	          label: "Suite", 
+        	      class: "button blue",
+            	  onClick: stopPlayMaxHelp
+            	}]
+
+	          });   
+
+    	    });
+
+    }
 
   function stopPlayMaxHelp() {
     // Close the dialog box.
@@ -133,23 +249,6 @@ $(function(){
     	    });
     }
 
-    function launchGame() {
-
-        $("body").closeAllDialogs(function(){});
-        loadGame();
-
-        // Create a timer to catch the moment we have to go to the next scene.
-        var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-                if (currentGame.goToNextDialog === true) {
-                    waitToContinue.cancel();
-                    currentGame.goToNextDialog = false;
-
-                    setTimeout(onDecrypt, 1000);
-                }
-            }
-        );
-    }
 
 	$(document).ready(function() {
 
@@ -178,7 +277,7 @@ $(function(){
 	        $('.new-login').submit(function(e){
     	      game.player.name = $('#login-name').val();
         	  currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-	          $.switchWrapper('#bg-circuits', displayMessage);
+	          $.switchWrapper('#bg-circuits', welcome);
     	      $('#login-name').blur();
         	  $('.new-login').unbind('submit').submit(function(e){
 	            return false;

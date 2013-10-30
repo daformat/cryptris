@@ -119,7 +119,7 @@ function createScenes(director) {
 
     preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', false, 'playMasSceneHelp');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
-    currentGame['playMaxSceneActive'] = true;
+
 
 
     currentGame.director.easeInOut(
