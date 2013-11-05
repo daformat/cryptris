@@ -100,27 +100,11 @@ function keyInfoDeCrypt(cipher) {
     return message;
 }
 
-/**
- * This function will be called to let you define new scenes.
- * @param director {CAAT.Director}
- */
-function createScenes(director) {
+function createBoardScene(director) {
 
-
-    currentGame.playerKeyInfo = generateKeyInfo(currentGame.keyInfoPublicKey, currentGame.keyInfoPrivateKey, currentGame.keyInfoCurrentLength);
     var cryptedMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
-
-    /**
-     * Create each scene.
-     */
-    currentGame.scenes = {};
-
-    var waiting_scene = director.createScene();
-
     preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMasSceneHelp');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
-
-
 
     currentGame.director.easeInOut(
                                     currentGame.director.getSceneIndex(currentGame.scenes.play_max_scene.scene),
@@ -136,11 +120,29 @@ function createScenes(director) {
 
     currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
 
-
     /**
      * Define the framerate.
      */
+    director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
     CAAT.loop(60);
+}
+
+/**
+ * This function will be called to let you define new scenes.
+ * @param director {CAAT.Director}
+ */
+function createScenes(director) {
+
+    currentGame.playerKeyInfo = generateKeyInfo(currentGame.keyInfoPublicKey, currentGame.keyInfoPrivateKey, currentGame.keyInfoCurrentLength);
+
+    /**
+     * Create each scene.
+     */
+    currentGame.scenes = {};
+
+    var waiting_scene = director.createScene();
+    createBoardScene(director);
+
 }
 
 /**

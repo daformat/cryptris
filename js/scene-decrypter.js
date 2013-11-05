@@ -15,6 +15,85 @@ $(function(){
   $('.hidden').hide().removeClass('hidden');
 
 
+    var currentGameOverData = null;
+
+    function stopGameOverDialog() {
+        $("body").closeAllDialogs(function() {});
+
+        loadGame();
+        currentGame.playMaxSceneActive = false;
+        currentGame.iaPlay = false;
+        launchGame();        
+    }
+
+    function gameOverDialog() {
+
+        $("body").closeAllDialogs(function(){
+
+          $.switchWrapper('#bg-circuits', function(){
+            $(".wrapper.active .vertical-centering").dialog({
+
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+                title: "Chercheuse",
+                content: "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !",
+                controls: [{
+                    label: "Suite", 
+                    class: "button blue",
+                    onClick: stopGameOverDialog
+                },
+                {
+                    label: "Abandonner",
+                    class: "button red",
+                    onClick: ''
+
+                }]
+
+            });
+
+        });
+
+      });
+    }
+    function tooManyBlocksDialog() {
+
+        $("body").closeAllDialogs(function(){
+
+          $.switchWrapper('#bg-circuits', function(){
+            $(".wrapper.active .vertical-centering").dialog({
+
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+                title: "Chercheuse",
+                content: "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !",
+                controls: [{
+                    label: "Suite", 
+                    class: "button blue",
+                    onClick: stopGameOverDialog
+                },
+                {
+                    label: "Abandonner",
+                    class: "button red",
+                    onClick: ''
+
+                }]
+
+            });
+
+        });
+
+      });
+    }
+
+
     function welcome(){
         $("body").closeAllDialogs(function(){
         	$(".wrapper.active .vertical-centering").dialog({
@@ -121,6 +200,7 @@ $(function(){
 
         currentGame.playMaxSceneActive = true;
         currentGame.iaPlay = true;
+        currentGame.gameOver = false;
         // Create a timer to catch the moment we have to go to the next scene.
         var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
@@ -130,6 +210,20 @@ $(function(){
                     currentGame.iaPlay = false;
 
                     setTimeout(onDecrypt, 1000);
+                }
+
+                if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
+                    waitToContinue.cancel();
+                    currentGame.scenes.play_max_scene.scene.setPaused(true);
+                    currentGame.play_max_scene = false;
+                    //currentGame.scenes.play_max_scene = null;
+                    if (currentGame.gameOver === true) {
+                        gameOverDialog();
+                    } else if (currentGame.tooManyBlocksInAColumn === true) {
+                        tooManyBlocksDialog();
+                    }
+                    currentGame.gameOver = false;
+                    currentGame.tooManyBlocksInAColumn = false;
                 }
             }
         );
