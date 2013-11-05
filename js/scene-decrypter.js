@@ -44,6 +44,7 @@ $(function(){
         $("body").closeAllDialogs(function(){
         	loadGame();
         	currentGame.playMaxSceneActive = false;
+            currentGame.iaPlay = false;
         	$(".wrapper.active .vertical-centering").dialog({
 	          animateText: true,
     	      animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
@@ -119,12 +120,14 @@ $(function(){
         $("body").closeAllDialogs(function(){});
 
         currentGame.playMaxSceneActive = true;
+        currentGame.iaPlay = true;
         // Create a timer to catch the moment we have to go to the next scene.
         var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
                 if (currentGame.goToNextDialog === true) {
                     waitToContinue.cancel();
                     currentGame.goToNextDialog = false;
+                    currentGame.iaPlay = false;
 
                     setTimeout(onDecrypt, 1000);
                 }
