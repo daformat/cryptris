@@ -413,12 +413,30 @@ $(function(){
     });
   }
 
+  function activateHelp(dataScene, hookName, helpFunction) {
+    if (dataScene.scene.isPaused() === false) {
+      dataScene.scene.setPaused(true);
+      dataScene.needStopPaused = true;
+    } else {
+      dataScene.needStopPaused = false;
+    }
+    currentGame[hookName] = false;
+    helpFunction();
+  }
+
+  function deActivateHelp(dataScene, hookName) {
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board if necessary.
+    if (dataScene.needStopPaused === true) {
+      dataScene.scene.setPaused(false);
+    }
+    dataScene.needStopPaused = null;
+    currentGame[hookName] = true;
+  }
 
   $(document).on("helpCreateKeyEvent", function() {
-    // Pause the board
-    currentGame.scenes.create_key_scene.scene.setPaused(true);
-    currentGame.createKeySceneActive = false;
-    helpCreateKey();
+    activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
   });
 
   function helpCreateKey() {
@@ -439,7 +457,9 @@ $(function(){
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopCreateKeyHelp
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+            }
           }]
 
         });
@@ -448,15 +468,6 @@ $(function(){
       });
 
     });
-  }
-
-  function stopCreateKeyHelp() {
-    // Close the dialog box.
-    $("body").closeAllDialogs(function() {});
-
-    // Relaunch the board.
-    currentGame.scenes.create_key_scene.scene.setPaused(false);
-    currentGame.createKeySceneActive = true;
   }
 
   function switchToCreateKey() {
@@ -770,8 +781,9 @@ $(function(){
     var currentGameOverData = null;
 
     function stopGameOverDialog() {
+        var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
         goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.timeout);
-
+        saveScene.setExpired(true);
         $("body").closeAllDialogs(function() {});
         currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
         currentGame.scenes[currentGameOverData.sceneName].add_key_symbol(currentGame.director, currentGame.scenes[currentGameOverData.sceneName]);
@@ -935,10 +947,7 @@ $(function(){
     }   
 
   $(document).on("playSoloHelpEvent", function() {
-    // Pause the board
-    currentGame.scenes.play_solo_scene.scene.setPaused(true);
-    currentGame.playSoloSceneActive = false;
-    helpPlaySolo();
+    activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
   });
 
   function helpPlaySolo() {
@@ -959,7 +968,9 @@ $(function(){
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopPlaySoloHelp
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
+            }
           }]
 
         });
@@ -968,15 +979,6 @@ $(function(){
       });
 
     });
-  }
-
-  function stopPlaySoloHelp() {
-    // Close the dialog box.
-    $("body").closeAllDialogs(function() {});
-
-    // Relaunch the board.
-    currentGame.scenes.play_solo_scene.scene.setPaused(false);
-    currentGame.playSoloSceneActive = true;
   }
 
     function dialog9(){
@@ -1338,11 +1340,9 @@ $(function(){
 
     }
 
+
   $(document).on("playMinHelpEvent", function() {
-    // Pause the board
-    currentGame.scenes.play_min_scene.scene.setPaused(true);
-    currentGame.playMinSceneActive = false;
-    helpPlayMin();
+    activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
   });
 
   function helpPlayMin() {
@@ -1363,7 +1363,9 @@ $(function(){
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopPlayMinHelp
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
+            }
           }]
 
         });
@@ -1372,15 +1374,6 @@ $(function(){
       });
 
     });
-  }
-
-  function stopPlayMinHelp() {
-    // Close the dialog box.
-    $("body").closeAllDialogs(function() {});
-
-    // Relaunch the board.
-    currentGame.scenes.play_min_scene.scene.setPaused(false);
-    currentGame.playMinSceneActive = true;
   }
 
     function dialogServerAlsoTryingToBreakEncryption(){
@@ -1608,11 +1601,9 @@ $(function(){
     }
 
 
+
   $(document).on("playMediumHelpEvent", function() {
-    // Pause the board
-    currentGame.scenes.play_medium_scene.scene.setPaused(true);
-    currentGame.playMediumSceneActive = false;
-    helpPlayMedium();
+    activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
   });
 
   function helpPlayMedium() {
@@ -1633,7 +1624,9 @@ $(function(){
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopPlayMediumHelp
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
+            }
           }]
 
         });
@@ -1642,15 +1635,6 @@ $(function(){
       });
 
     });
-  }
-
-  function stopPlayMediumHelp() {
-    // Close the dialog box.
-    $("body").closeAllDialogs(function() {});
-
-    // Relaunch the board.
-    currentGame.scenes.play_medium_scene.scene.setPaused(false);
-    currentGame.playMediumSceneActive = true;
   }
 
     function playLevel2() {
@@ -1849,11 +1833,10 @@ $(function(){
 
     }
 
+
+
   $(document).on("playMaxHelpEvent", function() {
-    // Pause the board
-    currentGame.scenes.play_max_scene.scene.setPaused(true);
-    currentGame.playMaxSceneActive = false;
-    helpPlayMax();
+    activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
   });
 
   function helpPlayMax() {
@@ -1874,7 +1857,9 @@ $(function(){
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: stopPlayMaxHelp
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
+            }
           }]
 
         });
@@ -1883,15 +1868,6 @@ $(function(){
       });
 
     });
-  }
-
-  function stopPlayMaxHelp() {
-    // Close the dialog box.
-    $("body").closeAllDialogs(function() {});
-
-    // Relaunch the board.
-    currentGame.scenes.play_max_scene.scene.setPaused(false);
-    currentGame.playMaxSceneActive = true;
   }
 
     function playLevel3() {
