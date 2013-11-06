@@ -1159,7 +1159,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: ( game.player.name ? " <em>"+game.player.name+",</em> e" : "E" ) + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau éléctrique principal.",
+                content: ( game.player.name ? " <em>"+game.player.name+",</em> e" : "E" ) + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau électrique principal.",
                 
                 controls: [{
                   label: "Suite", 
@@ -1206,7 +1206,7 @@ $(function(){
             title: game.player.name||"Joueur",
 
             content: [{
-                label: "Aie ! Je viens de me prendre une décharge éléctrique !",
+                label: "Aie ! Je viens de me prendre une décharge électrique !",
                 onClick: dialogThisAintNormal,
             }]
 
@@ -1291,7 +1291,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau éléctrique correspondant.",
+                content: "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau électrique correspondant.",
                 
                 controls: [{
                   label: "Suite", 
@@ -1433,7 +1433,7 @@ $(function(){
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
                 title: "Message décrypté",
-                content: "Débranche le câble 24 du panneau éléctrique V",
+                content: "Débranche le câble 24 du panneau électrique V",
                 
                 controls: [{
                   label: "Débrancher le câble", 
@@ -1489,7 +1489,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux éléctriques et ça devrait être bon !",
+                content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et ça devrait être bon !",
                 
                 controls: [{
                   label: "Suite", 
@@ -1551,7 +1551,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Je t'envoie le deuxième câble, crypté avec quatre blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
+                content: "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
                 
                 controls: [{
                   label: "Suite", 
@@ -1667,7 +1667,7 @@ $(function(){
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
                 title: "Message décrypté",
-                content: "Débranche le câble 78 du panneau éléctrique M",
+                content: "Débranche le câble 78 du panneau électrique M",
                 
                 controls: [{
                   label: "Débrancher le câble", 
@@ -1696,7 +1696,7 @@ $(function(){
                 
 
                 type: "cables",
-                title: "Séléctionner le cable à débrancher",
+                title: "Sélectionner le câble à débrancher",
 
               });
 
@@ -1723,7 +1723,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau éléctrique et je pourrai enfin sortir !",
+                content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !",
                 
                 controls: [{
                   label: "Suite", 
@@ -1785,7 +1785,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques milliers d'années pour <span>décrypter ce dernier message</span>, et d'ici-là nous l'aurons débranché et analysé !",
+                content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques centaines de jours pour <span>décrypter ce dernier message</span>, et d'ici là nous l'aurons débranché et analysé !",
                 
                 controls: [{
                   label: "Suite", 
@@ -1899,7 +1899,7 @@ $(function(){
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
                 title: "Message décrypté",
-                content: "Débranche le câble 31 du panneau éléctrique N",
+                content: "Débranche le câble 31 du panneau électrique N",
                 
                 controls: [{
                   label: "Débrancher le câble", 
@@ -1927,7 +1927,7 @@ $(function(){
               $(".wrapper.active .vertical-centering").dialog({
                 
                 type: "cables",
-                title: "Séléctionner le cable à débrancher",
+                title: "Sélectionner le cable à débrancher",
 
               });
 
