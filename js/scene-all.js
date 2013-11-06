@@ -775,7 +775,8 @@ $(function(){
         $("body").closeAllDialogs(function() {});
         currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
         currentGame.scenes[currentGameOverData.sceneName].add_key_symbol(currentGame.director, currentGame.scenes[currentGameOverData.sceneName]);
-        currentGame[currentGameOverData.sceneName] = true;
+        currentGame[currentGameOverData.hookName] = true;
+        currentGame.iaPlay = true;
     }
 
     function gameOverDialog() {
@@ -848,16 +849,21 @@ $(function(){
     function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
 
         // Prepare the sceneName and set it as the current scene.
+        console.log(currentGame.scenes[sceneName]);
         preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
+        console.log(currentGame.scenes[sceneName]);
         currentGame.iaPlay = false;
         currentGame[hookName] = false;
         currentGame.gameOver = false;
         currentGame.tooManyBlocksInAColumn = false;
 
+        currentGame.director.currentScene.setPaused(false);
         currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                         currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                         new specialInInterpolator(), new specialOutInterpolator());
         
+        console.log(sceneName);
+
         setTimeout(function() {currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName])}, 500);
 
         // set the speed of this scene.
@@ -875,8 +881,8 @@ $(function(){
                 if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
                     waitToContinue.cancel();
                     currentGame.scenes[sceneName].scene.setPaused(true);
-                    currentGame[sceneName] = false;
-                    currentGame.scenes[sceneName] = null;
+                    currentGame[hookName] = false;
+
                     currentGameOverData = {
                         'sceneName' : sceneName,
                         'onDecrypt' : onDecrypt,
