@@ -103,7 +103,7 @@ function keyInfoDeCrypt(cipher) {
 function createBoardScene(director) {
 
     var cryptedMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
-    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMasSceneHelp');
+    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMaxSceneHelp');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
 
     currentGame.director.easeInOut(

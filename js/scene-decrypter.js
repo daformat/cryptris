@@ -188,7 +188,7 @@ $(function(){
             	  onClick: launchGame
             	}]
 
-	          });   
+	          });
 
     	    });
 
@@ -252,9 +252,15 @@ $(function(){
     	    });
     }
 
-  $(document).on("playMasSceneHelp", function() {
-    // Pause the board
-    currentGame.scenes.play_max_scene.scene.setPaused(true);
+
+  $(document).on("playMaxSceneHelp", function() {
+    // Pause the board if necessary
+    if (currentGame.scenes.play_max_scene.scene.isPaused() === false) {
+        currentGame.scenes.play_max_scene.scene.setPaused(true);
+        currentGame.scenes.play_max_scene.needStopPaused = true;
+    } else {
+        currentGame.scenes.play_max_scene.needStopPaused = false;
+    }
     currentGame.playMaxSceneActive = false;
     helpPlayMax();
   });
@@ -316,8 +322,11 @@ $(function(){
     // Close the dialog box.
     $("body").closeAllDialogs(function() {});
 
-    // Relaunch the board.
-    currentGame.scenes.play_max_scene.scene.setPaused(false);
+    // Relaunch the board if necessary
+    if (currentGame.scenes.play_max_scene.needStopPaused === true) {
+        currentGame.scenes.play_max_scene.scene.setPaused(false);
+    }
+    currentGame.scenes.play_max_scene.needStopPaused = null;
     currentGame.playMaxSceneActive = true;
   }
 
