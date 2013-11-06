@@ -1,4 +1,5 @@
 function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn) {
+
     this.type = type;
     this.boxOption = boxOption;
     this.squareNumber = squareNumber;
@@ -100,7 +101,7 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
     this.startFirstAnimation = function() {
         this.keyFirstMove = true;
         var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, this.boxOption.BORDER_HEIGHT);
-        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, this.boxOption.timeIno.keyFirstMoveTime).setCycle(false);
+        this.pbFirstMove = new CAAT.PathBehavior().setPath(path).setFrameTime(this.container.time, this.boxOption.timeIfno.keyFirstMoveTime).setCycle(false);
 
         var object = this;
         var behaviorListener = {'behaviorExpired' : function(behavior, time, actor) { object.keyFirstMove = false; object.pbFirstMove = null; }, 'behaviorApplied' : null};
