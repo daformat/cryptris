@@ -253,7 +253,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
         if (withIaBoard) {
             var rivalMessage = rivalBoxInfo.message;
             var rivalPadlockIsFall = rivalBoxInfo.padlockIsFall;
-            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadLockIsFall === true) {
+            if (rivalMessage.boxOption.endResolved === null && rivalMessage.resolved === true && rivalPadlockIsFall === true) {
                 currentGame.gameOver = true;
                 rivalMessage.boxOption.endResolved = rivalBoxInfo.gameBox.time;
                 rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);

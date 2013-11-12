@@ -1066,12 +1066,12 @@ $(function(){
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
                 title: "Challenge réussi",
-                content: "Deuxième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
+                content: "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
                 
                 controls: [{
                   label: "Challenge suivant", 
                   class: "button blue",
-                  onClick: ''
+                  onClick: challenge4
                 }]
 
               });   
@@ -1084,6 +1084,265 @@ $(function(){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function challenge4(){
+        $("body").closeAllDialogs(function(){
+
+            // Prepare the second battle message
+            currentGame.play_super_max_scene_msg = createMessageForPlayScene(SUPER_MAX_BOARD_LENGTH, FOURTH_CHALLENGE_MESSAGE);
+
+
+            // Display the battle scene in background.
+            goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent');
+
+            $.switchWrapper('#bg-circuits', function(){
+
+              $(".wrapper.active .vertical-centering").dialog({
+                
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+                title: "InriOS 3.14",
+                content: board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
+                
+                controls: [{
+                  label: "Décrypter le message", 
+                  class: "button blue",
+                  onClick: playLevel4
+                }]
+
+              });   
+
+            });
+
+        });
+
+    }
+
+  $(document).on("playSuperMaxHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive", helpPlaySuperMax);
+  });
+
+  function helpPlaySuperMax() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_SUPER_MAX",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive");
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+    function playLevel4(){
+        $("body").closeAllDialogs(function(){
+            // Active input for play_super_max_scene
+            currentGame.iaPlay = true;
+            currentGame.scenes.play_super_max_scene.scene.setPaused(false);
+            currentGame.playSuperMaxSceneActive = true;
+        });
+    }
+
+
+    function dialogDecryptedMessage4(){
+        $("body").closeAllDialogs(function(){
+
+            $.switchWrapper('#bg-circuits', function(){
+
+              $(".wrapper.active .vertical-centering").dialog({
+                
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+                title: "Challenge réussi",
+                content: "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE,
+                
+                controls: [{
+                  label: "Challenge suivant", 
+                  class: "button blue",
+                  onClick: challenge5
+                }]
+
+              });   
+
+            });
+
+        });
+
+    }       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function challenge5(){
+        $("body").closeAllDialogs(function(){
+
+            // Prepare the second battle message
+            currentGame.play_mega_max_scene_msg = createMessageForPlayScene(MEGA_MAX_BOARD_LENGTH, FIFTH_CHALLENGE_MESSAGE);
+
+
+            // Display the battle scene in background.
+            goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent');
+
+            $.switchWrapper('#bg-circuits', function(){
+
+              $(".wrapper.active .vertical-centering").dialog({
+                
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+                title: "InriOS 3.14",
+                content: board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
+                
+                controls: [{
+                  label: "Décrypter le message", 
+                  class: "button blue",
+                  onClick: playLevel5
+                }]
+
+              });   
+
+            });
+
+        });
+
+    }
+
+  $(document).on("playMegaMaxHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive", helpPlayMegaMax);
+  });
+
+  function helpPlayMegaMax() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Help PLAY_MEGA_MAX",
+          controls: [{
+            label: "Suite", 
+            class: "button blue",
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive");
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
+    function playLevel5(){
+        $("body").closeAllDialogs(function(){
+            // Active input for play_super_max_scene
+            currentGame.iaPlay = true;
+            currentGame.scenes.play_mega_max_scene.scene.setPaused(false);
+            currentGame.playMegaMaxSceneActive = true;
+        });
+    }
+
+
+    function dialogDecryptedMessage5(){
+        $("body").closeAllDialogs(function(){
+
+            $.switchWrapper('#bg-circuits', function(){
+
+              $(".wrapper.active .vertical-centering").dialog({
+                
+                animateText: true,
+                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                type: "withAvatar",
+                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+                title: "Challenge réussi",
+                content: "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE,
+                
+                controls: [{
+                  label: "Terminer", 
+                  class: "button blue",
+                  onClick: ''
+                }]
+
+              });   
+
+            });
+
+        });
+
+    }       
 
     intro();
 

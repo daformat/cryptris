@@ -7,7 +7,7 @@ var MEGA_MAX_BOARD_LENGTH = 16;
 var COLUMN_TYPE_1 = 'type1';
 var COLUMN_TYPE_2 = 'type2';
 var COLUMN_TYPE_3 = 'empty';
-var MAX_BLOCKS_IN_A_COLUMN = 100;
+var MAX_BLOCKS_IN_A_COLUMN = 600;
 
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
@@ -79,6 +79,10 @@ function ResizeMiniBoardOption(currentLength) {
 		this.DEFAULT_SQUARE_WIDTH = 30;
 	} else if (currentLength === MIN_BOARD_LENGTH) {
 		this.DEFAULT_SQUARE_WIDTH = 40;
+	} else if (currentLength === SUPER_BOARD_LENGTH) {
+		this.DEFAULT_SQUARE_WIDTH = 10;
+	} else if (currentLength === MEGA_BOARD_LENGTH) {
+		this.DEFAULT_SQUARE_WIDTH = 10;
 	}
 	this.DEFAULT_COLUMN_WIDTH = this.DEFAULT_SQUARE_WIDTH + 3;
 	this.DEFAULT_SQUARE_HEIGHT = 20;

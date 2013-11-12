@@ -31,6 +31,12 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['play_max_scene'] != null) {
                 currentGame.scenes['play_max_scene']['resize'](director, currentGame.scenes['play_max_scene']);
             }
+            if (currentGame.scenes['play_super_max_scene'] != null) {
+                currentGame.scenes['play_super_max_scene']['resize'](director, currentGame.scenes['play_super_max_scene']);
+            }
+            if (currentGame.scenes['play_mega_max_scene'] != null) {
+                currentGame.scenes['play_mega_max_scene']['resize'](director, currentGame.scenes['play_mega_max_scene']);
+            }
             if (currentGame.scenes['create_key_scene'] != null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
@@ -92,7 +98,7 @@ function createScenes(director) {
     /**
      * Define a default set of public/private key.
      */
-    currentGame.playerKeyInfo = getKeyInfo(MAX_BOARD_LENGTH);
+    currentGame.playerKeyInfo = getKeyInfo(MEGA_MAX_BOARD_LENGTH);
 
     /**
      * Create each scene.
