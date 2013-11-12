@@ -1,4 +1,4 @@
-var authorizedLength = [4, MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, 20];
+var authorizedLength = [4, MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
 var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
 var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
