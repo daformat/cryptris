@@ -156,7 +156,6 @@ function KeyColumn(director, type, squareNumber, container, boxOption, msgColumn
 
             var path =  new CAAT.LinearPath().setInitialPosition(this.column.x, this.column.y).setFinalPosition(this.column.x, finalDestination);
             this.pb = new CAAT.PathBehavior().setPath(path).setFrameTime(this.column.time, time).setCycle(false);
-            //this.pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[22]);
 
             this.column.addBehavior(this.pb);
             this.boxOption.objectsInMove.push(true);
@@ -394,13 +393,17 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 		}
 	}
 
+	this.timePressed = 0;
 	this.keyDown = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.timePressed = $.now();
 			this.last_move.push([this.latteral_move, this.is_inverted]);
 			this.keyInMove = true;
 			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].keyDown();
 			}
+		} else if (this.keyInMove === true && $.now() - this.timePressed > 10) {
+			this.resize();
 		}
 	}
 
