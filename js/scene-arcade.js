@@ -1333,7 +1333,7 @@ $(function(){
                 controls: [{
                   label: "Terminer", 
                   class: "button blue",
-                  onClick: ''
+                  onClick: theEnd
                 }]
 
               });   
@@ -1343,6 +1343,15 @@ $(function(){
         });
 
     }       
+
+
+    function theEnd(){
+        $("body").closeAllDialogs(function(){
+
+            $.switchWrapper('#end-game', function(){
+            });
+        });
+    }
 
     intro();
 
