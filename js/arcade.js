@@ -34,9 +34,6 @@ function resize(director, newWidth, newHeight) {
             if (currentGame.scenes['create_key_scene'] != null) {
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
-            if (currentGame.scenes['play_solo_scene'] != null) {
-                currentGame.scenes['play_solo_scene']['resize'](director, currentGame.scenes['play_solo_scene']);
-            }
         }
     }
     resizeInProcess = false;

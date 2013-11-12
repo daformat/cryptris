@@ -659,7 +659,7 @@ $(function(){
         $("body").closeAllDialogs(function(){
 
             // Prepare the first battle message
-            currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
+            currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_CHALLENGE_MESSAGE);
             $.switchWrapper('#bg-circuits', function(){
 
               $(".wrapper.active .vertical-centering").dialog({
@@ -807,13 +807,13 @@ $(function(){
                 type: "withAvatar",
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-                title: "Message décrypté",
-                content: "Premier challenge décrypté : 24",
+                title: "Challenge réussi",
+                content: "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE,
                 
                 controls: [{
                   label: "Challenge suivant", 
                   class: "button blue",
-                  onClick: dialogCables1
+                  onClick: challenge2
                 }]
 
               });   
@@ -826,130 +826,37 @@ $(function(){
 
 
 
-    function dialogCables1(){
-        $("body").closeAllDialogs(function(){
-            $.switchWrapper('#bg-institut', function(){
-
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-              $(".wrapper.active .vertical-centering").dialog({
-                
-
-                type: "cables",
-                title: "Séléctionner le cable à débrancher",
-
-              });
-
-          $('.cables').prepareCables(24, dialogSuccessCables1);
-
-            });
-
-        });
-    }   
 
 
 
-    function dialogSuccessCables1(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function challenge2(){
         $("body").closeAllDialogs(function(){
 
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et ça devrait être bon !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogServerIsFaster
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
+            // Prepare the second battle message
+            currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_CHALLENGE_MESSAGE);
 
 
-    function dialogServerIsFaster(){
-        $("body").closeAllDialogs(function(){
+            // Display the battle scene in background.
+            goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
 
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogSendingSecondCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }   
-
-
-    function dialogSendingSecondCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogEcnryptedSecondCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-    function dialogEcnryptedSecondCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-        // Prepare the second battle message
-        currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
+            $.switchWrapper('#bg-circuits', function(){
 
               $(".wrapper.active .vertical-centering").dialog({
                 
@@ -961,6 +868,7 @@ $(function(){
 
                 title: "InriOS 3.14",
                 content: board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
+                
                 controls: [{
                   label: "Décrypter le message", 
                   class: "button blue",
@@ -974,8 +882,6 @@ $(function(){
         });
 
     }
-
-
 
   $(document).on("playMediumHelpEvent", function() {
     activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
@@ -1012,20 +918,14 @@ $(function(){
     });
   }
 
-    function playLevel2() {
-        $("body").closeAllDialogs(function() {          
-            $.switchWrapper('#bg-circuits', function(){
-        // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
-                // Active input for play_medium_scene
+    function playLevel2(){
+        $("body").closeAllDialogs(function(){
+            // Active input for play_medium_scene
             currentGame.iaPlay = true;
-        currentGame.scenes.play_medium_scene.scene.setPaused(false);
-        currentGame.playMediumSceneActive = true;
-        currentGame.scenes.play_medium_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_medium_scene);
-            });
+            currentGame.scenes.play_medium_scene.scene.setPaused(false);
+            currentGame.playMediumSceneActive = true;
         });
     }
-
 
 
     function dialogDecryptedMessage2(){
@@ -1041,13 +941,13 @@ $(function(){
                 type: "withAvatar",
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-                title: "Message décrypté",
-                content: "Débranche le câble 78 du panneau électrique M",
+                title: "Challenge réussi",
+                content: "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE,
                 
                 controls: [{
-                  label: "Débrancher le câble", 
+                  label: "Challenge suivant", 
                   class: "button blue",
-                  onClick: dialogCables2
+                  onClick: challenge3
                 }]
 
               });   
@@ -1056,133 +956,31 @@ $(function(){
 
         });
 
-    }           
-    
+    }       
 
-    function dialogCables2(){
+
+
+
+
+
+
+
+
+
+
+
+
+    function challenge3(){
         $("body").closeAllDialogs(function(){
 
-            $.switchWrapper('#bg-institut', function(){
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-
-                type: "cables",
-                title: "Sélectionner le câble à débrancher",
-
-              });
-
-          $('.cables').prepareCables(78, dialogSuccessCables2);
-
-            });
-
-        });
-    }   
+            // Prepare the second battle message
+            currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_CHALLENGE_MESSAGE);
 
 
+            // Display the battle scene in background.
+            goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
 
-    function dialogSuccessCables2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogServerIsInfectingOtherMachines
-                }]
-
-              });   
-
-            });
-
-        });
-    }
-
-
-    function dialogServerIsInfectingOtherMachines(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Ce serveur ne devrait pas être en mesure de décrypter aussi rapidement ces messages... J’ai compris ! Il contamine d’autres ordinateurs et augmente ainsi sa puissance !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogSendingThirdCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-    function dialogSendingThirdCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques centaines de jours pour <span>décrypter ce dernier message</span>, et d'ici là nous l'aurons débranché et analysé !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogEcnryptedThirdCable
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }
-
-
-    function dialogEcnryptedThirdCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-        // Prepare the third battle message
-        currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
+            $.switchWrapper('#bg-circuits', function(){
 
               $(".wrapper.active .vertical-centering").dialog({
                 
@@ -1193,7 +991,8 @@ $(function(){
                 avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
                 title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+                content: board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+                
                 controls: [{
                   label: "Décrypter le message", 
                   class: "button blue",
@@ -1207,8 +1006,6 @@ $(function(){
         });
 
     }
-
-
 
   $(document).on("playMaxHelpEvent", function() {
     activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
@@ -1245,17 +1042,12 @@ $(function(){
     });
   }
 
-    function playLevel3() {
-        $("body").closeAllDialogs(function() {          
-            $.switchWrapper('#bg-circuits', function(){
-        // Display the battle scene in background.
-        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
-        // Active input for play_max_scene
+    function playLevel3(){
+        $("body").closeAllDialogs(function(){
+            // Active input for play_max_scene
             currentGame.iaPlay = true;
-        currentGame.scenes.play_max_scene.scene.setPaused(false);
-        currentGame.playMaxSceneActive = true;
-        currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
-            });
+            currentGame.scenes.play_max_scene.scene.setPaused(false);
+            currentGame.playMaxSceneActive = true;
         });
     }
 
@@ -1273,13 +1065,13 @@ $(function(){
                 type: "withAvatar",
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-                title: "Message décrypté",
-                content: "Débranche le câble 31 du panneau électrique N",
+                title: "Challenge réussi",
+                content: "Deuxième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
                 
                 controls: [{
-                  label: "Débrancher le câble", 
+                  label: "Challenge suivant", 
                   class: "button blue",
-                  onClick: dialogCables3
+                  onClick: ''
                 }]
 
               });   
@@ -1288,151 +1080,10 @@ $(function(){
 
         });
 
-    }           
-    
-
-    function dialogCables3(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
-              currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                type: "cables",
-                title: "Sélectionner le cable à débrancher",
-
-              });
-
-          $('.cables').prepareCables(31, dialogSuccessCables3);
-
-            });
-
-        });
     }       
 
 
 
-    function dialogSuccessCables3(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogIWasTrapped
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }
-
-
-    function dialogIWasTrapped(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogThanksToCrypto
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }   
-
-
-    function dialogThanksToCrypto(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogThanksToCrypto2
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }       
-
-
-    function dialogThanksToCrypto2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogComparePlayTimeChart
-                }]
-              });   
-            });
-        });             
-    }       
 
     intro();
 
