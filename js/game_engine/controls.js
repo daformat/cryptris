@@ -12,7 +12,7 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				crypt_key.changeKeyType();
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
 				crypt_key.keyDown();
 			}
 		}
@@ -34,7 +34,7 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				keyIsActive ? crypt_key.changeKeyType() : null;
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
 				keyIsActive ? crypt_key.keyDown() : null;
 			}
 		}
