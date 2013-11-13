@@ -12,8 +12,17 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				crypt_key.changeKeyType();
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+				currentGame.keyDown = false;
 				crypt_key.keyDown();
+			}
+
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
+				if (currentGame.keyDown == null || currentGame.keyDown === false) {
+					currentGame.keyDown = true;
+				} else {
+					crypt_key.keyDown();
+				}
 			}
 		}
 	});
@@ -34,8 +43,16 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				keyIsActive ? crypt_key.changeKeyType() : null;
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
+				currentGame.keyDown = false;
 				keyIsActive ? crypt_key.keyDown() : null;
+			}
+			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
+				if (currentGame.keyDown == null || currentGame.keyDown === false) {
+					currentGame.keyDown = true;
+				} else {
+					keyIsActive ? crypt_key.keyDown() : null;
+				}
 			}
 		}
 	});
@@ -48,6 +65,7 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 	}
 
 	pad.mouseDown = function(e) {
+		
 		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive] && crypt_key.msgColumn.resolved === false;
 
 		var theta = Math.PI / 4;

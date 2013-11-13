@@ -393,16 +393,14 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 		}
 	}
 
-	this.timePressed = 0;
 	this.keyDown = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
-			this.timePressed = $.now();
 			this.last_move.push([this.latteral_move, this.is_inverted]);
 			this.keyInMove = true;
 			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].keyDown();
 			}
-		} else if (this.keyInMove === true && $.now() - this.timePressed > 10) {
+		} else if (this.keyInMove === true) {
 			this.resize();
 		}
 	}
