@@ -24,7 +24,8 @@ $(function(){
           $('.new-login').submit(function(e){
             game.player.name = $('#login-name').val();
             currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-            $.switchWrapper('#menu-view', menu);
+            menu();
+            //$.switchWrapper('#menu-view', menu);
             $('#login-name').blur();
             $('.new-login').unbind('submit').submit(function(e){
               return false;
@@ -45,8 +46,10 @@ $(function(){
 
   function menu() {
     $("body").closeAllDialogs(function(){
-      deactivateMenu();
-      $('#item-public-key').addClass('active');
+      $.switchWrapper('#menu-view', function() {
+        deactivateMenu();
+        $('#item-public-key').addClass('active');
+      });
     });
   }
 
@@ -517,6 +520,11 @@ $(function(){
                 content: "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Commençons le challenge.",
                 
                 controls: [{
+                  label: "Menu principal",
+                  class: "button red",
+                  onClick: menu
+                },
+                {
                   label: "Suite", 
                   class: "button blue",
                   onClick: challenge1
@@ -828,6 +836,10 @@ $(function(){
                 content: "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE,
                 
                 controls: [{
+                  label: "Menu principal",
+                  class: "button red",
+                  onClick: menu
+                },{
                   label: "Challenge suivant", 
                   class: "button blue",
                   onClick: challenge2
@@ -962,6 +974,10 @@ $(function(){
                 content: "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE,
                 
                 controls: [{
+                  label: "Menu principal",
+                  class: "button red",
+                  onClick: menu
+                },{
                   label: "Challenge suivant", 
                   class: "button blue",
                   onClick: challenge3
@@ -1086,6 +1102,10 @@ $(function(){
                 content: "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
                 
                 controls: [{
+                  label: "Menu principal",
+                  class: "button red",
+                  onClick: menu
+                },{
                   label: "Challenge suivant", 
                   class: "button blue",
                   onClick: challenge4
@@ -1216,6 +1236,10 @@ $(function(){
                 content: "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE,
                 
                 controls: [{
+                  label: "Menu principal",
+                  class: "button red",
+                  onClick: menu
+                },{
                   label: "Challenge suivant", 
                   class: "button blue",
                   onClick: challenge5
@@ -1348,9 +1372,9 @@ $(function(){
                 content: "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE,
                 
                 controls: [{
-                  label: "Terminer", 
+                  label: "Menu principal", 
                   class: "button blue",
-                  onClick: theEnd
+                  onClick: menu
                 }]
 
               });   
@@ -1360,15 +1384,6 @@ $(function(){
         });
 
     }       
-
-
-    function theEnd(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#end-game', function(){
-            });
-        });
-    }
 
     intro();
 
