@@ -1376,5 +1376,25 @@ $(function(){
       deactivateMenu();
       welcome();
     });
+    $('#link-8-board').bind('click', function() {
+      deactivateMenu();
+      challenge1();
+    });
+    $('#link-10-board').bind('click', function() {
+      deactivateMenu();
+      challenge2();
+    });
+    $('#link-12-board').bind('click', function() {
+      deactivateMenu();
+      challenge3();
+    });
+    $('#link-14-board').bind('click', function() {
+      deactivateMenu();
+      challenge4();
+    });
+    $('#link-16-board').bind('click', function() {
+      deactivateMenu();
+      challenge5();
+    });
 
 });
