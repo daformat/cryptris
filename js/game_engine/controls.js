@@ -65,7 +65,7 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 	}
 
 	pad.mouseDown = function(e) {
-		
+
 		var padIsActive = !crypt_key.boxOption.scene.isPaused() && currentGame[hookSceneActive] && crypt_key.msgColumn.resolved === false;
 
 		var theta = Math.PI / 4;
@@ -94,6 +94,7 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 	pad.mouseUp = function(mouseEvent) {
 		pad.setBackgroundImage(director.getImage('pad-untouched'));
 	}
+
 
 	pad.mouseDown = function(e) {
 		var crypt_key = gameBox.crypt_key;
