@@ -36,18 +36,22 @@ $(function(){
       });
   }
 
+  function deactivateMenu() {
+    var allItems = ['item-public-key', 'item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
+    for (var i = 0; i < allItems.length; ++i) {
+      $('#' + allItems[i]).removeClass('active');
+    }
+  }
+
   function menu() {
     $("body").closeAllDialogs(function(){
-      $('#item-key-public').addClass('active');
-
-      var allItems = ['item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
-      for (var i = 0; i < allItems.length; ++i) {
-        $('#' + allItems[i]).removeClass('active');
-      }
+      deactivateMenu();
+      $('#item-public-key').addClass('active');
     });
   }
 
     function welcome(){
+      $.switchWrapper('#bg-circuits', function() {
         $("body").closeAllDialogs(function(){
           $(".wrapper.active .vertical-centering").dialog({
             
@@ -69,6 +73,8 @@ $(function(){
             });   
 
           });
+      });
+      return false;
 
     }
 
@@ -1365,5 +1371,10 @@ $(function(){
     }
 
     intro();
+
+    $('#link-public-key').bind('click', function() {
+      deactivateMenu();
+      welcome();
+    });
 
 });
