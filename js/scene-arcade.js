@@ -24,7 +24,7 @@ $(function(){
           $('.new-login').submit(function(e){
             game.player.name = $('#login-name').val();
             currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-            $.switchWrapper('#bg-circuits', welcome);
+            $.switchWrapper('#menu-view', menu);
             $('#login-name').blur();
             $('.new-login').unbind('submit').submit(function(e){
               return false;
@@ -34,6 +34,17 @@ $(function(){
         });
 
       });
+  }
+
+  function menu() {
+    $("body").closeAllDialogs(function(){
+      $('#item-key-public').addClass('active');
+
+      var allItems = ['item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
+      for (var i = 0; i < allItems.length; ++i) {
+        $('#' + allItems[i]).removeClass('active');
+      }
+    });
   }
 
     function welcome(){
