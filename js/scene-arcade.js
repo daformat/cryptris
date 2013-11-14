@@ -1,8 +1,7 @@
-
 var cryptrisSettings = {
-    readingDelay: 4000,
-    animateTextDelayBetweenLetters: 20,
-    player: {}
+  readingDelay: 4000,
+  animateTextDelayBetweenLetters: 20,
+  player: {}
 }
 
 $(function(){
@@ -14,26 +13,21 @@ $(function(){
   $('.hidden').hide().removeClass('hidden');
 
   function intro() {
-
-      $("body").closeAllDialogs( function(){
-
-        $.switchWrapper('#new-login', function(){
-
-          $('#login-name').focus();
-
-          $('.new-login').submit(function(e){
-            game.player.name = $('#login-name').val();
-            currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-            menu();
-            $('#login-name').blur();
-            $('.new-login').unbind('submit').submit(function(e){
-              return false;
-            });
+    $("body").closeAllDialogs( function(){
+      $.switchWrapper('#new-login', function(){
+        $('#login-name').focus();
+        $('.new-login').submit(function(e){
+          game.player.name = $('#login-name').val();
+          currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
+          menu();
+          $('#login-name').blur();
+          $('.new-login').unbind('submit').submit(function(e){
             return false;
           });
+          return false;
         });
-
       });
+    });
   }
 
   function deactivateMenu() {
@@ -52,36 +46,8 @@ $(function(){
     });
   }
 
-    function welcome(){
-      $.switchWrapper('#bg-circuits', function() {
-        $("body").closeAllDialogs(function(){
-          $(".wrapper.active .vertical-centering").dialog({
-            
-              animateText: true,
-              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+  function announcePublicKey(){
 
-              type: "withAvatar",
-              avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-              title: "Chercheuse",
-              content: "Bonjour"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", bienvenue à l'INRIA. Nous allons te proposer une succession de messages cryptés avec une difficulté croissante. ",
-              
-              controls: [{
-                label: "Suite", 
-                class: "button blue",
-                onClick: dialog5
-              }]
-
-            });   
-
-          });
-      });
-      return false;
-
-    }
-
-  function dialog5(){
-        
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
 
@@ -94,7 +60,7 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
           title: "Chercheuse",
-          content: "Tout d'abord tu vas créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
+          content: "Tu vas créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
                 
           controls: [{
             label: "Suite", 
@@ -150,7 +116,6 @@ $(function(){
 
           title: "Chercheuse",
           content: "Voici ta clé privée, utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
-          //content: "Voici ta clé privée, tu peux la manipuler à l’aide des touches<br/> <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> de ton clavier pour en décaler les colonnes. Tu peux aussi inverser les colonnes avec <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. Quand tu auras fini, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix. L’ordinateur va ensuite générer ta clé publique.",
 
           controls: [{
             label: "Suite", 
@@ -516,7 +481,7 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-                content: "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Commençons le challenge.",
+                content: "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique, nous pouvons passer à la suite.",
                 
                 controls: [{
                   label: "Menu principal",
@@ -1389,7 +1354,7 @@ $(function(){
 
     $('#link-public-key').bind('click', function() {
       deactivateMenu();
-      welcome();
+      announcePublicKey();
     });
     $('#link-8-board').bind('click', function() {
       deactivateMenu();
