@@ -25,7 +25,6 @@ $(function(){
             game.player.name = $('#login-name').val();
             currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
             menu();
-            //$.switchWrapper('#menu-view', menu);
             $('#login-name').blur();
             $('.new-login').unbind('submit').submit(function(e){
               return false;
@@ -648,7 +647,7 @@ $(function(){
                 if (currentGame.goToNextDialog === true) {
                     waitToContinue.cancel();
                     currentGame.goToNextDialog = false;
-
+                    currentGame[hookName] = false;
                     timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
                 }
                 if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
@@ -685,6 +684,9 @@ $(function(){
 
             // Prepare the first battle message
             currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_CHALLENGE_MESSAGE);
+            // Display the battle scene in background.
+            goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
+
             $.switchWrapper('#bg-circuits', function(){
 
               $(".wrapper.active .vertical-centering").dialog({
@@ -701,7 +703,7 @@ $(function(){
                 controls: [{
                   label: "Décrypter le message", 
                   class: "button blue",
-                  onClick: dialog9
+                  onClick: playLevel1
                 }]
 
               });   
@@ -717,8 +719,6 @@ $(function(){
 
             $.switchWrapper('#bg-circuits', function(){
 
-            // Display the battle scene in background.
-            goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
 
               $(".wrapper.active .vertical-centering").dialog({
                 
