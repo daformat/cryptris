@@ -47,6 +47,8 @@ $(function(){
   }
 
   function announcePublicKey(){
+    // -- Change the behavior when we have a 'resolved message' on create key screen.
+    currentGame.stopCreateKeyAfterResolve = false;
 
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
@@ -135,7 +137,13 @@ $(function(){
       dataScene.needStopPaused = false;
     }
     currentGame[hookName] = false;
-    helpFunction();
+
+
+    var helpInfo = {
+      'sceneName' : dataScene,
+      'hookName' : hookName
+    };
+    helpFunction(helpInfo);
   }
 
   function deActivateHelp(dataScene, hookName) {
@@ -459,7 +467,7 @@ $(function(){
                         new specialInInterpolator(),
                         new specialOutInterpolator()
                       );
-                      dialog7();
+                      endCreateKey();
                       currentGame.dontShowKey = false;
                     }, 2000);
                 }
@@ -467,7 +475,7 @@ $(function(){
         );
     }
 
-    function dialog7(){
+    function endCreateKey(){
         $("body").closeAllDialogs(function(){
 
             $.switchWrapper('#bg-circuits', function(){
@@ -586,7 +594,6 @@ $(function(){
     function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
 
         // Prepare the sceneName and set it as the current scene.
-        console.log(currentGame.scenes[sceneName]);
         preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
         console.log(currentGame.scenes[sceneName]);
         currentGame.iaPlay = false;
@@ -679,7 +686,7 @@ $(function(){
 
     }
 
-    function dialog9(){
+    function helpDialog1(helpInfo){
         $("body").closeAllDialogs(function(){
 
             $.switchWrapper('#bg-circuits', function(){
@@ -695,11 +702,12 @@ $(function(){
 
                 title: "Chercheuse",
                 content: "Chaque challenge est crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
-                
                 controls: [{
                   label: "Suite", 
                   class: "button blue",
-                  onClick: dialog10
+                  onClick: function() {
+                    helpDialog2(helpInfo);
+                  }
                 }]
 
               });   
@@ -710,12 +718,11 @@ $(function(){
 
     }
 
-    function dialog10(){
+    function helpDialog2(helpInfo) {
         $("body").closeAllDialogs(function(){
 
         // Launch the timer and display private key.
 
-        currentGame.scenes.play_min_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_min_scene);
         $(".wrapper.active .vertical-centering").dialog({
 
           animateText: true,
@@ -726,11 +733,12 @@ $(function(){
 
           title: "Chercheuse",
           content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !",
-            
           controls: [{
             label: "Suite", 
             class: "button blue",
-            onClick: playLevel1
+            onClick: function() {
+              deActivateHelp(helpInfo.sceneName, helpInfo.hookName);
+            }
           }]
 
         });   
@@ -740,48 +748,17 @@ $(function(){
     }
 
   $(document).on("playMinHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
+    activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpDialog1);
   });
 
-  function helpPlayMin() {
-
+  function playLevel1(){
     $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MIN",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
+      // Active input for play_min_scene
+      currentGame.iaPlay = true;
+      currentGame.scenes.play_min_scene.scene.setPaused(false);
+      currentGame.playMinSceneActive = true;
     });
   }
-
-    function playLevel1(){
-        $("body").closeAllDialogs(function(){
-            // Active input for play_min_scene
-            currentGame.iaPlay = true;
-            currentGame.scenes.play_min_scene.scene.setPaused(false);
-            currentGame.playMinSceneActive = true;
-        });
-    }
 
 
     function dialogDecryptedMessage1(){
@@ -878,39 +855,9 @@ $(function(){
     }
 
   $(document).on("playMediumHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
+    activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpDialog1);
   });
 
-  function helpPlayMedium() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MEDIUM",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-  }
 
     function playLevel2(){
         $("body").closeAllDialogs(function(){
@@ -1006,39 +953,9 @@ $(function(){
     }
 
   $(document).on("playMaxHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
+    activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpDialog1);
   });
 
-  function helpPlayMax() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MAX",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-  }
 
     function playLevel3(){
         $("body").closeAllDialogs(function(){
@@ -1140,39 +1057,9 @@ $(function(){
     }
 
   $(document).on("playSuperMaxHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive", helpPlaySuperMax);
+    activateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive", helpDialog1);
   });
 
-  function helpPlaySuperMax() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_SUPER_MAX",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-  }
 
     function playLevel4(){
         $("body").closeAllDialogs(function(){
@@ -1276,39 +1163,8 @@ $(function(){
     }
 
   $(document).on("playMegaMaxHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive", helpPlayMegaMax);
+    activateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive", helpDialog1);
   });
-
-  function helpPlayMegaMax() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MEGA_MAX",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-  }
 
     function playLevel5(){
         $("body").closeAllDialogs(function(){
@@ -1352,29 +1208,59 @@ $(function(){
 
     intro();
 
+    var firstLaunch = false;
+    function firstDialog(challenge) {
+      firstLaunch = true;
+      $("body").closeAllDialogs(function(){
+
+        $.switchWrapper('#bg-circuits', function(){
+
+          $(".wrapper.active .vertical-centering").dialog({
+
+            animateText: true,
+            animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+            type: "withAvatar",
+            avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+            title: "Chercheuse",
+            content: "Si tu as besoin d'aide, appuie sur le bouton '?' et je te donnerai toutes les informations nécessaires.",
+            controls: [{
+              label: "Suite", 
+              class: "button blue",
+              onClick: challenge
+            }]
+          });   
+
+        });
+
+      });
+    }
+
     $('#link-public-key').bind('click', function() {
       deactivateMenu();
       announcePublicKey();
     });
     $('#link-8-board').bind('click', function() {
+      console.log('ici');
       deactivateMenu();
-      challenge1();
+      firstLaunch === false ? firstDialog(challenge1) : challenge1();
     });
     $('#link-10-board').bind('click', function() {
       deactivateMenu();
-      challenge2();
+      firstLaunch === false ? firstDialog(challenge2) : challenge2();
     });
     $('#link-12-board').bind('click', function() {
       deactivateMenu();
-      challenge3();
+      firstLaunch === false ? firstDialog(challenge3) : challenge3();
     });
     $('#link-14-board').bind('click', function() {
       deactivateMenu();
-      challenge4();
+      firstLaunch === false ? firstDialog(challenge4) : challenge4();
     });
     $('#link-16-board').bind('click', function() {
       deactivateMenu();
-      challenge5();
+      firstLaunch === false ? firstDialog(challenge5) : challenge5();
     });
 
 });
