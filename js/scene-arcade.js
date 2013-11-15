@@ -12,14 +12,14 @@ $(function(){
   // hide .hidden elements and remove class
   $('.hidden').hide().removeClass('hidden');
 
-  function intro() {
+  function getName(level, isCK) {
     $("body").closeAllDialogs( function(){
       $.switchWrapper('#new-login', function(){
         $('#login-name').focus();
         $('.new-login').submit(function(e){
           game.player.name = $('#login-name').val();
           currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-          menu();
+          isCK ? level() : firstDialog(level);
           $('#login-name').blur();
           $('.new-login').unbind('submit').submit(function(e){
             return false;
@@ -30,25 +30,35 @@ $(function(){
     });
   }
 
-  function deactivateMenu() {
-    var allItems = ['item-public-key', 'item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
-    for (var i = 0; i < allItems.length; ++i) {
-      $('#' + allItems[i]).removeClass('active');
+
+  function specialOutInterpolator() {
+    this.getPosition = function(time) {
+      return {'x' : time, 'y' : 0};
     }
   }
 
-  function menu() {
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#menu-view', function() {
-        deactivateMenu();
-        $('#item-public-key').addClass('active');
-      });
-    });
+  function specialInInterpolator() {
+    this.getPosition = function(time) {
+      return {'x' : time, 'y' : 1};
+    }
   }
 
   function announcePublicKey(){
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
+
+    // -- switch to waiting scene.
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    0,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
 
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
@@ -76,18 +86,6 @@ $(function(){
 
     });
 
-  }
-
-  function specialOutInterpolator() {
-    this.getPosition = function(time) {
-      return {'x' : time, 'y' : 0};
-    }
-  }
-
-  function specialInInterpolator() {
-    this.getPosition = function(time) {
-      return {'x' : time, 'y' : 1};
-    }
   }
 
   function dialog6(){
@@ -1206,9 +1204,10 @@ $(function(){
 
     }       
 
-    intro();
+    menu();
 
     var firstLaunch = false;
+    var haveName = false;
     function firstDialog(challenge) {
       firstLaunch = true;
       $("body").closeAllDialogs(function(){
@@ -1237,30 +1236,60 @@ $(function(){
       });
     }
 
+  function deactivateMenu() {
+    var allItems = ['item-public-key', 'item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
+    for (var i = 0; i < allItems.length; ++i) {
+      $('#' + allItems[i]).removeClass('active');
+    }
+  }
+
+  function menu() {
+    $("body").closeAllDialogs(function(){
+      $.switchWrapper('#menu-view', function() {
+        deactivateMenu();
+        $('#item-public-key').addClass('active');
+      });
+    });
+  }
+
+
+  function launchChallenge(challenge) {
+    if (haveName === false) {
+      haveName = true;
+      getName(challenge);
+    } else {
+      firstLaunch === false ? firstDialog(challenge1) : challenge1();
+    }
+  }
+
     $('#link-public-key').bind('click', function() {
       deactivateMenu();
-      announcePublicKey();
+      if (haveName === false) {
+        haveName = true;
+        getName(announcePublicKey, true);
+      } else {
+        announcePublicKey();
+      }
     });
     $('#link-8-board').bind('click', function() {
-      console.log('ici');
       deactivateMenu();
-      firstLaunch === false ? firstDialog(challenge1) : challenge1();
+      launchChallenge(challenge1);
     });
     $('#link-10-board').bind('click', function() {
       deactivateMenu();
-      firstLaunch === false ? firstDialog(challenge2) : challenge2();
+      launchChallenge(challenge2);
     });
     $('#link-12-board').bind('click', function() {
       deactivateMenu();
-      firstLaunch === false ? firstDialog(challenge3) : challenge3();
+      launchChallenge(challenge3);
     });
     $('#link-14-board').bind('click', function() {
       deactivateMenu();
-      firstLaunch === false ? firstDialog(challenge4) : challenge4();
+      launchChallenge(challenge4);
     });
     $('#link-16-board').bind('click', function() {
       deactivateMenu();
-      firstLaunch === false ? firstDialog(challenge5) : challenge5();
+      launchChallenge(challenge5);
     });
 
 });
