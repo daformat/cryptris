@@ -1,11 +1,23 @@
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+
+function shuffleList(l) {
+    for (var i = 0; i < l.length; ++i) {
+        tmpValue = l[l.length - 1];
+        randomIndex = Math.floor(Math.random(1) * l.length);
+        l[l.length - 1] = l[randomIndex];
+        l[randomIndex] = tmpValue;
+    }
+    return l;
+}
+
 var sks = {
-    8 : [7, 1, -1, 1, 0, 0, 0, 0],
-    10 : [11, 1, 1, -1, -2, -1, 0, 0, 0, 0],
-    12 : [16, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0],
-    14 : [21, 1, 2, 1, -1, -1, -2, 1, 1, 0, 0, 0, 0, 1],
-    16 : [25, 1, 2, 1, 1, -2, -1, -1, 1, 0, 1, 0, -2, 0, 0, 0]
+    8 : shuffleList([7, 1, -1, 1, 0, 0, 0, 0]),
+    10 : shuffleList([11, 1, 1, -1, -2, -1, 0, 0, 0, 0]),
+    12 : shuffleList([16, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0]),
+    14 : shuffleList([21, 1, 2, 1, -1, -1, -2, 1, 1, 0, 0, 0, 0, 1]),
+    16 : shuffleList([25, 1, 2, 1, 1, -2, -1, -1, 1, 0, 1, 0, -2, 0, 0, 0])
 };
+
 var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
 var symbols2 = ["q","r","s","t","u","v","w","x","y","z",

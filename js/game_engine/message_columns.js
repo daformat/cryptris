@@ -16,7 +16,6 @@ function levelMessage(director, x, y, number, container, boxOption) {
     var beginTime = this.beginTime;
 
     this.msg.setLocation(this.x, this.y);
-    console.log(this.y);
     this.msg.setSize(this.boxOption.SQUARE_WIDTH, 20);
 
     this.finalDestination = this.y - 20;
