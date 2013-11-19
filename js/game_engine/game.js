@@ -1,4 +1,11 @@
-var authorizedLength = [4, MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+var sks = {
+    8 : [7, 1, -1, 1, 0, 0, 0, 0],
+    10 : [11, 1, 1, -1, -2, -1, 0, 0, 0, 0],
+    12 : [16, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0],
+    14 : [21, 1, 2, 1, -1, -1, -2, 1, 1, 0, 0, 0, 0, 1],
+    16 : [25, 1, 2, 1, 1, -2, -1, -1, 1, 0, 1, 0, -2, 0, 0, 0]
+};
 var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
 var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
@@ -243,47 +250,6 @@ function string_to_ternary(string) {
     return ternaries;
 }
 
-
-function genSecretKey(dim) {
-
-    var sk = [];
-
-    var pre_key = [8, -3, 1, 0, -1, 0, -1, 1, 2, 0, -2, 1, 2, 1, 0, 0, 1, 2, -1, 0];
-
-    for (var i = 0; i < dim; ++i) {
-        sk.push(pre_key[i]);
-    }
-
-    for (var a = 0; a < dim; ++a) {
-        var i = Math.floor(Math.random() * dim);
-        var j = Math.floor(Math.random() * dim);
-
-        var tmp = sk[i];
-        sk[i] = sk[j];
-        sk[j] = tmp;
-    }
-
-    /**
-     * Put the biggest key in the minimal interval for a key 0 - 8
-     */
-    if (dim > MIN_BOARD_LENGTH) {
-        var indexBiggestKey = 0;
-        for (var a = 1; a < dim; ++a) {
-            if (sk[indexBiggestKey] < sk[a]) {
-                indexBiggestKey = a;
-            }
-        }
-        if (indexBiggestKey >= MIN_BOARD_LENGTH) {
-            var newIndexBiggestKey = Math.floor(Math.random() * MIN_BOARD_LENGTH);
-            var saveBiggestKey = sk[indexBiggestKey];
-            sk[indexBiggestKey] = sk[newIndexBiggestKey];
-            sk[newIndexBiggestKey] = saveBiggestKey;
-        }
-    }
-
-    return sk;
-}
-
 function rotate(dim, l, i) {
     var new_l = [];
 
@@ -328,20 +294,12 @@ function genPublicKey(dim, sk) {
     return pk;
 }
 
-function genPublicKeys(sk) {
+function genPublicKeys() {
 
     var pk = {};
 
     for (var i = 0; i < authorizedLength.length; ++i) {
-
-        // Create a sub private key.
-        var subPk = [];
-        for (var a = 0; a < authorizedLength[i]; a++) {
-            subPk.push(sk[a]);
-        }
-
-        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], subPk);
-
+        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]]);
     }
 
     return pk;
@@ -349,8 +307,7 @@ function genPublicKeys(sk) {
 }
 
 function getKeyInfo(dim) {
-    var sk = genSecretKey(dim);
-    var pk = genPublicKeys(sk);
+    var pk = genPublicKeys();
 
     /**
      * Make to coincide inria's model with dc's model.
@@ -369,10 +326,7 @@ function getKeyInfo(dim) {
         result['public_key'][index]['number'] = [];
 
         var subPk = pk[index];
-        var subSk = [];
-        for (var k = 0; k < authorizedLength[j]; ++k) {
-            subSk.push(sk[k]);
-        }
+        var subSk = sks[index];
 
         result['private_key'][index] = {};
         result['private_key'][index]['key'] = subSk;
@@ -399,7 +353,7 @@ function getKeyInfo(dim) {
                 result['private_key'][index]['normal_key'].push(COLUMN_TYPE_1);
                 result['private_key'][index]['reverse_key'].push(COLUMN_TYPE_2);
                 result['private_key'][index]['number'].push(subSk[i]);
-            } else if (sk[i] < 0) {
+            } else if (subSk[i] < 0) {
                 result['private_key'][index]['normal_key'].push(COLUMN_TYPE_2);
                 result['private_key'][index]['reverse_key'].push(COLUMN_TYPE_1);
                 result['private_key'][index]['number'].push(-1 * subSk[i]);
