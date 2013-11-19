@@ -6,7 +6,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
     this.number = number;
     var number = this.number;
     this.x = x;
-    this.y = y;
+    this.y = y > 0 ? y : 0;
     this.boxOption = boxOption;
     this.clearTime = this.boxOption.timeInfo.levelUpNumberTime;
     this.delta = this.clearTime;
@@ -16,6 +16,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
     var beginTime = this.beginTime;
 
     this.msg.setLocation(this.x, this.y);
+    console.log(this.y);
     this.msg.setSize(this.boxOption.SQUARE_WIDTH, 20);
 
     this.finalDestination = this.y - 20;
