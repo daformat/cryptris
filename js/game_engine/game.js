@@ -1,5 +1,19 @@
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
-var repeatList = [6, 7, 8, 9, 10];
+var repeatGenPublicKeyList = {
+    8 : 6,
+    10 : 7,
+    12 : 8,
+    14 : 9,
+    16 : 10
+};
+
+var repeatChiffreMsgList = {
+    8 : 7,
+    10 : 8,
+    12 : 9,
+    14 : 10,
+    16 : 11
+}
 
 function shuffleList(l) {
     for (var i = 0; i < l.length; ++i) {
@@ -317,7 +331,7 @@ function genPublicKeys() {
     var pk = {};
 
     for (var i = 0; i < authorizedLength.length; ++i) {
-        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]], repeatList[i]);
+        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]], repeatGenPublicKeyList[authorizedLength[i]]);
     }
 
     return pk;
@@ -428,10 +442,7 @@ function chiffre(dim, message, pk) {
         cipher.push(0);
     }
 
-    var subPk = [];
-    for (var i = 0; i < dim; ++i) {
-        subPk.push(pk[i]);
-    }
+    var subPk = pk;
 
     /**
      * Check if our public key is empty or not.
@@ -448,8 +459,15 @@ function chiffre(dim, message, pk) {
     }
 
     while (testIfIsCrypted === false) {
-        for (var i = 1; i < dim / 2; ++i) {
-            cipher = sum(cipher, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, subPk, i)));
+        
+        for (var i = 0; i < repeatChiffreMsgList[dim]; ++i) {
+            var k = Math.floor(Math.random() * (dim + 1));
+
+            var r = -1;
+            if (Math.floor(Math.random() * 2) === 1) {
+                r = 1;
+            }
+            cipher = sum(cipher, mult(r, rotate(dim, subPk, k)));
         }
 
         for (var i = 0; i < cipher.length; ++i) {
