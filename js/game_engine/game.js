@@ -1,4 +1,5 @@
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+var repeatList = [6, 7, 8, 9, 10];
 
 function shuffleList(l) {
     for (var i = 0; i < l.length; ++i) {
@@ -262,6 +263,8 @@ function string_to_ternary(string) {
     return ternaries;
 }
 
+
+
 function rotate(dim, l, i) {
     var new_l = [];
 
@@ -294,15 +297,18 @@ function mult(a, l1) {
     return mult_l;
 }
 
-function genPublicKey(dim, sk) {
+
+function genPublicKey(dim, sk, repet) {
     var pk = sk;
 
-    for (var i = 1; i < dim / 2; ++i) {
-        pk = sum(pk, mult(Math.floor(Math.random() * 5) - 2, rotate(dim, sk, i)));
+    for (var i = 0; i < repet; ++i) {
+        var k = Math.floor(Math.random() * (dim + 1));
+        var r = -1;
+        if (Math.floor(Math.random() * 2) === 1) {
+            r = 1;
+        }
+        pk = sum(pk, mult(r, rotate(dim, sk, k)));
     }
-
-    pk = rotate(dim, pk, Math.floor(Math.random() * dim));
-
     return pk;
 }
 
@@ -311,7 +317,7 @@ function genPublicKeys() {
     var pk = {};
 
     for (var i = 0; i < authorizedLength.length; ++i) {
-        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]]);
+        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]], repeatList[i]);
     }
 
     return pk;
