@@ -1234,7 +1234,7 @@ $(function(){
       haveName = true;
       getName(challenge);
     } else {
-      firstLaunch === false ? firstDialog(challenge1) : challenge1();
+      firstLaunch === false ? firstDialog(challenge) : challenge();
     }
   }
 
