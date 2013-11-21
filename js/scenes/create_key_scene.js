@@ -12,24 +12,10 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
         return ;
     }
 
-    var prepare_move = [];
     var move = [];
-
-    var current_time = 0;
-    var WAITING_TIME = gameBoxInfo.boxOption.timeInfo.waitingIATime;
-
-    var ACTION_UNKNOWN = -1;
-    var ACTION_LEFT = 0;
-    var ACTION_RIGHT = 1;
-    var ACTION_DOWN = 2;
-    var ACTION_INVERT = 3;
-    var ACTION_AFTER_DOWN = 4;
 
     var message = gameBoxInfo.message;
     var key = gameBoxInfo.crypt_key;
-
-    var actionToDo = ACTION_UNKNOWN;
-
 
     for (var i = 0; i < key.length; ++i) {
         move.push(Math.floor(Math.random() * 5) - 2);
@@ -40,10 +26,10 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
     var index = 0;
 
     var keyIsInvert = false;
-    var moveIsPrepared = false;
 
-    var alignColumn = false;
-    var progress = true;
+    var ia = new IA(createKeyScene, key, message, gameBoxInfo.boxOption);
+    ia.startIA();
+    ia.blankMessageIsAllowed = true;
 
     currentGame.iaCreateKeyTimer = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
@@ -51,50 +37,27 @@ function ia_create_pk(createKeyScene, gameBoxInfo) {
 
             if (index < move.length && key.keyInMove === false && key.keyFirstMove === false) {
  
-                if (actionToDo === ACTION_UNKNOWN) {
-
-                    if (move[index] === 0) {
-                        if (keyIsInvert === true) {
-                            actionToDo = ACTION_INVERT;
-                        } else {
-                            actionToDo = ACTION_RIGHT;
-                            ++index;
-                        }
+                if (move[index] === 0) {
+                    if (keyIsInvert === true) {
+                        ia.addMoveInvert();
                     } else {
-                        if (move[index] < 0) {
-                            actionToDo = ACTION_INVERT;
-                            move[index] = -1 * move[index];
-                        } else {
-                            actionToDo = ACTION_DOWN;
-                            move[index] = move[index] - 1;
-                        }
+                        ia.addMoveRight();
+                        ++index;
                     }
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT) {
-                    key.rotateRight();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_LEFT) {
-                    key.rotateLeft();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN) {
-                    key.keyDown();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT) {
-                    key.changeKeyType();
-                    keyIsInvert = !keyIsInvert;
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
+                } else {
+                    if (move[index] < 0) {
+                        ia.addMoveInvert();
+                        move[index] = -1 * move[index];
+                    } else {
+                        ia.addMoveDown();
+                        move[index] = move[index] - 1;
+                    }
                 }
-
                 if( index == move.length - 1){
-                    currentGame.dontShowKey = true;
+                    ia.dontShowKey = true;
                 }
 
-            } else if (index === move.length) {
-  
+            } else if (index === move.length && ia.moveList.length === 0) {
                 currentGame.iaCreateKeyTimer.cancel();
 
 

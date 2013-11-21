@@ -14,11 +14,13 @@ function IA(scene, key, message, boxOption) {
   this.iaCurrentTime = this.iaScene.time;
 
   this.keyIsInvert = false;
+  this.blankMessageIsAllowed = false;
 
   this.iaStop = 0;
   this.iaPause = 1;
   this.iaPlay = 2;
   this.iaState = this.iaStop;
+  this.dontShowKey = false;
 
   this.addMoveLeft = function() {
     this.moveList.push(this.ACTION_LEFT);
@@ -44,7 +46,7 @@ function IA(scene, key, message, boxOption) {
     var object = this;
     this.iaTimer = this.iaScene.createTimer(0, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        var test = object.iaKey.msgColumn.resolved === false && object.iaKey.keyInMove === false && object.iaKey.keyFirstMove === false;
+        var test = (object.iaKey.msgColumn.resolved === false || object.blankMessageIsAllowed === true) && object.iaKey.keyInMove === false && object.iaKey.keyFirstMove === false;
         if (test === true && object.moveList.length > 0 && (time - object.iaCurrentTime) > object.iaBoxOption.timeInfo.waitingIATime) {
           var action = object.moveList[0];
           if (action === object.ACTION_RIGHT) {
@@ -59,6 +61,10 @@ function IA(scene, key, message, boxOption) {
           }
           object.iaCurrentTime = time;
           object.moveList.shift();
+        }
+
+        if (object.dontShowKey === true && object.moveList.length <= 1) {
+          currentGame.dontShowKey = true;
         }
       }
     );
