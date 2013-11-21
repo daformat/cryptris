@@ -64,7 +64,7 @@ function prepareCreateKeyScene(director) {
     for (var i = 0; i < current_length; ++i) {
         tmp_empty_message.push(0);
     }
-    var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message);
+    var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message, currentGame.playerKeyInfo.private_key[current_length].key);
 
     currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent');
 }
@@ -78,7 +78,7 @@ function createMessageForPlayScene(boardLength, message) {
     /**
      * Return the crypted message
      */
-    var crypted_message = chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key);
+    var crypted_message = chiffre(boardLength, ternary_message, currentGame.playerKeyInfo.public_key[boardLength].key, currentGame.playerKeyInfo.private_key[boardLength].key);
     return crypted_message;
 }
 

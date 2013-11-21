@@ -664,8 +664,9 @@ function recuit_simule_ralenti(dim, cipher, publicKey, limit, p) {
     return false;
 }
 
-function chiffre(dim, message, pk) {
+function chiffre(dim, message, pk, sk) {
 
+    // -- the first step of the crypted message is the uncrypted message.
     var cipher = []
     for (var i = 0; i < message.length; ++i) {
         cipher.push(message[i]);
@@ -678,8 +679,6 @@ function chiffre(dim, message, pk) {
         cipher.push(0);
     }
 
-    var subPk = pk;
-
     /**
      * Check if our public key is empty or not.
      * If it is empty, we could have an empty crypted message,
@@ -688,14 +687,16 @@ function chiffre(dim, message, pk) {
      * Note : Empty public key is used to create the message of create_key_scene. (Indeed, at this level, we have no public key generated).
      */
     var testIfIsCrypted = true;
-    for (var i = 0; i < subPk.length; ++i) {
-        if (subPk[i] !== 0) {
+    for (var i = 0; i < pk.length; ++i) {
+        if (pk[i] !== 0) {
             testIfIsCrypted = false;
         }
     }
 
+    var limitTestDifficulty = 0;
     while (testIfIsCrypted === false) {
 
+        // -- Crypt the message.
         for (var i = 0; i < repeatChiffreMsgList[dim]; ++i) {
             var k = Math.floor(Math.random() * (dim + 1));
 
@@ -703,15 +704,35 @@ function chiffre(dim, message, pk) {
             if (Math.floor(Math.random() * 2) === 1) {
                 r = 1;
             }
-            cipher = sum(cipher, mult(r, rotate(dim, subPk, k)));
+            cipher = sum(cipher, mult(r, rotate(dim, pk, k)));
         }
 
+        // -- Validate if the message has been crypted.
         for (var i = 0; i < cipher.length; ++i) {
             if (cipher[i] > 1 || cipher[i] < -1) {
                 testIfIsCrypted = true;
                 break;
             }
         }
+
+        // -- Check if the player could decrypted it easily
+        if (glouton(dim, cipher, sk, 100) === false && limitTestDifficulty < 1000) {
+            testIfIsCrypted = false;
+
+            // -- the first step of the crypted message is the uncrypted message.
+            var cipher = []
+            for (var i = 0; i < message.length; ++i) {
+                cipher.push(message[i]);
+            }
+
+            /**
+             * If message is not a multiple of dim, we add some padding to cipher
+             */
+            while (cipher.length % dim !== 0) {
+                cipher.push(0);
+            }
+        }
+        limitTestDifficulty++;
     }
 
     var result = {};

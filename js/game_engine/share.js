@@ -36,7 +36,6 @@ function createMiniBoardScene(director, current_length, message, keyInfo, hookAc
     	blank_key.reverse_key.push(COLUMN_TYPE_3);
     	blank_key.number.push(0);
     }
-    console.log(keyInfo.private_key[current_length]);
 
     /**
      * Create the player game board.
@@ -197,7 +196,7 @@ $(document).ready(function() {
 	    /**
     	 * Return the crypted message
     	 */
-    	var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key);
+    	var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key, currentGame.playerKeyInfo.private_key[current_length].key);
 
 		createMiniBoard(current_length, crypted_message);
 
