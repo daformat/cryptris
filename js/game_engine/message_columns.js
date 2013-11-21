@@ -528,6 +528,15 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         return this;
     }
 
+    this.getNumbers = function() {
+        var numbers = [];
+
+        for (var i = 0; i < this.columnList.length; ++i) {
+            numbers.push(this.columnList[i].squareNumber);
+        }
+
+        return numbers;
+    }
 
     var object = this;
     this.base_line.paint = function(director, time) {

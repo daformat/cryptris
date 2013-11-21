@@ -8,24 +8,17 @@
  *******************************************************************/
 
 function handle_ia(playScene, rivalBoxInfo) {	              
-    var prepare_move = [];
-    var move = [];
-
     var message = rivalBoxInfo.message;
     var key = rivalBoxInfo.crypt_key;
+    var currentLength = rivalBoxInfo.current_length;
 
-    for (var i = 0; i < key.length; ++i) {
-        move.push(0);
-    }
-    var index = 0;
-
-    var keyIsInvert = false;
-    var moveIsPrepared = false;
-
-    var progress = true;
+    var MINIMUM_STROKE = 10;
+    var lastModif = 0;
+    var strokeNumber = 0;
+    var rotationIndex = 0;
 
     var ia = new IA(playScene, key, message, rivalBoxInfo.boxOption);
-    
+
     var decryptMsgTimer = playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
             if (currentGame.iaPlay === false) {
@@ -38,73 +31,53 @@ function handle_ia(playScene, rivalBoxInfo) {
                     ia.startIA();
                 }
             }
-            if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
-                /**
-                 * TO PRECISE : We apply -2 key at all columns of the message.
-                 */
-                if (moveIsPrepared !== true) {
-                    if (keyIsInvert !== true) {
-                        keyIsInvert = !keyIsInvert;
-                        ia.addMoveInvert();
-                    } else if (move[index] !== -2) {
-                        ia.addMoveDown();
-                        move[index] = move[index] - 1;
-                    } else if (move[index] === -2) {
-                        if (index < move.length - 1) {
-                            ++index;
+
+            if (ia.moveList.length === 0 && key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
+
+                if (lastModif > currentLength || (strokeNumber < MINIMUM_STROKE && l2(message.getNumbers()) < 3 * l2(key.number))) {
+                    lastModif = 0;
+
+                    for (var i = 0; i < currentLength / 2; ++i) {
+                        rotationIndex = Math.floor(Math.random() * (currentLength + 1));
+                        for (var j = 0; j < rotationIndex; ++j) {
                             ia.addMoveRight();
+                        }
+
+                        if (Math.floor(Math.random() * 2) === 1) {
+                            ia.addMoveInvert();
+                            ia.addMoveDown();
                         } else {
-                            moveIsPrepared = true;
-                            progress = true;
-                            index = move.length - 1;
+                            ia.addMoveDown();
                         }
                     }
-                } else {    
-                    if (progress === true) {
-                        if (index !== move.length - 1) {
-                            ia.addMoveRight();
-                            ++index;
-                        } else {
-                            if (keyIsInvert === true) {
-                                ia.addMoveInvert();
-                                keyIsInvert = !keyIsInvert;
-                            } else if (move[index] !== 2) {
-                                ia.addMoveDown();
-                                move[index] = move[index] + 1;
-                            } else if (move[index] === 2) {
-                                progress = false;
-                                align_column = true;
-                            }
-                        }
+                    rotationIndex = 0;
+                } else {
+
+                    ++lastModif;
+                    ++strokeNumber;
+
+                    for (var i = 0; i < rotationIndex; ++i) {
+                        ia.addMoveRight();
+                    }
+
+                    var l2_cmp = l2(message.getNumbers());
+
+                    var tmpNumbers = message.getNumbers();
+                    var tmpKey = key.number;
+
+                    var tmpDistSub = l2(sum(tmpNumbers, mult(-1, tmpKey)));
+                    var tmpDistAdd = l2(sum(tmpNumbers, tmpKey));
+
+                    if (tmpDistSub < l2_cmp) {
+                        ia.addMoveInvert();
+                        ia.addMoveDown();
+                    } else if (tmpDistAdd < l2_cmp) {
+                        ia.addMoveDown();
                     } else {
-                        if (align_column === true) {
-                            if (keyIsInvert !== true) {
-                                ia.addMoveInvert();
-                                keyIsInvert = !keyIsInvert;
-                            } else if (move[index] !== -2) {
-                                ia.addMoveDown();
-                                move[index] = move[index] - 1;
-                            } else if (move[index] === -2) {
-                                ia.addMoveLeft();
-                                align_column = false;
-                                --index;
-                            }
-                        } else {
-                            if (move[index] === 2) {
-                                align_column = true;
-                            } else {
-                                if (keyIsInvert === true) {
-                                    ia.addMoveInvert();
-                                    keyIsInvert = !keyIsInvert;
-                                } else {
-                                    ia.addMoveDown();
-                                    move[index] = move[index] + 1;
-                                    progress = true;
-                                }
-                            }
-                        }
+                        rotationIndex = (rotationIndex + 1) % rivalBoxInfo.current_length;
                     }
                 }
+
             } else if (key.msgColumn.resolved === true) {
                 decryptMsgTimer.cancel();
             }
