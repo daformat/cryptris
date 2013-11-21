@@ -1,38 +1,3 @@
-var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
-var repeatGenPublicKeyList = {
-    8 : 6,
-    10 : 7,
-    12 : 8,
-    14 : 9,
-    16 : 10
-};
-
-var repeatChiffreMsgList = {
-    8 : 7,
-    10 : 8,
-    12 : 9,
-    14 : 10,
-    16 : 11
-}
-
-function shuffleList(l) {
-    for (var i = 0; i < l.length; ++i) {
-        tmpValue = l[l.length - 1];
-        randomIndex = Math.floor(Math.random(1) * l.length);
-        l[l.length - 1] = l[randomIndex];
-        l[randomIndex] = tmpValue;
-    }
-    return l;
-}
-
-var sks = {
-    8 : shuffleList([7, 1, -1, 1, 0, 0, 0, 0]),
-    10 : shuffleList([11, 1, 1, -1, -2, -1, 0, 0, 0, 0]),
-    12 : shuffleList([16, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0]),
-    14 : shuffleList([21, 1, 2, 1, -1, -1, -2, 1, 1, 0, 0, 0, 0, 1]),
-    16 : shuffleList([25, 1, 2, 1, 1, -2, -1, -1, 1, 0, 1, 0, -2, 0, 0, 0])
-};
-
 var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
 var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
@@ -279,6 +244,187 @@ function string_to_ternary(string) {
 
 
 
+/**
+ * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ */
+function message_number_to_string(board_message) {
+
+    var newString = "";
+    for (var i = 0; i < board_message.length; ++i) {
+        newString = newString + " " + board_message[i];
+    }
+    return newString;
+}
+
+/**
+ * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ */
+function board_message_to_string(board_message) {
+    var beginString = "";
+    for (var i = 0; i < board_message.length && i + 3 < board_message.length; i = i + 4) {
+        beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
+    }
+
+    return message_number_to_string(board_message);
+}
+
+/**
+ * Take a string and return a string represented its ternary encrypted version.
+ * To encrypt a string to use in the board, please use 'chiffre' function.
+ */
+function encrypt_string(dim, string, pk, truncate_number) {
+    html_string = krEncodeEntities(string);
+    var split_string = string_to_ternary(html_string);
+
+    while (split_string.length % dim !== 0) {
+        split_string.push(0);
+    }
+
+    var split_ternaries = [];
+    for (var i = 0; i < split_string.length; i = dim + i) {
+        split_ternaries.push([]);
+        for (j = i; j < i + dim; ++j) {
+            split_ternaries[split_ternaries.length - 1].push(split_string[j]);
+        }
+    }
+
+    var split_chiffre = [];
+
+    for (var i = 0; i < split_ternaries.length; ++i) {
+        split_chiffre.push(chiffre(dim, split_ternaries[i], pk[dim].key).message_number);
+    }
+
+    var chiffreString = "";
+
+    for (var i = 0; i < split_chiffre.length; ++i) {
+        chiffreString = chiffreString + message_number_to_string(split_chiffre[i]);
+    }
+
+    var tmp_crypt_msg = easy_crypt(chiffreString);
+    var crypt_msg = "";
+
+    for (var i = 0; i < tmp_crypt_msg.length; ++i) {
+        if (i % truncate_number === 0) {
+            crypt_msg = crypt_msg + " ";
+        }
+        crypt_msg = crypt_msg + tmp_crypt_msg[i]
+    }
+    return crypt_msg;
+}
+
+
+function generateKeyInfo(public_key, private_key, current_length) {
+    var keyInfo = {};
+
+    keyInfo['public_key'] = {};
+    keyInfo['public_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
+    keyInfo['private_key'] = {};
+    keyInfo['private_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
+
+    for (var i = 0; i < current_length; ++i) {
+        keyInfo.public_key[current_length].key[i] = public_key[i];
+        keyInfo.private_key[current_length].key[i] = private_key[i];
+
+        if (public_key[i] > 0) {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_1;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
+            keyInfo.public_key[current_length].number[i] = public_key[i];
+        } else if (public_key[i] === 0) {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_3;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
+            keyInfo.public_key[current_length].number[i] = public_key[i];
+        } else {
+            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_2;
+            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
+            keyInfo.public_key[current_length].number[i] = public_key[i] * (-1);
+        }
+
+
+        if (private_key[i] > 0) {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_1;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
+            keyInfo.private_key[current_length].number[i] = private_key[i];
+        } else if (private_key[i] === 0) {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_3;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
+            keyInfo.private_key[current_length].number[i] = private_key[i];
+        } else {
+            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_2;
+            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
+            keyInfo.private_key[current_length].number[i] = private_key[i] * (-1);
+        }
+    }
+
+    return keyInfo;
+}
+
+function createADataMessage(crypted_message, current_length) {
+    var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
+
+    for (var i = 0; i < current_length; ++i) {
+        if (crypted_message[i] > 0) {
+            dataMessage.message_number[i] = crypted_message[i];
+            dataMessage.message_type[i] = COLUMN_TYPE_1;
+            dataMessage.plain_message[i] = crypted_message[i];
+        } else if (crypted_message[i] === 0) {
+            dataMessage.message_number[i] = crypted_message[i];
+            dataMessage.message_type[i] = COLUMN_TYPE_3;
+            dataMessage.plain_message[i] = crypted_message[i];
+        } else {
+            dataMessage.message_number[i] = crypted_message[i] * (-1);
+            dataMessage.message_type[i] = COLUMN_TYPE_2;
+            dataMessage.plain_message[i] = crypted_message[i];
+        }
+    }
+
+    return dataMessage;
+}
+
+
+
+
+
+
+
+
+
+
+var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+var repeatGenPublicKeyList = {
+    8 : 6,
+    10 : 7,
+    12 : 8,
+    14 : 9,
+    16 : 10
+};
+
+var repeatChiffreMsgList = {
+    8 : 7,
+    10 : 8,
+    12 : 9,
+    14 : 10,
+    16 : 11
+}
+
+function shuffleList(l) {
+    for (var i = 0; i < l.length * l.length; ++i) {
+        tmpValue = l[l.length - 1];
+        randomIndex = Math.floor(Math.random(1) * l.length);
+        l[l.length - 1] = l[randomIndex];
+        l[randomIndex] = tmpValue;
+    }
+    return l;
+}
+
+var sks = {
+    8 : shuffleList([7, 1, -1, 1, 0, 0, 0, 0]),
+    10 : shuffleList([11, 1, 1, -1, -2, -1, 0, 0, 0, 0]),
+    12 : shuffleList([16, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0]),
+    14 : shuffleList([21, 1, 2, 1, -1, -1, -2, 1, 1, 0, 0, 0, 0, 1]),
+    16 : shuffleList([25, 1, 2, 1, 1, -2, -1, -1, 1, 0, 1, 0, -2, 0, 0, 0])
+};
+
+
 function rotate(dim, l, i) {
     var new_l = [];
 
@@ -428,6 +574,96 @@ function resetPublicKey(newPk, index) {
     }
 }
 
+function glouton(dim, cipher, secretKey, limit) {
+    var tmpCipher = cipher;
+    var maxColumnValue = Math.max.apply(null, secretKey);
+    var maxColumnIndex = secretKey.indexOf(maxColumnValue);
+
+    var secretKeyInitial = rotate(dim, secretKey, -maxColumnIndex);
+
+    var i = 2;
+    var a = 0;
+
+    for (var r = 0; r < limit; ++r) {
+        ++a;
+        var csk = rotate(dim, secretKey, i);
+
+        if (tmpCipher[i] > maxColumnValue / 2) {
+            tmpCipher = sum(tmpCipher, mult(-1, csk));
+        }
+        else if (tmpCipher[i] < -1 * maxColumnValue / 2) {
+            tmpCipher = sum(tmpCipher, mult(1, csk));
+        } else {
+            i = (i + 1) % dim;
+        }
+        if (Math.max.apply(null, tmpCipher) < 2 && Math.min.apply(null, tmpCipher) > -2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function l2(v) {
+    var result = 0;
+
+    for (var i = 0; i < v.length; ++i) {
+        result = result + v[i] * v[i];
+    }
+
+    return result;
+}
+
+function recuit_simule_ralenti(dim, cipher, publicKey, limit, p) {
+    var publicKeyInitial = publicKey;
+    var i = 0;
+    var a = 0;
+    var last_modif = 0;
+    var tmpCipher = cipher;
+
+    for (var r = 0; r < limit; ++r) {
+        if (last_modif > dim || ((a < p) && (l2(tmpCipher) < 3 * l2(publicKey)))) {
+            last_modif = 0;
+
+            for (var k = 0; k < dim / 2; ++k) {
+                i = Math.floor(Math.random() * (dim + 1));
+                var cpk = rotate(dim, publicKeyInitial, 0, i);
+
+                if (Math.floor(Math.random() * 3) === 1) {
+                    tmpCipher = sum(tmpCipher, mult(-1, cpk));
+                } else {
+                    tmpCipher = sum(tmpCipher, mult(1, cpk));
+                }
+            }
+        }
+
+        ++last_modif;
+        ++a;
+
+        var cpk = rotate(dim, publicKeyInitial, i);
+        var l2_cmp = l2(tmpCipher);
+
+        if (l2(sum(tmpCipher, mult(-1, cpk))) < l2_cmp) {
+            tmpCipher = sum(tmpCipher, mult(-1, cpk));
+            last_modif = 0;
+        }
+
+        else if (l2(sum(tmpCipher, mult(1, cpk))) < l2_cmp) {
+            tmpCipher = sum(tmpCipher, mult(1, cpk));
+            last_modif = 0;
+        }
+
+        else {
+            i = (i + 1) % dim;
+        }
+
+        if (Math.max.apply(null, tmpCipher) < 2 && Math.min.apply(tmpCipher) > -2) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function chiffre(dim, message, pk) {
 
     var cipher = []
@@ -459,7 +695,7 @@ function chiffre(dim, message, pk) {
     }
 
     while (testIfIsCrypted === false) {
-        
+
         for (var i = 0; i < repeatChiffreMsgList[dim]; ++i) {
             var k = Math.floor(Math.random() * (dim + 1));
 
@@ -497,141 +733,4 @@ function chiffre(dim, message, pk) {
     }
 
     return result;
-}
-
-
-
-/**
- * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
- */
-function message_number_to_string(board_message) {
-
-    var newString = "";
-    for (var i = 0; i < board_message.length; ++i) {
-        newString = newString + " " + board_message[i];
-    }
-    return newString;
-}
-
-/**
- * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
- */
-function board_message_to_string(board_message) {
-    var beginString = "";
-    for (var i = 0; i < board_message.length && i + 3 < board_message.length; i = i + 4) {
-        beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
-    }
-
-    return message_number_to_string(board_message);
-}
-
-/**
- * Take a string and return a string represented its ternary encrypted version.
- * To encrypt a string to use in the board, please use 'chiffre' function.
- */
-function encrypt_string(dim, string, pk, truncate_number) {
-    html_string = krEncodeEntities(string);
-    var split_string = string_to_ternary(html_string);
-
-    while (split_string.length % dim !== 0) {
-        split_string.push(0);
-    }
-
-    var split_ternaries = [];
-    for (var i = 0; i < split_string.length; i = dim + i) {
-        split_ternaries.push([]);
-        for (j = i; j < i + dim; ++j) {
-            split_ternaries[split_ternaries.length - 1].push(split_string[j]);
-        }
-    }
-
-    var split_chiffre = [];
-
-    for (var i = 0; i < split_ternaries.length; ++i) {
-        split_chiffre.push(chiffre(dim, split_ternaries[i], pk[dim].key).message_number);
-    }
-
-    var chiffreString = "";
-
-    for (var i = 0; i < split_chiffre.length; ++i) {
-        chiffreString = chiffreString + message_number_to_string(split_chiffre[i]);
-    }
-
-    var tmp_crypt_msg = easy_crypt(chiffreString);
-    var crypt_msg = "";
-
-    for (var i = 0; i < tmp_crypt_msg.length; ++i) {
-        if (i % truncate_number === 0) {
-            crypt_msg = crypt_msg + " ";
-        }
-        crypt_msg = crypt_msg + tmp_crypt_msg[i]
-    }
-    return crypt_msg;
-}
-
-function generateKeyInfo(public_key, private_key, current_length) {
-    var keyInfo = {};
-
-    keyInfo['public_key'] = {};
-    keyInfo['public_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
-    keyInfo['private_key'] = {};
-    keyInfo['private_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
-
-    for (var i = 0; i < current_length; ++i) {
-        keyInfo.public_key[current_length].key[i] = public_key[i];
-        keyInfo.private_key[current_length].key[i] = private_key[i];
-
-        if (public_key[i] > 0) {
-            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_1;
-            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
-            keyInfo.public_key[current_length].number[i] = public_key[i];
-        } else if (public_key[i] === 0) {
-            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_3;
-            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
-            keyInfo.public_key[current_length].number[i] = public_key[i];
-        } else {
-            keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_2;
-            keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
-            keyInfo.public_key[current_length].number[i] = public_key[i] * (-1);
-        }
-
-
-        if (private_key[i] > 0) {
-            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_1;
-            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
-            keyInfo.private_key[current_length].number[i] = private_key[i];
-        } else if (private_key[i] === 0) {
-            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_3;
-            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_3;
-            keyInfo.private_key[current_length].number[i] = private_key[i];
-        } else {
-            keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_2;
-            keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_1;
-            keyInfo.private_key[current_length].number[i] = private_key[i] * (-1);
-        }
-    }
-
-    return keyInfo;
-}
-
-function createADataMessage(crypted_message, current_length) {
-    var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
-
-    for (var i = 0; i < current_length; ++i) {
-        if (crypted_message[i] > 0) {
-            dataMessage.message_number[i] = crypted_message[i];
-            dataMessage.message_type[i] = COLUMN_TYPE_1;
-            dataMessage.plain_message[i] = crypted_message[i];
-        } else if (crypted_message[i] === 0) {
-            dataMessage.message_number[i] = crypted_message[i];
-            dataMessage.message_type[i] = COLUMN_TYPE_3;
-            dataMessage.plain_message[i] = crypted_message[i];
-        } else {
-            dataMessage.message_number[i] = crypted_message[i] * (-1);
-            dataMessage.message_type[i] = COLUMN_TYPE_2;
-            dataMessage.plain_message[i] = crypted_message[i];
-        }
-    }
-
-    return dataMessage;
 }
