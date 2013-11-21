@@ -11,20 +11,8 @@ function handle_ia(playScene, rivalBoxInfo) {
     var prepare_move = [];
     var move = [];
 
-    var current_time = 0;
-    var WAITING_TIME = rivalBoxInfo.boxOption.timeInfo.waitingIATime;
-
-    var ACTION_UNKNOWN = -1;
-    var ACTION_LEFT = 0;
-    var ACTION_RIGHT = 1;
-    var ACTION_DOWN = 2;
-    var ACTION_INVERT = 3;
-    var ACTION_AFTER_DOWN = 4;
-
     var message = rivalBoxInfo.message;
     var key = rivalBoxInfo.crypt_key;
-
-    var actionToDo = ACTION_UNKNOWN;
 
     for (var i = 0; i < key.length; ++i) {
         move.push(0);
@@ -34,104 +22,88 @@ function handle_ia(playScene, rivalBoxInfo) {
     var keyIsInvert = false;
     var moveIsPrepared = false;
 
-    var alignColumn = false;
     var progress = true;
 
+    var ia = new IA(playScene, key, message, rivalBoxInfo.boxOption);
+    
     var decryptMsgTimer = playScene.createTimer(0, Number.MAX_VALUE, null,
         function(time, ttime, timerTask) {
             if (currentGame.iaPlay === false) {
+                if (ia.iaState === ia.iaPlay) {
+                    ia.stopIA();
+                }
                 return ;
+            } else if (currentGame.iaPlay === true) {
+                if (ia.iaState !== ia.iaPlay) {
+                    ia.startIA();
+                }
             }
             if (key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
                 /**
                  * TO PRECISE : We apply -2 key at all columns of the message.
                  */
-                if (actionToDo === ACTION_UNKNOWN && moveIsPrepared !== true) {
-                    if (actionToDo === ACTION_UNKNOWN) {
-                        if (keyIsInvert !== true) {
-                            actionToDo = ACTION_INVERT;
-                        } else if (move[index] !== -2) {
-                            actionToDo = ACTION_DOWN;
-                            move[index] = move[index] - 1;
-                        } else if (move[index] === -2) {
-                            if (index < move.length - 1) {
-                                ++index;
-                                actionToDo = ACTION_RIGHT;
-                            } else {
-                                moveIsPrepared = true;
-                                actionToDo = ACTION_UNKNOWN;
-                                progress = true;
-                                index = move.length - 1;
-                            }
+                if (moveIsPrepared !== true) {
+                    if (keyIsInvert !== true) {
+                        keyIsInvert = !keyIsInvert;
+                        ia.addMoveInvert();
+                    } else if (move[index] !== -2) {
+                        ia.addMoveDown();
+                        move[index] = move[index] - 1;
+                    } else if (move[index] === -2) {
+                        if (index < move.length - 1) {
+                            ++index;
+                            ia.addMoveRight();
+                        } else {
+                            moveIsPrepared = true;
+                            progress = true;
+                            index = move.length - 1;
                         }
                     }
-                    current_time = time;
-                } else if (actionToDo === ACTION_UNKNOWN && moveIsPrepared === true) {    
+                } else {    
                     if (progress === true) {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (index !== move.length - 1) {
-                                actionToDo = ACTION_RIGHT;
-                                ++index;
-                            } else {
-                                if (keyIsInvert === true) {
-                                    actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== 2) {
-                                    actionToDo = ACTION_DOWN;
-                                    move[index] = move[index] + 1;
-                                } else if (move[index] === 2) {
-                                    actionToDo = ACTION_UNKNOWN;
-                                    progress = false;
-                                    align_column = true;
-                                }
+                        if (index !== move.length - 1) {
+                            ia.addMoveRight();
+                            ++index;
+                        } else {
+                            if (keyIsInvert === true) {
+                                ia.addMoveInvert();
+                                keyIsInvert = !keyIsInvert;
+                            } else if (move[index] !== 2) {
+                                ia.addMoveDown();
+                                move[index] = move[index] + 1;
+                            } else if (move[index] === 2) {
+                                progress = false;
+                                align_column = true;
                             }
                         }
                     } else {
-                        if (actionToDo === ACTION_UNKNOWN) {
-                            if (align_column === true) {
-                                if (keyIsInvert !== true) {
-                                    actionToDo = ACTION_INVERT;
-                                } else if (move[index] !== -2) {
-                                    actionToDo = ACTION_DOWN;
-                                    move[index] = move[index] - 1;
-                                } else if (move[index] === -2) {
-                                    actionToDo = ACTION_LEFT;
-                                    align_column = false;
-                                    --index;
-                                }
+                        if (align_column === true) {
+                            if (keyIsInvert !== true) {
+                                ia.addMoveInvert();
+                                keyIsInvert = !keyIsInvert;
+                            } else if (move[index] !== -2) {
+                                ia.addMoveDown();
+                                move[index] = move[index] - 1;
+                            } else if (move[index] === -2) {
+                                ia.addMoveLeft();
+                                align_column = false;
+                                --index;
+                            }
+                        } else {
+                            if (move[index] === 2) {
+                                align_column = true;
                             } else {
-                                if (move[index] === 2) {
-                                    align_column = true;
+                                if (keyIsInvert === true) {
+                                    ia.addMoveInvert();
+                                    keyIsInvert = !keyIsInvert;
                                 } else {
-                                    if (keyIsInvert === true) {
-                                        actionToDo = ACTION_INVERT;
-                                    } else {
-                                        actionToDo = ACTION_DOWN;
-                                        move[index] = move[index] + 1;
-                                        progress = true;
-                                    }
+                                    ia.addMoveDown();
+                                    move[index] = move[index] + 1;
+                                    progress = true;
                                 }
                             }
                         }
                     }
-                    current_time = time;
-
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_RIGHT) {
-                    key.rotateRight();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_LEFT) {
-                    key.rotateLeft();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_DOWN) {
-                    key.keyDown();
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
-                } else if ((time - current_time) > WAITING_TIME && actionToDo === ACTION_INVERT) {
-                    key.changeKeyType();
-                    keyIsInvert = !keyIsInvert;
-                    actionToDo = ACTION_UNKNOWN;
-                    current_time = time;
                 }
             } else if (key.msgColumn.resolved === true) {
                 decryptMsgTimer.cancel();
