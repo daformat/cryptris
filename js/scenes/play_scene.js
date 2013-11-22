@@ -12,7 +12,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var key = rivalBoxInfo.crypt_key;
     var currentLength = rivalBoxInfo.current_length;
 
-    var MINIMUM_STROKE = 10;
+    var MINIMUM_STROKE = 100;
     var lastModif = 0;
     var strokeNumber = 0;
     var rotationIndex = 0;
@@ -33,12 +33,15 @@ function handle_ia(playScene, rivalBoxInfo) {
             }
 
             if (ia.moveList.length === 0 && key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false) {
-
-                if (lastModif > currentLength || (strokeNumber < MINIMUM_STROKE && l2(message.getNumbers()) < 3 * l2(key.number))) {
+                var keyNumber = key.getNumbers();
+                var msgNumber = message.getNumbers();
+                ++strokeNumber;
+                if (lastModif > currentLength || (strokeNumber < MINIMUM_STROKE && l2(msgNumber) < 3 * l2(keyNumber))) {
                     lastModif = 0;
 
                     for (var i = 0; i < currentLength / 2; ++i) {
-                        rotationIndex = Math.floor(Math.random() * (currentLength + 1));
+                        rotationIndex = Math.floor(Math.random() * currentLength);
+
                         for (var j = 0; j < rotationIndex; ++j) {
                             ia.addMoveRight();
                         }
@@ -50,31 +53,30 @@ function handle_ia(playScene, rivalBoxInfo) {
                             ia.addMoveDown();
                         }
                     }
-                    rotationIndex = 0;
                 } else {
+                    var l2_cmp = l2(msgNumber);
 
-                    ++lastModif;
-                    ++strokeNumber;
+                    var tmpNumbers = msgNumber;
+                    var tmpKey = keyNumber;
 
-                    for (var i = 0; i < rotationIndex; ++i) {
-                        ia.addMoveRight();
-                    }
+                    tmpSubKey = sum(tmpNumbers, mult(-1, tmpKey));
+                    tmpAddKey = sum(tmpNumbers, tmpKey);
 
-                    var l2_cmp = l2(message.getNumbers());
+                    var tmpDistSub = l2(tmpSubKey);
+                    var tmpDistAdd = l2(tmpAddKey);
 
-                    var tmpNumbers = message.getNumbers();
-                    var tmpKey = key.number;
+                    console.log('[' +  tmpNumbers + '],' + l2_cmp + ' | [' + tmpSubKey + '],' + tmpDistSub + ' | [' + tmpAddKey + '],' + tmpDistAdd);
 
-                    var tmpDistSub = l2(sum(tmpNumbers, mult(-1, tmpKey)));
-                    var tmpDistAdd = l2(sum(tmpNumbers, tmpKey));
-
-                    if (tmpDistSub < l2_cmp) {
+                    if (tmpDistSub < tmpDistAdd && tmpDistSub < l2_cmp) {
                         ia.addMoveInvert();
                         ia.addMoveDown();
+                        lastModif = 0;
                     } else if (tmpDistAdd < l2_cmp) {
                         ia.addMoveDown();
+                        lastModif = 0;
                     } else {
-                        rotationIndex = (rotationIndex + 1) % rivalBoxInfo.current_length;
+                        ia.addMoveRight();
+                        ++lastModif;
                     }
                 }
 

@@ -532,7 +532,11 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         var numbers = [];
 
         for (var i = 0; i < this.columnList.length; ++i) {
-            numbers.push(this.columnList[i].squareNumber);
+            var signe = 1;
+            if (this.columnList[i].type === COLUMN_TYPE_2) {
+                signe = -1;
+            }
+            numbers.push(signe * this.columnList[i].squareNumber);
         }
 
         return numbers;
