@@ -821,7 +821,6 @@ $(function() {
     });
   }
 
-
   function sendingSecondCable() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-institut', function() {
@@ -983,9 +982,6 @@ $(function() {
   }
   $.comparePlayTimeChart = comparePlayTimeChart;
 
-
-
-
   function theEnd() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#end-game', function() {});
@@ -993,100 +989,100 @@ $(function() {
   }
 
   function addControlToDialogs() {
-    addControlToDialog(welcomeInstituteDialog, [{label: "Suite", class: "button blue", onClick: switchToNewLogin}]);
-    addControlToDialog(accountCreatedDialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(cryptoExplanationsDialog, [{label: "Suite", class: "button blut", onClick: switchToNewLogin}]);
-    addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(goingToCreateKeysDialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(keysExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(keysExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(hereYourPrivateKeyDialog, [{label: "Suite", class: "button blue", onClick: switchToCreateKey}]);
-    addControlToDialog(helpCreateKeyDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(welcomeInstituteDialog, [{label: labelNext, class: "button blue", onClick: switchToNewLogin}]);
+    addControlToDialog(accountCreatedDialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(cryptoExplanationsDialog, [{label: labelNext, class: "button blut", onClick: switchToNewLogin}]);
+    addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(goingToCreateKeysDialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+    addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
       }
     }]);
-    addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         $('body').closeAllDialogs(function() {
           currentGame.createKeySceneActive = true;
         });
       }
     }]);
-    addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         $('body').closeAllDialogs(function() {
           currentGame.createKeySceneActive = true;
         });
       }
     }]);
-    addControlToDialog(nowTryToCancelLastMoveDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(nowTryToCancelLastMoveDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         $('body').closeAllDialogs(function() {
           currentGame.createKeySceneActive = true;
         });
       }
     }]);
-    addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         $('body').closeAllDialogs(function() {
           currentGame.createKeySceneActive = true;
         });
       }
     }]);
-    addControlToDialog(keyPreGeneratedDialog, [{label: "Suite", class: "button blue", onClick: switchToFinishCreateKey}]);
-    addControlToDialog(wellDoneDialog, [{label: "Suite", class: "button blue", onClick: firstMessage}]);
-    addControlToDialog(gameOverDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-    addControlToDialog(tooManyBlocksDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-    addControlToDialog(firstMessageDialog, [{label: "Ouvrir le message", class: "button blue", onClick: messageTest}]);
-    addControlToDialog(helpPlaySoloDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(keyPreGeneratedDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+    addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: firstMessage}]);
+    addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+    addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+    addControlToDialog(firstMessageDialog, [{label: labelOpenMessage, class: "button blue", onClick: messageTest}]);
+    addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
       }
     }]);
-    addControlToDialog(messageTestDialog, [{label: "Suite", class: "button blue", onClick: tutorial}]);
-    addControlToDialog(tutorialDialog, [{label: "Suite", class: "button blue", onClick: activatePlaySolo}]);
-    addControlToDialog(decryptedMessage0Dialog, [{label: "Suite", class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
-    addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: "Suite", class: "button blue", onClick: aProblemOccurs}]);
-    addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
-    addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: cables0}]);
-    addControlToDialog(thisAintNormalDialog, [{label: "Suite", class: "button blue", onClick: useCryptoProtocol}]);
-    addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: sendingFirstCable}]);
-    addControlToDialog(sendingFirstCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedFirstCable}]);
-    addControlToDialog(firstBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
-    addControlToDialog(helpPlayMinDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(messageTestDialog, [{label: labelNext, class: "button blue", onClick: tutorial}]);
+    addControlToDialog(tutorialDialog, [{label: labelNext, class: "button blue", onClick: activatePlaySolo}]);
+    addControlToDialog(decryptedMessage0Dialog, [{label: labelNext, class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
+    addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: labelNext, class: "button blue", onClick: aProblemOccurs}]);
+    addControlToDialog(aProblemOccursDialog, [{label: labelNext, class: "button blue", onClick: weird}]);
+    addControlToDialog(weirdDialog, [{label: labelNext, class: "button blue", onClick: cables0}]);
+    addControlToDialog(thisAintNormalDialog, [{label: labelNext, class: "button blue", onClick: useCryptoProtocol}]);
+    addControlToDialog(useCryptoProtocolDialog, [{label: labelNext, class: "button blue", onClick: sendingFirstCable}]);
+    addControlToDialog(sendingFirstCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedFirstCable}]);
+    addControlToDialog(firstBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
+    addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
       }
     }]);
-    addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel1}]);
-    addControlToDialog(decryptedMessage1Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables1}]);
-    addControlToDialog(successCables1Dialog, [{label: "Suite", class: "button blue", onClick: serverIsFaster}]);
-    addControlToDialog(serverIsFasterDialog, [{label: "Suite", class: "button blue", onClick: sendingSecondCable}]);
-    addControlToDialog(sendingSecondCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedSecondCable}]);
-    addControlToDialog(secondBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel2}]);
-    addControlToDialog(helpPlayMediumDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel1}]);
+    addControlToDialog(decryptedMessage1Dialog, [{label: labelCutCable, class: "button blue", onClick: cables1}]);
+    addControlToDialog(successCables1Dialog, [{label: labelNext, class: "button blue", onClick: serverIsFaster}]);
+    addControlToDialog(serverIsFasterDialog, [{label: labelNext, class: "button blue", onClick: sendingSecondCable}]);
+    addControlToDialog(sendingSecondCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedSecondCable}]);
+    addControlToDialog(secondBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel2}]);
+    addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
       }
     }]);
-    addControlToDialog(decryptedMessage2Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables2}]);
-    addControlToDialog(successCables2Dialog, [{label: "Suite", class: "button blue", onClick: serverIsInfectingOtherMachines}]);
-    addControlToDialog(serverIsInfectingOtherMachinesDialog, [{label: "Suite", class: "button blue", onClick: sendingThirdCable}]);
-    addControlToDialog(sendingThirdCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedThirdCable}]);
-    addControlToDialog(thirdBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel3}]);
-    addControlToDialog(helpPlayMaxDialog, [{label: "Suite", class: "button blue",
+    addControlToDialog(decryptedMessage2Dialog, [{label: labelCutCable, class: "button blue", onClick: cables2}]);
+    addControlToDialog(successCables2Dialog, [{label: labelNext, class: "button blue", onClick: serverIsInfectingOtherMachines}]);
+    addControlToDialog(serverIsInfectingOtherMachinesDialog, [{label: labelNext, class: "button blue", onClick: sendingThirdCable}]);
+    addControlToDialog(sendingThirdCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedThirdCable}]);
+    addControlToDialog(thirdBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel3}]);
+    addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
       }
     }]);
-    addControlToDialog(decryptedMessage3Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables3}]);
-    addControlToDialog(successCables3Dialog, [{label: "Suite", class: "button blue", onClick: IWasTrapped}]);
-    addControlToDialog(IWasTrappedDialog, [{label: "Suite", class: "button blue", onClick: thanksToCrypto}]);
-    addControlToDialog(thanksToCryptoDialog, [{label: "Suite", class: "button blue", onClick: thanksToCrypto2}]);
-    addControlToDialog(thanksToCrypto2Dialog, [{label: "Suite", class: "button blue", onClick: comparePlayTimeChart}]);
-    addControlToDialog(comparePlayTimeChartDialog, [{label: "Suite", class: "button blue", onClick: theEnd}]);
+    addControlToDialog(decryptedMessage3Dialog, [{label: labelCutCable, class: "button blue", onClick: cables3}]);
+    addControlToDialog(successCables3Dialog, [{label: labelNext, class: "button blue", onClick: IWasTrapped}]);
+    addControlToDialog(IWasTrappedDialog, [{label: labelNext, class: "button blue", onClick: thanksToCrypto}]);
+    addControlToDialog(thanksToCryptoDialog, [{label: labelNext, class: "button blue", onClick: thanksToCrypto2}]);
+    addControlToDialog(thanksToCrypto2Dialog, [{label: labelNext, class: "button blue", onClick: comparePlayTimeChart}]);
+    addControlToDialog(comparePlayTimeChartDialog, [{label: labelNext, class: "button blue", onClick: theEnd}]);
   }
   addControlToDialogs();
 
@@ -1126,7 +1122,7 @@ $(function() {
 
   function addElectricShockContent() {
     var electricShockContent = [{
-      label: "Aie ! Je viens de me prendre une décharge électrique !",
+      label: labelAie,
       onClick: thisAintNormal,
     }];
     addInteractiveContentToDialog(electricShockDialog, electricShockContent);
@@ -1134,6 +1130,3 @@ $(function() {
 
   intro();
 });
-
-
-

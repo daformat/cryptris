@@ -5,6 +5,13 @@ var readingDelay = 4000;
 var youAreIntern = "Tu es stagiaire dans une équipe de recherche Inria";
 var firstDay = "Premier jour à l'institut";
 
+var labelNext = "Suite";
+var labelOpenMessage = "Ouvrir le message";
+var labelDecryptMessage = "Décrypter le message";
+var labelCutCable = "Débrancher le câble";
+var labelAie = "Aie ! Je viens de me prendre une décharge électrique !";
+
+
 var firstPrompt = function(welcome) {
       $.switchWrapper('#prompt', function() {
         // First prompt
