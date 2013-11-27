@@ -508,112 +508,44 @@ $(function() {
     });
   }
 
-    function weird(){
+  function weird() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(weirdDialog);   
+      });
+    });
+  }
+
+  function cables0() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(cables0Dialog);
+        $('.cables').prepareCables(null, electricShock);
+      });
+    });
+  }
+
+  function electricShock() {
+    addElectricShockContent();
+    $("body").closeAllDialogs(function() {
+      $(".wrapper.active .vertical-centering").dialog(electricShockDialog);   
+    });
+  }
+
+  function thisAintNormal() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(thisAintNormalDialog);   
+      });
+    });
+  }
+
+    function useCryptoProtocol(){
         $("body").closeAllDialogs(function(){
 
             $.switchWrapper('#bg-institut', function(){
 
-              $(".wrapper.active .vertical-centering").dialog(weirdDialog);   
-
-            });
-
-        });
-
-    }   
-
-
-    function dialogCables0(){
-        $("body").closeAllDialogs(function(){
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-
-                type: "cables",
-                title: "Séléctionner le cable à débrancher",
-
-              });
-
-          $('.cables').prepareCables(null, dialogElectricShock);
-
-            });
-
-        });
-    }
-
-
-    function dialogElectricShock(){
-        $("body").closeAllDialogs(function(){
-
-          $(".wrapper.active .vertical-centering").dialog({
-            
-            type: "player",
-            title: game.player.name||"Joueur",
-
-            content: [{
-                label: "Aie ! Je viens de me prendre une décharge électrique !",
-                onClick: dialogThisAintNormal,
-            }]
-
-          });   
-
-        });
-
-    }
-
-    function dialogThisAintNormal(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Attends, ce n’est pas normal... Laisse-moi vérifier... Ça alors ! Le serveur s’est reprogrammé de lui-même et c’est lui qui contrôle le système. Manifestement, il nous écoute et t’a empêché de débrancher le câble, tout comme il a verrouillé les portes de la salle. Je suis enfermée ici !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogUseCryptoProtocol
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-    function dialogUseCryptoProtocol(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "C’est le bon moment pour utiliser le protocole de cryptage afin de l’empêcher de nous écouter ! Je vais t'envoyer la liste des câbles à débrancher, mais un par un, et de manière cryptée.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogSendingFirstCable
-                }]
-
-              });   
+              $(".wrapper.active .vertical-centering").dialog(useCryptoProtocolDialog);   
 
             });
 
@@ -1713,7 +1645,9 @@ $(function() {
       addControlToDialog(decryptedMessage0Dialog, [{label: "Suite", class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
       addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: "Suite", class: "button blue", onClick: aProblemOccurs}]);
       addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
-      addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: dialogCables0}]);
+      addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: cables0}]);
+      addControlToDialog(thisAintNormalDialog, [{label: "Suite", class: "button blue", onClick: useCryptoProtocol}]);
+      addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: dialogSendingFirstCable}]);
     }
     addControlToDialogs();
 
@@ -1749,6 +1683,14 @@ $(function() {
         class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
       }];
       addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
+    }
+
+    function addElectricShockContent() {
+      var electricShockContent = [{
+        label: "Aie ! Je viens de me prendre une décharge électrique !",
+        onClick: thisAintNormal,
+      }];
+      addInteractiveContentToDialog(electricShockDialog, electricShockContent);
     }
 
     intro();
