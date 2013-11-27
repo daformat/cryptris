@@ -190,6 +190,15 @@ $(function() {
     currentGame.playSoloSceneActive = true;
   }
 
+  function playLevel1() {
+    $("body").closeAllDialogs(function() {
+      // Active input for play_min_scene
+      currentGame.iaPlay = true;
+      currentGame.scenes.play_min_scene.scene.setPaused(false);
+      currentGame.playMinSceneActive = true;
+    });
+  }
+
   var game = cryptrisSettings;
   var transitionTime = 1000;
 
@@ -575,112 +584,33 @@ $(function() {
   }
 
   function helpPlayMin() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MIN",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
-            }
-          }]
-
-        });
-  
-
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMinDialog);
       });
-
     });
   }
 
-    function serverAlsoTryingToBreakEncryption(){
-        $("body").closeAllDialogs(function(){
+  function serverAlsoTryingToBreakEncryption() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        // Display the battle scene in background.
+        goToBattleScene('play_min_scene', decryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
 
-            $.switchWrapper('#bg-circuits', function(){
-            // Display the battle scene in background.
-            goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
+        $(".wrapper.active .vertical-centering").dialog(serverAlsoTryingToBreakEncryptionDialog);   
+      });
+    });
+  }
 
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+  function decryptedMessage1() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(decryptedMessage1Dialog);   
+      });
+    });
+  }
 
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.",
-                
-                controls: [{
-                  label: "Décrypter le message", 
-                  class: "button blue",
-                  onClick: playLevel1
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-    function playLevel1(){
-        $("body").closeAllDialogs(function(){
-            // Active input for play_min_scene
-            currentGame.iaPlay = true;
-            currentGame.scenes.play_min_scene.scene.setPaused(false);
-            currentGame.playMinSceneActive = true;
-        });
-    }
-
-
-    function dialogDecryptedMessage1(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-circuits', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "Message décrypté",
-                content: "Débranche le câble 24 du panneau électrique V",
-                
-                controls: [{
-                  label: "Débrancher le câble", 
-                  class: "button blue",
-                  onClick: dialogCables1
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }       
-
-
-
-    function dialogCables1(){
+    function cables1(){
         $("body").closeAllDialogs(function(){
             $.switchWrapper('#bg-institut', function(){
 
@@ -1602,6 +1532,13 @@ $(function() {
       addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: sendingFirstCable}]);
       addControlToDialog(sendingFirstCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedFirstCable}]);
       addControlToDialog(firstBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
+      addControlToDialog(helpPlayMinDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
+        }
+      }]);
+      addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel1}]);
+      addControlToDialog(decryptedMessage1Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables1}]);
     }
     addControlToDialogs();
 

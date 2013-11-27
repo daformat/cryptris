@@ -84,7 +84,7 @@ var welcomeInstituteDialog = {
 
 var accountCreatedDialog = {
   animateText: true,
-  animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
   type: "withAvatar",
   avatar: "<img src='img/avatar-chercheuse.jpg'>",
   title: "Chercheuse",
@@ -199,7 +199,7 @@ var nowTryToCancelLastMoveDialog = {
 
 var continueManipulatingToGeneratePublicKeyDialog = {
   animateText: true,
-  animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
   type: "withAvatar",
   avatar: "<img src='img/avatar-chercheuse.jpg'>",
   title: "Chercheuse",
@@ -355,4 +355,31 @@ var firstBattleMessageDialog = {
   type: "withAvatar",
   avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
   title: "InriOS 3.14"
+};
+
+var helpPlayMinDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Help PLAY_MIN"
+};
+
+var serverAlsoTryingToBreakEncryptionDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code."
+};
+
+var decryptedMessage1Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "Message décrypté",
+  content: "Débranche le câble 24 du panneau électrique V"
 };
