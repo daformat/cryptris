@@ -383,3 +383,167 @@ var decryptedMessage1Dialog = {
   title: "Message décrypté",
   content: "Débranche le câble 24 du panneau électrique V"
 };
+
+var cables1Dialog = {        
+  type: "cables",
+  title: "Séléctionner le cable à débrancher",
+};
+
+var successCables1Dialog = {        
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et ça devrait être bon !"
+};
+
+var serverIsFasterDialog = {        
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !"
+};
+
+var sendingSecondCableDialog = {        
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire."
+};
+
+var secondBattleMessageDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "InriOS 3.14"
+};
+
+var helpPlayMediumDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Help PLAY_MEDIUM"
+};
+
+var decryptedMessage2Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "Message décrypté",
+  content: "Débranche le câble 78 du panneau électrique M"
+};
+
+var cables2Dialog = {        
+  type: "cables",
+  title: "Sélectionner le câble à débrancher"
+};
+
+var successCables2Dialog = {        
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !"
+};
+
+var serverIsInfectingOtherMachinesDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Ce serveur ne devrait pas être en mesure de décrypter aussi rapidement ces messages... J’ai compris ! Il contamine d’autres ordinateurs et augmente ainsi sa puissance !"
+};
+
+var sendingThirdCableDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques centaines de jours pour <span>décrypter ce dernier message</span>, et d'ici là nous l'aurons débranché et analysé !"
+};
+
+var thirdBattleMessageDialog = {          
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "InriOS 3.14"
+};
+
+var helpPlayMaxDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Help PLAY_MAX"
+};
+
+var decryptedMessage3Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "Message décrypté",
+  content: "Débranche le câble 31 du panneau électrique N"
+};
+
+var cables3Dialog = {
+  type: "cables",
+  title: "Sélectionner le cable à débrancher",
+};
+
+var successCables3Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…"
+};
+
+var IWasTrappedDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !"
+};
+
+var thanksToCryptoDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée."
+};
+
+var thanksToCrypto2Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !"
+};
+
+var comparePlayTimeChartDialog = {
+  type: "graph",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Comparaison du temps de décryptage",
+  content: "Blah blah"
+};

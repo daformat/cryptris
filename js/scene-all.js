@@ -55,6 +55,14 @@ $(function() {
     activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
   });
 
+  $(document).on("playMediumHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
+  });
+
+  $(document).on("playMaxHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
+  });
+
 
   function switchToCreateKey() {
     $("body").closeAllDialogs();
@@ -199,6 +207,183 @@ $(function() {
     });
   }
 
+  function playLevel2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        // Display the battle scene in background.
+        goToBattleScene('play_medium_scene', decryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
+        
+        // Active input for play_medium_scene
+        currentGame.iaPlay = true;
+        currentGame.scenes.play_medium_scene.scene.setPaused(false);
+        currentGame.playMediumSceneActive = true;
+        currentGame.scenes.play_medium_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_medium_scene);
+      });
+    });
+  }
+
+  function playLevel3() {
+    $("body").closeAllDialogs(function() {          
+      $.switchWrapper('#bg-circuits', function() {
+        // Display the battle scene in background.
+        goToBattleScene('play_max_scene', decryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
+        
+        // Active input for play_max_scene
+        currentGame.iaPlay = true;
+        currentGame.scenes.play_max_scene.scene.setPaused(false);
+        currentGame.playMaxSceneActive = true;
+        currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
+      });
+    });
+  }
+
+  function createChart() {
+    // define dimensions of graph
+    var m = [20, 25, 45, 130]; // margins
+    var w = 355 - m[1] - m[3]; // width
+    var h = 350 - m[0] - m[2]; // height
+                    
+    var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
+    var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
+    var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
+    var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];      
+
+    // X scale will fit all values from data[] within pixels 0-w
+    var x = d3.scale.linear().domain([8, 12]).range([0, w]);
+
+    // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+    var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y*1.3]);
+
+    var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+    var options = {m: m, w: w, h: h, x: x, y: y, div: div };
+
+    // Add an SVG element with the desired dimensions and margin.
+    var graph = d3.select("#graph").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+    options.name = currentGame.username;
+
+    populateChart(graph, dataPlayer, dataPlayerInitial, 'player', options);
+
+    var graph2 = d3.select("#graph").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+    y = d3.scale.linear().range([h, 0]).domain([0, dataIA[4].y]);
+
+    options.y = y;
+    options.name = 'Serveur';
+
+    populateChart(graph2, dataIA, dataIAInitial, 'ia', options);
+  }
+  
+  function populateChart(graph, dataSet, dataInitial, appendClass, options) {
+    var m = options.m;
+    var w = options.w;
+    var h = options.h;
+    var x = options.x;
+    var y = options.y;
+    var div = options.div;
+    var name = options.name;
+
+    var zoom = d3.behavior.zoom().x(y).y(y).scaleExtent([0.001, 200]).on("zoom", zoomed);
+
+    function zoomed() {
+
+      var trans = zoom.translate(),
+          scale = zoom.scale();
+
+      tx = Math.min(0, Math.max(w * (1 - scale), trans[0]));
+      ty = Math.min(0, Math.max(h * (1 - scale), trans[1]));
+
+      zoom.translate([tx, ty]);
+
+      graph.select(".x.axis").call(xAxis);
+      graph.select(".y.axis").call(yAxis);
+      graph.select("path.line."+appendClass).attr("d", line(dataSet));
+      graph.selectAll("circle."+appendClass).attr("cy",  function(d, i) { return y(dataSet[i].y); });
+    }
+
+    graph.call(zoom);
+
+    // create a line function that can convert data[] into x and y points
+    var line = d3.svg.line()
+                  // assign the X function to plot our line as we wish
+                  .x(function(d,i) { 
+                      // return the X coordinate where we want to plot this datapoint
+                      return x(d.x); 
+                    })
+                  .y(function(d, i) { 
+                    // return the Y coordinate where we want to plot this datapoint
+                    return y(d.y); 
+                  }).interpolate("cardinal");
+
+    var formatTime = d3.time.format("%Hh %Mm %Ss"),
+        formatSeconds = function(d) {
+                          var sign = (d<0 ? "-" : "");
+                          d = Math.abs(d);
+                          var sec_num = parseInt(d, 10); // don't forget the second parm
+                          var days   =  Math.floor(sec_num / 86400);
+                          var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+                          var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+                          var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+                          if (hours   < 10) { hours   = "0"+hours; }
+                          if (minutes < 10) { minutes = "0"+minutes; }
+                          if (seconds < 10) { seconds = "0"+seconds; }
+
+
+                          var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
+                          return ( d == 0 ? '0' : time);
+                        };
+
+    graph.append("rect").attr("x", 0-20).attr("y", 0-20).attr("width", w+20).attr("height", h+40).attr("fill", "#93bcd7");
+    graph.append("clipPath").attr("id", "clip").append("rect").attr("x", -15).attr("y", -15).attr("width", w+35).attr("height", h+25);
+
+    var clip = d3.select("clip");
+
+    // create xAxis
+    var xAxis = d3.svg.axis().scale(x).ticks(3).tickSize(10).tickSubdivide(false);
+    // Add the x-axis.
+    graph.append("svg:g").attr("class", "x axis").attr("transform", "translate(0," + h + ")").call(xAxis);
+
+    // create left yAxis
+    var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
+    // Add the y-axis to the left
+    graph.append("svg:g").attr("class", "y axis").attr("transform", "translate(-25,0)").call(yAxis);
+    graph.append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", w+10).attr("y", h + m[2]-6).text("Taille de la clé (blocs)");
+
+    graph.append("text").attr("class", "y label").attr("text-anchor", "end").attr("y", 6).attr("dy", ".75em").attr("transform", "rotate(-90) translate(0, -100)").text("Durée du décryptage (" + name + ")");                        
+
+    // Add the line by appending an svg:path element with the data line we created above
+    // do this AFTER the axes above so that the line is above the tick-lines
+    graph.append("svg:path").attr('class', 'line '+appendClass).attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataSet)).attr("clip-path", "url(#clip)");
+
+    // draw dots
+    var circles = graph.selectAll("dot")    
+                        .data(dataInitial)         
+                        .enter().append("circle")
+                        .attr("class", appendClass)
+                        .attr("r", 5)       
+                        .attr("cx", function(d) { return x(d.x); })       
+                        .attr("cy", function(d) { return y(d.y); }) 
+                        .attr("clip-path", "url(#clip)")    
+                        .on("mouseover", function(d, i) {
+                                            d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
+                                            div.transition()        
+                                               .duration(200)      
+                                               .style("opacity", .9)
+                                            div.html("<strong>"+name+"</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée (maximale) de décryptage : "  + formatSeconds(parseInt(dataSet[i].y) ) )  
+                                               .style("left", (d3.event.pageX+15) + "px")     
+                                               .style("top", (d3.event.pageY - 28) + "px");    
+                                          })                  
+                        .on("mouseout", function(d) {       
+                                          d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 5);
+                                          div.transition()        
+                                             .duration(500)      
+                                             .style("opacity", 0);   
+                                        });         
+    circles.transition().duration(500).attr("cy",  function(d, i) { return y(dataSet[i].y); });
+  }
+
   var game = cryptrisSettings;
   var transitionTime = 1000;
 
@@ -305,7 +490,6 @@ $(function() {
     });
   }   
 
-
   function dialogWhatArePrivatePublicKeyOpt2() {
     game.dialogWhatArePrivatePublicKey[1] = true;
     $("body").closeAllDialogs(function() {
@@ -314,7 +498,6 @@ $(function() {
       });
     });
   }       
-
 
   function hereYourPrivateKey() {
     game.dialogWhatArePrivatePublicKey[2] = true;
@@ -338,7 +521,6 @@ $(function() {
     });
   }
 
-
   function helpCreateKey() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
@@ -346,7 +528,6 @@ $(function() {
       });
     });
   }
-
 
   function pleaseInvertYourPrivateKey() {
 
@@ -610,982 +791,348 @@ $(function() {
     });
   }
 
-    function cables1(){
-        $("body").closeAllDialogs(function(){
-            $.switchWrapper('#bg-institut', function(){
+  function cables1() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
 
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
+        // Disable the action on the key and switch to the waiting scene.
+        currentGame.playMinSceneActive = false;
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-              $(".wrapper.active .vertical-centering").dialog({
-                
 
-                type: "cables",
-                title: "Séléctionner le cable à débrancher",
+        $(".wrapper.active .vertical-centering").dialog(cables1Dialog);
+        $('.cables').prepareCables(24, successCables1);
+      });
+    });
+  }   
 
-              });
+  function successCables1() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(successCables1Dialog);
+      });
+    });
+  }
 
-          $('.cables').prepareCables(24, dialogSuccessCables1);
-
-            });
-
-        });
-    }   
-
-
-
-    function dialogSuccessCables1(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et ça devrait être bon !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogServerIsFaster
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
+  function serverIsFaster() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(serverIsFasterDialog);   
+      });
+    });
+  }
 
 
-    function dialogServerIsFaster(){
-        $("body").closeAllDialogs(function(){
+  function sendingSecondCable() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(sendingSecondCableDialog);
+      });
+    });
+  }
 
-            $.switchWrapper('#bg-institut', function(){
+  function encryptedSecondCable() {
 
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+    // Prepare the second battle message
+    currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
 
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
+    // Set the first battle message to the dialog box.
+    addInteractiveContentToDialog(secondBattleMessageDialog, board_message_to_string(currentGame.play_medium_scene_msg.plain_message));
 
-                title: "Chercheuse",
-                content: "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogSendingSecondCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }   
-
-
-    function dialogSendingSecondCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogEcnryptedSecondCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-    function dialogEcnryptedSecondCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-        // Prepare the second battle message
-        currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "InriOS 3.14",
-                content: board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
-                controls: [{
-                  label: "Décrypter le message", 
-                  class: "button blue",
-                  onClick: playLevel2
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-  $(document).on("playMediumHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
-  });
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(secondBattleMessageDialog);
+      });
+    });
+  }
 
   function helpPlayMedium() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MEDIUM",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
-            }
-          }]
-
-        });
-  
-
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMediumDialog);
       });
-
     });
   }
 
-    function playLevel2() {
-        $("body").closeAllDialogs(function() {          
-            $.switchWrapper('#bg-circuits', function(){
-        // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
-                // Active input for play_medium_scene
-            currentGame.iaPlay = true;
-        currentGame.scenes.play_medium_scene.scene.setPaused(false);
-        currentGame.playMediumSceneActive = true;
-        currentGame.scenes.play_medium_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_medium_scene);
-            });
-        });
-    }
+  function decryptedMessage2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(decryptedMessage2Dialog);   
+      });
+    });
+  }
 
-
-
-    function dialogDecryptedMessage2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-circuits', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "Message décrypté",
-                content: "Débranche le câble 78 du panneau électrique M",
-                
-                controls: [{
-                  label: "Débrancher le câble", 
-                  class: "button blue",
-                  onClick: dialogCables2
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }           
-    
-
-    function dialogCables2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
+  function cables2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        // Disable the action on the key and switch to the waiting scene.
+        currentGame.playMinSceneActive = false;
         currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
 
-              $(".wrapper.active .vertical-centering").dialog({
-                
-
-                type: "cables",
-                title: "Sélectionner le câble à débrancher",
-
-              });
-
-          $('.cables').prepareCables(78, dialogSuccessCables2);
-
-            });
-
-        });
-    }   
-
-
-
-    function dialogSuccessCables2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogServerIsInfectingOtherMachines
-                }]
-
-              });   
-
-            });
-
-        });
-    }
-
-
-    function dialogServerIsInfectingOtherMachines(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Ce serveur ne devrait pas être en mesure de décrypter aussi rapidement ces messages... J’ai compris ! Il contamine d’autres ordinateurs et augmente ainsi sa puissance !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogSendingThirdCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-    function dialogSendingThirdCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques centaines de jours pour <span>décrypter ce dernier message</span>, et d'ici là nous l'aurons débranché et analysé !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogEcnryptedThirdCable
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }
-
-
-    function dialogEcnryptedThirdCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-        // Prepare the third battle message
-        currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_max_scene_msg.plain_message),
-                controls: [{
-                  label: "Décrypter le message", 
-                  class: "button blue",
-                  onClick: playLevel3
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-
-  $(document).on("playMaxHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
-  });
-
-  function helpPlayMax() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_MAX",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
-            }
-          }]
-
-        });
-  
-
+        $(".wrapper.active .vertical-centering").dialog(cables2Dialog);
+        $('.cables').prepareCables(78, successCables2);
       });
+    });
+  }   
 
+  function successCables2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(successCables2Dialog);   
+      });
     });
   }
 
-    function playLevel3() {
-        $("body").closeAllDialogs(function() {          
-            $.switchWrapper('#bg-circuits', function(){
-        // Display the battle scene in background.
-        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
-        // Active input for play_max_scene
-            currentGame.iaPlay = true;
-        currentGame.scenes.play_max_scene.scene.setPaused(false);
-        currentGame.playMaxSceneActive = true;
-        currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
-            });
-        });
-    }
+  function serverIsInfectingOtherMachines() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(serverIsInfectingOtherMachinesDialog);   
+      });
+    });
+  }
 
+  function sendingThirdCable() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(sendingThirdCableDialog);   
+      });
+    });
+  }
 
-    function dialogDecryptedMessage3(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-circuits', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "Message décrypté",
-                content: "Débranche le câble 31 du panneau électrique N",
-                
-                controls: [{
-                  label: "Débrancher le câble", 
-                  class: "button blue",
-                  onClick: dialogCables3
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }           
+  function encryptedThirdCable() {
+    // Prepare the third battle message
+    currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
     
+    // Set the third battle message to the dialog box.
+    addInteractiveContentToDialog(thirdBattleMessageDialog, board_message_to_string(currentGame.play_max_scene_msg.plain_message));
 
-    function dialogCables3(){
-        $("body").closeAllDialogs(function(){
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(thirdBattleMessageDialog);
+      });
+    });
+  }
 
-            $.switchWrapper('#bg-institut', function(){
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playMinSceneActive = false;
-              currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
+  function helpPlayMax() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMaxDialog);
+      });
+    });
+  }
 
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                type: "cables",
-                title: "Sélectionner le cable à débrancher",
+  function decryptedMessage3() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(decryptedMessage3Dialog);
+      });
+    });
+  }
+    
+  function cables3() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        // Disable the action on the key and switch to the waiting scene.
+        currentGame.playMinSceneActive = false;
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
 
-              });
+        $(".wrapper.active .vertical-centering").dialog(cables3Dialog);
+        $('.cables').prepareCables(31, successCables3);
+      });
+    });
+  }       
 
-          $('.cables').prepareCables(31, dialogSuccessCables3);
+  function successCables3() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(successCables3Dialog);
+      });
+    });
+  }
 
-            });
+  function IWasTrapped() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(IWasTrappedDialog);
+      });
+    });
+  }
 
+  function thanksToCrypto() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(thanksToCryptoDialog);
+      });
+    });
+  }
+
+  function thanksToCrypto2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(thanksToCrypto2Dialog);   
+      });
+    });             
+  }       
+
+  function comparePlayTimeChart() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(comparePlayTimeChartDialog);   
+        setTimeout(createChart, 100);
+      });
+    });     
+  }
+  $.comparePlayTimeChart = comparePlayTimeChart;
+
+
+
+
+  function theEnd() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#end-game', function() {});
+    });
+  }
+
+  function addControlToDialogs() {
+    addControlToDialog(welcomeInstituteDialog, [{label: "Suite", class: "button blue", onClick: switchToNewLogin}]);
+    addControlToDialog(accountCreatedDialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(cryptoExplanationsDialog, [{label: "Suite", class: "button blut", onClick: switchToNewLogin}]);
+    addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+    addControlToDialog(goingToCreateKeysDialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(keysExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(keysExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+    addControlToDialog(hereYourPrivateKeyDialog, [{label: "Suite", class: "button blue", onClick: switchToCreateKey}]);
+    addControlToDialog(helpCreateKeyDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+      }
+    }]);
+    addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        $('body').closeAllDialogs(function() {
+          currentGame.createKeySceneActive = true;
         });
-    }       
-
-
-
-    function dialogSuccessCables3(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogIWasTrapped
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }
-
-
-    function dialogIWasTrapped(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogThanksToCrypto
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }   
-
-
-    function dialogThanksToCrypto(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogThanksToCrypto2
-                }]
-
-              });   
-
-            });
-
-        });             
-
-    }       
-
-
-    function dialogThanksToCrypto2(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogComparePlayTimeChart
-                }]
-              });   
-            });
-        });             
-    }       
-
-    function dialogComparePlayTimeChart() {
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                type: "graph",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Comparaison du temps de décryptage",
-                content: "Blah blah",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: theEnd
-                }]
-
-              });   
-
-        
-              setTimeout(function(){
-
-
-
-                    // define dimensions of graph
-                    var m = [20, 25, 45, 130]; // margins
-                    var w = 355 - m[1] - m[3]; // width
-                    var h = 350 - m[0] - m[2]; // height
-                    
-                    var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
-                    var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
-                    var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
-                    var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];      
-
-                    // X scale will fit all values from data[] within pixels 0-w
-                    var x = d3.scale.linear().domain([8, 12]).range([0, w]);
-
-                    // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-                    var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y*1.3]);
-
-                    var div = d3.select("body").append("div")   
-                        .attr("class", "tooltip")               
-                        .style("opacity", 0);
-
-                    var options = {m: m, w: w, h: h, x: x, y: y, div: div };
-
-
-                        // Add an SVG element with the desired dimensions and margin.
-                        var graph = d3.select("#graph").append("svg:svg")
-                              .attr("width", w + m[1] + m[3])
-                              .attr("height", h + m[0] + m[2])
-                            .append("svg:g")
-                              .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-                        options.name = (game.player.name || "Joueur");
-
-                        populateChart(graph, dataPlayer, dataPlayerInitial, 'player', options);
-
-                        var graph2 = d3.select("#graph").append("svg:svg")
-                              .attr("width", w + m[1] + m[3])
-                              .attr("height", h + m[0] + m[2])
-                            .append("svg:g")
-                              .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-                    y = d3.scale.linear().range([h, 0]).domain([0, dataIA[4].y]);
-
-                    options.y = y;
-                    options.name = 'Serveur';
-
-
-                        populateChart(graph2, dataIA, dataIAInitial, 'ia', options);
-                        
-
-
-
-                        }, 100);
-
-            });
-
-        });     
-    }
-
-    function populateChart(graph, dataSet, dataInitial, appendClass, options)
-    {
-            var m = options.m;
-            var w = options.w;
-            var h = options.h;
-            var x = options.x;
-            var y = options.y;
-            var div = options.div;
-            var name = options.name;
-
-                    var zoom = d3.behavior.zoom()
-                        .x(y)
-                        .y(y)
-                        .scaleExtent([0.001, 200])
-                        .on("zoom", zoomed);
-
-
-                    
-                    function zoomed() {
-
-                     var trans = zoom.translate(),
-                         scale = zoom.scale();
-
-                     tx = Math.min(0, Math.max(w * (1 - scale), trans[0]));
-                     ty = Math.min(0, Math.max(h * (1 - scale), trans[1]));
-
-                     zoom.translate([tx, ty]);
-
-
-                      graph.select(".x.axis").call(xAxis);
-                      graph.select(".y.axis").call(yAxis);
-                    graph.select("path.line."+appendClass).attr("d", line(dataSet));
-                    graph.selectAll("circle."+appendClass).attr("cy",  function(d, i) { return y(dataSet[i].y); });
-
-                    }
-
-                    graph.call(zoom);
-
-                    // create a line function that can convert data[] into x and y points
-                    var line = d3.svg.line()
-                        // assign the X function to plot our line as we wish
-                        .x(function(d,i) { 
-                            // return the X coordinate where we want to plot this datapoint
-                            return x(d.x); 
-                        })
-
-                        .y(function(d, i) { 
-                            // return the Y coordinate where we want to plot this datapoint
-                            return y(d.y); 
-                        }).interpolate("cardinal") ;
-
-                    var formatTime = d3.time.format("%Hh %Mm %Ss"),
-                            formatSeconds = function(d) {
-                                var sign = (d<0 ? "-" : "");
-                                d = Math.abs(d);
-                                var sec_num = parseInt(d, 10); // don't forget the second parm
-                              var days   =  Math.floor(sec_num / 86400);
-                              var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
-                              var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
-                              var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
-
-                              if (hours   < 10) {hours   = "0"+hours;}
-                              if (minutes < 10) {minutes = "0"+minutes;}
-                              if (seconds < 10) {seconds = "0"+seconds;}
-
-
-                              var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
-                              return ( d == 0 ? '0' : time);
-                            };
-
-                        graph.append("rect")
-                                .attr("x", 0-20)
-                                .attr("y", 0-20)
-                                .attr("width", w+20)
-                                .attr("height", h+40)
-                                .attr("fill", "#93bcd7")
-                                //.attr("stroke", "#abcdef");
-
-                        graph.append("clipPath")
-                            .attr("id", "clip")
-                          .append("rect")
-                            .attr("x", -15)
-                            .attr("y", -15)
-                            .attr("width", w+35)
-                            .attr("height", h+25);
-
-                        var clip = d3.select("clip");
-
-                        // create xAxis
-                        var xAxis = d3.svg.axis().scale(x).ticks(3).tickSize(10).tickSubdivide(false);
-                        // Add the x-axis.
-                        graph.append("svg:g")
-                              .attr("class", "x axis")
-                              .attr("transform", "translate(0," + h + ")")
-                              .call(xAxis);
-
-
-                        // create left yAxis
-                        var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
-                        // Add the y-axis to the left
-                        graph.append("svg:g")
-                              .attr("class", "y axis")
-                              .attr("transform", "translate(-25,0)")
-                              .call(yAxis);
-                        
-                    graph.append("text")
-                        .attr("class", "x label")
-                        .attr("text-anchor", "end")
-                        .attr("x", w+10)
-                        .attr("y", h + m[2]-6)
-                        .text("Taille de la clé (blocs)");
-
-                    graph.append("text")
-                        .attr("class", "y label")
-                        .attr("text-anchor", "end")
-                        .attr("y", 6)
-                        .attr("dy", ".75em")
-                        .attr("transform", "rotate(-90) translate(0, -100)")
-//                      .attr("transform", "rotate(-90) translate(0, "+ (w+10) +")")
-                        .text("Durée du décryptage ("+name+")");                        
-
-                        // Add the line by appending an svg:path element with the data line we created above
-                        // do this AFTER the axes above so that the line is above the tick-lines
-                        graph.append("svg:path").attr('class', 'line '+appendClass).attr("d", line(dataInitial)).transition().duration(500).attr("d", line(dataSet)).attr("clip-path", "url(#clip)");
-
-
-
-                            // draw dots
-                            var circles = graph.selectAll("dot")    
-                                    .data(dataInitial)         
-                                .enter().append("circle")
-                                    .attr("class", appendClass)
-                                    .attr("r", 5)       
-                                    .attr("cx", function(d) { return x(d.x); })       
-                                    .attr("cy", function(d) { return y(d.y); }) 
-                                    .attr("clip-path", "url(#clip)")    
-                                    .on("mouseover", function(d, i) {
-                                            d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 10);
-                                        div.transition()        
-                                            .duration(200)      
-                                            .style("opacity", .9)
-                                        div .html("<strong>"+name+"</strong><br/>Taille de la clé : "+d.x+" blocs" + "<br/>Durée (maximale) de décryptage : "  + formatSeconds(parseInt(dataSet[i].y) ) )  
-                                            .style("left", (d3.event.pageX+15) + "px")     
-                                            .style("top", (d3.event.pageY - 28) + "px");    
-                                        })                  
-                                    .on("mouseout", function(d) {       
-                                            d3.select(this).transition().duration(100).ease("quad-in-out").attr("r", 5);
-                                        div.transition()        
-                                            .duration(500)      
-                                            .style("opacity", 0);   
-                                    });         
-                            circles.transition().duration(500).attr("cy",  function(d, i) { return y(dataSet[i].y); });
-
-
-    }
-
-
-    $.dialogComparePlayTimeChart = dialogComparePlayTimeChart;
-
-    function theEnd(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#end-game', function(){
-            });
+      }
+    }]);
+    addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        $('body').closeAllDialogs(function() {
+          currentGame.createKeySceneActive = true;
         });
-    }
+      }
+    }]);
+    addControlToDialog(nowTryToCancelLastMoveDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        $('body').closeAllDialogs(function() {
+          currentGame.createKeySceneActive = true;
+        });
+      }
+    }]);
+    addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        $('body').closeAllDialogs(function() {
+          currentGame.createKeySceneActive = true;
+        });
+      }
+    }]);
+    addControlToDialog(keyPreGeneratedDialog, [{label: "Suite", class: "button blue", onClick: switchToFinishCreateKey}]);
+    addControlToDialog(wellDoneDialog, [{label: "Suite", class: "button blue", onClick: firstMessage}]);
+    addControlToDialog(gameOverDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+    addControlToDialog(tooManyBlocksDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+    addControlToDialog(firstMessageDialog, [{label: "Ouvrir le message", class: "button blue", onClick: messageTest}]);
+    addControlToDialog(helpPlaySoloDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
+      }
+    }]);
+    addControlToDialog(messageTestDialog, [{label: "Suite", class: "button blue", onClick: tutorial}]);
+    addControlToDialog(tutorialDialog, [{label: "Suite", class: "button blue", onClick: activatePlaySolo}]);
+    addControlToDialog(decryptedMessage0Dialog, [{label: "Suite", class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
+    addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: "Suite", class: "button blue", onClick: aProblemOccurs}]);
+    addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
+    addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: cables0}]);
+    addControlToDialog(thisAintNormalDialog, [{label: "Suite", class: "button blue", onClick: useCryptoProtocol}]);
+    addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: sendingFirstCable}]);
+    addControlToDialog(sendingFirstCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedFirstCable}]);
+    addControlToDialog(firstBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
+    addControlToDialog(helpPlayMinDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
+      }
+    }]);
+    addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel1}]);
+    addControlToDialog(decryptedMessage1Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables1}]);
+    addControlToDialog(successCables1Dialog, [{label: "Suite", class: "button blue", onClick: serverIsFaster}]);
+    addControlToDialog(serverIsFasterDialog, [{label: "Suite", class: "button blue", onClick: sendingSecondCable}]);
+    addControlToDialog(sendingSecondCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedSecondCable}]);
+    addControlToDialog(secondBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel2}]);
+    addControlToDialog(helpPlayMediumDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
+      }
+    }]);
+    addControlToDialog(decryptedMessage2Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables2}]);
+    addControlToDialog(successCables2Dialog, [{label: "Suite", class: "button blue", onClick: serverIsInfectingOtherMachines}]);
+    addControlToDialog(serverIsInfectingOtherMachinesDialog, [{label: "Suite", class: "button blue", onClick: sendingThirdCable}]);
+    addControlToDialog(sendingThirdCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedThirdCable}]);
+    addControlToDialog(thirdBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel3}]);
+    addControlToDialog(helpPlayMaxDialog, [{label: "Suite", class: "button blue",
+      onClick: function() {
+        deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
+      }
+    }]);
+    addControlToDialog(decryptedMessage3Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables3}]);
+    addControlToDialog(successCables3Dialog, [{label: "Suite", class: "button blue", onClick: IWasTrapped}]);
+    addControlToDialog(IWasTrappedDialog, [{label: "Suite", class: "button blue", onClick: thanksToCrypto}]);
+    addControlToDialog(thanksToCryptoDialog, [{label: "Suite", class: "button blue", onClick: thanksToCrypto2}]);
+    addControlToDialog(thanksToCrypto2Dialog, [{label: "Suite", class: "button blue", onClick: comparePlayTimeChart}]);
+    addControlToDialog(comparePlayTimeChartDialog, [{label: "Suite", class: "button blue", onClick: theEnd}]);
+  }
+  addControlToDialogs();
 
-    function addControlToDialogs() {
-      addControlToDialog(welcomeInstituteDialog, [{label: "Suite", class: "button blue", onClick: switchToNewLogin}]);
-      addControlToDialog(accountCreatedDialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-      addControlToDialog(cryptoExplanationsDialog, [{label: "Suite", class: "button blut", onClick: switchToNewLogin}]);
-      addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-      addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
-      addControlToDialog(goingToCreateKeysDialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-      addControlToDialog(keysExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-      addControlToDialog(keysExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-      addControlToDialog(hereYourPrivateKeyDialog, [{label: "Suite", class: "button blue", onClick: switchToCreateKey}]);
-      addControlToDialog(helpCreateKeyDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
-        }
-      }]);
-      addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          $('body').closeAllDialogs(function() {
-            currentGame.createKeySceneActive = true;
-          });
-        }
-      }]);
-      addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          $('body').closeAllDialogs(function() {
-            currentGame.createKeySceneActive = true;
-          });
-        }
-      }]);
-      addControlToDialog(nowTryToCancelLastMoveDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          $('body').closeAllDialogs(function() {
-            currentGame.createKeySceneActive = true;
-          });
-        }
-      }]);
-      addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          $('body').closeAllDialogs(function() {
-            currentGame.createKeySceneActive = true;
-          });
-        }
-      }]);
-      addControlToDialog(keyPreGeneratedDialog, [{label: "Suite", class: "button blue", onClick: switchToFinishCreateKey}]);
-      addControlToDialog(wellDoneDialog, [{label: "Suite", class: "button blue", onClick: firstMessage}]);
-      addControlToDialog(gameOverDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-      addControlToDialog(tooManyBlocksDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-      addControlToDialog(firstMessageDialog, [{label: "Ouvrir le message", class: "button blue", onClick: messageTest}]);
-      addControlToDialog(helpPlaySoloDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
-        }
-      }]);
-      addControlToDialog(messageTestDialog, [{label: "Suite", class: "button blue", onClick: tutorial}]);
-      addControlToDialog(tutorialDialog, [{label: "Suite", class: "button blue", onClick: activatePlaySolo}]);
-      addControlToDialog(decryptedMessage0Dialog, [{label: "Suite", class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
-      addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: "Suite", class: "button blue", onClick: aProblemOccurs}]);
-      addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
-      addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: cables0}]);
-      addControlToDialog(thisAintNormalDialog, [{label: "Suite", class: "button blue", onClick: useCryptoProtocol}]);
-      addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: sendingFirstCable}]);
-      addControlToDialog(sendingFirstCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedFirstCable}]);
-      addControlToDialog(firstBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
-      addControlToDialog(helpPlayMinDialog, [{label: "Suite", class: "button blue",
-        onClick: function() {
-          deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
-        }
-      }]);
-      addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: "Décrypter le message", class: "button blue", onClick: playLevel1}]);
-      addControlToDialog(decryptedMessage1Dialog, [{label: "Débrancher le câble", class: "button blue", onClick: cables1}]);
-    }
-    addControlToDialogs();
+  function addCryptoExplanationsContent() {
+    var cryptoExplanationsContent = [{
+      label: cryptoExplanationsLabel0, 
+      onClick: cryptoExplanationsOpt1,
+      class: game.cryptoExplanations[0] ? 'asked': 'not-asked'
+    }, {
+      label: cryptoExplanationsLabel1,
+      onClick: cryptoExplanationsOpt2,
+      class: game.cryptoExplanations[1] ? 'asked': 'not-asked'
+    }, {
+      label: cryptoExplanationsLabel2,
+      onClick: goingToCreakeKeys,
+      class: game.cryptoExplanations[2] ? 'asked' : 'not-asked'
+    }];
+    addInteractiveContentToDialog(cryptoExplanationsDialog, cryptoExplanationsContent);
+  }
 
-    function addCryptoExplanationsContent() {
-      var cryptoExplanationsContent = [{
-        label: cryptoExplanationsLabel0, 
-        onClick: cryptoExplanationsOpt1,
-        class: game.cryptoExplanations[0] ? 'asked': 'not-asked'
-      }, {
-        label: cryptoExplanationsLabel1,
-        onClick: cryptoExplanationsOpt2,
-        class: game.cryptoExplanations[1] ? 'asked': 'not-asked'
-      }, {
-        label: cryptoExplanationsLabel2,
-        onClick: goingToCreakeKeys,
-        class: game.cryptoExplanations[2] ? 'asked' : 'not-asked'
-      }];
-      addInteractiveContentToDialog(cryptoExplanationsDialog, cryptoExplanationsContent);
-    }
+  function addKeysExplanationsContent() {
+    var keysExplanationsContent = [{
+      label: keysExplanationsLabel0,
+      onClick: dialogWhatArePrivatePublicKeyOpt1,
+      class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
+    }, {
+      label: keysExplanationsLabel1,
+      onClick: dialogWhatArePrivatePublicKeyOpt2,
+      class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
+    }, {
+      label: keysExplanationsLabel2,
+      onClick: hereYourPrivateKey,
+      class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
+    }];
+    addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
+  }
 
-    function addKeysExplanationsContent() {
-      var keysExplanationsContent = [{
-        label: keysExplanationsLabel0,
-        onClick: dialogWhatArePrivatePublicKeyOpt1,
-        class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
-      }, {
-        label: keysExplanationsLabel1,
-        onClick: dialogWhatArePrivatePublicKeyOpt2,
-        class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
-      }, {
-        label: keysExplanationsLabel2,
-        onClick: hereYourPrivateKey,
-        class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
-      }];
-      addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
-    }
+  function addElectricShockContent() {
+    var electricShockContent = [{
+      label: "Aie ! Je viens de me prendre une décharge électrique !",
+      onClick: thisAintNormal,
+    }];
+    addInteractiveContentToDialog(electricShockDialog, electricShockContent);
+  }
 
-    function addElectricShockContent() {
-      var electricShockContent = [{
-        label: "Aie ! Je viens de me prendre une décharge électrique !",
-        onClick: thisAintNormal,
-      }];
-      addInteractiveContentToDialog(electricShockDialog, electricShockContent);
-    }
-
-    intro();
-
+  intro();
 });
 
 
