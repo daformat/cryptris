@@ -218,9 +218,7 @@ $(function() {
         $('.new-login').submit(function(e) {
           currentGame.litteralName = $('#login-name').val();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
-          updateAccountCreatedDialog();
-          updateCryptoExplanations();
-          updateKeysExplanations();
+          updateNameFunction();
           $.switchWrapper('#bg-institut', accountCreated);
           $('#login-name').blur();
           $('.new-login').unbind('submit').submit(function(e) {
@@ -469,7 +467,7 @@ $(function() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
-        goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
+        goToBattleScene('play_solo_scene', decryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
         $(".wrapper.active .vertical-centering").dialog(messageTestDialog);
       });
     });
@@ -483,128 +481,39 @@ $(function() {
     });
   }
 
+  function decryptedMessage0() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(decryptedMessage0Dialog);   
+      });
+    });
+  }       
 
+  function congratulationsOnCompletingTutorial() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        // Disable the action on the key and switch to the waiting scene.
+        currentGame.playSoloSceneActive = false;
+        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
+        $(".wrapper.active .vertical-centering").dialog(congratulationsOnCompletingTutorialDialog);
+      });
+    });
+  }
 
-    function dialogDecryptedMessage0(){
-        $("body").closeAllDialogs(function(){
+  function aProblemOccurs() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(aProblemOccursDialog);   
+      });
+    });
+  }
 
-            $.switchWrapper('#bg-circuits', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "Message décrypté",
-                content: "Ok, tu as réussi à lire ce message :)",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogCongratulationsOnCompletingTutorial
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }       
-
-
-    function dialogCongratulationsOnCompletingTutorial(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-              // Disable the action on the key and switch to the waiting scene.
-              currentGame.playSoloSceneActive = false;
-              currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Parfait ! Tu as compris <em>comment décrypter un message à l'aide de ta clé privée,</em> je n’en attendais pas <span>moins de toi !</span> Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialog12
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }   
-
-
-
-    function dialog12(){
+    function weird(){
         $("body").closeAllDialogs(function(){
 
             $.switchWrapper('#bg-institut', function(){
 
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "C'est bizarre, le serveur a signalé une panne, je dois aller en salle des machines pour vérifier que tout est en ordre. Il faudra que tu branches ou débranches certains câbles.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialog13
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-    function dialog13(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: ( game.player.name ? " <em>"+game.player.name+",</em> e" : "E" ) + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau électrique principal.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogCables0
-                }]
-
-
-              });   
+              $(".wrapper.active .vertical-centering").dialog(weirdDialog);   
 
             });
 
@@ -1801,6 +1710,10 @@ $(function() {
       }]);
       addControlToDialog(messageTestDialog, [{label: "Suite", class: "button blue", onClick: tutorial}]);
       addControlToDialog(tutorialDialog, [{label: "Suite", class: "button blue", onClick: activatePlaySolo}]);
+      addControlToDialog(decryptedMessage0Dialog, [{label: "Suite", class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
+      addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: "Suite", class: "button blue", onClick: aProblemOccurs}]);
+      addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
+      addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: dialogCables0}]);
     }
     addControlToDialogs();
 

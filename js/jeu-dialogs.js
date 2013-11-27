@@ -57,6 +57,17 @@ function updateKeysExplanations() {
   keysExplanationsDialog['title'] = currentGame.username;
 }
 
+function updateWeird() {
+    weirdDialog['content'] = (currentGame.litteralName != "" ? " <em>" + currentGame.litteralName + ",</em> e" : "E") + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau électrique principal.";
+}
+
+function updateNameFunction() {
+  updateAccountCreatedDialog();
+  updateCryptoExplanations();
+  updateKeysExplanations();
+  updateWeird();
+}
+
 var welcomeInstituteDialog = {
   animateText: true,
   animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
@@ -190,7 +201,7 @@ var continueManipulatingToGeneratePublicKeyDialog = {
   content: "Continue à présent de manipuler ta clé privée afin d’entamer la création de ta clé publique"
 };
 
-var keyPregeneratedDialog = {
+var keyPreGeneratedDialog = {
   animateText: true,
   animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
   type: "withAvatar",
@@ -258,4 +269,40 @@ var tutorialDialog = {
   avatar: "<img src='img/avatar-chercheuse.jpg'>",
   title: "Chercheuse",
   content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !"
+};
+
+var decryptedMessage0Dialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "Message décrypté",
+  content: "Ok, tu as réussi à lire ce message :)"
+};
+
+var congratulationsOnCompletingTutorialDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Parfait ! Tu as compris <em>comment décrypter un message à l'aide de ta clé privée,</em> je n’en attendais pas <span>moins de toi !</span> Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut."
+}
+
+var aProblemOccursDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "C'est bizarre, le serveur a signalé une panne, je dois aller en salle des machines pour vérifier que tout est en ordre. Il faudra que tu branches ou débranches certains câbles."
+};
+
+var weirdDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: (currentGame.litteralName != "" ? " <em>" + currentGame.litteralName + ",</em> e" : "E") + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau électrique principal.",
 };
