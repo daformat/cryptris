@@ -3,362 +3,11 @@ var cryptrisSettings = {
     readingDelay: 4000,
     animateTextDelayBetweenLetters: 20,
     player: {},
-    dialog4: [false, false, false],
+    cryptoExplanations: [false, false, false],
     dialogWhatArePrivatePublicKey: [false, false, false]
 }
 
-$(function(){
-
-  var game = cryptrisSettings;
-  var transitionTime = 1000;
-
-  // hide .hidden elements and remove class
-  $('.hidden').hide().removeClass('hidden');
-
-  function intro(){
-    // make sure prompt is empty
-    $('.prompt .content').text('');
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#prompt', function(){
-        // First prompt
-        $('.prompt .content').text('');
-
-        setTimeout(function(){
-          $('.prompt .content').typeLetterByLetter(
-                                                  "Tu es stagiaire dans une équipe de recherche Inria", 
-                                                  game.animateTextDelayBetweenLetters, 
-                                                  function(){
-                                                    // Second prompt
-                                                    setTimeout(function(){
-                                                      $('.prompt .content').text('');
-                                                      setTimeout(function(){
-                                                        $('.prompt .content').typeLetterByLetter( "Premier jour à l'institut", game.animateTextDelayBetweenLetters, function(){
-                                                          // Switch to institute
-                                                          setTimeout(function(){
-                                                            $.switchWrapper('#bg-institut', dialog1);
-                                                          }, game.readingDelay);                      
-                                                        });
-                                                      }, 2000)
-                                                    }, game.readingDelay);
-
-                                                  }
-          );
-        }, 2000);                   
-      });
-    });
-
-  }
-
-  function dialog1(){
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-institut', function(){
-    
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToNewLogin
-          }]
-
-        });   
-            
-      });
-
-    });
-  }
-
-  function switchToNewLogin() {
-    $("body").closeAllDialogs( function(){
-
-      $.switchWrapper('#new-login', function(){
-        $('#login-name').focus();
-
-        $('.new-login').submit(function(e){
-          game.player.name = $('#login-name').val();
-          currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-          $.switchWrapper('#bg-institut', dialog2);
-          $('#login-name').blur();
-          $('.new-login').unbind('submit').submit(function(e){
-            return false;
-          });
-          return false;
-        });
-
-      });
-
-    })
-  }
-
-  function dialog2(){
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Parfait"+( game.player.name ? " <em>"+game.player.name+"</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialog3
-          }]
-
-        });   
-            
-      });
-
-    });
-  }
-
-  function dialog3(){
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          type: "player",
-          title: game.player.name||"Joueur",
-
-          content: [{
-            label: "Cryptogra... quoi ?",
-            onClick: dialog4opt1,
-            class: game.dialog4[0] ? 'asked': 'not-asked'
-          },
-          {
-            label: "Asymétrique ? Pourquoi asymétrique ?",
-            onClick: dialog4opt2,
-            class: game.dialog4[1] ? 'asked': 'not-asked'
-          },{
-            label: "Si vous le dites...",
-            onClick: dialog5,
-            class: game.dialog4[2] ? 'asked': 'not-asked'
-          }],
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToNewLogin
-          }]
-
-        });   
-            
-      });
-
-    });
-  }
-
-  function dialog4opt1(){
-    game.dialog4[0] = true;
-
-    $("body").closeAllDialogs(function(){
-            
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Cryptographie! Du grec ancien <strong>kruptos</strong> (« caché ») et <strong>graphein</strong> (« écrire »). Il s’agit de protéger des messages.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialog3
-          }]
-
-        });   
-
-      });
-
-    });
-
-  }
-
-
-  function dialog4opt2(){
-    game.dialog4[1] = true;
-
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Oui ! Asymétrique, on l’appelle aussi cryptographie à clé publique car elle repose sur l’utilisation de deux types de clés <span>:</span> la clé privée, et la clé publique. La clé publique sert à chiffrer, ou coder si tu préfères, les messages, tandis que la clé privée permet de les déchiffrer.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialog3
-          }]
-
-        });   
-            
-      });
-
-    });
-
-  }
-
-  function dialog5(){
-    game.dialog4[2] = true;
-        
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Tu vas maintenant créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialogWhatArePrivatePublicKey
-          }]
-
-        });   
-            
-      });
-
-    });
-
-  }
-
-  function dialogWhatArePrivatePublicKey(){
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          type: "player",
-          title: game.player.name||"Joueur",
-
-          content: [{
-            label: "Clé privée ? Qu'est-ce que c'est ?",
-            onClick: dialogWhatArePrivatePublicKeyOpt1,
-            class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
-          },
-          {
-            label: "Une clé publique ? Pourquoi ma clé serait-elle publique ?",
-            onClick: dialogWhatArePrivatePublicKeyOpt2,
-            class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
-          },{
-            label: "D'accord, j'ai compris.",
-            onClick: dialog6,
-            class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
-          }],
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToNewLogin
-          }]
-
-        });   
-            
-      });
-
-    });
-  }
-
-  function dialogWhatArePrivatePublicKeyOpt1(){
-    game.dialogWhatArePrivatePublicKey[0] = true;
-
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Ta clé privée est la clé que toi seul connaîtra, c'est elle qui te permettra de déchiffrer facilement les message qui te seront envoyés. <em>Sans la clé privée il est très difficile,</em> voir impossible, <em>de déchiffrer un message crypté.</em>",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialogWhatArePrivatePublicKey
-          }]
-        });   
-      });
-    });
-  }   
-
-
-  function dialogWhatArePrivatePublicKeyOpt2(){
-    game.dialogWhatArePrivatePublicKey[1] = true;
-
-    $("body").closeAllDialogs(function(){
-      $.switchWrapper('#bg-institut', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Ta clé publique sera dérivée de ta clé privée. De la même manière qu'un <em>cadenas</em> permet de <em>sécuriser le contenu d'un coffre,</em> la <em>clé publique</em> permet de <em>chiffrer des messages</em> et les rendre illisibles à ceux qui ne disposent pas de la clé privée.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialogWhatArePrivatePublicKey
-          }]
-
-        });   
-            
-      });
-
-    });
-
-  }       
+$(function() {
 
   function specialOutInterpolator() {
     this.getPosition = function(time) {
@@ -370,47 +19,6 @@ $(function(){
     this.getPosition = function(time) {
       return {'x' : time, 'y' : 1};
     }
-  }
-
-  function dialog6(){
-    game.dialogWhatArePrivatePublicKey[2] = true;
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        // Set the createKeyScene as the current scene.
-        currentGame.director.easeInOut(
-                                        currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        transitionTime,
-                                        true,
-                                        new specialInInterpolator(),
-                                        new specialOutInterpolator()
-        );
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Voici ta clé privée, utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
-          //content: "Voici ta clé privée, tu peux la manipuler à l’aide des touches<br/> <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> de ton clavier pour en décaler les colonnes. Tu peux aussi inverser les colonnes avec <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. Quand tu auras fini, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix. L’ordinateur va ensuite générer ta clé publique.",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToCreateKey
-          }]
-        });
-      });
-    });
   }
 
   function activateHelp(dataScene, hookName, helpFunction) {
@@ -439,36 +47,10 @@ $(function(){
     activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
   });
 
-  function helpCreateKey() {
+  $(document).on("playSoloHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
+  });
 
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help CREATE_KEY",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-  }
 
   function switchToCreateKey() {
     $("body").closeAllDialogs();
@@ -485,7 +67,7 @@ $(function(){
           currentGame.createKeySceneActive = false;
 
           // call the function you want here
-          dialogNowTryToCancelLastMove();
+          nowTryToCancelLastMove();
         }
       }
     );
@@ -495,13 +77,267 @@ $(function(){
         if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
           waitToContinue.cancel();
           currentGame.createKeySceneActive = false;
-          dialog6KeyPreGenerated();
+          keyPreGenerated();
         }
       }
     );
   }
 
-  function dialogPleaseInvertYourPrivateKey() {
+  function switchToFinishCreateKey() {
+    $("body").closeAllDialogs();
+    // Launch the ia.
+    currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
+    ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
+
+    var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        if (currentGame.goToNextDialog === true) {
+          waitToContinue.cancel();
+          currentGame.goToNextDialog = false;
+          currentGame.createKeySceneActive = false;
+          //currentGame.scenes.create_key_scene.scene.setPaused(true);
+
+          // Disable the action on the key.
+          setTimeout(function() {
+            currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                           currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
+                                           new specialInInterpolator(), new specialOutInterpolator());
+            //currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
+            wellDone();
+            currentGame.dontShowKey = false;
+          }, 2000);
+        }
+      }
+    );
+  }
+
+  $.goToBattleScene = goToBattleScene;
+  var currentGameOverData = null;
+
+  function stopGameOver() {
+    var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
+    goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.timeout);
+    saveScene.setExpired(true);
+    $("body").closeAllDialogs(function() {});
+    currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
+    currentGame.scenes[currentGameOverData.sceneName].add_key_symbol(currentGame.director, currentGame.scenes[currentGameOverData.sceneName]);
+    currentGame[currentGameOverData.hookName] = true;
+    currentGame.iaPlay = true;
+  }
+
+  function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
+
+    // Prepare the sceneName and set it as the current scene.
+    preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
+    currentGame.iaPlay = false;
+    currentGame[hookName] = false;
+    currentGame.gameOver = false;
+    currentGame.tooManyBlocksInAColumn = false;
+
+    currentGame.director.currentScene.setPaused(false);
+    currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                   currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
+                                   new specialInInterpolator(), new specialOutInterpolator());
+        
+    setTimeout(function() {currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName])}, 500);
+
+    // set the speed of this scene.
+    timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
+
+    // Create a timer to catch the moment we have to go to the next scene.
+    var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        if (currentGame.goToNextDialog === true) {
+          waitToContinue.cancel();
+          currentGame.goToNextDialog = false;
+          timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
+        }
+        if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
+          waitToContinue.cancel();
+          currentGame.scenes[sceneName].scene.setPaused(true);
+          currentGame[hookName] = false;
+
+          currentGameOverData = {
+            'sceneName' : sceneName,
+            'onDecrypt' : onDecrypt,
+            'sizeBoard' : sizeBoard,
+            'hookName' : hookName,
+            'withIaBoard' : withIaBoard,
+            'timeInfo' : timeInfo,
+            'message' : message,
+            'helpEvent' : helpEvent,
+            'timeout' : timeout
+          };
+          if (currentGame.gameOver === true) {
+            gameOver();
+          } else if (currentGame.tooManyBlocksInAColumn === true) {
+            tooManyBlocks();
+          }
+          currentGame.gameOver = false;
+          currentGame.tooManyBlocksInAColumn = false;
+        }
+      }
+    );
+  }
+
+  function activatePlaySolo() {
+    $("body").closeAllDialogs(function() {});
+    currentGame.scenes.play_solo_scene.scene.setPaused(false);
+    currentGame.playSoloSceneActive = true;
+  }
+
+  var game = cryptrisSettings;
+  var transitionTime = 1000;
+
+  // -- Hide .hidden elements and remove class.
+  $('.hidden').hide().removeClass('hidden');
+
+  function intro() {
+    // -- Make sure prompt is empty.
+    $('.prompt .content').text('');
+
+    // -- Launch the welcome dialog.
+    $("body").closeAllDialogs(function() { 
+      firstPrompt(welcome);
+    });
+  }
+
+  function welcome() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(welcomeInstituteDialog);   
+      });
+    });
+  }
+
+  function switchToNewLogin() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#new-login', function() {
+        $('#login-name').focus();
+
+        $('.new-login').submit(function(e) {
+          currentGame.litteralName = $('#login-name').val();
+          currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
+          updateAccountCreatedDialog();
+          updateCryptoExplanations();
+          updateKeysExplanations();
+          $.switchWrapper('#bg-institut', accountCreated);
+          $('#login-name').blur();
+          $('.new-login').unbind('submit').submit(function(e) {
+            return false;
+          });
+          return false;
+        });
+      });
+    });
+  }
+
+  function accountCreated() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(accountCreatedDialog);   
+      });
+    });
+  }
+
+  function cryptoExplanations() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        addCryptoExplanationsContent();
+        $(".wrapper.active .vertical-centering").dialog(cryptoExplanationsDialog);   
+      });
+    });
+  }
+
+  function cryptoExplanationsOpt1() {
+    game.cryptoExplanations[0] = true;
+    $("body").closeAllDialogs(function() {   
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(cryptoExplanationsOpt1Dialog);   
+      });
+    });
+  }
+
+  function cryptoExplanationsOpt2() {
+    game.cryptoExplanations[1] = true;
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(cryptoExplanationsOpt2Dialog);
+      });
+    });
+  }
+
+  function goingToCreakeKeys() {
+    game.cryptoExplanations[2] = true;
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(goingToCreateKeysDialog);      
+      });
+    });
+  }
+
+  function dialogWhatArePrivatePublicKey() {
+    addKeysExplanationsContent();
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(keysExplanationsDialog);   
+      });
+    });
+  }
+
+  function dialogWhatArePrivatePublicKeyOpt1() {
+    game.dialogWhatArePrivatePublicKey[0] = true;
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(keysExplanationsOpt1Dialog);   
+      });
+    });
+  }   
+
+
+  function dialogWhatArePrivatePublicKeyOpt2() {
+    game.dialogWhatArePrivatePublicKey[1] = true;
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(keysExplanationsOpt2Dialog);   
+      });
+    });
+  }       
+
+
+  function hereYourPrivateKey() {
+    game.dialogWhatArePrivatePublicKey[2] = true;
+
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        // Set the createKeyScene as the current scene.
+        currentGame.director.easeInOut(
+                                  currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene),
+                                  CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                  currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                  CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                  CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                  transitionTime,
+                                  true,
+                                  new specialInInterpolator(),
+                                  new specialOutInterpolator()
+        );
+        $(".wrapper.active .vertical-centering").dialog(hereYourPrivateKeyDialog);
+      });
+    });
+  }
+
+
+  function helpCreateKey() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpCreateKeyDialog);
+      });
+    });
+  }
+
+
+  function pleaseInvertYourPrivateKey() {
 
     // Add a timer to handle the action after this dialog box.
     var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
@@ -515,85 +351,30 @@ $(function(){
 
           if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
             // call the function you want here
-            dialogContinueManipulatingToGeneratePublicKey();
+            continueManipulatingToGeneratePublicKey();
           } else {
-            dialogOkDontInvertYourPrivateKey();
+            okDontInvertYourPrivateKey();
           }
         }
       }
     );
 
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Tu n'as pas annulé ton précédent mouvement. Essaye de le faire en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-  
-
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pleaseInvertYourPrivateKeyDialog);
       });
-
     });
-
   }
 
-  function dialogOkDontInvertYourPrivateKey() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Ok, tu ne veux pas annuler ton précédent mouvement. Alors continue de manipuler ta clé privée afin d’entamer la création de ta clé publique",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-  
-
+  function okDontInvertYourPrivateKey() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(okDontInvertYourPrivateKeyDialog);
       });
-
     });
-
   }
   
-  function dialogNowTryToCancelLastMove(){
+  function nowTryToCancelLastMove(){
     currentGame.createKeySceneActive = false;
         
     // Add a timer to handle the action after this dialog box.
@@ -608,445 +389,100 @@ $(function(){
 
           if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
             // call the function you want here
-            dialogContinueManipulatingToGeneratePublicKey();
+            continueManipulatingToGeneratePublicKey();
           } else {
-            dialogPleaseInvertYourPrivateKey();
+            pleaseInvertYourPrivateKey();
           }
         }
       }
     );
 
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-    
-
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(nowTryToCancelLastMoveDialog);
       });
-
     });
-
   }
 
-    function dialogContinueManipulatingToGeneratePublicKey(){
-      currentGame.createKeySceneActive = false;
-        
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-circuits', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Continue à présent de manipuler ta clé privée afin d’entamer la création de ta clé publique",
-
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: function(){
-                    $('body').closeAllDialogs(function(){
-                      currentGame.createKeySceneActive = true;
-                    });
-                  }
-                }]
-
-              });
-    
-
-            });
-
-        });
-
-    }       
-
-    function dialog6KeyPreGenerated() {
-        $("body").closeAllDialogs(function() {
-
-            $.switchWrapper('#bg-circuits', function() {
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Très bien, tu as compris ! L'ordinateur va à présent terminer de générer ta clé publique.",
-
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: switchToFinishCreateKey
-                }]
-
-              });
-    
-
-            });
-
-        });
-
-    }
-
-    function switchToFinishCreateKey() {
-        $("body").closeAllDialogs();
-        // Launch the ia.
-        currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
-        ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
-
-        var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-                if (currentGame.goToNextDialog === true) {
-                    waitToContinue.cancel();
-                    currentGame.goToNextDialog = false;
-                    currentGame.createKeySceneActive = false;
-                    //currentGame.scenes.create_key_scene.scene.setPaused(true);
-
-                    // Disable the action on the key.
-                    setTimeout(function() {
-
-                      currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
-                                        new specialInInterpolator(), new specialOutInterpolator());
-                            //currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-                            dialog7();
-                            currentGame.dontShowKey = false;
-                        }, 2000);
-                }
-            }
-        );
-    }
-
-    function dialog7(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialog8
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-    $.goToBattleScene = goToBattleScene;
-    var currentGameOverData = null;
-
-    function stopGameOverDialog() {
-        var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
-        goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.timeout);
-        saveScene.setExpired(true);
-        $("body").closeAllDialogs(function() {});
-        currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
-        currentGame.scenes[currentGameOverData.sceneName].add_key_symbol(currentGame.director, currentGame.scenes[currentGameOverData.sceneName]);
-        currentGame[currentGameOverData.hookName] = true;
-        currentGame.iaPlay = true;
-    }
-
-    function gameOverDialog() {
-
-        $("body").closeAllDialogs(function(){
-
-          $.switchWrapper('#bg-circuits', function(){
-            $(".wrapper.active .vertical-centering").dialog({
-
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !",
-                controls: [{
-                    label: "Suite", 
-                    class: "button blue",
-                    onClick: stopGameOverDialog
-                },
-                {
-                    label: "Abandonner",
-                    class: "button red",
-                    onClick: ''
-
-                }]
-
-            });
-
-        });
-
+  function continueManipulatingToGeneratePublicKey() {
+    currentGame.createKeySceneActive = false;
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(continueManipulatingToGeneratePublicKeyDialog);
       });
-    }
-    function tooManyBlocksDialog() {
+    });
+  }       
 
-        $("body").closeAllDialogs(function(){
-
-          $.switchWrapper('#bg-circuits', function(){
-            $(".wrapper.active .vertical-centering").dialog({
-
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !",
-                controls: [{
-                    label: "Suite", 
-                    class: "button blue",
-                    onClick: stopGameOverDialog
-                },
-                {
-                    label: "Abandonner",
-                    class: "button red",
-                    onClick: ''
-
-                }]
-
-            });
-
-        });
-
+  function keyPreGenerated() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedDialog);
       });
-    }
+    });
+  }
 
-    function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
+  function wellDone() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(wellDoneDialog);   
+      });
+    });
+  }
 
-        // Prepare the sceneName and set it as the current scene.
-        console.log(currentGame.scenes[sceneName]);
-        preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
-        console.log(currentGame.scenes[sceneName]);
-        currentGame.iaPlay = false;
-        currentGame[hookName] = false;
-        currentGame.gameOver = false;
-        currentGame.tooManyBlocksInAColumn = false;
+  function gameOver() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(gameOverDialog);
+      });
+    });
+  }
 
-        currentGame.director.currentScene.setPaused(false);
-        currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
-                                        new specialInInterpolator(), new specialOutInterpolator());
+  function tooManyBlocks() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(tooManyBlocksDialog);
+      });
+    });
+  }
+
+  function firstMessage() {
+    // Prepare the tutorial message
+    currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
         
-        console.log(sceneName);
+    // Set the tutorial message to the dialog box.
+    addInteractiveContentToDialog(firstMessageDialog, board_message_to_string(currentGame.play_solo_scene_msg.plain_message));
 
-        setTimeout(function() {currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName])}, 500);
-
-        // set the speed of this scene.
-        timeInfo && withIaBoard ? currentGame.scenes[sceneName].rival_box.boxOption.timeInfo = timeInfo : null;
-
-        // Create a timer to catch the moment we have to go to the next scene.
-        var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-            function(time, ttime, timerTask) {
-                if (currentGame.goToNextDialog === true) {
-                    waitToContinue.cancel();
-                    currentGame.goToNextDialog = false;
-
-                    timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
-                }
-                if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
-                    waitToContinue.cancel();
-                    currentGame.scenes[sceneName].scene.setPaused(true);
-                    currentGame[hookName] = false;
-
-                    currentGameOverData = {
-                        'sceneName' : sceneName,
-                        'onDecrypt' : onDecrypt,
-                        'sizeBoard' : sizeBoard,
-                        'hookName' : hookName,
-                        'withIaBoard' : withIaBoard,
-                        'timeInfo' : timeInfo,
-                        'message' : message,
-                        'helpEvent' : helpEvent,
-                        'timeout' : timeout
-                    };
-                    if (currentGame.gameOver === true) {
-                        gameOverDialog();
-                    } else if (currentGame.tooManyBlocksInAColumn === true) {
-                        tooManyBlocksDialog();
-                    }
-                    currentGame.gameOver = false;
-                    currentGame.tooManyBlocksInAColumn = false;
-                }
-            }
-        );
-    }
-
-    function dialog8(){
-        $("body").closeAllDialogs(function(){
-
-          // Prepare the tutorial message
-          currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
-
-          $(".wrapper.active .vertical-centering").dialog({
-            
-            animateText: true,
-
-            type: "withAvatar",
-            avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-            title: "InriOS 3.14",
-            content: board_message_to_string(currentGame.play_solo_scene_msg.plain_message),
-            
-            controls: [{
-              label: "Ouvrir le message", 
-              class: "button blue",
-              onClick: dialog9
-            }]
-
-          });   
-
-        });
-
-    }   
-
-  $(document).on("playSoloHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
-  });
+    $("body").closeAllDialogs(function() {
+      $(".wrapper.active .vertical-centering").dialog(firstMessageDialog);   
+    });
+  }   
 
   function helpPlaySolo() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Help PLAY_SOLO",
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function() {
-              deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
-            }
-          }]
-
-        });
-  
-
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlaySoloDialog);
       });
-
     });
   }
 
-    function dialog9(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-circuits', function(){
-              // Display the battle scene in background.
-              goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "J’ai crypté ce message à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialog10
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-    function dialog10(){
-        $("body").closeAllDialogs(function(){
-
-        // Launch the timer and display private key.
-
-        currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
-        $(".wrapper.active .vertical-centering").dialog({
-
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !",
-            
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: activatePlaySolo
-          }]
-
-        });   
-
+  function messageTest() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        // Display the battle scene in background.
+        goToBattleScene('play_solo_scene', dialogDecryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
+        $(".wrapper.active .vertical-centering").dialog(messageTestDialog);
       });
+    });
+  }
 
-    }
+  function tutorial() {
+    $("body").closeAllDialogs(function() {
+      // Launch the timer and display private key.
+      currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
+      $(".wrapper.active .vertical-centering").dialog(tutorialDialog);   
+    });
+  }
 
-    function activatePlaySolo() {
-        $("body").closeAllDialogs(function(){});
-        currentGame.scenes.play_solo_scene.scene.setPaused(false);
-        currentGame.playSoloSceneActive = true;
-    }
 
 
     function dialogDecryptedMessage0(){
@@ -2308,6 +1744,98 @@ $(function(){
             $.switchWrapper('#end-game', function(){
             });
         });
+    }
+
+    function addControlToDialogs() {
+      addControlToDialog(welcomeInstituteDialog, [{label: "Suite", class: "button blue", onClick: switchToNewLogin}]);
+      addControlToDialog(accountCreatedDialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+      addControlToDialog(cryptoExplanationsDialog, [{label: "Suite", class: "button blut", onClick: switchToNewLogin}]);
+      addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+      addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: cryptoExplanations}]);
+      addControlToDialog(goingToCreateKeysDialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+      addControlToDialog(keysExplanationsOpt1Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+      addControlToDialog(keysExplanationsOpt2Dialog, [{label: "Suite", class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
+      addControlToDialog(hereYourPrivateKeyDialog, [{label: "Suite", class: "button blue", onClick: switchToCreateKey}]);
+      addControlToDialog(helpCreateKeyDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+        }
+      }]);
+      addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          $('body').closeAllDialogs(function() {
+            currentGame.createKeySceneActive = true;
+          });
+        }
+      }]);
+      addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          $('body').closeAllDialogs(function() {
+            currentGame.createKeySceneActive = true;
+          });
+        }
+      }]);
+      addControlToDialog(nowTryToCancelLastMoveDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          $('body').closeAllDialogs(function() {
+            currentGame.createKeySceneActive = true;
+          });
+        }
+      }]);
+      addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          $('body').closeAllDialogs(function() {
+            currentGame.createKeySceneActive = true;
+          });
+        }
+      }]);
+      addControlToDialog(keyPreGeneratedDialog, [{label: "Suite", class: "button blue", onClick: switchToFinishCreateKey}]);
+      addControlToDialog(wellDoneDialog, [{label: "Suite", class: "button blue", onClick: firstMessage}]);
+      addControlToDialog(gameOverDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+      addControlToDialog(tooManyBlocksDialog, [{label: "Suite", class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+      addControlToDialog(firstMessageDialog, [{label: "Ouvrir le message", class: "button blue", onClick: messageTest}]);
+      addControlToDialog(helpPlaySoloDialog, [{label: "Suite", class: "button blue",
+        onClick: function() {
+          deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
+        }
+      }]);
+      addControlToDialog(messageTestDialog, [{label: "Suite", class: "button blue", onClick: tutorial}]);
+      addControlToDialog(tutorialDialog, [{label: "Suite", class: "button blue", onClick: activatePlaySolo}]);
+    }
+    addControlToDialogs();
+
+    function addCryptoExplanationsContent() {
+      var cryptoExplanationsContent = [{
+        label: cryptoExplanationsLabel0, 
+        onClick: cryptoExplanationsOpt1,
+        class: game.cryptoExplanations[0] ? 'asked': 'not-asked'
+      }, {
+        label: cryptoExplanationsLabel1,
+        onClick: cryptoExplanationsOpt2,
+        class: game.cryptoExplanations[1] ? 'asked': 'not-asked'
+      }, {
+        label: cryptoExplanationsLabel2,
+        onClick: goingToCreakeKeys,
+        class: game.cryptoExplanations[2] ? 'asked' : 'not-asked'
+      }];
+      addInteractiveContentToDialog(cryptoExplanationsDialog, cryptoExplanationsContent);
+    }
+
+    function addKeysExplanationsContent() {
+      var keysExplanationsContent = [{
+        label: keysExplanationsLabel0,
+        onClick: dialogWhatArePrivatePublicKeyOpt1,
+        class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
+      }, {
+        label: keysExplanationsLabel1,
+        onClick: dialogWhatArePrivatePublicKeyOpt2,
+        class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
+      }, {
+        label: keysExplanationsLabel2,
+        onClick: hereYourPrivateKey,
+        class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
+      }];
+      addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
     }
 
     intro();
