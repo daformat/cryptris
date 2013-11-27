@@ -51,6 +51,10 @@ $(function() {
     activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
   });
 
+  $(document).on("playMinHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
+  });
+
 
   function switchToCreateKey() {
     $("body").closeAllDialogs();
@@ -540,87 +544,35 @@ $(function() {
     });
   }
 
-    function useCryptoProtocol(){
-        $("body").closeAllDialogs(function(){
+  function useCryptoProtocol() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(useCryptoProtocolDialog);   
+      });
+    });
+  }
 
-            $.switchWrapper('#bg-institut', function(){
+  function sendingFirstCable() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(sendingFirstCableDialog);   
+      });
+    });
+  }
 
-              $(".wrapper.active .vertical-centering").dialog(useCryptoProtocolDialog);   
+  function encryptedFirstCable() {
+    // Prepare the first battle message
+    currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
+    
+    // Set the first battle message to the dialog box.
+    addInteractiveContentToDialog(firstBattleMessageDialog, board_message_to_string(currentGame.play_min_scene_msg.plain_message));
 
-            });
-
-        });
-
-    }
-
-
-    function dialogSendingFirstCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-                title: "Chercheuse",
-                content: "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau électrique correspondant.",
-                
-                controls: [{
-                  label: "Suite", 
-                  class: "button blue",
-                  onClick: dialogEcnryptedFirstCable
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }   
-
-
-    function dialogEcnryptedFirstCable(){
-        $("body").closeAllDialogs(function(){
-
-            $.switchWrapper('#bg-institut', function(){
-              // Prepare the first battle message
-              currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
-
-              $(".wrapper.active .vertical-centering").dialog({
-                
-                animateText: true,
-                animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-                type: "withAvatar",
-                avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
-
-                title: "InriOS 3.14",
-                content: board_message_to_string(currentGame.play_min_scene_msg.plain_message),
-                
-                controls: [{
-                  label: "Décrypter le message", 
-                  class: "button blue",
-                  onClick: dialogServerAlsoTryingToBreakEncryption
-                }]
-
-              });   
-
-            });
-
-        });
-
-    }
-
-
-  $(document).on("playMinHelpEvent", function() {
-    activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
-  });
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-institut', function() {
+        $(".wrapper.active .vertical-centering").dialog(firstBattleMessageDialog);   
+      });
+    });
+  }
 
   function helpPlayMin() {
 
@@ -653,7 +605,7 @@ $(function() {
     });
   }
 
-    function dialogServerAlsoTryingToBreakEncryption(){
+    function serverAlsoTryingToBreakEncryption(){
         $("body").closeAllDialogs(function(){
 
             $.switchWrapper('#bg-circuits', function(){
@@ -1647,7 +1599,9 @@ $(function() {
       addControlToDialog(aProblemOccursDialog, [{label: "Suite", class: "button blue", onClick: weird}]);
       addControlToDialog(weirdDialog, [{label: "Suite", class: "button blue", onClick: cables0}]);
       addControlToDialog(thisAintNormalDialog, [{label: "Suite", class: "button blue", onClick: useCryptoProtocol}]);
-      addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: dialogSendingFirstCable}]);
+      addControlToDialog(useCryptoProtocolDialog, [{label: "Suite", class: "button blue", onClick: sendingFirstCable}]);
+      addControlToDialog(sendingFirstCableDialog, [{label: "Suite", class: "button blue", onClick: encryptedFirstCable}]);
+      addControlToDialog(firstBattleMessageDialog, [{label: "Décrypter le message", class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
     }
     addControlToDialogs();
 

@@ -339,3 +339,20 @@ var useCryptoProtocolDialog = {
   title: "Chercheuse",
   content: "C’est le bon moment pour utiliser le protocole de cryptage afin de l’empêcher de nous écouter ! Je vais t'envoyer la liste des câbles à débrancher, mais un par un, et de manière cryptée.",
 };
+
+var sendingFirstCableDialog = {
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<img src='img/avatar-chercheuse.jpg'>",
+  title: "Chercheuse",
+  content: "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau électrique correspondant."
+};
+
+var firstBattleMessageDialog = {        
+  animateText: true,
+  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
+  type: "withAvatar",
+  avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+  title: "InriOS 3.14"
+};
