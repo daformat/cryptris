@@ -4,6 +4,7 @@ function IA(scene, key, message, boxOption) {
   this.ACTION_RIGHT = 1;
   this.ACTION_INVERT = 2;
   this.ACTION_DOWN = 3;
+  this.ACTION_WAIT_FOR_KEY_HIDDEN = 4;
 
   this.iaScene = scene;
   this.iaBoxOption = boxOption;
@@ -21,6 +22,10 @@ function IA(scene, key, message, boxOption) {
   this.iaPlay = 2;
   this.iaState = this.iaStop;
   this.dontShowKey = false;
+
+  this.addWaitForKeyHidden = function() {
+    this.moveList.push(this.ACTION_WAIT_FOR_KEY_HIDDEN);
+  }
 
   this.addMoveLeft = function() {
     this.moveList.push(this.ACTION_LEFT);
@@ -58,6 +63,8 @@ function IA(scene, key, message, boxOption) {
             object.keyIsInvert != object.keyIsInvert;
           } else if (action === object.ACTION_DOWN) {
             object.iaKey.keyDown();
+          } else if (action === object.ACTION_WAIT_FOR_KEY_HIDDEN) {
+            object.iaKey.waitForHidden = true;
           }
           object.iaCurrentTime = time;
           object.moveList.shift();

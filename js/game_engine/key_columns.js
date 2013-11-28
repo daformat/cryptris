@@ -222,6 +222,10 @@ function getSecondString(key, default_) {
 }
 
 function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
+  	this.ACTION_LEFT = 0;
+ 	this.ACTION_RIGHT = 1;
+ 	this.ACTION_INVERT = 2;
+  	this.ACTION_DOWN = 3;
 	this.director = director;
 	this.type = KEY_TYPE_NORMAL;
 	this.length = keyLength;
@@ -236,6 +240,10 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 	this.latteral_move = 0;
 	this.is_inverted = false;
 	this.last_move = [];
+	this.all_moves = [];
+
+	this.waitForHidden = false;
+	this.keyHidden = false;
 
     this.resize = function(isPaused) {
 		for (var i = 0; i < this.columnList.length; ++i) {
@@ -283,7 +291,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 		this.boxOption.maxKeyNumber = 0;
 
-		if (!currentGame.dontShowKey && (this.msgColumn.resolved === false || currentGame.stopCreateKeyAfterResolve === false)) {
+		if (this.keyHidden === false && !currentGame.dontShowKey && (this.msgColumn.resolved === false || currentGame.stopCreateKeyAfterResolve === false)) {
 			for (var i = 0; i < this.length; ++i) {
 				if (this.number[i] > this.boxOption.maxKeyNumber) {
 					this.boxOption.maxKeyNumber = this.number[i];
@@ -346,6 +354,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.changeKeyType = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.all_moves.push(this.ACTION_INVERT);
 			this.is_inverted = !this.is_inverted;
 			if (this.type === KEY_TYPE_NORMAL) {
 				this.type = KEY_TYPE_REVERSE;
@@ -362,6 +371,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.rotateLeft = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.all_moves.push(this.ACTION_LEFT);
 			this.latteral_move = this.latteral_move - 1;
 			this.columnList.push(this.columnList[0]);
 			this.columnList.splice(0, 1);
@@ -382,6 +392,7 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.rotateRight = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			this.all_moves.push(this.ACTION_RIGHT);
 
 			this.latteral_move = this.latteral_move + 1;
 			this.columnList.splice(0, 0, this.columnList[this.columnList.length - 1]);
@@ -409,12 +420,19 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 	this.keyDown = function () {
 		if (this.keyFirstMove === false && this.keyInMove === false) {
+			if (this.waitForHidden === true) {
+				this.keyHidden = true;
+			}
+			this.all_moves.push(this.ACTION_DOWN);
 			this.last_move.push([this.latteral_move, this.is_inverted]);
 			this.keyInMove = true;
 			for (var i = 0; i < this.columnList.length; ++i) {
 				this.columnList[i].keyDown();
 			}
 		} else if (this.keyInMove === true) {
+			if (this.waitForHidden === true) {
+				this.keyHidden = true;
+			}
 			this.resize();
 		}
 	}

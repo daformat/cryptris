@@ -84,7 +84,12 @@ $(function() {
     $("body").closeAllDialogs();
     // Launch the ia.
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
-    ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
+
+    if (score(currentGame.scenes.create_key_scene.game_box.message.getNumbers()) < 2) {
+      ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, true);
+    } else {
+      ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, false);
+    }
 
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
