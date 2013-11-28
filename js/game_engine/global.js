@@ -37,7 +37,7 @@ function game() {
     this.goToNextDialog = false;
     this.gameOver = false;
 
-    this.maxNewKeyMove = 5; // How many moves needed before lauching automatic key generation
+    this.maxNewKeyMove = 6; // How many moves needed before lauching automatic key generation
     this.keyIsPregenerated = false;
     this.keyIsInPlace = false;
     this.nbrKeyClipping = 0;

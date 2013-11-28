@@ -69,21 +69,6 @@ $(function() {
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
 
-    // Add a timer to handle the first move.
-    var timerFirstMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 1) {
-          timerFirstMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          // call the function you want here
-          nowTryToCancelLastMove();
-        }
-      }
-    );
-
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
         if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
@@ -107,14 +92,12 @@ $(function() {
           waitToContinue.cancel();
           currentGame.goToNextDialog = false;
           currentGame.createKeySceneActive = false;
-          //currentGame.scenes.create_key_scene.scene.setPaused(true);
 
           // Disable the action on the key.
           setTimeout(function() {
             currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                            currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                            new specialInInterpolator(), new specialOutInterpolator());
-            //currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
             wellDone();
             currentGame.dontShowKey = false;
           }, 2000);
@@ -521,89 +504,21 @@ $(function() {
     });
   }
 
+  function fallSixTimes() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(fallSixTimesDialog);
+      });
+    });
+  }
+
   function helpCreateKey() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         $(".wrapper.active .vertical-centering").dialog(helpCreateKeyDialog);
       });
     });
-  }
-
-  function pleaseInvertYourPrivateKey() {
-
-    // Add a timer to handle the action after this dialog box.
-    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (crypt_key.numberApplied === 3) {
-          timerSecondMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
-            // call the function you want here
-            continueManipulatingToGeneratePublicKey();
-          } else {
-            okDontInvertYourPrivateKey();
-          }
-        }
-      }
-    );
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(pleaseInvertYourPrivateKeyDialog);
-      });
-    });
-  }
-
-  function okDontInvertYourPrivateKey() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(okDontInvertYourPrivateKeyDialog);
-      });
-    });
-  }
-  
-  function nowTryToCancelLastMove(){
-    currentGame.createKeySceneActive = false;
-        
-    // Add a timer to handle the action after this dialog box.
-    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (crypt_key.numberApplied === 2) {
-          timerSecondMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
-            // call the function you want here
-            continueManipulatingToGeneratePublicKey();
-          } else {
-            pleaseInvertYourPrivateKey();
-          }
-        }
-      }
-    );
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(nowTryToCancelLastMoveDialog);
-      });
-    });
-  }
-
-  function continueManipulatingToGeneratePublicKey() {
-    currentGame.createKeySceneActive = false;
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(continueManipulatingToGeneratePublicKeyDialog);
-      });
-    });
-  }       
+  }  
 
   function keyPreGenerated() {
     $("body").closeAllDialogs(function() {
@@ -997,41 +912,17 @@ $(function() {
     addControlToDialog(goingToCreateKeysDialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+    addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: fallSixTimes}]);
+    addControlToDialog(fallSixTimesDialog, [{label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+
     addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
         deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
       }
     }]);
-    addControlToDialog(pleaseInvertYourPrivateKeyDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        $('body').closeAllDialogs(function() {
-          currentGame.createKeySceneActive = true;
-        });
-      }
-    }]);
-    addControlToDialog(okDontInvertYourPrivateKeyDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        $('body').closeAllDialogs(function() {
-          currentGame.createKeySceneActive = true;
-        });
-      }
-    }]);
-    addControlToDialog(nowTryToCancelLastMoveDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        $('body').closeAllDialogs(function() {
-          currentGame.createKeySceneActive = true;
-        });
-      }
-    }]);
-    addControlToDialog(continueManipulatingToGeneratePublicKeyDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        $('body').closeAllDialogs(function() {
-          currentGame.createKeySceneActive = true;
-        });
-      }
-    }]);
+
     addControlToDialog(keyPreGeneratedDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+
     addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: firstMessage}]);
     addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
     addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);

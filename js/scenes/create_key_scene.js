@@ -8,150 +8,77 @@
  *******************************************************************/
 
 function ia_create_pk(createKeyScene, gameBoxInfo) {
-    if (currentGame.iaCreateKeyTimer != null) {
-        return ;
-    }
+  if (currentGame.iaCreateKeyTimer != null) {
+    return ;
+  }
 
-    var move = [];
+  var message = gameBoxInfo.message;
+  var key = gameBoxInfo.crypt_key;
 
-    var message = gameBoxInfo.message;
-    var key = gameBoxInfo.crypt_key;
+  message.upMessage();
+  key.hidden();
 
-    for (var i = 0; i < key.length; ++i) {
-        move.push(Math.floor(Math.random() * 5) - 2);
-    }
+  // Make a key to appear.
+  var gameBox = gameBoxInfo.gameBox;
 
-    move.push(-1);
+  var keySymbolImg = currentGame.director.getImage('key-symbol');
+  var keySymbolActor = new CAAT.Actor().setSize(keySymbolImg.width, keySymbolImg.height)
+                                        .setBackgroundImage(currentGame.director.getImage('key-symbol'))
+                                        .setLocation(-keySymbolImg.width, gameBox.y - (keySymbolImg.height - 10) / 2 + gameBoxInfo.boxOption.BORDER_HEIGHT);
+  currentGame.scenes.create_key_scene.keySymbol = keySymbolActor;
+  createKeyScene.addChild(currentGame.scenes.create_key_scene.keySymbol);
 
-    var index = 0;
+  var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 8 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
+  var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
+  pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
 
-    var keyIsInvert = false;
+  var alphaD = new CAAT.AlphaBehavior().setValues(1,0).setCycle(false);
+  var alphaC = new CAAT.AlphaBehavior().setValues(0,1).setCycle(false);
 
-    var ia = new IA(createKeyScene, key, message, gameBoxInfo.boxOption);
-    ia.startIA();
-    ia.blankMessageIsAllowed = true;
-
-    currentGame.iaCreateKeyTimer = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
-        function(time, ttime, timerTask) {
-
-
-            if (index < move.length && key.keyInMove === false && key.keyFirstMove === false) {
- 
-                if (move[index] === 0) {
-                    if (keyIsInvert === true) {
-                        ia.addMoveInvert();
-                    } else {
-                        ia.addMoveRight();
-                        ++index;
-                    }
-                } else {
-                    if (move[index] < 0) {
-                        ia.addMoveInvert();
-                        move[index] = -1 * move[index];
-                    } else {
-                        ia.addMoveDown();
-                        move[index] = move[index] - 1;
-                    }
-                }
-                if( index == move.length - 1){
-                    ia.dontShowKey = true;
-                }
-
-            } else if (index === move.length && ia.moveList.length === 0) {
-                currentGame.iaCreateKeyTimer.cancel();
-
-
-                var waitUpMessageToContinue = createKeyScene.createTimer(0, Number.MAX_VALUE, null,
-                    function(time, ttime, timerTask) {
-                        if (currentGame.displayKey === true) {
-                            waitUpMessageToContinue.cancel();
-
-                            // Display "Clé publique générée !"
-                            gameBoxInfo.addWinScreen("Clé publique générée !", 300, 50, true);
-                            var alphaScreen = new CAAT.AlphaBehavior().
-                                                  setValues(0,1).
-                                                  setCycle(false).
-                                                  setFrameTime(gameBoxInfo.winScreen.time, 2000);
-                            gameBoxInfo.winScreen.addBehavior(alphaScreen);
-                        }
-                    }
-                );
-
-                message.upMessage();
-                key.hidden();
-
-
-               // Make a key to appear.
-                var gameBox = gameBoxInfo.gameBox;
-
-                var keySymbolImg = currentGame.director.getImage('key-symbol');
-                var keySymbolActor = new CAAT.Actor().setSize(keySymbolImg.width, keySymbolImg.height)
-                                                                    .setBackgroundImage(currentGame.director.getImage('key-symbol'))
-                                                                    .setLocation(-keySymbolImg.width, gameBox.y - (keySymbolImg.height - 10) / 2 + gameBoxInfo.boxOption.BORDER_HEIGHT);
-                currentGame.scenes.create_key_scene.keySymbol = keySymbolActor;
-                createKeyScene.addChild(currentGame.scenes.create_key_scene.keySymbol);
-
-                var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 8 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
-                var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
-                pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
-
-                var alphaD = new CAAT.AlphaBehavior().
-                                                  setValues(1,0).
-                                      setCycle(false);
-                var alphaC = new CAAT.AlphaBehavior().
-                                                  setValues(0,1).
-                                      setCycle(false);
-
-
-                var alphaCBehaviorListener = {
-                    'behaviorExpired' : function(behavior, time, actor) {
-                        if (currentGame.nbrKeyClipping < currentGame.maxKeyClipping - 1) {
+  var alphaCBehaviorListener = {
+    'behaviorExpired' : function(behavior, time, actor) {
+                          if (currentGame.nbrKeyClipping < currentGame.maxKeyClipping - 1) {
                             keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
                             currentGame.nbrKeyClipping = currentGame.nbrKeyClipping + 1;
-                        } else {
+                          } else {
                             currentGame.goToNextDialog = true;
-                        }
-                    },
-                    'behaviorApplied' : null
-                };
-                alphaC.addListener(alphaCBehaviorListener);
+                          }
+                        },
+    'behaviorApplied' : null
+  };
+  alphaC.addListener(alphaCBehaviorListener);
 
-                var alphaDBehaviorListener = {
-                    'behaviorExpired' : function(behavior, time, actor) {
-                        keySymbolActor.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
-                    },
-                    'behaviorApplied' : null
-                };
-                alphaD.addListener(alphaDBehaviorListener);
+  var alphaDBehaviorListener = {
+    'behaviorExpired' : function(behavior, time, actor) {
+                          keySymbolActor.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                        },
+    'behaviorApplied' : null
+  };
+  alphaD.addListener(alphaDBehaviorListener);
 
-                var behaviorListener = {
-                    'behaviorExpired' : function(behavior, time, actor) {
-                        keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
-                        currentGame.keyIsInPlace = true;
-                    }, 
-                    'behaviorApplied' : null
-                };
+  var behaviorListener = {
+    'behaviorExpired' : function(behavior, time, actor) {
+                          keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                          currentGame.keyIsInPlace = true;
+                        }, 
+    'behaviorApplied' : null
+  };
 
-                pb.addListener(behaviorListener);
-                keySymbolActor.addBehavior(pb);
+  pb.addListener(behaviorListener);
+  keySymbolActor.addBehavior(pb);
 
-                // ---
-
-
-                var newPk = [];
-                for (var i = 0; i < message.columnList.length; ++i) {
-                    if (message.columnList[i].type === COLUMN_TYPE_1) {
-                        newPk.push(message.columnList[i].squareNumber);
-                    } else if (message.columnList[i].type === COLUMN_TYPE_2) {
-                        newPk.push(-1 * message.columnList[i].squareNumber);
-                    } else {
-                        newPk.push(0);
-                    }
-                }
-                resetPublicKey(newPk, indexToReset);
-            }
-        }
-    );
+  // ---
+  var newPk = [];
+  for (var i = 0; i < message.columnList.length; ++i) {
+    if (message.columnList[i].type === COLUMN_TYPE_1) {
+      newPk.push(message.columnList[i].squareNumber);
+    } else if (message.columnList[i].type === COLUMN_TYPE_2) {
+      newPk.push(-1 * message.columnList[i].squareNumber);
+    } else {
+      newPk.push(0);
+    }
+  }
+  resetPublicKey(newPk, indexToReset);
 }
 
 function resizeCreateKeyScene(director, createKeyScene) {
