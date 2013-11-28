@@ -450,13 +450,17 @@ function mult(a, l1) {
 }
 
 function score(publicKey) {
-    console.error(publicKey);
     var maxPk = Math.max.apply(null, publicKey);
     var minPk = Math.min.apply(null, publicKey);
     var t = Math.max(minPk * minPk, maxPk * maxPk);
 
-    var score = l2(publicKey) / t;
-    return score;
+    var distance = l2(publicKey);
+
+    if (t === 0) {
+        return 0;
+    } else {
+        return distance / t;
+    }
 }
 
 function genPublicKey(dim, sk, repet) {
