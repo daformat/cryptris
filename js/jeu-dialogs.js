@@ -144,7 +144,8 @@ var hereYourPrivateKeyDialog = getDialog(chercheusePredef, "Voici ta clé privé
 var fallSixTimesDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, fais tomber six fois ta clé privée. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
 
 var helpCreateKeyDialog = getDialog(chercheusePredef, "helpCreateKey");
-var keyPreGeneratedDialog = getDialog(chercheusePredef, "Très bien, tu as compris ! L'ordinateur va à présent terminer de générer ta clé publique.");
+var keyPreGeneratedErrorDialog = getDialog(chercheusePredef, "Très bien, tu as compris ! Cependant la clé publique générée n'est pas suffisamment sécurisée, l'ordinateur va arranger cela.");
+var keyPreGeneratedSuccessDialog = getDialog(chercheusePredef, "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !");
 var wellDoneDialog = getDialog(chercheusePredef, "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.");
 
 var gameOverDialog = getDialog(chercheusePredef, "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !");

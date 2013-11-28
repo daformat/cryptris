@@ -526,11 +526,19 @@ $(function() {
   }  
 
   function keyPreGenerated() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedDialog);
+    if (score(currentGame.scenes.create_key_scene.game_box.message.getNumbers()) < 2) {
+      $("body").closeAllDialogs(function() {
+        $.switchWrapper('#bg-circuits', function() {
+          $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedErrorDialog);
+        });
       });
-    });
+    } else {
+      $("body").closeAllDialogs(function() {
+        $.switchWrapper('#bg-circuits', function() {
+          $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedSuccessDialog);
+        });
+      });
+    }
   }
 
   function wellDone() {
@@ -926,7 +934,8 @@ $(function() {
       }
     }]);
 
-    addControlToDialog(keyPreGeneratedDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+    addControlToDialog(keyPreGeneratedSuccessDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+    addControlToDialog(keyPreGeneratedErrorDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
 
     addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: firstMessage}]);
     addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
