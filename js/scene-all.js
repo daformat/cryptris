@@ -913,7 +913,7 @@ $(function() {
     addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: fallSixTimes}]);
-    addControlToDialog(fallSixTimesDialog, [{label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+    addControlToDialog(fallSixTimesDialog, [{label: "Passer cette étape", class: "button red", onClick: wellDone}, {label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
 
     addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
       onClick: function() {
