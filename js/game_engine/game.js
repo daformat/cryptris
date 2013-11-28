@@ -381,14 +381,6 @@ function createADataMessage(crypted_message, current_length) {
 }
 
 
-
-
-
-
-
-
-
-
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
 var repeatGenPublicKeyList = {
     8 : 6,
@@ -457,6 +449,15 @@ function mult(a, l1) {
     return mult_l;
 }
 
+function score(publicKey) {
+    console.error(publicKey);
+    var maxPk = Math.max.apply(null, publicKey);
+    var minPk = Math.min.apply(null, publicKey);
+    var t = Math.max(minPk * minPk, maxPk * maxPk);
+
+    var score = l2(publicKey) / t;
+    return score;
+}
 
 function genPublicKey(dim, sk, repet) {
     var pk = sk;
@@ -477,11 +478,14 @@ function genPublicKeys() {
     var pk = {};
 
     for (var i = 0; i < authorizedLength.length; ++i) {
-        pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]], repeatGenPublicKeyList[authorizedLength[i]]);
+        var isGenerated = false;
+        while (isGenerated === false || score(pk[authorizedLength[i]]) < 2) {
+            pk[authorizedLength[i]] = genPublicKey(authorizedLength[i], sks[authorizedLength[i]], repeatGenPublicKeyList[authorizedLength[i]]);
+            isGenerated = true;
+        }
     }
 
     return pk;
-
 }
 
 function getKeyInfo(dim) {
