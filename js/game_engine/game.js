@@ -763,3 +763,39 @@ function chiffre(dim, message, pk, sk) {
 
     return result;
 }
+
+function no_chiffre(dim, message) {
+
+    // -- the first step of the crypted message is the uncrypted message.
+    var cipher = []
+    for (var i = 0; i < message.length; ++i) {
+        cipher.push(message[i]);
+    }
+
+    /**
+     * If message is not a multiple of dim, we add some padding to cipher
+     */
+    while (cipher.length % dim !== 0) {
+        cipher.push(0);
+    }
+
+    var result = {};
+    result['message_type'] = [];
+    result['message_number'] = [];
+    result['plain_message'] = cipher;
+
+    for (var i = 0; i < cipher.length; ++i) {
+        if (cipher[i] > 0) {
+            result['message_type'].push(COLUMN_TYPE_1);
+            result['message_number'].push(cipher[i]);
+        } else if (cipher[i] < 0) {
+            result['message_type'].push(COLUMN_TYPE_2);
+            result['message_number'].push(-1 * cipher[i]);
+        } else {
+            result['message_type'].push(COLUMN_TYPE_3);
+            result['message_number'].push(0);
+        }
+    }
+
+    return result;
+}

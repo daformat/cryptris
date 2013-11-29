@@ -47,6 +47,10 @@ $(function() {
     activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
   });
 
+  $(document).on("playChercheuseHelpEvent", function() {
+    activateHelp(currentGame.scenes.play_chercheuse_scene, "playChercheuseSceneActive", helpPlayChercheuse);
+  });
+
   $(document).on("playSoloHelpEvent", function() {
     activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
   });
@@ -175,6 +179,33 @@ $(function() {
           }
           currentGame.gameOver = false;
           currentGame.tooManyBlocksInAColumn = false;
+        }
+      }
+    );
+  }
+
+  function playChercheuse() {
+    $("body").closeAllDialogs(function() {});
+    currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
+
+    var gameBox = currentGame.scenes.play_chercheuse_scene.game_box;
+    var key = gameBox.crypt_key;
+    var message = gameBox.message;
+    var ia = new IA(currentGame.scenes.play_chercheuse_scene.scene, key, message, gameBox.boxOption);
+    ia.addMoveLeft();
+    ia.addWaitForKeyHidden();
+    ia.addMoveDown();
+    ia.startIA();
+
+    currentGame.iaPlay = true;
+
+    var chercheuseAnimateTimer = currentGame.scenes.play_chercheuse_scene.scene.createTimer(0, Number.MAX_VALUE, null,
+      function(time, ttime, timerTask) {
+        if (ia.moveList.length === 0) {
+          chercheuseAnimateTimer.cancel();
+          currentGame.scenes.play_chercheuse_scene.game_box.closePadlock();
+          $(document).trigger('endAnimate');
+          setTimeout(firstMessage, 4000);
         }
       }
     );
@@ -378,6 +409,22 @@ $(function() {
   // -- Hide .hidden elements and remove class.
   $('.hidden').hide().removeClass('hidden');
 
+  function gameOver() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(gameOverDialog);
+      });
+    });
+  }
+
+  function tooManyBlocks() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(tooManyBlocksDialog);
+      });
+    });
+  }
+
   function intro() {
     // -- Make sure prompt is empty.
     $('.prompt .content').text('');
@@ -542,6 +589,10 @@ $(function() {
   }
 
   function wellDone() {
+    currentGame.director.currentScene.setPaused(false);
+    currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                  currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
+                                  new specialInInterpolator(), new specialOutInterpolator());
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-institut', function() {
         $(".wrapper.active .vertical-centering").dialog(wellDoneDialog);   
@@ -549,29 +600,48 @@ $(function() {
     });
   }
 
-  function gameOver() {
+
+  function letsGoToEncrypt() {
+    // Prepare the tutorial message
+    currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
+    // Set the tutorial message to the dialog box.
+    addInteractiveContentToDialog(firstMessageDialog, board_message_to_string(currentGame.play_solo_scene_msg.plain_message));
+
+
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(gameOverDialog);
+
+        // Prepare the sceneName and set it as the current scene.
+        var sceneName = 'play_chercheuse_scene';
+        var hookName = 'playChercheuseSceneActive';
+        prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse');
+        currentGame.scenes[sceneName].game_box.changeToAnimateEncryption();
+        currentGame.iaPlay = false;
+        currentGame[hookName] = false;
+        currentGame.gameOver = false;
+        currentGame.tooManyBlocksInAColumn = false;
+
+        currentGame.director.currentScene.setPaused(false);
+        currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                     currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
+                                     new specialInInterpolator(), new specialOutInterpolator());
+        
+        setTimeout(function() { currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName]); }, 500);
+
+        $(".wrapper.active .vertical-centering").dialog(letsGoToEncryptDialog);
       });
     });
   }
 
-  function tooManyBlocks() {
+  function helpPlayChercheuse() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(tooManyBlocksDialog);
+        $(".wrapper.active .vertical-centering").dialog(helpPlayChercheuseDialog);
       });
     });
   }
 
   function firstMessage() {
-    // Prepare the tutorial message
-    currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
-        
-    // Set the tutorial message to the dialog box.
-    addInteractiveContentToDialog(firstMessageDialog, board_message_to_string(currentGame.play_solo_scene_msg.plain_message));
-
     $("body").closeAllDialogs(function() {
       $(".wrapper.active .vertical-centering").dialog(firstMessageDialog);   
     });
@@ -925,7 +995,7 @@ $(function() {
     addControlToDialog(goingToCreateKeysDialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
     addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: fallSixTimes}]);
+    addControlToDialog(hereYourPrivateKeyDialog, [{label: "Passer cette étape", class: "button red", onClick: wellDone}, {label: labelNext, class: "button blue", onClick: fallSixTimes}]);
     addControlToDialog(fallSixTimesDialog, [{label: "Passer cette étape", class: "button red", onClick: wellDone}, {label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
 
     addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
@@ -937,7 +1007,9 @@ $(function() {
     addControlToDialog(keyPreGeneratedSuccessDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
     addControlToDialog(keyPreGeneratedErrorDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
 
-    addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: firstMessage}]);
+    addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: letsGoToEncrypt}]);
+    addControlToDialog(letsGoToEncryptDialog, [{label: "Passer cette étape", class: "button red", onClick: firstMessage}, {label: labelNext, class: "button blue", onClick: playChercheuse}]);
+
     addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
     addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
     addControlToDialog(firstMessageDialog, [{label: labelOpenMessage, class: "button blue", onClick: messageTest}]);

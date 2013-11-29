@@ -119,6 +119,8 @@ function getDialog(predef, content) {
 
   return newDialog;
 }
+var gameOverDialog = getDialog(chercheusePredef, "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !");
+var tooManyBlocksDialog = getDialog(chercheusePredef, "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !");
 
 var welcomeInstituteDialog = getDialog(chercheusePredef, "Bienvenue à l’Institut ! C’est donc toi mon nouvel apprenti, parfait ! Commençons par le commencement, il te faudra un compte utilisateur pour te connecter au réseau, tu n’as qu’à choisir ton nom d’utilisateur.");
 var accountCreatedDialog = getDialog(chercheusePredef, "Parfait" + (currentGame.litteralName != "" ? " <em>" + currentGame.litteralName + "</em>" : "" ) + ", ton compte est maintenant créé. Afin de sécuriser les échanges sur le réseau, nous utilisons un protocole de cryptographie asymétrique.");
@@ -148,12 +150,12 @@ var keyPreGeneratedErrorDialog = getDialog(chercheusePredef, "Très bien, tu as 
 var keyPreGeneratedSuccessDialog = getDialog(chercheusePredef, "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !");
 var wellDoneDialog = getDialog(chercheusePredef, "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.");
 
-var gameOverDialog = getDialog(chercheusePredef, "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !");
-var tooManyBlocksDialog = getDialog(chercheusePredef, "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !");
+var letsGoToEncryptDialog = getDialog(chercheusePredef, "J'utilise ta clé publique pour crypter mon message.");
+var helpPlayChercheuseDialog = getDialog(chercheusePredef, "Je suis en train de crypter un message que tu pourras décrypter par la suite.");
 
 var firstMessageDialog = getDialog(inriosPredef, null);
 var helpPlaySoloDialog = getDialog(chercheusePredef, "Help PLAY_SOLO");
-var messageTestDialog = getDialog(chercheusePredef, "J’ai crypté ce message à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.");
+var messageTestDialog = getDialog(chercheusePredef, "Voici le message que j'ai crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.");
 var tutorialDialog = getDialog(chercheusePredef, "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !");
 var decryptedMessage0Dialog = getDialog(decryptedPredef, "Ok, tu as réussi à lire ce message :)");
 var congratulationsOnCompletingTutorialDialog = getDialog(chercheusePredef, "Parfait ! Tu as compris <em>comment décrypter un message à l'aide de ta clé privée,</em> je n’en attendais pas <span>moins de toi !</span> Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut.");

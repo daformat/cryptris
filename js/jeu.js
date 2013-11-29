@@ -79,11 +79,31 @@ function createMessageForPlayScene(boardLength, message) {
     return crypted_message;
 }
 
+function createMessageForAnimateEncryption(boardLength, message) {
+    /**
+     * Change message to ternary
+     */
+    var ternary_message = string_to_ternary(message);
+
+    /**
+     * Return the crypted message
+     */
+    var clear_message = no_chiffre(boardLength, ternary_message);
+    return clear_message;
+}
+
 /**
  * 
  */
 function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
     currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
+}
+
+/**
+ * 
+ */
+function prepareAnimatePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, true);
 }
 
 /**

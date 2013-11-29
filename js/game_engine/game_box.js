@@ -189,6 +189,18 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
   }
   this.create();
 
+  this.changeToAnimateEncryption = function() {
+    if (this.padlock != null) {
+      this.padlock.setBackgroundImage(this.padlock_open_img, false);
+    }
+  }
+
+  this.closePadlock = function() {
+    if (this.padlock != null) {
+      this.padlock.setBackgroundImage(this.padlock_closed_img, false);
+    }
+  }
+
   /**
    * Detect the event TooBlocksInAColumn
    */

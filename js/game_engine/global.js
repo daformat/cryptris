@@ -50,6 +50,7 @@ function game() {
     this.playMediumSceneActive = false;
     this.playMaxSceneActive = false;
     this.playSoloSceneActive = false;
+    this.playChercheuseSceneActive = false;
 
     this.deactivateScenes = function(hookActive) {
     	if (hookActive !== 'createKeySceneActive') {
@@ -66,6 +67,9 @@ function game() {
 	    }
 	    if (hookActive !== 'playSoloSceneActive') {
 	    	this.playSoloSceneActive = false;
+	    }
+	    if (hookActive !== 'playChercheuseSceneActive') {
+	    	this.playChercheuseSceneActive = false;
 	    }
     }
 }
