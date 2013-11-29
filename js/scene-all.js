@@ -600,6 +600,10 @@ $(function() {
 
 
   function letsGoToEncrypt() {
+    // Change our player name for 'Chercheuse';
+    currentGame.saveUsername = currentGame.username;
+    currentGame.username = "Chercheuse";
+
     // Prepare the tutorial message
     currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
     // Set the tutorial message to the dialog box.
@@ -657,6 +661,7 @@ $(function() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
+        currentGame.username = currentGame.saveUsername;
         goToBattleScene('play_solo_scene', decryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
         $(".wrapper.active .vertical-centering").dialog(messageTestDialog);
       });
