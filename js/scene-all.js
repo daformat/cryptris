@@ -192,16 +192,14 @@ $(function() {
     var key = gameBox.crypt_key;
     var message = gameBox.message;
     var ia = new IA(currentGame.scenes.play_chercheuse_scene.scene, key, message, gameBox.boxOption);
-    ia.addMoveLeft();
-    ia.addWaitForKeyHidden();
-    ia.addMoveDown();
+    ia.moveList = currentGame.animateEncryptionMove;
     ia.startIA();
 
     currentGame.iaPlay = true;
 
     var chercheuseAnimateTimer = currentGame.scenes.play_chercheuse_scene.scene.createTimer(0, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        if (ia.moveList.length === 0) {
+        if (ia.moveList.length === 0 && key.keyInMove === false && key.keyFirstMove === false) {
           chercheuseAnimateTimer.cancel();
           currentGame.scenes.play_chercheuse_scene.game_box.closePadlock();
           $(document).trigger('endAnimate');

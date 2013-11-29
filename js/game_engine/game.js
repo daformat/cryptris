@@ -702,17 +702,44 @@ function chiffre(dim, message, pk, sk) {
     }
 
     var limitTestDifficulty = 0;
-    while (testIfIsCrypted === false) {
+    var move = [];
 
+    while (testIfIsCrypted === false) {
+        move = [];
+        var left = 0;
+        var right = 1;
+        var invert = 2;
+        var down = 3;
+        var key_hidden = 4;
+        var r = 1;
+
+        var last_k = 0;
         // -- Crypt the message.
         for (var i = 0; i < repeatChiffreMsgList[dim]; ++i) {
             var k = Math.floor(Math.random() * (dim + 1));
 
-            var r = -1;
+            var latteralMove = k - last_k;
+            if (latteralMove > 0) {
+                for (var z = 0; z < latteralMove; ++z) {
+                    move.push(left);
+                }
+            } else {
+                latteralMove = -1 * latteralMove;
+                for (var z = 0; z < latteralMove; ++z) {
+                    move.push(right);
+                }
+            }
+
             if (Math.floor(Math.random() * 2) === 1) {
-                r = 1;
+                r = -1 * r;
+                move.push(invert);
             }
             cipher = sum(cipher, mult(r, rotate(dim, pk, k)));
+            if (i === repeatChiffreMsgList[dim] - 1) {
+                move.push(key_hidden);
+            }
+            move.push(down);
+            last_k = k;
         }
 
         // -- Validate if the message has been crypted.
@@ -742,6 +769,8 @@ function chiffre(dim, message, pk, sk) {
         }
         limitTestDifficulty++;
     }
+
+    currentGame.animateEncryptionMove = move;
 
     var result = {};
     result['message_type'] = [];
