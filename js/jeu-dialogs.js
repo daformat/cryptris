@@ -6,10 +6,27 @@ var youAreIntern = "Tu es stagiaire dans une équipe de recherche Inria";
 var firstDay = "Premier jour à l'institut";
 
 var labelNext = "Suite";
+var labelPrev = "Précédent"
 var labelOpenMessage = "Ouvrir le message";
 var labelDecryptMessage = "Décrypter le message";
 var labelCutCable = "Débrancher le câble";
 var labelAie = "Aie ! Je viens de me prendre une décharge électrique !";
+
+var controlNext = {label: labelNext, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
+var controlOpen = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
+var controlDecrypt = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
+var controlPrev = {label: labelPrev, class: "button red", onClick: function() { $(document).trigger('prevDialog')}};
+var controlPass = {label: "Passer cette étape", class: "button red", onClick: function() {$(document).trigger('passDialog')}};
+
+function getControl(control, functionCN) {
+  var newControl = {label: control['label'], class: control['class']};
+  if (functionCN) {
+    newControl['onClick'] = functionCN;
+  } else {
+    newControl['onClick'] = control['onClick'];
+  }
+  return newControl;
+}
 
 var firstPrompt = function(welcome) {
   $.switchWrapper('#prompt', function() {
@@ -24,7 +41,7 @@ var firstPrompt = function(welcome) {
             $('.prompt .content').typeLetterByLetter(firstDay, animateTextDelayBetweenLetters,function() {
               // Switch to institute
               setTimeout(function() { 
-                $.switchWrapper('#bg-institut', welcome); 
+                $(document).trigger('nextDialog');
               }, readingDelay);
             });
           }, 2000)
@@ -146,8 +163,9 @@ var hereYourPrivateKeyDialog = getDialog(chercheusePredef, "Voici ta clé privé
 var fallSixTimesDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, fais tomber six fois ta clé privée. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
 
 var helpCreateKeyDialog = getDialog(chercheusePredef, "helpCreateKey");
-var keyPreGeneratedErrorDialog = getDialog(chercheusePredef, "Très bien, tu as compris ! Cependant la clé publique générée n'est pas suffisamment sécurisée, l'ordinateur va arranger cela.");
-var keyPreGeneratedSuccessDialog = getDialog(chercheusePredef, "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !");
+var keyPreGeneratedErrorText = "Très bien, tu as compris ! Cependant la clé publique générée n'est pas suffisamment sécurisée, l'ordinateur va arranger cela.";
+var keyPreGeneratedSuccessText = "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !";
+var keyPreGeneratedDialog = getDialog(chercheusePredef, keyPreGeneratedSuccessText);
 var wellDoneDialog = getDialog(chercheusePredef, "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.");
 
 var letsGoToEncryptDialog = getDialog(chercheusePredef, "J'utilise ta clé publique pour crypter mon message.");

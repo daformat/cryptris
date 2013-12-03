@@ -78,7 +78,7 @@ $(function() {
         if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
           waitToContinue.cancel();
           currentGame.createKeySceneActive = false;
-          keyPreGenerated();
+          $(document).trigger('nextDialog');
         }
       }
     );
@@ -107,7 +107,7 @@ $(function() {
             currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                            currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                            new specialInInterpolator(), new specialOutInterpolator());
-            wellDone();
+            $(document).trigger('nextDialog');
             currentGame.dontShowKey = false;
           }, 2000);
         }
@@ -154,6 +154,11 @@ $(function() {
         if (currentGame.goToNextDialog === true) {
           waitToContinue.cancel();
           currentGame.goToNextDialog = false;
+          if (onDecrypt === null) {
+            onDecrypt = function() {
+              $(document).trigger('nextDialog');
+            }
+          }
           timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
         }
         if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
@@ -203,7 +208,7 @@ $(function() {
           chercheuseAnimateTimer.cancel();
           currentGame.scenes.play_chercheuse_scene.game_box.closePadlock();
           $(document).trigger('endAnimate');
-          setTimeout(firstMessage, 4000);
+          setTimeout(function() { $(document).trigger('nextDialog') }, 4000);
         }
       }
     );
@@ -228,7 +233,7 @@ $(function() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', decryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
+        goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
         
         // Active input for play_medium_scene
         currentGame.iaPlay = true;
@@ -243,7 +248,7 @@ $(function() {
     $("body").closeAllDialogs(function() {          
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
-        goToBattleScene('play_max_scene', decryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
+        goToBattleScene('play_max_scene', null, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
         
         // Active input for play_max_scene
         currentGame.iaPlay = true;
@@ -429,15 +434,7 @@ $(function() {
 
     // -- Launch the welcome dialog.
     $("body").closeAllDialogs(function() { 
-      firstPrompt(welcome);
-    });
-  }
-
-  function welcome() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(welcomeInstituteDialog);   
-      });
+      firstPrompt();
     });
   }
 
@@ -450,30 +447,16 @@ $(function() {
           currentGame.litteralName = $('#login-name').val();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
           updateNameFunction();
+          /*
           $.switchWrapper('#bg-institut', accountCreated);
+          */
+          $(document).trigger('nextDialog');
           $('#login-name').blur();
           $('.new-login').unbind('submit').submit(function(e) {
             return false;
           });
           return false;
         });
-      });
-    });
-  }
-
-  function accountCreated() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(accountCreatedDialog);   
-      });
-    });
-  }
-
-  function cryptoExplanations() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        addCryptoExplanationsContent();
-        $(".wrapper.active .vertical-centering").dialog(cryptoExplanationsDialog);   
       });
     });
   }
@@ -498,20 +481,6 @@ $(function() {
 
   function goingToCreakeKeys() {
     game.cryptoExplanations[2] = true;
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(goingToCreateKeysDialog);      
-      });
-    });
-  }
-
-  function dialogWhatArePrivatePublicKey() {
-    addKeysExplanationsContent();
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(keysExplanationsDialog);   
-      });
-    });
   }
 
   function dialogWhatArePrivatePublicKeyOpt1() {
@@ -534,11 +503,8 @@ $(function() {
 
   function hereYourPrivateKey() {
     game.dialogWhatArePrivatePublicKey[2] = true;
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        // Set the createKeyScene as the current scene.
-        currentGame.director.easeInOut(
+    // Set the createKeyScene as the current scene.
+    currentGame.director.easeInOut(
                                   currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene),
                                   CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                   currentGame.director.getSceneIndex(currentGame.director.currentScene),
@@ -548,18 +514,7 @@ $(function() {
                                   true,
                                   new specialInInterpolator(),
                                   new specialOutInterpolator()
-        );
-        $(".wrapper.active .vertical-centering").dialog(hereYourPrivateKeyDialog);
-      });
-    });
-  }
-
-  function fallSixTimes() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(fallSixTimesDialog);
-      });
-    });
+    );
   }
 
   function helpCreateKey() {
@@ -570,19 +525,9 @@ $(function() {
     });
   }  
 
-  function keyPreGenerated() {
+  function keyPreGeneratedUpdateText() {
     if (score(currentGame.scenes.create_key_scene.game_box.message.getNumbers()) < 2) {
-      $("body").closeAllDialogs(function() {
-        $.switchWrapper('#bg-circuits', function() {
-          $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedErrorDialog);
-        });
-      });
-    } else {
-      $("body").closeAllDialogs(function() {
-        $.switchWrapper('#bg-circuits', function() {
-          $(".wrapper.active .vertical-centering").dialog(keyPreGeneratedSuccessDialog);
-        });
-      });
+      keyPreGeneratedDialog['content'] = keyPreGeneratedErrorText;
     }
   }
 
@@ -591,11 +536,6 @@ $(function() {
     currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                   currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                   new specialInInterpolator(), new specialOutInterpolator());
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(wellDoneDialog);   
-      });
-    });
   }
 
 
@@ -609,30 +549,23 @@ $(function() {
     // Set the tutorial message to the dialog box.
     addInteractiveContentToDialog(firstMessageDialog, board_message_to_string(currentGame.play_solo_scene_msg.plain_message));
 
+    // Prepare the sceneName and set it as the current scene.
+    var sceneName = 'play_chercheuse_scene';
+    var hookName = 'playChercheuseSceneActive';
+    prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse');
+    currentGame.scenes[sceneName].game_box.changeToAnimateEncryption();
+    currentGame.iaPlay = false;
+    currentGame[hookName] = false;
+    currentGame.gameOver = false;
+    currentGame.tooManyBlocksInAColumn = false;
 
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-
-        // Prepare the sceneName and set it as the current scene.
-        var sceneName = 'play_chercheuse_scene';
-        var hookName = 'playChercheuseSceneActive';
-        prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse');
-        currentGame.scenes[sceneName].game_box.changeToAnimateEncryption();
-        currentGame.iaPlay = false;
-        currentGame[hookName] = false;
-        currentGame.gameOver = false;
-        currentGame.tooManyBlocksInAColumn = false;
-
-        currentGame.director.currentScene.setPaused(false);
-        currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+    currentGame.director.currentScene.setPaused(false);
+    currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                      currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
-                                     new specialInInterpolator(), new specialOutInterpolator());
+                                     new specialInInterpolator(), new specialOutInterpolator()
+    );
         
-        setTimeout(function() { currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName]); }, 500);
-
-        $(".wrapper.active .vertical-centering").dialog(letsGoToEncryptDialog);
-      });
-    });
+    setTimeout(function() { currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName]); }, 500);
   }
 
   function helpPlayChercheuse() {
@@ -643,12 +576,6 @@ $(function() {
     });
   }
 
-  function firstMessage() {
-    $("body").closeAllDialogs(function() {
-      $(".wrapper.active .vertical-centering").dialog(firstMessageDialog);   
-    });
-  }   
-
   function helpPlaySolo() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
@@ -658,97 +585,24 @@ $(function() {
   }
 
   function messageTest() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        // Display the battle scene in background.
-        currentGame.username = currentGame.saveUsername;
-        goToBattleScene('play_solo_scene', decryptedMessage0, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
-        $(".wrapper.active .vertical-centering").dialog(messageTestDialog);
-      });
-    });
+    // Display the battle scene in background.
+    currentGame.username = currentGame.saveUsername;
+    goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
   }
 
   function tutorial() {
-    $("body").closeAllDialogs(function() {
-      // Launch the timer and display private key.
-      currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
-      $(".wrapper.active .vertical-centering").dialog(tutorialDialog);   
-    });
+    // Launch the timer and display private key.
+    currentGame.scenes.play_solo_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_solo_scene);
   }
-
-  function decryptedMessage0() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(decryptedMessage0Dialog);   
-      });
-    });
-  }       
 
   function congratulationsOnCompletingTutorial() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        // Disable the action on the key and switch to the waiting scene.
-        currentGame.playSoloSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-        $(".wrapper.active .vertical-centering").dialog(congratulationsOnCompletingTutorialDialog);
-      });
-    });
-  }
-
-  function aProblemOccurs() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(aProblemOccursDialog);   
-      });
-    });
-  }
-
-  function weird() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(weirdDialog);   
-      });
-    });
+    // Disable the action on the key and switch to the waiting scene.
+    currentGame.playSoloSceneActive = false;
+    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
   }
 
   function cables0() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(cables0Dialog);
-        $('.cables').prepareCables(null, electricShock);
-      });
-    });
-  }
-
-  function electricShock() {
-    addElectricShockContent();
-    $("body").closeAllDialogs(function() {
-      $(".wrapper.active .vertical-centering").dialog(electricShockDialog);   
-    });
-  }
-
-  function thisAintNormal() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(thisAintNormalDialog);   
-      });
-    });
-  }
-
-  function useCryptoProtocol() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(useCryptoProtocolDialog);   
-      });
-    });
-  }
-
-  function sendingFirstCable() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(sendingFirstCableDialog);   
-      });
-    });
+    $('.cables').prepareCables(null, function() { $(document).trigger('nextDialog'); });
   }
 
   function encryptedFirstCable() {
@@ -757,12 +611,6 @@ $(function() {
     
     // Set the first battle message to the dialog box.
     addInteractiveContentToDialog(firstBattleMessageDialog, board_message_to_string(currentGame.play_min_scene_msg.plain_message));
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(firstBattleMessageDialog);   
-      });
-    });
   }
 
   function helpPlayMin() {
@@ -774,61 +622,17 @@ $(function() {
   }
 
   function serverAlsoTryingToBreakEncryption() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        // Display the battle scene in background.
-        goToBattleScene('play_min_scene', decryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
-
-        $(".wrapper.active .vertical-centering").dialog(serverAlsoTryingToBreakEncryptionDialog);   
-      });
-    });
-  }
-
-  function decryptedMessage1() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(decryptedMessage1Dialog);   
-      });
-    });
+    // Display the battle scene in background.
+    goToBattleScene('play_min_scene', null, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
   }
 
   function cables1() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
+    // Disable the action on the key and switch to the waiting scene.
+    currentGame.playMinSceneActive = false;
+    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
 
-        // Disable the action on the key and switch to the waiting scene.
-        currentGame.playMinSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-
-        $(".wrapper.active .vertical-centering").dialog(cables1Dialog);
-        $('.cables').prepareCables(24, successCables1);
-      });
-    });
+    $('.cables').prepareCables(24, function() { $(document).trigger('nextDialog'); });
   }   
-
-  function successCables1() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(successCables1Dialog);
-      });
-    });
-  }
-
-  function serverIsFaster() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(serverIsFasterDialog);   
-      });
-    });
-  }
-
-  function sendingSecondCable() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(sendingSecondCableDialog);
-      });
-    });
-  }
 
   function encryptedSecondCable() {
 
@@ -837,12 +641,6 @@ $(function() {
 
     // Set the first battle message to the dialog box.
     addInteractiveContentToDialog(secondBattleMessageDialog, board_message_to_string(currentGame.play_medium_scene_msg.plain_message));
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(secondBattleMessageDialog);
-      });
-    });
   }
 
   function helpPlayMedium() {
@@ -853,50 +651,13 @@ $(function() {
     });
   }
 
-  function decryptedMessage2() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(decryptedMessage2Dialog);   
-      });
-    });
-  }
-
   function cables2() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        // Disable the action on the key and switch to the waiting scene.
-        currentGame.playMinSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
+    // Disable the action on the key and switch to the waiting scene.
+    currentGame.playMinSceneActive = false;
+    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
 
-        $(".wrapper.active .vertical-centering").dialog(cables2Dialog);
-        $('.cables').prepareCables(78, successCables2);
-      });
-    });
+    $('.cables').prepareCables(78, function() { $(document).trigger('nextDialog')});
   }   
-
-  function successCables2() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(successCables2Dialog);   
-      });
-    });
-  }
-
-  function serverIsInfectingOtherMachines() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(serverIsInfectingOtherMachinesDialog);   
-      });
-    });
-  }
-
-  function sendingThirdCable() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(sendingThirdCableDialog);   
-      });
-    });
-  }
 
   function encryptedThirdCable() {
     // Prepare the third battle message
@@ -904,12 +665,6 @@ $(function() {
     
     // Set the third battle message to the dialog box.
     addInteractiveContentToDialog(thirdBattleMessageDialog, board_message_to_string(currentGame.play_max_scene_msg.plain_message));
-
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(thirdBattleMessageDialog);
-      });
-    });
   }
 
   function helpPlayMax() {
@@ -920,68 +675,12 @@ $(function() {
     });
   }
 
-  function decryptedMessage3() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-circuits', function() {
-        $(".wrapper.active .vertical-centering").dialog(decryptedMessage3Dialog);
-      });
-    });
-  }
-    
   function cables3() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        // Disable the action on the key and switch to the waiting scene.
-        currentGame.playMinSceneActive = false;
-        currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
-
-        $(".wrapper.active .vertical-centering").dialog(cables3Dialog);
-        $('.cables').prepareCables(31, successCables3);
-      });
-    });
+    // Disable the action on the key and switch to the waiting scene.
+    currentGame.playMinSceneActive = false;
+    currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
+    $('.cables').prepareCables(31, function() { $(document).trigger('nextDialog'); });
   }       
-
-  function successCables3() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(successCables3Dialog);
-      });
-    });
-  }
-
-  function IWasTrapped() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(IWasTrappedDialog);
-      });
-    });
-  }
-
-  function thanksToCrypto() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(thanksToCryptoDialog);
-      });
-    });
-  }
-
-  function thanksToCrypto2() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(thanksToCrypto2Dialog);   
-      });
-    });             
-  }       
-
-  function comparePlayTimeChart() {
-    $("body").closeAllDialogs(function() {
-      $.switchWrapper('#bg-institut', function() {
-        $(".wrapper.active .vertical-centering").dialog(comparePlayTimeChartDialog);   
-        setTimeout(createChart, 100);
-      });
-    });     
-  }
-  $.comparePlayTimeChart = comparePlayTimeChart;
 
   function theEnd() {
     $("body").closeAllDialogs(function() {
@@ -989,82 +688,166 @@ $(function() {
     });
   }
 
-  function addControlToDialogs() {
-    addControlToDialog(welcomeInstituteDialog, [{label: labelNext, class: "button blue", onClick: switchToNewLogin}]);
-    addControlToDialog(accountCreatedDialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(cryptoExplanationsDialog, [{label: labelNext, class: "button blut", onClick: switchToNewLogin}]);
-    addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: cryptoExplanations}]);
-    addControlToDialog(goingToCreateKeysDialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick: dialogWhatArePrivatePublicKey}]);
-    addControlToDialog(hereYourPrivateKeyDialog, [{label: "Passer cette étape", class: "button red", onClick: wellDone}, {label: labelNext, class: "button blue", onClick: fallSixTimes}]);
-    addControlToDialog(fallSixTimesDialog, [{label: "Passer cette étape", class: "button red", onClick: wellDone}, {label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+  addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
+  addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
 
-    addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
-      }
-    }]);
+  addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick:
+    function () {
+      $(document).trigger('stayDialog');
+    }
+  }]);
+  addControlToDialog(cryptoExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick:
+    function () {
+      $(document).trigger('stayDialog');
+    }
+  }]);
+  addControlToDialog(keysExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick:
+    function() {
+      $(document).trigger('stayDialog');
+    }
+  }]);
+  addControlToDialog(keysExplanationsOpt2Dialog, [{label: labelNext, class: "button blue", onClick:
+    function() {
+      $(document).trigger('stayDialog');
+    }
+  }]);
+  addControlToDialog(helpCreateKeyDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+    }
+  }]);
+  addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
+    }
+  }]);
+  addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
+    }
+  }]);
+  addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
+    }
+  }]);
+  addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
+    }
+  }]);
+  
+  var indexDialog = -1;
+  var jumpDialog = 1;
+  var dialogsList = [
+    {'dialog' : welcomeInstituteDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlNext, switchToNewLogin)]},
+    {'dialog' : accountCreatedDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, function() { indexDialog--; switchToNewLogin() }), getControl(controlNext, null)]},
+    {'dialog' : cryptoExplanationsDialog, 'background' : 'bg-institut', 'callback' : addCryptoExplanationsContent, 'controlsList' : []},
+    {'dialog' : goingToCreateKeysDialog, 'background' : 'bg-institut', 'callback' : goingToCreakeKeys, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : keysExplanationsDialog, 'background' : 'bg-institut', 'callback' : addKeysExplanationsContent, 'controlsList' : []},
+    {'dialog' : hereYourPrivateKeyDialog, 'background' : 'bg-circuits', 'callback' : hereYourPrivateKey, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 3; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : fallSixTimesDialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlPass, function() { jumpDialog = 2; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, switchToCreateKey)]},
 
-    addControlToDialog(keyPreGeneratedSuccessDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
-    addControlToDialog(keyPreGeneratedErrorDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+    {'dialog' : keyPreGeneratedDialog, 'background' : 'bg-circuits', 'callback' : keyPreGeneratedUpdateText, 'controlsList' : [getControl(controlNext, switchToFinishCreateKey)]},
+    {'dialog' : wellDoneDialog, 'background' : 'bg-institut', 'callback' : wellDone, 'controlsList' : [getControl(controlNext, null)]},
+    {'dialog' : letsGoToEncryptDialog, 'background' : 'bg-circuits', 'callback' : letsGoToEncrypt, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 2; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, playChercheuse)]},
+    
+    {'dialog' : firstMessageDialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlPrev, null), getControl(controlOpen, null)]},
+    {'dialog' : messageTestDialog, 'background' : 'bg-circuits', 'callback' : messageTest, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : tutorialDialog, 'background' : 'bg-circuits', 'callback' : tutorial, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, activatePlaySolo)]},
+    {'dialog' : decryptedMessage0Dialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlNext, null)]},
+    {'dialog' : congratulationsOnCompletingTutorialDialog, 'background' : 'bg-institut', 'callback' : congratulationsOnCompletingTutorial, 'controlsList' : [getControl(controlNext, null)]},
 
-    addControlToDialog(wellDoneDialog, [{label: labelNext, class: "button blue", onClick: letsGoToEncrypt}]);
-    addControlToDialog(letsGoToEncryptDialog, [{label: "Passer cette étape", class: "button red", onClick: firstMessage}, {label: labelNext, class: "button blue", onClick: playChercheuse}]);
+    {'dialog' : aProblemOccursDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : weirdDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : cables0Dialog, 'background' : 'bg-institut', 'afterCallback' : cables0, 'controlsList' : []},
+    {'dialog' : electricShockDialog, 'background' : 'bg-institut', 'callback' : addElectricShockContent, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
 
-    addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-    addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: ''}]);
-    addControlToDialog(firstMessageDialog, [{label: labelOpenMessage, class: "button blue", onClick: messageTest}]);
-    addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
-      }
-    }]);
-    addControlToDialog(messageTestDialog, [{label: labelNext, class: "button blue", onClick: tutorial}]);
-    addControlToDialog(tutorialDialog, [{label: labelNext, class: "button blue", onClick: activatePlaySolo}]);
-    addControlToDialog(decryptedMessage0Dialog, [{label: labelNext, class: "button blue", onClick: congratulationsOnCompletingTutorial}]);
-    addControlToDialog(congratulationsOnCompletingTutorialDialog, [{label: labelNext, class: "button blue", onClick: aProblemOccurs}]);
-    addControlToDialog(aProblemOccursDialog, [{label: labelNext, class: "button blue", onClick: weird}]);
-    addControlToDialog(weirdDialog, [{label: labelNext, class: "button blue", onClick: cables0}]);
-    addControlToDialog(thisAintNormalDialog, [{label: labelNext, class: "button blue", onClick: useCryptoProtocol}]);
-    addControlToDialog(useCryptoProtocolDialog, [{label: labelNext, class: "button blue", onClick: sendingFirstCable}]);
-    addControlToDialog(sendingFirstCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedFirstCable}]);
-    addControlToDialog(firstBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: serverAlsoTryingToBreakEncryption}]);
-    addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
-      }
-    }]);
-    addControlToDialog(serverAlsoTryingToBreakEncryptionDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel1}]);
-    addControlToDialog(decryptedMessage1Dialog, [{label: labelCutCable, class: "button blue", onClick: cables1}]);
-    addControlToDialog(successCables1Dialog, [{label: labelNext, class: "button blue", onClick: serverIsFaster}]);
-    addControlToDialog(serverIsFasterDialog, [{label: labelNext, class: "button blue", onClick: sendingSecondCable}]);
-    addControlToDialog(sendingSecondCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedSecondCable}]);
-    addControlToDialog(secondBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel2}]);
-    addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
-      }
-    }]);
-    addControlToDialog(decryptedMessage2Dialog, [{label: labelCutCable, class: "button blue", onClick: cables2}]);
-    addControlToDialog(successCables2Dialog, [{label: labelNext, class: "button blue", onClick: serverIsInfectingOtherMachines}]);
-    addControlToDialog(serverIsInfectingOtherMachinesDialog, [{label: labelNext, class: "button blue", onClick: sendingThirdCable}]);
-    addControlToDialog(sendingThirdCableDialog, [{label: labelNext, class: "button blue", onClick: encryptedThirdCable}]);
-    addControlToDialog(thirdBattleMessageDialog, [{label: labelDecryptMessage, class: "button blue", onClick: playLevel3}]);
-    addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue",
-      onClick: function() {
-        deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
-      }
-    }]);
-    addControlToDialog(decryptedMessage3Dialog, [{label: labelCutCable, class: "button blue", onClick: cables3}]);
-    addControlToDialog(successCables3Dialog, [{label: labelNext, class: "button blue", onClick: IWasTrapped}]);
-    addControlToDialog(IWasTrappedDialog, [{label: labelNext, class: "button blue", onClick: thanksToCrypto}]);
-    addControlToDialog(thanksToCryptoDialog, [{label: labelNext, class: "button blue", onClick: thanksToCrypto2}]);
-    addControlToDialog(thanksToCrypto2Dialog, [{label: labelNext, class: "button blue", onClick: comparePlayTimeChart}]);
-    addControlToDialog(comparePlayTimeChartDialog, [{label: labelNext, class: "button blue", onClick: theEnd}]);
+    {'dialog' : thisAintNormalDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : useCryptoProtocolDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : sendingFirstCableDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+
+    {'dialog' : firstBattleMessageDialog, 'background' : 'bg-institut', 'callback' : encryptedFirstCable, 'controlsList' : [getControl(controlDecrypt, null)]},
+    {'dialog' : serverAlsoTryingToBreakEncryptionDialog, 'background' : 'bg-circuits', 'callback' : serverAlsoTryingToBreakEncryption, 'controlsList' : [getControl(controlNext, playLevel1)]},
+    {'dialog' : decryptedMessage1Dialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlNext, null)]},
+    {'dialog' : cables1Dialog, 'background' : 'bg-institut', 'afterCallback' : cables1, 'controlsList' : []},
+    {'dialog' : successCables1Dialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+
+    {'dialog' : serverIsFasterDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : sendingSecondCableDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : secondBattleMessageDialog, 'background' : 'bg-institut', 'callback' : encryptedSecondCable, 'controlsList' : [getControl(controlDecrypt, playLevel2)]},
+    {'dialog' : decryptedMessage2Dialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlNext, null)]},
+    {'dialog' : cables2Dialog, 'background' : 'bg-institut', 'afterCallback' : cables2, 'controlsList' : []},
+    {'dialog' : successCables2Dialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+
+    {'dialog' : serverIsInfectingOtherMachinesDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : sendingThirdCableDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : thirdBattleMessageDialog, 'background' : 'bg-institut', 'callback' : encryptedThirdCable, 'controlsList' : [getControl(controlDecrypt, playLevel3)]},
+    {'dialog' : decryptedMessage3Dialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlNext, null)]},
+    {'dialog' : cables3Dialog, 'background' : 'bg-institut', 'afterCallback' : cables3, 'controlsList' : []},
+    {'dialog' : successCables3Dialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+
+    {'dialog' : IWasTrappedDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : thanksToCryptoDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : thanksToCrypto2Dialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : comparePlayTimeChartDialog, 'background' : 'bg-institut', 'afterCallback' : function() { setTimeout(createChart, 100); }, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, theEnd)]}
+  ];
+
+  for (var dialogI in dialogsList) {
+    if (dialogsList[dialogI]['controlsList']) {
+      dialogsList[dialogI]['dialog']['controls'] = dialogsList[dialogI]['controlsList'];
+    }
   }
-  addControlToDialogs();
+
+  function displayDialog(dialog) {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#' + dialog['background'], function() {
+        if (dialog['callback']) {
+          dialog['callback']();
+        }
+        $(".wrapper.active .vertical-centering").dialog(dialog['dialog']);
+        if (dialog['afterCallback']) {
+          dialog['afterCallback']();
+        }
+      });
+    });
+  }
+
+  var lockDialog = false;
+  var lockTime = 1000;
+  $(document).on('nextDialog', function() {
+    if (lockDialog === false) {
+      lockDialog = true;
+      ++indexDialog;
+      jumpDialog = 1; 
+      displayDialog(dialogsList[indexDialog]);
+      setTimeout(function() { lockDialog = false; }, lockTime);
+    }
+  });
+
+  $(document).on('stayDialog', function() {
+    if (lockDialog === false) {
+      lockDialog = true;
+      displayDialog(dialogsList[indexDialog]);
+      setTimeout(function() { lockDialog = false; }, lockTime);
+    }
+  });
+
+
+  $(document).on('prevDialog', function() {
+    if (lockDialog === false) {
+      lockDialog = true;
+      indexDialog = indexDialog - jumpDialog;
+      jumpDialog = 1;
+      displayDialog(dialogsList[indexDialog]);
+      setTimeout(function() { lockDialog = false; }, lockTime);
+    }
+  });
+
+  $(document).on('passDialog', function() {
+    indexDialog = indexDialog + jumpDialog;
+    displayDialog(dialogsList[indexDialog]);
+  });
 
   function addCryptoExplanationsContent() {
     var cryptoExplanationsContent = [{
@@ -1077,13 +860,24 @@ $(function() {
       class: game.cryptoExplanations[1] ? 'asked': 'not-asked'
     }, {
       label: cryptoExplanationsLabel2,
-      onClick: goingToCreakeKeys,
+      onClick: function() { $(document).trigger('nextDialog') },
       class: game.cryptoExplanations[2] ? 'asked' : 'not-asked'
     }];
     addInteractiveContentToDialog(cryptoExplanationsDialog, cryptoExplanationsContent);
   }
 
   function addKeysExplanationsContent() {
+    currentGame.director.easeInOut(
+                                  currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                  CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                  currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                  CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                  CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                  transitionTime,
+                                  true,
+                                  new specialInInterpolator(),
+                                  new specialOutInterpolator()
+    );
     var keysExplanationsContent = [{
       label: keysExplanationsLabel0,
       onClick: dialogWhatArePrivatePublicKeyOpt1,
@@ -1094,7 +888,7 @@ $(function() {
       class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
     }, {
       label: keysExplanationsLabel2,
-      onClick: hereYourPrivateKey,
+      onClick: function() { $(document).trigger('nextDialog') },
       class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
     }];
     addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
@@ -1103,7 +897,7 @@ $(function() {
   function addElectricShockContent() {
     var electricShockContent = [{
       label: labelAie,
-      onClick: thisAintNormal,
+      onClick: function() { $(document).trigger('nextDialog') },
     }];
     addInteractiveContentToDialog(electricShockDialog, electricShockContent);
   }
