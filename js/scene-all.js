@@ -584,10 +584,14 @@ $(function() {
     });
   }
 
+  var testMessageTest = true;
   function messageTest() {
-    // Display the battle scene in background.
-    currentGame.username = currentGame.saveUsername;
-    goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
+    if (testMessageTest === true) {
+      testMessageTest = false;
+      // Display the battle scene in background.
+      currentGame.username = currentGame.saveUsername;
+      goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
+    }
   }
 
   function tutorial() {
@@ -745,15 +749,15 @@ $(function() {
     {'dialog' : cryptoExplanationsDialog, 'background' : 'bg-institut', 'callback' : addCryptoExplanationsContent, 'controlsList' : []},
     {'dialog' : goingToCreateKeysDialog, 'background' : 'bg-institut', 'callback' : goingToCreakeKeys, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
     {'dialog' : keysExplanationsDialog, 'background' : 'bg-institut', 'callback' : addKeysExplanationsContent, 'controlsList' : []},
-    {'dialog' : hereYourPrivateKeyDialog, 'background' : 'bg-circuits', 'callback' : hereYourPrivateKey, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 3; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : hereYourPrivateKeyDialog, 'background' : 'bg-circuits', 'callback' : hereYourPrivateKey, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 3; $(document).trigger('passDialog'); }), getControl(controlNext, null)]},
     {'dialog' : fallSixTimesDialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlPass, function() { jumpDialog = 2; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, switchToCreateKey)]},
 
     {'dialog' : keyPreGeneratedDialog, 'background' : 'bg-circuits', 'callback' : keyPreGeneratedUpdateText, 'controlsList' : [getControl(controlNext, switchToFinishCreateKey)]},
     {'dialog' : wellDoneDialog, 'background' : 'bg-institut', 'callback' : wellDone, 'controlsList' : [getControl(controlNext, null)]},
-    {'dialog' : letsGoToEncryptDialog, 'background' : 'bg-circuits', 'callback' : letsGoToEncrypt, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 2; $(document).trigger('passDialog'); }), getControl(controlPrev, null), getControl(controlNext, playChercheuse)]},
+    {'dialog' : letsGoToEncryptDialog, 'background' : 'bg-circuits', 'callback' : letsGoToEncrypt, 'controlsList' : [getControl(controlPass, function() { jumpDialog = 2; $(document).trigger('passDialog'); }), getControl(controlNext, playChercheuse)]},
     
-    {'dialog' : firstMessageDialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlPrev, null), getControl(controlOpen, null)]},
-    {'dialog' : messageTestDialog, 'background' : 'bg-circuits', 'callback' : messageTest, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, null)]},
+    {'dialog' : firstMessageDialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlOpen, null)]},
+    {'dialog' : messageTestDialog, 'background' : 'bg-circuits', 'callback' : messageTest, 'controlsList' : [getControl(controlNext, null)]},
     {'dialog' : tutorialDialog, 'background' : 'bg-circuits', 'callback' : tutorial, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, activatePlaySolo)]},
     {'dialog' : decryptedMessage0Dialog, 'background' : 'bg-circuits', 'controlsList' : [getControl(controlNext, null)]},
     {'dialog' : congratulationsOnCompletingTutorialDialog, 'background' : 'bg-institut', 'callback' : congratulationsOnCompletingTutorial, 'controlsList' : [getControl(controlNext, null)]},

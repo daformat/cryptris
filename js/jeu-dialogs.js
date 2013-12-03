@@ -182,7 +182,7 @@ var aProblemOccursDialog = getDialog(chercheusePredef, "C'est bizarre, le serveu
 var weirdDialog = getDialog(chercheusePredef, (currentGame.litteralName != "" ? " <em>" + currentGame.litteralName + ",</em> e" : "E") + "st-ce que tu me reçois ? C’est vraiment bizarre, notre serveur refuse obstinément de se re-configurer et m'empêche de sortir <sspan>de la salle </sspan>des machines, essaie de débrancher le câble n° 42 du tableau électrique principal.");
 var cables0Dialog = getDialog(cablesPredef, null);
 var electricShockDialog = getDialog(playerPredef, null);
-var thisAintNormalDialog = getDialog(chercheusePredef, "Attends, ce n’est pas normal... Laisse-moi vérifier... Ça alors ! Le serveur s’est reprogrammé de lui-même et c’est lui qui contrôle le système. Manifestement, il nous écoute et t’a empêché de débrancher le câble, tout comme il a verrouillé les portes de la salle. Je suis enfermée ici !");
+var thisAintNormalDialog = getDialog(chercheusePredef, "Attends, ce n’est pas normal... Je vérifie... Ça alors ! Le serveur s’est reprogrammé de lui-même et il contrôle le système. Manifestement, il nous écoute et t’a empêché de débrancher le câble, tout comme il a verrouillé les portes de la salle. Je suis enfermée ici !");
 var useCryptoProtocolDialog = getDialog(chercheusePredef, "C’est le bon moment pour utiliser le protocole de cryptage afin de l’empêcher de nous écouter ! Je vais t'envoyer la liste des câbles à débrancher, mais un par un, et de manière cryptée.");
 
 var sendingFirstCableDialog = getDialog(chercheusePredef, "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau électrique correspondant.");
