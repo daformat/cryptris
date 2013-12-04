@@ -6,31 +6,6 @@ var cryptrisSettings = {
 
 $(function(){
 
-  var game = cryptrisSettings;
-  var transitionTime = 1000;
-
-  // hide .hidden elements and remove class
-  $('.hidden').hide().removeClass('hidden');
-
-  function getName(level, isCK) {
-    $("body").closeAllDialogs( function(){
-      $.switchWrapper('#new-login', function(){
-        $('#login-name').focus();
-        $('.new-login').submit(function(e){
-          game.player.name = $('#login-name').val();
-          currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
-          isCK ? level() : firstDialog(level);
-          $('#login-name').blur();
-          $('.new-login').unbind('submit').submit(function(e){
-            return false;
-          });
-          return false;
-        });
-      });
-    });
-  }
-
-
   function specialOutInterpolator() {
     this.getPosition = function(time) {
       return {'x' : time, 'y' : 0};
@@ -42,6 +17,34 @@ $(function(){
       return {'x' : time, 'y' : 1};
     }
   }
+
+  var game = cryptrisSettings;
+  var transitionTime = 1000;
+
+  // hide .hidden elements and remove class
+  $('.hidden').hide().removeClass('hidden');
+
+  function getName(level, isCK) {
+    $("body").closeAllDialogs( function(){
+      $.switchWrapper('#new-login', function(){
+        $('#login-name').focus();
+        $('.new-login').submit(function(e){
+          
+          currentGame.litteralName = $('#login-name').val();
+          currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
+          updateNameFunction();
+
+          isCK ? level() : firstDialog(level);
+          $('#login-name').blur();
+          $('.new-login').unbind('submit').submit(function(e){
+            return false;
+          });
+          return false;
+        });
+      });
+    });
+  }
+
 
   function announcePublicKey(){
     // -- Change the behavior when we have a 'resolved message' on create key screen.
@@ -63,24 +66,7 @@ $(function(){
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
 
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Tu vas créer ta paire de clé privée / clé publique mais<span>...</span> n’oublie pas, cette clé privée est... privée ! Toi seul dois la connaître ! Ta clé publique sera diffusée sur le réseau à l’ensemble des chercheurs de l’Institut.",
-                
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: dialog6
-          }]
-
-        });   
+        $(".wrapper.active .vertical-centering").dialog(announcePublicKeyDialog);   
             
       });
 
@@ -88,7 +74,7 @@ $(function(){
 
   }
 
-  function dialog6(){
+  function hereYourPrivateKey() {
 
     $("body").closeAllDialogs(function(){
 
@@ -105,23 +91,15 @@ $(function(){
                                         new specialOutInterpolator()
         );
 
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+        $(".wrapper.active .vertical-centering").dialog(hereYourPrivateKeyDialog);
+      });
+    });
+  }
 
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Voici ta clé privée, utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToCreateKey
-          }]
-        });
+  function fallSixTimes() {
+    $("body").closeAllDialogs(function(){
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog(fallSixTimesDialog);
       });
     });
   }
@@ -194,239 +172,22 @@ $(function(){
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
 
-    // Add a timer to handle the first move.
-    var timerFirstMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === 1) {
-          timerFirstMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          // call the function you want here
-          dialogNowTryToCancelLastMove();
-        }
-      }
-    );
-
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
+        if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied >= currentGame.maxNewKeyMove && currentGame.scenes.create_key_scene.game_box.message.isBlank() === false) {
           waitToContinue.cancel();
           currentGame.createKeySceneActive = false;
-          dialog6KeyPreGenerated();
+          keyPreGenerated();
         }
       }
     );
   }
 
-  function dialogPleaseInvertYourPrivateKey() {
 
-    // Add a timer to handle the action after this dialog box.
-    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (crypt_key.numberApplied === 3) {
-          timerSecondMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
-            // call the function you want here
-            dialogContinueManipulatingToGeneratePublicKey();
-          } else {
-            dialogOkDontInvertYourPrivateKey();
-          }
-        }
-      }
-    );
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Tu n'as pas annulé ton précédent mouvement. Essaye de le faire en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-
-  }
-
-  function dialogOkDontInvertYourPrivateKey() {
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Ok, tu ne veux pas annuler ton précédent mouvement. Alors continue de manipuler ta clé privée afin d’entamer la création de ta clé publique",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-  
-
-      });
-
-    });
-
-  }
-  
-  function dialogNowTryToCancelLastMove(){
-    currentGame.createKeySceneActive = false;
-        
-    // Add a timer to handle the action after this dialog box.
-    var timerSecondMove = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
-      function(time, ttime, timerTask) {
-        var crypt_key = currentGame.scenes.create_key_scene.game_box.crypt_key;
-        /* Set here the number you want make sure that it's inferior at currentGame.maxNewKeyMove in global.js*/
-        if (crypt_key.numberApplied === 2) {
-          timerSecondMove.cancel();
-          // Uncomment me for disable input entry.
-          currentGame.createKeySceneActive = false;
-
-          if (crypt_key.last_move[crypt_key.last_move.length - 1][0] === 0 && crypt_key.last_move[crypt_key.last_move.length - 1][1] === true) {
-            // call the function you want here
-            dialogContinueManipulatingToGeneratePublicKey();
-          } else {
-            dialogPleaseInvertYourPrivateKey();
-          }
-        }
-      }
-    );
-
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Parfait ! Essaie maintenant d'annuler ton dernier mouvement en appuyant sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou sur <img src='img/icn-space.png' class='keyboard-key'> afin d'inverser les couleurs de ta clé. Puis, appuie sur <img src='img/icn-arrow-down.png' class='keyboard-key'> pour envoyer ta clé.</span>",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-    
-
-      });
-
-    });
-
-  }
-
-  function dialogContinueManipulatingToGeneratePublicKey() {
-    currentGame.createKeySceneActive = false;
-        
-    $("body").closeAllDialogs(function(){
-
-      $.switchWrapper('#bg-circuits', function(){
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Continue à présent de manipuler ta clé privée afin d’entamer la création de ta clé publique",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: function(){
-              $('body').closeAllDialogs(function(){
-                currentGame.createKeySceneActive = true;
-              });
-            }
-          }]
-
-        });
-      });
-
-    });
-
-  }       
-
-  function dialog6KeyPreGenerated() {
+  function keyPreGenerated() {
     $("body").closeAllDialogs(function() {
-
       $.switchWrapper('#bg-circuits', function() {
-
-        $(".wrapper.active .vertical-centering").dialog({
-                
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Très bien, tu as compris ! L'ordinateur va à présent terminer de générer ta clé publique.",
-
-          controls: [{
-            label: "Suite", 
-            class: "button blue",
-            onClick: switchToFinishCreateKey
-          }]
-
-        });
+        $(".wrapper.active .vertical-centering").dialog(keyPregeneratedDialog);
       });
     });
   }
@@ -493,7 +254,7 @@ $(function(){
             onClick: challenge1
           }]
 
-        });   
+        });
 
       });
 
@@ -641,11 +402,12 @@ $(function(){
 
       // Prepare the first battle message
       currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_CHALLENGE_MESSAGE);
-      // Display the battle scene in background.
-      goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
 
       $.switchWrapper('#bg-circuits', function(){
 
+        // Display the battle scene in background.
+        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
+        
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -804,10 +566,10 @@ $(function(){
       currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_CHALLENGE_MESSAGE);
 
 
-      // Display the battle scene in background.
-      goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
-
       $.switchWrapper('#bg-circuits', function(){
+
+        // Display the battle scene in background.
+        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -899,10 +661,10 @@ $(function(){
       currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_CHALLENGE_MESSAGE);
 
 
-      // Display the battle scene in background.
-      goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
-
       $.switchWrapper('#bg-circuits', function(){
+
+        // Display the battle scene in background.
+        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
 
@@ -1002,10 +764,10 @@ $(function(){
       // Prepare the second battle message
       currentGame.play_super_max_scene_msg = createMessageForPlayScene(SUPER_MAX_BOARD_LENGTH, FOURTH_CHALLENGE_MESSAGE);
 
-      // Display the battle scene in background.
-      goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent');
-
       $.switchWrapper('#bg-circuits', function(){
+
+        // Display the battle scene in background.
+        goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -1107,10 +869,10 @@ $(function(){
       // Prepare the second battle message
       currentGame.play_mega_max_scene_msg = createMessageForPlayScene(MEGA_MAX_BOARD_LENGTH, FIFTH_CHALLENGE_MESSAGE);
 
-      // Display the battle scene in background.
-      goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent');
-
       $.switchWrapper('#bg-circuits', function(){
+
+        // Display the battle scene in background.
+        goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -1212,6 +974,16 @@ $(function(){
     });
   }
 
+  function addControlToDialogs() {
+    addControlToDialog(announcePublicKeyDialog, [{label: labelNext, class: "button blue", onClick: hereYourPrivateKey}]);
+    addControlToDialog(hereYourPrivateKeyDialog, [{label: labelNext, class: "button blue", onClick: fallSixTimes}]);
+    addControlToDialog(fallSixTimesDialog, [{label: labelNext, class: "button blue", onClick: switchToCreateKey}]);
+    addControlToDialog(keyPregeneratedDialog, [{label: labelNext, class: "button blue", onClick: switchToFinishCreateKey}]);
+
+  }
+  addControlToDialogs();
+
+
   function deactivateMenu() {
     var allItems = ['item-public-key', 'item-8-board', 'item-10-board', 'item-12-board', 'item-14-board', 'item-16-board'];
     for (var i = 0; i < allItems.length; ++i) {
@@ -1222,6 +994,20 @@ $(function(){
   function menu() {
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#menu-view', function() {
+        // -- switch to waiting scene.
+        if (currentGame.scenes != null) {
+          currentGame.director.easeInOut(
+                                      currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                      CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                      currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                      CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                      CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                      0,
+                                      true,
+                                      new specialInInterpolator(),
+                                      new specialOutInterpolator()
+          );
+        }
         deactivateMenu();
         $('#item-public-key').addClass('active');
       });

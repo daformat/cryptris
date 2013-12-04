@@ -1,8 +1,5 @@
 
 var cryptrisSettings = {
-    readingDelay: 4000,
-    animateTextDelayBetweenLetters: 20,
-    player: {},
     cryptoExplanations: [false, false, false],
     dialogWhatArePrivatePublicKey: [false, false, false]
 }

@@ -693,6 +693,18 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         return false;
     }
 
+    this.isBlank = function() {
+        var isBlank = true;
+
+        for (var i = 0; i < this.columnList.length; ++i) {
+            if (this.columnList[i].squareNumber > 0) {
+                isBlank = false;
+            }
+        }
+
+        return isBlank;
+    }
+
     this.isResolved = function() {
         var tmpResolved = true;
 

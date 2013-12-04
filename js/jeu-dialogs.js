@@ -1,4 +1,3 @@
-var dialogs_list = [];
 var animateTextDelayBetweenLetters = 20;
 var readingDelay = 4000;
 
