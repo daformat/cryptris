@@ -112,7 +112,7 @@ function createBoardScene(director) {
                                     currentGame.director.getSceneIndex(currentGame.director.currentScene),
                                     CAAT.Foundation.Scene.prototype.EASE_SCALE,
                                     CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                    500,
+                                    1000,
                                     true,
                                     new specialInInterpolator(),
                                     new specialOutInterpolator()
@@ -141,7 +141,6 @@ function createScenes(director) {
     currentGame.scenes = {};
 
     var waiting_scene = director.createScene();
-    createBoardScene(director);
 
 }
 
@@ -161,12 +160,20 @@ function initGame(director) {
     new CAAT.Module.Preloader.ImagePreloader().loadImages(
         imgs,
         function on_load(counter, images) {
+
             if (counter === images.length) {
+                // -- Swith from preloader screen to menu screen.
+                $('#preloader-view').attr('style', 'display: none;');
+                $('#main-view').attr('style', '');
+                
                 director.emptyScenes();
                 director.setImagesCache(images);
                 createScenes(director);
                 director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
                 CAAT.loop(60);
+            } else {
+                // -- Update the preloader screen.
+                $('#preloader-display').text((counter + 1) + '/' + images.length);
             }
         }
     );

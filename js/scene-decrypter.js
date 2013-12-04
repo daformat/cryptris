@@ -123,7 +123,7 @@ $(function(){
 
     function explain1(){
         $("body").closeAllDialogs(function(){
-        	loadGame();
+            createBoardScene(currentGame.director);
         	currentGame.playMaxSceneActive = false;
             currentGame.iaPlay = false;
         	$(".wrapper.active .vertical-centering").dialog({
@@ -359,6 +359,9 @@ $(function(){
 
 
 	$(document).ready(function() {
+
+    // Load the game and load assets.
+    loadGame();
 
     /**
      * Get info from url.

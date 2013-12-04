@@ -98,19 +98,32 @@
         
   </head>
   <body class="">
-  <div class="main-wrapper">
 
-    <div class="wrapper black active" id='new-login'>
+    <div id="preloader-view" class="wrapper" style="">
       <div class="vertical-centering">
-        <img src='img/logo-inria-pixelated.png' class="logo-inria-pixelated">
-        <form class="new-login" action="" method="get">
-          <label for="login">Choisissez votre nom d’utilisateur :</label>
-          <fieldset>
-            <span class="arrow">▶</span>
-            <input type="text" id="login-name" name="name">
-            <input type="submit" class="button blue" value="OK">
-          </fieldset>
-        </form>
+        <div>
+          <ul class="main-menu">
+            <li>
+              <span class="arrow">▶</span><span id="preloader-display"></span><span class="arrow">◀</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-view" class="main-wrapper" style="display: none;">
+
+      <div class="wrapper black active" id='new-login'>
+        <div class="vertical-centering">
+          <img src='img/logo-inria-pixelated.png' class="logo-inria-pixelated">
+          <form class="new-login" action="" method="get">
+            <label for="login">Choisissez votre nom d’utilisateur :</label>
+            <fieldset>
+              <span class="arrow">▶</span>
+              <input type="text" id="login-name" name="name">
+              <input type="submit" class="button blue" value="OK">
+            </fieldset>
+          </form>
         
         <div class="inrios">InriOS 3.14</div>
       </div>
