@@ -218,7 +218,20 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     if (this.isActive === true && this.keySymbol === null) {
 
       this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
-      this.keySymbol = new CAAT.Foundation.ActorContainer().setSize(this.key_symbol_img.width, this.key_symbol_img.height).setBackgroundImage(this.key_symbol_img, false);
+      this.keychain_img = director.getImage(this.boxOption.boardColorInfo['keychain']);
+      this.keychainX = this.boxOption.boardColorInfo['keychainX'];
+      this.keySymbol = new CAAT.Foundation.ActorContainer().setSize(this.key_symbol_img.width, this.key_symbol_img.height);
+      this.keySymbolImg = new CAAT.Foundation.ActorContainer().setSize(this.key_symbol_img.width, this.key_symbol_img.height).setBackgroundImage(this.key_symbol_img, false).setLocation(0, 0);
+      this.keyChain = new CAAT.Foundation.ActorContainer().setSize(this.keychain_img.width, this.keychain_img.height).setBackgroundImage(this.keychain_img, false);
+
+      if (this.player === true) {
+        this.keyChain.setLocation(62.5, 20);
+      } else {
+        this.keyChain.setLocation(0, 20);
+      }
+
+      this.keySymbol.addChild(this.keySymbolImg);
+      this.keySymbol.addChild(this.keyChain);
       this.gameBox.addChild(this.keySymbol);
 
       var object = this;
