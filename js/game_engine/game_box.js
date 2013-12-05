@@ -251,6 +251,21 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             var path =  new CAAT.LinearPath().setInitialPosition(object.keySymbol.x, object.keySymbol.y).setFinalPosition(finalXApparition, object.keySymbol.y);
             var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(object.gameBox.time, 250).setCycle(false);
 
+            var keychainPath = null;
+            var keychainPb = null;
+            if (object.player === true) {
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x - 5, object.keyChain.y + 8, object.keyChain.x - 10, object.keyChain.y + 15);
+              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+              keychainRotate = new CAAT.RotateBehavior().setValues(0, Math.PI / 4).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+            } else {
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x + 5, object.keyChain.y + 8, object.keyChain.x + 10, object.keyChain.y + 15);
+              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+              keychainRotate = new CAAT.RotateBehavior().setValues(0, -1 * Math.PI / 4).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+            }
+            keychainPb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
+            object.keyChain.addBehavior(keychainPb);
+            object.keyChain.addBehavior(keychainRotate);
+
             var fadeMe = new CAAT.AlphaBehavior().setValues(0, 1).setFrameTime(object.gameBox.time, 250).setCycle(false);
             pb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
             object.keySymbol.addBehavior(pb);
