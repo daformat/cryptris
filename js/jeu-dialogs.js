@@ -188,7 +188,8 @@ var useCryptoProtocolDialog = getDialog(chercheusePredef, "C’est le bon moment
 
 var sendingFirstCableDialog = getDialog(chercheusePredef, "Je t'envoie un message crypté contenant le premier numéro de câble à débrancher et le tableau électrique correspondant.");
 var firstBattleMessageDialog = getDialog(inriosPredef, null);
-var helpPlayMinDialog = getDialog(chercheusePredef, "Help PLAY_MIN");
+var helpPlayMinDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
+var helpPlayMin2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var serverAlsoTryingToBreakEncryptionDialog = getDialog(chercheusePredef, "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.");
 var decryptedMessage1Dialog = getDialog(decryptedPredef, "Débranche le câble 24 du panneau électrique V");
 var cables1Dialog = getDialog(cablesPredef, null);
@@ -197,7 +198,8 @@ var serverIsFasterDialog = getDialog(chercheusePredef, "Malheureusement, le serv
 
 var sendingSecondCableDialog = getDialog(chercheusePredef, "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.");
 var secondBattleMessageDialog = getDialog(inriosPredef, null);
-var helpPlayMediumDialog = getDialog(chercheusePredef, "Help PLAY_MEDIUM");
+var helpPlayMediumDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
+var helpPlayMedium2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var decryptedMessage2Dialog = getDialog(decryptedPredef, "Débranche le câble 78 du panneau électrique M");
 var cables2Dialog = getDialog(cablesPredef, null);
 var successCables2Dialog = getDialog(chercheusePredef, "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !");
@@ -205,7 +207,8 @@ var successCables2Dialog = getDialog(chercheusePredef, "Très bien, tu as débra
 var serverIsInfectingOtherMachinesDialog = getDialog(chercheusePredef, "Ce serveur ne devrait pas être en mesure de décrypter aussi rapidement ces messages... J’ai compris ! Il contamine d’autres ordinateurs et augmente ainsi sa puissance !");
 var sendingThirdCableDialog = getDialog(chercheusePredef, "Je t'envoie le dernier câble, en augmentant encore la difficulté du cryptage. Il lui faudra quelques centaines de jours pour <span>décrypter ce dernier message</span>, et d'ici là nous l'aurons débranché et analysé !");
 var thirdBattleMessageDialog = getDialog(inriosPredef, null);
-var helpPlayMaxDialog = getDialog(chercheusePredef, "Help PLAY_MAX");
+var helpPlayMaxDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
+var helpPlayMax2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var decryptedMessage3Dialog = getDialog(decryptedPredef, "Débranche le câble 31 du panneau électrique N");
 var cables3Dialog = getDialog(cablesPredef, null);
 var successCables3Dialog = getDialog(chercheusePredef, "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…");

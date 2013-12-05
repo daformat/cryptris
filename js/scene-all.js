@@ -630,6 +630,14 @@ $(function() {
     });
   }
 
+  function helpPlayMin2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMin2Dialog);
+      });
+    });
+  }
+
   function serverAlsoTryingToBreakEncryption() {
     // Display the battle scene in background.
     goToBattleScene('play_min_scene', null, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
@@ -660,6 +668,14 @@ $(function() {
     });
   }
 
+  function helpPlayMedium2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMedium2Dialog);
+      });
+    });
+  }
+
   function cables2() {
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
@@ -680,6 +696,14 @@ $(function() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         $(".wrapper.active .vertical-centering").dialog(helpPlayMaxDialog);
+      });
+    });
+  }
+
+  function helpPlayMax2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlayMax2Dialog);
       });
     });
   }
@@ -725,28 +749,34 @@ $(function() {
       deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }
   }]);
+  
   addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue", onClick: helpPlaySolo2}]);
   addControlToDialog(helpPlaySolo2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }
   }]);
-  addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue",
+  addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMin2}]);
+  addControlToDialog(helpPlayMin2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
     }
   }]);
-  addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue",
+
+  addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMedium2}]);
+  addControlToDialog(helpPlayMedium2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
     }
   }]);
-  addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue",
+  
+  addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMax2}]);
+  addControlToDialog(helpPlayMax2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }
   }]);
-  
+
   var indexDialog = -1;
   var jumpDialog = 1;
   var dialogsList = [
