@@ -581,6 +581,14 @@ $(function() {
     });
   }
 
+  function helpPlaySolo2() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(helpPlaySolo2Dialog);
+      });
+    });
+  }
+
   var testMessageTest = true;
   function messageTest() {
     if (testMessageTest === true) {
@@ -717,7 +725,8 @@ $(function() {
       deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }
   }]);
-  addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue",
+  addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue", onClick: helpPlaySolo2}]);
+  addControlToDialog(helpPlaySolo2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }

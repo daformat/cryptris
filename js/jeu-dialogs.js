@@ -171,7 +171,9 @@ var letsGoToEncryptDialog = getDialog(chercheusePredef, "J'utilise ta clé publi
 var helpPlayChercheuseDialog = getDialog(chercheusePredef, "Je suis en train de crypter un message que tu pourras décrypter par la suite.");
 
 var firstMessageDialog = getDialog(inriosPredef, null);
-var helpPlaySoloDialog = getDialog(chercheusePredef, "Help PLAY_SOLO");
+var helpPlaySoloDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
+var helpPlaySolo2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
+
 var messageTestDialog = getDialog(chercheusePredef, "Voici le message que j'ai crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.");
 var tutorialDialog = getDialog(chercheusePredef, "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !");
 var decryptedMessage0Dialog = getDialog(decryptedPredef, "Ok, tu as réussi à lire ce message :)");
