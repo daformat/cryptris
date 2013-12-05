@@ -161,7 +161,7 @@ var keysExplanationsOpt2Dialog = getDialog(chercheusePredef, "Ta clé publique s
 var hereYourPrivateKeyDialog = getDialog(chercheusePredef, "Voici ta clé privée, utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var fallSixTimesDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, fais tomber six fois ta clé privée. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
 
-var helpCreateKeyDialog = getDialog(chercheusePredef, "helpCreateKey");
+var helpCreateKeyDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, fais tomber six fois ta clé privée. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
 var keyPreGeneratedErrorText = "Très bien, tu as compris ! Cependant la clé publique générée n'est pas suffisamment sécurisée, l'ordinateur va arranger cela.";
 var keyPreGeneratedSuccessText = "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !";
 var keyPreGeneratedDialog = getDialog(chercheusePredef, keyPreGeneratedSuccessText);
