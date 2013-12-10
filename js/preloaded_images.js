@@ -25,6 +25,8 @@ function getPreloadedImages() {
     imgs.push({id:'icn-mini-player-key-symbol', url: "img/icn-mini-player-key-symbol.png"});
     imgs.push({id:'icn-mini-player-padlock-closed', url: "img/icn-mini-player-padlock-closed.png"});
     imgs.push({id:'icn-mini-player-padlock-open', url: "img/icn-mini-player-padlock-open.png"});
+    imgs.push({id:'keychain-ia', url: "img/keychain-ia.png"});
+    imgs.push({id:'keychain-player', url: "img/keychain-player.png"});
 
     var assets = ["img/apple-touch-startup-image-1536x2008.png",
 		"img/icn-facebook-large@2x.png",

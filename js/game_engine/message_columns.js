@@ -718,8 +718,10 @@ function Message(director, messageLength, message, container, boxOption, isActiv
             }
         }
 
-        this.resolved = tmpResolved;
-        if (this.resolved === true) {
+        if (this.isActive) {
+            this.resolved = tmpResolved;
+        }
+        if (this.resolved === true && this.isActive === true) {
             $(document).trigger('msgResolved');
         }
     }

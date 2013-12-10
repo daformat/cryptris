@@ -165,6 +165,7 @@ var playerBoardColorInfo = {
 	'letterColorGrow' : '#00FF9D',
 	'enveloppe' : 'icn-mini-player-enveloppe',
 	'key-symbol' : 'icn-mini-player-key-symbol',
+	'keychain' : 'keychain-player',
 	'padlock-closed' : 'icn-mini-player-padlock-closed',
 	'padlock-open' : 'icn-mini-player-padlock-open'
 }
@@ -185,6 +186,7 @@ var iaBoardColorInfo = {
 	'letterColorGrow' : '#fc56fc',
 	'enveloppe' : 'icn-mini-ia-enveloppe',
 	'key-symbol' : 'icn-mini-ia-key-symbol',
+	'keychain' : 'keychain-ia',
 	'padlock-closed' : 'icn-mini-ia-padlock-closed',
 	'padlock-open' : 'icn-mini-ia-padlock-open'
 }

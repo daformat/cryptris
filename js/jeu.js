@@ -104,6 +104,7 @@ function preparePlayScene(director, boardLength, boardName, crypt_message, hookA
  */
 function prepareAnimatePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
     currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, true);
+    currentGame.scenes[boardName].game_box.message.isActive = false;
 }
 
 /**
