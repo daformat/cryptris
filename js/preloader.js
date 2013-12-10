@@ -33,7 +33,9 @@ $(document).ready(function() {
 
                 } else {
                     // -- Update the preloader screen.
-                    $('#preloader-display').text((counter + 1) + '/' + images.length);
+                    var width = Math.round( (counter + 1) / images.length * 100 ) + '%';
+                    $('#preloader-display').text(width) ;
+                    $('#preloader-view .bar').css('width', width);
                 }
             }
         );

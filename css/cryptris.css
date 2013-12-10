@@ -53,6 +53,36 @@ ul{
 }
 
 /*
+
+*/
+#preloader-view {
+	
+}
+
+#preloader-view .main-menu{
+	height: 54px;
+	overflow: hidden;
+
+}
+
+#preloader-view .bar{
+	background: rgba(0, 145, 187, 0.3);
+	height: 40px;
+	
+	overflow: hidden;
+
+	float:left;
+	margin-bottom: 8px;
+
+	width: 0%;
+	
+	display: inline-block;
+	
+	box-shadow: 0px 0px 15px rgba(0, 145, 187, 0.8) inset, 1px 1px 0 #0091BB inset, -1px -1px 0 #0091BB inset ;
+
+}
+
+/*
 	General stuff
 */
 
@@ -990,6 +1020,30 @@ p{
 	animation: rotating 1.5s infinite ease-in-out;
 	-webkit-transform-origin: 50% 55%;
 	transform-origin: 50% 55%;
+}
+
+
+@-webkit-keyframes preload-blinking-smooth
+{
+	0% {opacity: 0.5;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.5;}
+}
+
+@keyframes preload-blinking-smooth
+{
+	0% {opacity: 0.5;}
+	40% {opacity: 1;}
+	50%  {opacity: 1;}
+	60%  {opacity: 1;}
+	100% {opacity: 0.5;}
+}
+
+.preload-blinking-smooth{
+	-webkit-animation: preload-blinking-smooth 1.5s infinite ease-in;
+	animation: preload-blinking-smooth 1.5s infinite ease-in;
 }
 
 
