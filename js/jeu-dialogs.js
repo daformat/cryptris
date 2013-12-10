@@ -190,7 +190,7 @@ var helpPlayMinDialog = getDialog(chercheusePredef, "Help PLAY_MIN");
 var serverAlsoTryingToBreakEncryptionDialog = getDialog(chercheusePredef, "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.");
 var decryptedMessage1Dialog = getDialog(decryptedPredef, "Débranche le câble 24 du panneau électrique V");
 var cables1Dialog = getDialog(cablesPredef, null);
-var successCables1Dialog = getDialog(chercheusePredef, "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et ça devrait être bon !");
+var successCables1Dialog = getDialog(chercheusePredef, "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et&nbsp;ça devrait être bon !");
 var serverIsFasterDialog = getDialog(chercheusePredef, "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !");
 
 var sendingSecondCableDialog = getDialog(chercheusePredef, "Je t'envoie le deuxième câble, crypté avec deux blocs de plus. Avec la cryptographie asymétrique, lorsqu’on augmente le  nombre de bits, la difficulté du calcul augmente de manière exponentielle pour un attaquant. Cela devrait donc faire l’affaire.");
@@ -206,7 +206,7 @@ var thirdBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMaxDialog = getDialog(chercheusePredef, "Help PLAY_MAX");
 var decryptedMessage3Dialog = getDialog(decryptedPredef, "Débranche le câble 31 du panneau électrique N");
 var cables3Dialog = getDialog(cablesPredef, null);
-var successCables3Dialog = getDialog(chercheusePredef, "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que la difficulté du décryptage…");
+var successCables3Dialog = getDialog(chercheusePredef, "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que&nbsp;la difficulté du décryptage…");
 
 var IWasTrappedDialog = getDialog(chercheusePredef, "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !");
 var thanksToCryptoDialog = getDialog(chercheusePredef, "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée.");
