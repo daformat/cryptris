@@ -778,6 +778,11 @@ $(function() {
   }]);
 
   var indexDialog = -1;
+
+  currentGame.currentDialog = function() {
+    return indexDialog;
+  }
+
   var jumpDialog = 1;
   var dialogsList = [
     {'dialog' : welcomeInstituteDialog, 'background' : 'bg-institut', 'controlsList' : [getControl(controlNext, switchToNewLogin)]},
@@ -852,6 +857,14 @@ $(function() {
       });
     });
   }
+
+  currentGame.switchDialog = function(newIndex) {
+    indexDialog = newIndex;
+    displayDialog(dialogsList[indexDialog]);
+  }
+
+  currentGame.displayDialog = displayDialog;
+  currentGame.dialogsList = dialogsList;
 
   var lockDialog = false;
   var lockTime = 1000;
