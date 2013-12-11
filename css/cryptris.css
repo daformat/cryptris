@@ -183,6 +183,16 @@ p{
 .button.red:active{
 		box-shadow: 0 1px 0 #440500;
 }
+
+.button.grey{
+	background-color: #999;
+	box-shadow: 0 3px 0 #666;
+}
+
+.button.grey:active{
+		box-shadow: 0 1px 0 #666;
+}
+
 .characters-left{
 	line-height: 46px;
 	margin: 15px 10px 30px;

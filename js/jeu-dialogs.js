@@ -14,7 +14,7 @@ var labelAie = "Aie ! Je viens de me prendre une décharge électrique !";
 var controlNext = {label: labelNext, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
 var controlOpen = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
 var controlDecrypt = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
-var controlPrev = {label: labelPrev, class: "button red", onClick: function() { $(document).trigger('prevDialog')}};
+var controlPrev = {label: labelPrev, class: "button grey", onClick: function() { $(document).trigger('prevDialog')}};
 var controlPass = {label: "Passer cette étape", class: "button red", onClick: function() {$(document).trigger('passDialog')}};
 
 function getControl(control, functionCN) {
