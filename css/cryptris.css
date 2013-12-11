@@ -515,11 +515,12 @@ p{
 }
 
 .share .encrypted-message .message{
-	width: 45%;
+	width: 65%;
 	text-align: center;
 	display: inline-block;
 	vertical-align: text-top;
-	min-width: 280px
+	min-width: 456px;
+	margin-right: -65px;
 }
 
 .share .encrypted-message .message .img{
