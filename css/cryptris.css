@@ -124,7 +124,7 @@ ul{
   -moz-background-size: cover; /* pour Firefox */
   -o-background-size: cover; /* pour Opera */
   background-size: cover; /* version standardisée */
-  color: #eee;
+  color: #ccc;
   font-weight: normal;
 }
 
@@ -134,7 +134,7 @@ ul{
   -moz-background-size: cover; /* pour Firefox */
   -o-background-size: cover; /* pour Opera */
   background-size: cover; /* version standardisée */
-  color: #eee;
+  color: #ccc;
   font-weight: normal;
 }
 
@@ -396,7 +396,7 @@ p{
 .entry {
 	width: 100%;
 	background: rgba(0,0,0,0.45);	
-	padding: 5px;
+	padding: 15px;
 	margin: 25px 0;
 }
 
