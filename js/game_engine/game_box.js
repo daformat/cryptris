@@ -225,9 +225,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       this.keyChain = new CAAT.Foundation.ActorContainer().setSize(this.keychain_img.width, this.keychain_img.height).setBackgroundImage(this.keychain_img, false);
 
       if (this.player === true) {
-        this.keyChain.setLocation(62.5, 20);
+        this.keyChain.setLocation(50, 13);
       } else {
-        this.keyChain.setLocation(0, 20);
+        this.keyChain.setLocation(-30, 14);
       }
 
       this.keySymbol.addChild(this.keySymbolImg);
@@ -254,15 +254,16 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             var keychainPath = null;
             var keychainPb = null;
             if (object.player === true) {
-              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x - 5, object.keyChain.y + 8, object.keyChain.x - 10, object.keyChain.y + 15);
-              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time, 1000).setCycle(false);
-              keychainRotate = new CAAT.RotateBehavior().setValues(0, Math.PI / 4).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x , object.keyChain.y + 15, object.keyChain.x - 20, object.keyChain.y + 30);
+              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
+              keychainRotate = new CAAT.RotateBehavior().setValues(0, Math.PI / 3).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
             } else {
-              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x + 5, object.keyChain.y + 8, object.keyChain.x + 10, object.keyChain.y + 15);
-              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time, 1000).setCycle(false);
-              keychainRotate = new CAAT.RotateBehavior().setValues(0, -1 * Math.PI / 4).setFrameTime(object.gameBox.time, 1000).setCycle(false);
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x, object.keyChain.y + 15, object.keyChain.x + 20, object.keyChain.y + 30);
+              keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
+              keychainRotate = new CAAT.RotateBehavior().setValues(0, -1 * Math.PI / 3).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
             }
             keychainPb.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
+            keychainRotate.setInterpolator(new CAAT.Behavior.Interpolator().createExponentialInOutInterpolator(1.0, false));
             object.keyChain.addBehavior(keychainPb);
             object.keyChain.addBehavior(keychainRotate);
 

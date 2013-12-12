@@ -162,6 +162,7 @@ function initGame(director) {
         function on_load(counter, images) {
 
             if (counter === images.length) {
+                    
                 // -- Swith from preloader screen to menu screen.
                 $('#preloader-view').attr('style', 'display: none;');
                 $('#main-view').attr('style', '');
@@ -171,9 +172,12 @@ function initGame(director) {
                 createScenes(director);
                 director.setClear(CAAT.Foundation.Director.CLEAR_ALL);
                 CAAT.loop(60);
+
             } else {
                 // -- Update the preloader screen.
-                $('#preloader-display').text((counter + 1) + '/' + images.length);
+                var width = Math.round( (counter + 1) / images.length * 100 ) + '%';
+                $('#preloader-display').text(width) ;
+                $('#preloader-view .bar').css('width', width);
             }
         }
     );

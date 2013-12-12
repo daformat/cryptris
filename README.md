@@ -22,3 +22,13 @@ Test the Create Key test
 'a'  =>  load the create_key screen.
 
 'e'  =>  launch the computer process
+
+
+
+To switch at a specific dialog, in the console :
+
+currentGame.switchDialog(dialogNumber);
+
+To know the current dialog number :
+
+currentGame.currentDialog();
