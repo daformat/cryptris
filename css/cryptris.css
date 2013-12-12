@@ -183,6 +183,16 @@ p{
 .button.red:active{
 		box-shadow: 0 1px 0 #440500;
 }
+
+.button.grey{
+	background-color: #999;
+	box-shadow: 0 3px 0 #666;
+}
+
+.button.grey:active{
+		box-shadow: 0 1px 0 #666;
+}
+
 .characters-left{
 	line-height: 46px;
 	margin: 15px 10px 30px;
@@ -371,14 +381,35 @@ p{
 	Credits, about, bonus, share
 */
 
+
 .text-content{
 	margin: 40px 10% 70px;
 	display: inline-block;
 	max-width: 700px;
 	width: 80%;
 }
+
 .text-content.no-max-width{
 		max-width: none;
+}
+
+.entry {
+	width: 100%;
+	background: rgba(0,0,0,0.45);	
+	padding: 5px;
+	margin: 25px 0;
+}
+
+.entry h3{
+margin-top: 20px;
+background: #000;
+padding: 1px 15px;
+display: inline-block;
+border: 1px solid #0091BB;
+}
+
+.entry p{
+	line-height: 1.5;
 }
 
 .credits-logos img{
@@ -389,8 +420,8 @@ p{
 	position: absolute;
 	right: 35px;
 	top: 30px;
-	width: 39px;
-	height: 38px;
+	width: 55px;
+	height: 55px;
 }
 .btn-close img{
 	width: 100%;
@@ -505,11 +536,12 @@ p{
 }
 
 .share .encrypted-message .message{
-	width: 45%;
+	width: 65%;
 	text-align: center;
 	display: inline-block;
 	vertical-align: text-top;
-	min-width: 280px
+	min-width: 456px;
+	margin-right: -56px;
 }
 
 .share .encrypted-message .message .img{

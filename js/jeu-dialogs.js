@@ -14,7 +14,7 @@ var labelAie = "Aie ! Je viens de me prendre une décharge électrique !";
 var controlNext = {label: labelNext, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
 var controlOpen = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
 var controlDecrypt = {label: labelOpenMessage, class: "button blue", onClick: function() { $(document).trigger('nextDialog')}};
-var controlPrev = {label: labelPrev, class: "button red", onClick: function() { $(document).trigger('prevDialog')}};
+var controlPrev = {label: labelPrev, class: "button grey", onClick: function() { $(document).trigger('prevDialog')}};
 var controlPass = {label: "Passer cette étape", class: "button red", onClick: function() {$(document).trigger('passDialog')}};
 
 function getControl(control, functionCN) {
@@ -215,5 +215,5 @@ var successCables3Dialog = getDialog(chercheusePredef, "Mes félicitations ! Nou
 
 var IWasTrappedDialog = getDialog(chercheusePredef, "J’ai bien failli rester enfermée pour de bon et le serveur aurait pu contaminer tout internet, absorbant les données personnelles de la planète entière !");
 var thanksToCryptoDialog = getDialog(chercheusePredef, "Heureusement, grâce à la cryptographie asymétrique, aucune machine ne peut décrypter assez vite nos messages. Les différents niveaux d’encryption ne t’ont pas vraiment compliqué <span>la tâche,</span> car tu disposes de la clé privée.");
-var thanksToCrypto2Dialog = getDialog(chercheusePredef, "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa capacité de calcul. CQFD !");
+var thanksToCrypto2Dialog = getDialog(chercheusePredef, "En revanche la difficulté pour l’ordinateur a augmenté bien plus vite que sa&nbsp;capacité de calcul. CQFD !");
 var comparePlayTimeChartDialog = getDialog(graphPredef, "Blah Blah");
