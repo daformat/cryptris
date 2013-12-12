@@ -175,6 +175,10 @@ p{
 	transform: translateY(2px);
 }
 
+.button:active, .button:hover, .button:focus, a:focus{
+	outline: none;
+}
+
 .button.red{
 	background-color: #9c0500;
 	box-shadow: 0 3px 0 #440500;
@@ -395,9 +399,11 @@ p{
 
 .entry {
 	width: 100%;
-	background: rgba(0,0,0,0.45);	
+	background: rgba(0,0,0,0.35);	
 	padding: 15px;
-	margin: 25px 0;
+	margin: 35px 0;
+	border-top: 1px solid #0091BB;
+	border-bottom: 1px solid #0091BB;
 }
 
 .entry h3{
@@ -1120,6 +1126,23 @@ border: 1px solid #0091BB;
 
 .dialog.graph{
 	height: 560px;
+}
+
+.dialog.graph .content h2{
+	background-color: #333;
+	background-color: rgba(0,0,0,0.45);
+	font-size: 0.9em;
+}
+
+.graph .label{
+	position: absolute;
+	top: 70px;
+}
+.graph .label.player{
+	left: 28.5%;
+}
+.graph .label.ia{
+	right: 16%;
 }
 
 #graph { 
