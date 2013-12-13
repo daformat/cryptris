@@ -398,7 +398,8 @@ p{
 }
 
 .entry {
-	width: 100%;
+	display: inline-block;
+	width: 90%;
 	background: rgba(0,0,0,0.35);	
 	padding: 15px;
 	margin: 35px 0;
@@ -416,6 +417,7 @@ border: 1px solid #0091BB;
 
 .entry p{
 	line-height: 1.5;
+	font-size: 1.1em;
 }
 
 .credits-logos img{
