@@ -276,7 +276,7 @@ p{
 
 .main-menu{
 	color: #0091bb;	
-	font-size: 1.938em;
+	font-size: 1.7em;
 	font-weight: 400;
 	background: #000;
 	background: rgba(0,0,0,0.3);
@@ -446,6 +446,66 @@ border: 1px solid #0091BB;
 	-webkit-transform: scale(0.8) rotate(180deg);
 	transform: scale(0.8) rotate(180deg);
 }
+
+/*
+	Arcade
+*/
+
+.main-menu .active.select-key-type{
+	background-color: transparent;
+}
+
+.select-key-type{
+	font-size: 0.7em;
+	position: relative;
+	top: -12px;
+}
+
+.key{
+	padding: 4px 3px;
+	display: inline-block;
+	width: 104px; /* 64 + 40px for the keyring ; */
+	height: 35px;
+	position: relative;
+	top: 7px;
+	left: 0px;
+	font-size: 0.9em;
+	vertical-align: text-bottom;
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+.key .keyring{
+	position: absolute;
+	top: 16px;
+	left: 0;
+	width: 68px;
+	height: 37px;
+	
+	background-repeat: no-repeat;
+
+	-webkit-transform: rotate(-20deg);	
+}
+
+.private .key {
+	background-image: url(../img/key-priv-right.png);
+}
+.private .key .keyring{
+	background-image: url(../img/key-priv-keychain-right.png);
+}
+
+
+.public .key {
+	background-image: url(../img/key-pub-right.png);
+}
+.public .key .keyring{
+	background-image: url(../img/key-pub-keychain-right.png);
+}
+
+.key-desc {
+	font-size: 0.75em;
+}
+
 /*
  Share
 */

@@ -197,3 +197,16 @@ $(document).ready(function() {
      */
     currentGame.director.enableResizeEvents(CAAT.Foundation.Director.RESIZE_BOTH, resize);
 });
+
+/**
+ *  Select player / ia key type
+ */
+$(function(){
+    $(".select-key-type a").click(function(){
+        var $t = $(this);
+
+        $t.toggleClass("public").toggleClass("private");
+        $t.find(".key-desc").text( ( $t.hasClass("public") ? "clé publique" : "clé privée" ) );
+
+    });
+})
