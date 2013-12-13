@@ -110,7 +110,9 @@ ul{
   overflow-x: hidden;
 
 }
-
+.wrapper.fixed{
+	position: fixed;
+}
 .wrapper.block{
 	display: block;
 }
@@ -127,6 +129,73 @@ ul{
   background-size: cover; /* version standardisée */
   color: #ccc;
   font-weight: normal;
+}
+
+.bg-circuits .animation .layer-00 {
+	display: block;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: url(../img/bg-circuits-anim-00.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+}
+
+
+.bg-circuits .animation .layer-01 {
+	display: block;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: url(../img/bg-circuits-anim-01.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+}
+
+
+.bg-circuits .animation .layer-02 {
+	display: block;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: url(../img/bg-circuits-anim-02.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
+}
+
+
+.bg-circuits .animation .layer-03 {
+	display: block;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: url(../img/bg-circuits-anim-03.png) center no-repeat;
+	-webkit-background-size: cover; /* pour Chrome et Safari */
+  -moz-background-size: cover; /* pour Firefox */
+  -o-background-size: cover; /* pour Opera */
+  background-size: cover; /* version standardisée */
 }
 
 .bg-institut{
@@ -234,6 +303,7 @@ p{
   display:table-cell;
   vertical-align:middle;
   overflow-x: hidden;
+  position: relative;
 }
 
 
@@ -287,6 +357,7 @@ p{
 	width: 80%;
 	max-width: 450px;
 	text-transform: uppercase;
+	line-height: 1.2;
 }
 
 .main-menu a{
@@ -485,6 +556,8 @@ border: 1px solid #0091BB;
 	background-repeat: no-repeat;
 
 	-webkit-transform: rotate(-20deg);	
+	-moz-transform: rotate(-20deg);	
+	transform: rotate(-20deg);	
 }
 
 .private .key {
@@ -1097,6 +1170,43 @@ border: 1px solid #0091BB;
 	-webkit-animation: blinking-smooth 1.5s infinite ease-in;
 	animation: blinking-smooth 1.5s infinite ease-in;
 }
+
+@-webkit-keyframes blinking-smooth-1
+{
+	0% {opacity: 0;}
+	40% {opacity: 0.75;}
+	50%  {opacity: 0.75;}
+	60%  {opacity: 0.75;}
+	100% {opacity: 0;}
+}
+
+@keyframes blinking-smooth-1
+{
+	0% {opacity: 0;}
+	40% {opacity: 0.75;}
+	50%  {opacity: 0.75;}
+	60%  {opacity: 0.75;}
+	100% {opacity: 0;}
+}
+
+
+.blinking-smooth-1{
+	-webkit-animation: blinking-smooth-1 2.7s infinite ease-in;
+	animation: blinking-smooth-1 2.7s infinite ease-in;
+}
+.blinking-smooth-2{
+	-webkit-animation: blinking-smooth-1 3.3s infinite ease-in;
+	animation: blinking-smooth-1 3.3s infinite ease-in;
+}
+.blinking-smooth-3{
+	-webkit-animation: blinking-smooth-1 3.8s infinite ease-in;
+	animation: blinking-smooth-1 3.8s infinite ease-in;
+}
+.blinking-smooth-4{
+	-webkit-animation: blinking-smooth-1 4.333s infinite ease-in;
+	animation: blinking-smooth-1 4.333s infinite ease-in;
+}
+
 
 @-webkit-keyframes rotating
 {
