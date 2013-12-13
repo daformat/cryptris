@@ -401,6 +401,8 @@ $(function() {
                                              .style("opacity", 0);   
                                         });         
     circles.transition().duration(500).attr("cy",  function(d, i) { return y(dataSet[i].y); });
+
+    $('.dialog.graph .content').append($('<div class="label '+appendClass+'"><h2>'+name+'</h2></div>'))
   }
 
   var game = cryptrisSettings;
