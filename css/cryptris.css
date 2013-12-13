@@ -56,18 +56,19 @@ ul{
 
 */
 #preloader-view {
-	
+	font-size:0.9em;
 }
 
 #preloader-view .main-menu{
-	height: 54px;
+	height: 50px;
 	overflow: hidden;
-
+	color: #FFF;
+	text-shadow: 0px 0px 10px #00F3FF;
 }
 
 #preloader-view .bar{
 	background: rgba(0, 145, 187, 0.3);
-	height: 40px;
+	height: 36px;
 	
 	overflow: hidden;
 
@@ -398,7 +399,8 @@ p{
 }
 
 .entry {
-	width: 100%;
+	display: inline-block;
+	width: 90%;
 	background: rgba(0,0,0,0.35);	
 	padding: 15px;
 	margin: 35px 0;
@@ -416,6 +418,7 @@ border: 1px solid #0091BB;
 
 .entry p{
 	line-height: 1.5;
+	font-size: 1.1em;
 }
 
 .credits-logos img{
@@ -944,8 +947,8 @@ border: 1px solid #0091BB;
 	left: 0px;
 }
 
-.new-message .background {
-	position: initial;
+.avatar .new-message img.background {
+	position: static;
 }
 
 /*
