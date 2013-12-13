@@ -1195,7 +1195,7 @@ border: 1px solid #0091BB;
 	animation: blinking-smooth-1 2.7s infinite ease-in;
 }
 .blinking-smooth-2{
-	-webkit-animation: blinking-smooth-1 3.3s infinite ease-in;
+	-webkit-animation: blinking-smooth 3.3s infinite ease-in;
 	animation: blinking-smooth-1 3.3s infinite ease-in;
 }
 .blinking-smooth-3{
@@ -1203,7 +1203,7 @@ border: 1px solid #0091BB;
 	animation: blinking-smooth-1 3.8s infinite ease-in;
 }
 .blinking-smooth-4{
-	-webkit-animation: blinking-smooth-1 4.333s infinite ease-in;
+	-webkit-animation: blinking-smooth 4.333s infinite ease-in;
 	animation: blinking-smooth-1 4.333s infinite ease-in;
 }
 
