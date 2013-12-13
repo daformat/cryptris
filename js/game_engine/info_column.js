@@ -160,10 +160,10 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 			this.marge = 15 / 200 * this.director.height - 30;
 		}
 		if (this.withGauge === true) {
-			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
+			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
 									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y_WITH_GAUGE + this.resultScene.game_box.gameBox.height / 2 + 20);
 		} else {
-			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
+			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
 									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
 		}
 
