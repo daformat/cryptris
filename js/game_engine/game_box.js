@@ -186,9 +186,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       this.keyChain = new CAAT.Foundation.ActorContainer().setSize(this.keychain_img.width, this.keychain_img.height).setBackgroundImage(this.keychain_img, false);
 
       if (this.player === true) {
-        this.keyChain.setLocation(50, 13);
+        this.keyChain.setLocation(41, 6);
       } else {
-        this.keyChain.setLocation(-30, 14);
+        this.keyChain.setLocation(-43, 6);
       }
 
       this.keySymbol.addChild(this.keySymbolImg);
@@ -204,9 +204,9 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             object.key_symbol_anim_is_needed = false;
             object.animKeySymbol.cancel();
 
-            var finalXApparition = object.gameBox.width - 13;
+            var finalXApparition = object.gameBox.width - 8;
             if (object.player !== true) {
-              finalXApparition = -1 * object.key_symbol_img.width + 13;
+              finalXApparition = -1 * object.key_symbol_img.width + 8;
             }
 
             var path =  new CAAT.LinearPath().setInitialPosition(object.keySymbol.x, object.keySymbol.y).setFinalPosition(finalXApparition, object.keySymbol.y);
@@ -215,11 +215,11 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
             var keychainPath = null;
             var keychainPb = null;
             if (object.player === true) {
-              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x , object.keyChain.y + 15, object.keyChain.x - 20, object.keyChain.y + 30);
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x , object.keyChain.y + 15, object.keyChain.x - 15, object.keyChain.y + 26);
               keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
               keychainRotate = new CAAT.RotateBehavior().setValues(0, Math.PI / 3).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
             } else {
-              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x, object.keyChain.y + 15, object.keyChain.x + 20, object.keyChain.y + 30);
+              keychainPath = new CAAT.CurvePath().setQuadric(object.keyChain.x, object.keyChain.y, object.keyChain.x, object.keyChain.y + 15, object.keyChain.x + 15, object.keyChain.y + 26);
               keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
               keychainRotate = new CAAT.RotateBehavior().setValues(0, -1 * Math.PI / 3).setFrameTime(object.gameBox.time + 125, 500).setCycle(false);
             }
@@ -402,13 +402,13 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       if (this.isActive === true) {
 
         if (this.keySymbol != null) {
-          var keySymbolX = object.gameBox.width - 13;
+          var keySymbolX = object.gameBox.width - 8;
           if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
             this.key_symbol_anim_is_needed = true;
             this.keyIsInPlace = true;
             keySymbolX = this.gameBox.width + 260 / 2 + 12 - this. keySymbol.width;
           }
-          this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
+          this.keySymbol.setLocation(keySymbolX, -20 + this.boxOption.BORDER_HEIGHT);
         }
 
         this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
@@ -422,13 +422,13 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       if (this.isActive === true) {
 
         if (this.keySymbol != null) {
-          var keySymbolX = -1 * object.key_symbol_img.width + 13;
+          var keySymbolX = -1 * object.key_symbol_img.width + 8;
           if (this.keyIsInPlace === false && this.key_symbol_anim_is_needed === false) {
             this.key_symbol_anim_is_needed = true;
             this.keyIsInPlace = true;
             keySymbolX = -260 / 2 - 12;
           }
-          this.keySymbol.setLocation(keySymbolX, -25 + this.boxOption.BORDER_HEIGHT);
+          this.keySymbol.setLocation(keySymbolX, -20 + this.boxOption.BORDER_HEIGHT);
         }
 
         this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
