@@ -426,7 +426,7 @@ border: 1px solid #0091BB;
 }
 
 .btn-close{
-	position: absolute;
+	position: fixed;
 	right: 35px;
 	top: 30px;
 	width: 55px;
@@ -1118,6 +1118,21 @@ border: 1px solid #0091BB;
 .android-mobile .wrapper{opacity:0.3;}
 .android-tablet .wrapper{opacity:0.3;}
 */
+
+.ios-mobile 		.btn-close,
+.ios-tablet 		.btn-close,
+.android-mobile .btn-close,
+.android-tablet .btn-close {
+	width: 65px;
+}
+
+.ios-mobile 		.social-icons img.retina,
+.ios-tablet 		.social-icons img.retina,
+.android-mobile .social-icons img.retina,
+.android-tablet .social-icons img.retina {
+	width: 45px;
+	margin: 0 5px;
+}
 
 .desktop{
 }
