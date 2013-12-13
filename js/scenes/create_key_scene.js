@@ -167,13 +167,13 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, createKeySceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true, false, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true, false);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
      * Create the central column (to display some information).
      */
-    var infoColumn = new InfoColumn(director, resultScene, gameBoxInfo.crypt_key);
+    var infoColumn = new InfoColumn(director, resultScene, gameBoxInfo.crypt_key, true);
     resultScene['info_column'] = infoColumn;
 
     /*

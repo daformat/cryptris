@@ -27,6 +27,13 @@ function getPreloadedImages() {
     imgs.push({id:'icn-mini-player-padlock-open', url: "img/icn-mini-player-padlock-open.png"});
     imgs.push({id:'keychain-ia', url: "img/keychain-ia.png"});
     imgs.push({id:'keychain-player', url: "img/keychain-player.png"});
+    imgs.push({id:'gauge0', url: "img/gauge/00.png"});
+    imgs.push({id:'gauge1', url: "img/gauge/01.png"});
+    imgs.push({id:'gauge2', url: "img/gauge/02.png"});
+    imgs.push({id:'gauge3', url: "img/gauge/03.png"});
+    imgs.push({id:'gauge4', url: "img/gauge/04.png"});
+    imgs.push({id:'gauge5', url: "img/gauge/05.png"});
+    imgs.push({id:'gauge6', url: "img/gauge/06.png"});
 
     var assets = ["img/apple-touch-startup-image-1536x2008.png",
 		"img/icn-facebook-large@2x.png",

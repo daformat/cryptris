@@ -23,7 +23,7 @@ function convertTimeToString(time) {
 	return hourString + ":" + minuteString + ":" + secondString;
 }
 
-function InfoColumn(director, resultScene, crypt_key) {
+function InfoColumn(director, resultScene, crypt_key, withGauge) {
 
 	this.resultScene = resultScene;
 	this.director = director;
@@ -31,6 +31,7 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.marge = 30;
 	this.gameIsInProgress = true;
 	this.currentTime = 0;
+	this.withGauge = withGauge;
 
 	var object = this;
 	$(document).on('fixTime', function(event, scene) {
@@ -90,6 +91,50 @@ function InfoColumn(director, resultScene, crypt_key) {
 		setBackgroundImage(director.getImage('help-up'));
 	this.helpButton.isPressed = false;
 
+
+
+    /**
+     * Create the gauge if necessary.
+     */
+    if (this.withGauge === true) {
+      this.gauge0_img = director.getImage('gauge0');
+      this.gauge1_img = director.getImage('gauge1');
+      this.gauge2_img = director.getImage('gauge2');
+      this.gauge3_img = director.getImage('gauge3');
+      this.gauge4_img = director.getImage('gauge4');
+      this.gauge5_img = director.getImage('gauge5');
+      this.gauge6_img = director.getImage('gauge6');
+
+      this.gaugeZone = new CAAT.Foundation.ActorContainer().setSize(this.gauge0_img.width, this.gauge0_img.height).setBackgroundImage(this.gauge0_img, false);
+
+      var object = this;
+	  this.resultScene['scene'].createTimer(this.director.time, Number.MAX_VALUE, null,
+   		function(time, ttime, timerTask) {
+          var scoreNumber = score(object.crypt_key.msgColumn.getNumbers());
+          var test = 0;
+          if (scoreNumber === 0) {
+            object.gaugeZone.setBackgroundImage(object.gauge0_img, false);
+          } else if (scoreNumber < 1.5) {
+            object.gaugeZone.setBackgroundImage(object.gauge1_img, false);
+          } else if (scoreNumber >= 1.5 && scoreNumber < 2) {
+            object.gaugeZone.setBackgroundImage(object.gauge2_img, false);
+          } else if (scoreNumber >= 2 && scoreNumber < 2.5) {
+            object.gaugeZone.setBackgroundImage(object.gauge3_img, false);
+          } else if (scoreNumber >= 2.5 && scoreNumber < 3) {
+            object.gaugeZone.setBackgroundImage(object.gauge4_img, false);
+          } else if (scoreNumber >= 3 && scoreNumber < 4) {
+            object.gaugeZone.setBackgroundImage(object.gauge5_img, false);
+          } else {
+          	object.gaugeZone.setBackgroundImage(object.gauge6_img, false);
+          }
+        }
+      );
+/*
+      */
+    }
+
+
+
 	this.pad = new CAAT.Actor().setSize(155, 152)
 		.setBackgroundImage(director.getImage('pad-untouched'));
 
@@ -100,6 +145,9 @@ function InfoColumn(director, resultScene, crypt_key) {
 	this.infoColumnContainer.addChild(this.leftTimer);
 	this.infoColumnContainer.addChild(this.centerTimer);
 	this.infoColumnContainer.addChild(this.rightTimer);
+	if (this.withGauge === true) {
+	    this.infoColumnContainer.addChild(this.gaugeZone);
+	}
 
 	this.redraw = function() {
 		if (this.director.height < 600) {
@@ -111,8 +159,13 @@ function InfoColumn(director, resultScene, crypt_key) {
 		else {
 			this.marge = 15 / 200 * this.director.height - 30;
 		}
-		this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
-								.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
+		if (this.withGauge === true) {
+			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
+									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y_WITH_GAUGE + this.resultScene.game_box.gameBox.height / 2 + 20);
+		} else {
+			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 360)
+									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
+		}
 
 		this.cryptrisLogo.setLocation(0, 0);
 		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 20);
@@ -124,7 +177,14 @@ function InfoColumn(director, resultScene, crypt_key) {
 
 		var relativeHelpY = this.helpButton.isPressed ? 3 : 0;
 		this.helpButton.setLocation(this.pauseButton.x + this.pauseButton.width + 20, this.pauseButton.y - relativePauseY + relativeHelpY);
-		this.pad.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
+
+
+      	if (this.withGauge === true) {
+        	this.gaugeZone.setLocation(this.cryptrisLogo.x + 30, this.pauseButton.y + this.pauseButton.height + this.marge);
+        	this.pad.setLocation(this.cryptrisLogo.x + 45, this.gaugeZone.y + this.gaugeZone.height + this.marge);
+      	} else {
+			this.pad.setLocation(this.cryptrisLogo.x + 45, this.pauseButton.y + this.pauseButton.height + this.marge);
+		}
 	}
 	this.redraw();
 

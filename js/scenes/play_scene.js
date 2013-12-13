@@ -149,7 +149,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
         gameKey = keyInfo.public_key[current_length];
         isActive = false;
     }
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, gameKey, message, true, true, false);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, gameKey, message, true, true);
     resultScene['game_box'] = gameBoxInfo;
     resultScene.scene.addChild(resultScene['game_box'].gameBox);
 
@@ -164,7 +164,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      */
     if (withIaBoard) {
         var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
-        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false, true, hookActive);
+        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false, true);
         resultScene['rival_box'] = rivalBoxInfo;
         resultScene.scene.addChild(resultScene['rival_box'].gameBox);
     }

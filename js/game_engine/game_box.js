@@ -1,4 +1,4 @@
-function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive, withGauge) {
+function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive) {
   this.director = director;
   this.boxOption = boxOption;
   this.relativeX = relativeX;
@@ -10,7 +10,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
   this.tryToResize = false;
   this.winScreen = null;
   this.isActive = isActive;
-  this.withGauge = withGauge;
   this.padlockIsFall = false;
   this.key_symbol_anim_is_needed = false;
   this.keyIsInPlace = false;
@@ -148,44 +147,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       this.gameBox.addChild(this.padlock);
     }
 
-    /**
-     * Create the gauge if necessary.
-     */
-    if (this.withGauge === true) {
-      this.gaugeZone = new CAAT.Foundation.ActorContainer().setSize(40,120);
-      this.gauge = new CAAT.Foundation.Actor().setSize(20, 100);
-      this.padlock = new CAAT.Foundation.ActorContainer().setSize(this.padlock_closed_img.width, this.padlock_closed_img.height).setBackgroundImage(this.padlock_closed_img, false);
-      this.gaugeZone.addChild(this.gauge);
-      this.gaugeZone.addChild(this.padlock);
-
-      this.gauge.paint = function(director) {
-        var ctx = director.ctx;
-
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.strokeRect(0, 0, this.width, this.height);
-
-        var colorArray = ['#FF0000', '#FF9900', '#999900', '#99FF00', '#00FFFF'];
-
-        var scoreNumber = score(object.message.getNumbers());
-        var test = 0;
-        if (scoreNumber < 1.5) {
-          test = 0;
-        } else if (scoreNumber >= 1.5 && scoreNumber < 2) {
-          test = 1;
-        } else if (scoreNumber >= 2 && scoreNumber < 2.5) {
-          test = 2;
-        } else if (scoreNumber >= 2.5 && scoreNumber < 3) {
-          test = 3;
-        } else {
-          test = 4;
-        }
-
-        ctx.fillStyle = colorArray[test];
-        ctx.fillRect(0, 0, this.width, this.height);
-
-      }
-      this.gameBox.addChild(this.gaugeZone);
-    }
   }
   this.create();
 
@@ -456,12 +417,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
         }
       }
 
-      if (this.withGauge === true) {
-        this.gaugeZone.setLocation(this.gameBox.width + 15 + 0.5, this.gameBox.height - this.boxOption.BORDER_HEIGHT - this.gauge.height - 0.5);
-        this.gauge.setLocation(0, 0);
-        this.padlock.setLocation(0, this.gaugeZone.height - this.padlock.height + 1);
-        this.padlock.setZOrder(0);
-      }
     } else {
 
       if (this.isActive === true) {
