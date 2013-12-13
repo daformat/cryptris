@@ -944,8 +944,8 @@ border: 1px solid #0091BB;
 	left: 0px;
 }
 
-.new-message .background {
-	position: initial;
+.avatar .new-message img.background {
+	position: static;
 }
 
 /*
