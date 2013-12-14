@@ -49,6 +49,10 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
     function(time, ttime, timerTask) {
       if (!activateIa || (ia.moveList.length === 0 && key.msgColumn.resolved === false && key.keyInMove === false && key.keyFirstMove === false)) {
         finishCreateKeyTimer.cancel();
+
+        // destroy private key symbol.
+        gameBoxInfo.gameBox.removeChild(gameBoxInfo.keySymbol);
+
         message.upMessage();
 
         // Make a key to appear.
