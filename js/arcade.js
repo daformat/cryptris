@@ -199,7 +199,7 @@ $(document).ready(function() {
 });
 
 /**
- *  Select player / ia key type
+ *  Select player / ia key type in menu
  */
 $(function(){
     $(".select-key-type a").click(function(){

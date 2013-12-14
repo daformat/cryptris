@@ -1,3 +1,10 @@
+/**
+ *	Cryptris dialogs plugin
+ *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
+ *	@desc:	Handle the display of game dialogs
+ *	@dependencies: jQuery
+ */
+
 (function($) {
 
 	var settings,

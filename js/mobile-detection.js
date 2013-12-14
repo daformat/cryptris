@@ -1,3 +1,13 @@
+/**
+ *  Cryptris mobile detection script
+ *  @author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
+ *  @desc:  Check the device type for android / iOS, looks for the following:
+ *          iPhone / iPod / Ipad / Android Mobile / Android Tablet.
+ *          Handle device rotation if relevant.
+ *          Displays rotation instructions when on small devices.
+ *  @dependencies: jQuery
+ */
+
 var ua = navigator.userAgent,
     nua = navigator.userAgent,
     uaOk = null,

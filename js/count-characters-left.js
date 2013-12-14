@@ -1,10 +1,16 @@
+/**
+ *	Counts characters left
+ *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
+ *	@dependencies: jQuery
+ */
+
 $(function(){
 	var $textarea = $("#share textarea");
 	var $counter = $(".characters-left .count");
 	var $text = $(".characters-left .text");
 
 	var countCharactersLeft = function(){
-		console.log("counting characters left")
+		//console.log("counting characters left")
 		setTimeout(function() { //make sure the value was updated
 			$textarea.change();
 		}, 40);

@@ -1,17 +1,10 @@
-$(function(){
+/**
+ *	Autoscrolling feature used in credits
+ *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
+ *	@dependencies: jQuery
+ */
 
-	/*
-	var scrollToElement = function( target, callback ) {
-	    var topoffset = 30;
-	    var speed = 4500;
-	    var destination = jQuery( target ).offset().top - topoffset;
-	    $scroll.animate( { scrollTop: destination}, speed, function() {
-	        window.location.hash = target;
-	        callback();
-	    });
-	    return false;
-	}	
-	*/
+$(function(){
 
 	var autoscroll = function(){
 			var i = setInterval(function(){
@@ -29,12 +22,6 @@ $(function(){
 	var $scroll = $('.autoscrolling');		
 	$scroll.prepend('<div id="spacer" style="height:'+($( window ).height()-160)+'px"></div>');
 	$scroll.append('<div style="height:'+($( window ).height()/4)+'px"></div>');
-
-	/*
-		setTimeout(function(){
-			scrollToElement('.cryptris-logo-large', autoscroll);
-		}, 0);
-	*/
 
 	autoscroll();
 })
