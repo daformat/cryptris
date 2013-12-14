@@ -58,14 +58,25 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
         // Make a key to appear.
         var gameBox = gameBoxInfo.gameBox;
 
-        var keySymbolImg = currentGame.director.getImage('key-symbol');
-        var keySymbolActor = new CAAT.Actor().setSize(keySymbolImg.width, keySymbolImg.height)
-                                              .setBackgroundImage(currentGame.director.getImage('key-symbol'))
+        var keySymbolImg = currentGame.director.getImage('icn-mini-ia-key-symbol');
+        var keySymbolActor = new CAAT.ActorContainer().setSize(keySymbolImg.width, keySymbolImg.height)
                                               .setLocation(-keySymbolImg.width, gameBox.y - (keySymbolImg.height - 10) / 2 + gameBoxInfo.boxOption.BORDER_HEIGHT);
+        var keySymbol = new CAAT.Actor().setBackgroundImage(currentGame.director.getImage('icn-mini-ia-key-symbol'));
+        var keychainSymbol = new CAAT.Actor().setBackgroundImage(currentGame.director.getImage('keychain-ia')).setLocation(-45, 5);
+
+        var keychainPath = new CAAT.CurvePath().setQuadric(keychainSymbol.x, keychainSymbol.y, keychainSymbol.x, keychainSymbol.y + 15, keychainSymbol.x + 15, keychainSymbol.y + 26);
+        var keychainPb = new CAAT.PathBehavior().setPath(keychainPath).setFrameTime(gameBox.time + 125, 500).setCycle(false);
+        var keychainRotate = new CAAT.RotateBehavior().setValues(0, -1 * Math.PI / 3).setFrameTime(gameBox.time + 125, 500).setCycle(false);
+        
+        keychainSymbol.addBehavior(keychainPb);
+        keychainSymbol.addBehavior(keychainRotate);
+
+        keySymbolActor.addChild(keySymbol);
+        keySymbolActor.addChild(keychainSymbol);
         currentGame.scenes.create_key_scene.keySymbol = keySymbolActor;
         createKeyScene.addChild(currentGame.scenes.create_key_scene.keySymbol);
 
-        var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + 8 + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y);
+        var path =  new CAAT.LinearPath().setInitialPosition(keySymbolActor.x, keySymbolActor.y).setFinalPosition(gameBox.x - keySymbolImg.width + gameBoxInfo.boxOption.BORDER_WIDTH, keySymbolActor.y - 2);
         var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(createKeyScene.time, gameBoxInfo.boxOption.timeInfo.keyAppearTime).setCycle(false);
         pb.setInterpolator(CAAT.Behavior.Interpolator.enumerateInterpolators()[16]);
 
@@ -75,7 +86,8 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
         var alphaCBehaviorListener = {
           'behaviorExpired' : function(behavior, time, actor) {
                                 if (currentGame.nbrKeyClipping < currentGame.maxKeyClipping - 1) {
-                                  keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                  keySymbol.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                  keychainSymbol.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
                                   currentGame.nbrKeyClipping = currentGame.nbrKeyClipping + 1;
                                 } else {
                                   currentGame.goToNextDialog = true;
@@ -87,7 +99,8 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
 
         var alphaDBehaviorListener = {
           'behaviorExpired' : function(behavior, time, actor) {
-                                keySymbolActor.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                keySymbol.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                keychainSymbol.addBehavior(alphaC.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
                               },
           'behaviorApplied' : null
         };
@@ -95,7 +108,8 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
 
         var behaviorListener = {
           'behaviorExpired' : function(behavior, time, actor) {
-                                keySymbolActor.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                keySymbol.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
+                                keychainSymbol.addBehavior(alphaD.setFrameTime(time, gameBoxInfo.boxOption.timeInfo.keyClippingTime / 2));
                                 currentGame.keyIsInPlace = true;
                               }, 
           'behaviorApplied' : null
