@@ -1,4 +1,4 @@
-function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive) {
+function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive, isActiveKeySymbol) {
   this.director = director;
   this.boxOption = boxOption;
   this.relativeX = relativeX;
@@ -15,6 +15,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
   this.keyIsInPlace = false;
   this.keySymbol = null;
   this.lastLevel = 0;
+  this.isActiveKeySymbol = isActiveKeySymbol;
 
   /*
    * This function returns the computed width size of the gameBox
@@ -176,8 +177,8 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
    * If we have to decrypt a message, and if we have not added a keySymbol, add it.
    */
   this.addKeySymbol = function() {
-    if (this.isActive === true && this.keySymbol === null) {
-
+    if (this.isActiveKeySymbol === true && this.keySymbol === null) {
+      console.log('test');
       this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
       this.keychain_img = director.getImage(this.boxOption.boardColorInfo['keychain']);
       this.keychainX = this.boxOption.boardColorInfo['keychainX'];
@@ -399,7 +400,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
       this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
 
-      if (this.isActive === true) {
+      if (this.isActiveKeySymbol === true) {
 
         if (this.keySymbol != null) {
           var keySymbolX = object.gameBox.width - 8;
@@ -410,7 +411,8 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
           }
           this.keySymbol.setLocation(keySymbolX, -20 + this.boxOption.BORDER_HEIGHT);
         }
-
+      }
+      if (this.isActive === true) {
         this.enveloppe.setLocation(this.gameBox.width + 15, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
         if (!object.message.resolved) {
           this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);
@@ -419,7 +421,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
 
     } else {
 
-      if (this.isActive === true) {
+      if (this.isActiveKeySymbol === true) {
 
         if (this.keySymbol != null) {
           var keySymbolX = -1 * object.key_symbol_img.width + 8;
@@ -430,7 +432,8 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
           }
           this.keySymbol.setLocation(keySymbolX, -20 + this.boxOption.BORDER_HEIGHT);
         }
-
+      }
+      if (this.isActive === true) {
         this.enveloppe.setLocation(-1 * this.enveloppe.height - 27, this.gameBox.height - this.enveloppe.height - this.boxOption.BORDER_HEIGHT + 3);
         if (!object.message.resolved) {
           this.padlock.setLocation(this.enveloppe.x + this.enveloppe.width - this.padlock.width / 2 - 2, this.enveloppe.y + this.enveloppe.height / 2 - 6);

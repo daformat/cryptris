@@ -134,6 +134,15 @@ function resizeCreateKeyScene(director, createKeyScene) {
     }
 }
 
+function addKeySymbol(director, playScene) {
+    playScene.game_box.addKeySymbol();
+
+    if (playScene.rival_box != null) {
+        playScene.rival_box.addKeySymbol();
+    }
+    playScene.resize(director, playScene);
+}
+
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
@@ -167,7 +176,7 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, createKeySceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true, false);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.private_key[current_length], empty_message, true, false, true);
     resultScene['game_box'] = gameBoxInfo;
 
     /**
@@ -193,6 +202,11 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
     // Bind default help button (do nothing).
     bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
 
+
+    /**
+     * Set the addKeySymbol callback to call.
+     */
+    resultScene['add_key_symbol'] = addKeySymbol;
 
     /**
      * Add each element to its scene.

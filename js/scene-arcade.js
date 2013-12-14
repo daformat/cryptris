@@ -90,6 +90,7 @@ $(function(){
                                         new specialInInterpolator(),
                                         new specialOutInterpolator()
         );
+        currentGame.scenes['create_key_scene'].add_key_symbol(currentGame.director, currentGame.scenes['create_key_scene']);
 
         $(".wrapper.active .vertical-centering").dialog(hereYourPrivateKeyDialog);
       });
