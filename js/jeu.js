@@ -96,8 +96,8 @@ function createMessageForAnimateEncryption(boardLength, message) {
  * 
  */
 function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
-    iaBoardColorInfo['keychain'] = 'keychain-ia';
-    iaBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol';
+    playerBoardColorInfo['keychain'] = 'keychain-player';
+    playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
     currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
 }
 
