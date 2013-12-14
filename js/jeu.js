@@ -105,13 +105,10 @@ function preparePlayScene(director, boardLength, boardName, crypt_message, hookA
  * 
  */
 function prepareAnimatePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
-    var saveColor = playerBoardColorInfo;
-    playerBoardColorInfo = iaBoardColorInfo;
     playerBoardColorInfo['keychain'] = 'keychain-ia-left';
     playerBoardColorInfo['key-symbol'] = 'key-ia-left';
     currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, true);
     currentGame.scenes[boardName].game_box.message.isActive = false;
-    playerBoardColorInfo = saveColor;
 }
 
 /**
