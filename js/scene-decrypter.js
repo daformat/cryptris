@@ -247,7 +247,20 @@ $(function(){
     	          label: "Suite", 
         	      class: "button blue",
             	  onClick: lastMessage
-            	}]
+            	}],
+
+                // Callback functions for the different states of the dialog
+                transitionCallback: {
+                    in: function() {
+                        // alert("Dialog was added to the dom");
+                    },
+                    show: function() {
+                        // alert("Dialog intro animation is complete");
+                    },
+                    out: function() {
+                        // alert("Dialog outro animation is complete, html element will be removed now.");
+                    }
+                }
 
 	          });   
 
