@@ -418,7 +418,17 @@ $(function(){
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_min_scene_msg.plain_message),
+          content: (function(){
+            var t = board_message_to_string(currentGame.play_min_scene_msg.plain_message),
+                a = t.split(' '),
+                o = '';
+
+                for (var i = 0; i<a.length; i++) {
+                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                }
+
+                return o;
+          }()),
                 
           controls: [{
             label: "Décrypter le message", 
@@ -581,7 +591,17 @@ $(function(){
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
+          content: (function(){
+            var t = board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
+                a = t.split(' '),
+                o = '';
+
+                for (var i = 0; i<a.length; i++) {
+                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                }
+
+                return o;
+          }()),
                 
           controls: [{
             label: "Décrypter le message", 
@@ -676,7 +696,17 @@ $(function(){
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+          content: (function(){
+            var t = board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+                a = t.split(' '),
+                o = '';
+
+                for (var i = 0; i<a.length; i++) {
+                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                }
+
+                return o;
+          }()),
             
           controls: [{
             label: "Décrypter le message", 
@@ -779,7 +809,17 @@ $(function(){
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
+          content: (function(){
+            var t = board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
+                a = t.split(' '),
+                o = '';
+
+                for (var i = 0; i<a.length; i++) {
+                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                }
+
+                return o;
+          }()),
                 
           controls: [{
             label: "Décrypter le message", 
@@ -884,7 +924,17 @@ $(function(){
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "InriOS 3.14",
-          content: board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
+          content: (function(){
+            var t = board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
+                a = t.split(' '),
+                o = '';
+
+                for (var i = 0; i<a.length; i++) {
+                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                }
+
+                return o;
+          }()),
                 
           controls: [{
             label: "Décrypter le message", 
