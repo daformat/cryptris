@@ -1389,3 +1389,34 @@ div.tooltip {
   border-radius: 8px;           
   pointer-events: none;         
 }
+
+/**
+ *	Decrypted message animation
+ */
+
+.letter-block{
+	display: inline-block;
+	height: 0.75em;
+	min-width: 0.75em;
+	padding: 0.2em 0.1em;
+	text-align: center;
+	background-color: #0071BB;
+	color: #eee;
+	line-height: 0.8;
+	vertical-align: text-bottom;
+	font-size: 1.1em;
+	text-transform: uppercase;
+	outline: 1px solid #fff;
+}
+
+.letter-block.decrypted{
+	background-color: rgba(255,255,255,0.5);
+	color: inherit;
+}
+
+.letter-block.crypted-message{
+	margin-right: 0.25em;
+	padding: 0.3em;
+	background-color: #5DA7D8;
+	outline: 1px solid #96DAF0;
+}

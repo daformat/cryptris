@@ -182,7 +182,17 @@ $(function(){
         	    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 	            title: "InriOS 3.14",
-    	        content: board_message_to_string(currentGame.keyInfoCipher),//board_message_to_string(currentGame.cipher),
+    	        content: (function(){
+                    var t = board_message_to_string(currentGame.keyInfoCipher),
+                        a = t.split(' '),
+                        o = '';
+
+                        for (var i = 0; i<a.length; i++) {
+                            if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                        }
+
+                        return o;
+                }()),//board_message_to_string(currentGame.cipher),
         	    
 	            controls: [{
     	          label: "Ouvrir le message", 
@@ -232,16 +242,30 @@ $(function(){
     }
     function onDecrypt() {
 
+
         $("body").closeAllDialogs(function(){
+            var randLetter,
+                o,
+                t = krDencodeEntities(easy_decrypt(currentGame.cryptedMessage));
+                
+                // we need to do it once more;
+                t = $('<div></div>').html(t).text();
+
+
+            for (var i=0; i<t.length; i++) {
+                randLetter = String.fromCharCode(Math.round(Math.random()*224)+32);
+                o+="<span class='letter-block crypted'>"+randLetter+"</span>";                    
+            }
+
         	$(".wrapper.active .vertical-centering").dialog({
             
-	            animateText: true,
+	            animateText: false,
 
     	        type: "withAvatar",
                 avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
 	            title: "InriOS 3.14",
-    	        content: krDencodeEntities(easy_decrypt(currentGame.cryptedMessage)),
+    	        content: o, // krDencodeEntities(easy_decrypt(currentGame.cryptedMessage))
         	    
 	            controls: [{
     	          label: "Suite", 
@@ -256,6 +280,7 @@ $(function(){
                     },
                     show: function() {
                         // alert("Dialog intro animation is complete");
+                        simulateDecrypt($(".dialog .content .text"), krDencodeEntities(easy_decrypt(currentGame.cryptedMessage)), 3);
                     },
                     out: function() {
                         // alert("Dialog outro animation is complete, html element will be removed now.");
@@ -267,6 +292,82 @@ $(function(){
     	    });
     }
 
+    $.onDecrypt = onDecrypt;
+
+    /**
+     * Simulate text decryption
+     * @params: $e - jQuery element to use
+     *          text — final text to display
+     *          preshow - how many characters should be already revealed
+     */
+
+    function simulateDecrypt($e, text, preshow){
+        console.log(text);
+        text = $('<div></div>').html(text).text();
+        console.log(text);
+
+        var n = text.length,
+            textArray = text.split(''),
+            textLetters = [],
+            finished = false;
+
+            for(var i in textArray){
+                if(textArray.hasOwnProperty(i)) {
+
+                    var decrypted = (i < preshow);
+                    textLetters.push({
+                        letter: text.substr(i, 1),
+                        decrypted: decrypted
+                    });
+
+                }
+            }
+
+            shuffleAndDisplay(textLetters, $e);
+
+    }
+
+    /**
+     *  Suffle crypted letters and display current state
+     */
+
+    function shuffleAndDisplay(textLetters, $e){
+        var finished = true;
+        $e.text('');
+
+        for (var i in textLetters) {
+            if(textLetters.hasOwnProperty(i)) {
+                
+                var letter = textLetters[i];
+
+                if(letter.decrypted == true) {
+                    $e.append( $("<span class='letter-block decrypted'></span>").text( letter.letter ) );
+                    //console.log(letter);
+
+                } else {
+                    randLetter = String.fromCharCode(Math.round(Math.random()*224)+32);
+
+                    $e.append( $("<span class='letter-block crypted'></span>").text( randLetter ) );                    
+                    //console.log(letter);
+
+                    letter.decrypted = (Math.round( Math.random()*10 ) < 9 ? false: true);
+                    finished = false;
+                }
+
+            }
+        }
+
+        if(finished == false) {
+            setTimeout(function(){ shuffleAndDisplay(textLetters, $e) }, 66);
+        }
+        return finished;
+
+    }
+
+
+/**
+ *
+ */
 
   $(document).on("playMaxSceneHelp", function() {
     // Pause the board if necessary
@@ -357,12 +458,14 @@ $(function(){
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
                 title: "Chercheuse",
-    	        content: 'A COMPLETER',
+    	        content: 'Félicitations ! Tu as décrypté plus rapidement que l’ordinateur. Si tu veux découvrir la cryptographie, essaie de faire une nouvelle partie complète.',
         	    
 	            controls: [{
     	          label: "Suite", 
         	      class: "button blue",
-            	  onClick: lastMessage
+            	  onClick: function(){
+                    window.location.href = '../';
+                  }
             	}]
 
 	          });   
