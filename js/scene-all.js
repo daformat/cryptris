@@ -622,7 +622,17 @@ $(function() {
     currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
     
     // Set the first battle message to the dialog box.
-    addInteractiveContentToDialog(firstBattleMessageDialog, board_message_to_string(currentGame.play_min_scene_msg.plain_message));
+    addInteractiveContentToDialog(firstBattleMessageDialog, (function(){
+                    var t = board_message_to_string(currentGame.play_min_scene_msg.plain_message),
+                        a = t.split(' '),
+                        o = '';
+
+                        for (var i = 0; i<a.length; i++) {
+                            if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                        }
+
+                        return o;
+                }()));
   }
 
   function helpPlayMin() {
@@ -660,7 +670,17 @@ $(function() {
     currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
 
     // Set the first battle message to the dialog box.
-    addInteractiveContentToDialog(secondBattleMessageDialog, board_message_to_string(currentGame.play_medium_scene_msg.plain_message));
+    addInteractiveContentToDialog(secondBattleMessageDialog, (function(){
+                var t = board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
+
+                    for (var i = 0; i<a.length; i++) {
+                        if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                    }
+
+                    return o;
+            }()));
   }
 
   function helpPlayMedium() {
@@ -692,7 +712,17 @@ $(function() {
     currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
     
     // Set the third battle message to the dialog box.
-    addInteractiveContentToDialog(thirdBattleMessageDialog, board_message_to_string(currentGame.play_max_scene_msg.plain_message));
+    addInteractiveContentToDialog(thirdBattleMessageDialog, (function(){
+        var t = board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+            a = t.split(' '),
+            o = '';
+
+            for (var i = 0; i<a.length; i++) {
+                if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+            }
+
+            return o;
+    }()) );    
   }
 
   function helpPlayMax() {
