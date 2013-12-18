@@ -1397,7 +1397,7 @@ div.tooltip {
 .letter-block{
 	display: inline-block;
 	height: 0.75em;
-	min-width: 0.75em;
+	min-width: 0.5em;
 	padding: 0.2em 0.1em;
 	text-align: center;
 	background-color: #0071BB;

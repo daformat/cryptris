@@ -243,6 +243,78 @@
 	}
 
 
+  /**
+   * Simulate text decryption
+   * @params: $e - jQuery element to use
+   *          text — final text to display
+   *          preshow - how many characters should be already revealed
+   */
+
+  $.simulateDecrypt = function($e, text, preshow){
+      console.log(text);
+      text = $('<div></div>').html(text).text();
+      console.log(text);
+
+      var n = text.length,
+          textArray = text.split(''),
+          textLetters = [],
+          finished = false;
+
+          for(var i in textArray){
+              if(textArray.hasOwnProperty(i)) {
+
+                  var decrypted = (i < preshow);
+                  textLetters.push({
+                      letter: text.substr(i, 1),
+                      decrypted: decrypted
+                  });
+
+              }
+          }
+
+          shuffleAndDisplay(textLetters, $e);
+
+  }
+
+  /**
+   *  Suffle crypted letters and display current state
+   */
+
+  function shuffleAndDisplay(textLetters, $e){
+      var finished = true;
+      $e.text('');
+
+      for (var i in textLetters) {
+          if(textLetters.hasOwnProperty(i)) {
+              
+              var letter = textLetters[i];
+
+              if(letter.decrypted == true) {
+                  $e.append( $("<span class='letter-block decrypted'></span>").text( letter.letter ) );
+                  //console.log(letter);
+
+              } else {
+                  randLetter = String.fromCharCode(Math.round(Math.random()*224)+32);
+
+                  $e.append( $("<span class='letter-block crypted'></span>").text( randLetter ) );                    
+                  //console.log(letter);
+
+                  letter.decrypted = (Math.round( Math.random()*10 ) < 9 ? false: true);
+                  finished = false;
+              }
+
+          }
+      }
+
+      if(finished == false) {
+          setTimeout(function(){ shuffleAndDisplay(textLetters, $e) }, 66);
+      }
+      return finished;
+
+  }
+
+
+
 	/**
 	 * Dialog templates
 	 */
