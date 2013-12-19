@@ -47,6 +47,8 @@ $(function(){
 
 
   function announcePublicKey(){
+
+    prepareCreateKeyScene(currentGame.director);
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
 
@@ -133,8 +135,42 @@ $(function(){
     currentGame[hookName] = true;
   }
 
+
+  function activatePause(dataScene, hookName, pauseFunction) {
+    if (dataScene.scene.isPaused() === false) {
+      dataScene.scene.setPaused(true);
+      dataScene.needStopPaused = true;
+    } else {
+      dataScene.needStopPaused = false;
+    }
+    currentGame[hookName] = false;
+
+
+    var pauseInfo = {
+      'sceneName' : dataScene,
+      'hookName' : hookName
+    };
+    pauseFunction(pauseInfo);
+  }
+
+  function deActivatePause(dataScene, hookName) {
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board if necessary.
+    if (dataScene.needStopPaused === true) {
+      dataScene.scene.setPaused(false);
+    }
+    dataScene.needStopPaused = null;
+    currentGame[hookName] = true;
+  }
+
+
   $(document).on("helpCreateKeyEvent", function() {
     activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
+  });
+
+  $(document).on("pauseCreateKeyEvent", function() {
+    activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", pauseCreateKey);
   });
 
   function helpCreateKey() {
@@ -154,6 +190,42 @@ $(function(){
           content: "Help CREATE_KEY",
           controls: [{
             label: "Suite", 
+            class: "button blue",
+            onClick: function() {
+              deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+  function pauseCreateKey() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Le jeu est en pause.",
+          controls: [
+            {
+              label: "Menu Principal",
+              class: "button red",
+              onClick: menu
+            },
+            {
+            label: "Reprendre", 
             class: "button blue",
             onClick: function() {
               deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");

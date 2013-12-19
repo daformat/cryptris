@@ -66,7 +66,7 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message, currentGame.playerKeyInfo.private_key[current_length].key);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent');
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent', 'pauseCreateKeyEvent');
 }
 
 function createMessageForPlayScene(boardLength, message) {
@@ -85,8 +85,8 @@ function createMessageForPlayScene(boardLength, message) {
 /**
  * 
  */
-function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent, pauseEvent) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, pauseEvent);
 }
 
 /**
@@ -108,7 +108,7 @@ function createScenes(director) {
     // This scene is active between two scenes.
     currentGame.scenes['waiting_scene'] = director.createScene();
 
-    prepareCreateKeyScene(director);
+    //prepareCreateKeyScene(director);
 
 
 
