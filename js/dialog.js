@@ -245,34 +245,46 @@
 
   /**
    * Simulate text decryption
-   * @params: $e - jQuery element to use
-   *          text — final text to display
-   *          preshow - how many characters should be already revealed
+   * @params: (jQueryElem) $e - jQuery element to use
+   *          (String) text — final text to display
+   *          (Int) preshow - how many characters should already be revealed
+   *					(Int) offset - reveal characters starting at given position (negative to go backwards)
    */
 
-  $.simulateDecrypt = function($e, text, preshow){
-      console.log(text);
-      text = $('<div></div>').html(text).text();
-      console.log(text);
+  $.simulateDecrypt = function($e, text, preshow, offset){
+  		// Preshow cannot be negative
+  		if(!preshow) preshow = 0;
+  		else preshow = Math.abs(preshow);
 
+  		// Convert any given html to text (useful for entities)
+      text = $('<div></div>').html(text).text();
+
+      // Offset default and negative handling
+  		if(!offset) offset = 0;
+  		if(offset<0) offset = text.length + offset;
+
+  		// Init
       var n = text.length,
           textArray = text.split(''),
           textLetters = [],
           finished = false;
 
-          for(var i in textArray){
-              if(textArray.hasOwnProperty(i)) {
+      // Loop through each character and output an array of objects
+        for(var i in textArray){
+          if(textArray.hasOwnProperty(i)) {
 
-                  var decrypted = (i < preshow);
-                  textLetters.push({
-                      letter: text.substr(i, 1),
-                      decrypted: decrypted
-                  });
+            var decrypted = (i >= offset && i < offset+preshow && preshow>0);
 
-              }
+            textLetters.push({
+                letter: text.substr(i, 1),
+                decrypted: decrypted
+            });
+
           }
+        }
 
-          shuffleAndDisplay(textLetters, $e);
+        // Animate recursively until everything is displayed
+        shuffleAndDisplay(textLetters, $e);
 
   }
 
@@ -285,30 +297,34 @@
       $e.text('');
 
       for (var i in textLetters) {
-          if(textLetters.hasOwnProperty(i)) {
-              
-              var letter = textLetters[i];
+        if(textLetters.hasOwnProperty(i)) {
+          
+          var letter = textLetters[i];
 
-              if(letter.decrypted == true) {
-                  $e.append( $("<span class='letter-block decrypted'></span>").text( letter.letter ) );
-                  //console.log(letter);
-
-              } else {
-                  randLetter = String.fromCharCode(Math.round(Math.random()*224)+32);
-
-                  $e.append( $("<span class='letter-block crypted'></span>").text( randLetter ) );                    
-                  //console.log(letter);
-
-                  letter.decrypted = (Math.round( Math.random()*10 ) < 9 ? false: true);
-                  finished = false;
-              }
+          // Decrypted letters
+          if(letter.decrypted == true) {
+            $e.append( $("<span class='letter-block decrypted'></span>").text( letter.letter ) );
 
           }
+
+          // Crypted letters
+          else {              		
+            finished = false;
+            randLetter = String.fromCharCode(Math.round(Math.random()*224)+32);
+
+            $e.append( $("<span class='letter-block crypted'></span>").text( randLetter ) );                    
+
+            letter.decrypted = (Math.round( Math.random()*10 ) < 9 ? false: true);
+
+          }
+
+        }
       }
 
       if(finished == false) {
           setTimeout(function(){ shuffleAndDisplay(textLetters, $e) }, 66);
       }
+
       return finished;
 
   }
