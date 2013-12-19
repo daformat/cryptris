@@ -248,7 +248,7 @@
    * @params: (jQueryElem) $e - jQuery element to use
    *          (String) text — final text to display
    *          (Int) preshow - how many characters should already be revealed
-   *					(Int) offset - reveal characters starting at given position
+   *					(Int) offset - reveal characters starting at given position (negative to go backwards)
    */
 
   $.simulateDecrypt = function($e, text, preshow, offset){
