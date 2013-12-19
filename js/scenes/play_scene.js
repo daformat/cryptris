@@ -113,7 +113,7 @@ function addKeySymbol(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard, helpEvent, animatePlayScene) {
+function createPlayScene(director, current_length, message, keyInfo, hookActive, withIaBoard, helpEvent, pauseEvent, animatePlayScene) {
     /**
      * Create the dict to return.
      */
@@ -180,9 +180,12 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
     bindPadWithKey(infoColumn.pad, director, gameBoxInfo.crypt_key, hookActive);
     bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
+    /*
     // Bind all objects with pause Buttons.
     var objectsWithAnimation = withIaBoard ? [gameBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.crypt_key, rivalBoxInfo.message] : [gameBoxInfo.crypt_key, gameBoxInfo.message];
     bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
+    */
+    bindPauseButtonWithObjects(infoColumn.pauseButton, director, hookActive, pauseEvent);
 
     // Bind default help button (do nothing).
     bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);

@@ -65,6 +65,55 @@ $(function() {
   });
 
 
+
+  function activatePause(dataScene, hookName, pauseFunction) {
+    if (dataScene.scene.isPaused() === false) {
+      dataScene.scene.setPaused(true);
+      dataScene.needStopPaused = true;
+    } else {
+      dataScene.needStopPaused = false;
+    }
+    currentGame[hookName] = false;
+    pauseFunction();
+  }
+
+  function deActivatePause(dataScene, hookName) {
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board if necessary.
+    if (dataScene.needStopPaused === true) {
+      dataScene.scene.setPaused(false);
+    }
+    dataScene.needStopPaused = null;
+    currentGame[hookName] = true;
+  }
+
+  $(document).on("pauseCreateKeyEvent", function() {
+    activatePause(currentGame.scenes.create_key_scene, "createKeySceneActive", pauseCreateKey);
+  });
+
+  $(document).on("playChercheusePauseEvent", function() {
+    activatePause(currentGame.scenes.play_chercheuse_scene, "playChercheuseSceneActive", pausePlayChercheuse);
+  });
+
+  $(document).on("playSoloPauseEvent", function() {
+    activatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive", pausePlaySolo);
+  });
+
+  $(document).on("playMinPauseEvent", function() {
+    activatePause(currentGame.scenes.play_min_scene, "playMinSceneActive", pausePlayMin);
+  });
+
+  $(document).on("playMediumPauseEvent", function() {
+    activatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive", pausePlayMedium);
+  });
+
+  $(document).on("playMaxPauseEvent", function() {
+    activatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive", pausePlayMax);
+  });
+
+
+
   function switchToCreateKey() {
     $("body").closeAllDialogs();
     // Enable the action on the key.
@@ -126,10 +175,10 @@ $(function() {
     currentGame.iaPlay = true;
   }
 
-  function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
+  function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, pauseEvent, timeout) {
 
     // Prepare the sceneName and set it as the current scene.
-    preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
+    preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent, pauseEvent);
     currentGame.iaPlay = false;
     currentGame[hookName] = false;
     currentGame.gameOver = false;
@@ -230,7 +279,7 @@ $(function() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
+        goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
         
         // Active input for play_medium_scene
         currentGame.iaPlay = true;
@@ -245,7 +294,7 @@ $(function() {
     $("body").closeAllDialogs(function() {          
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
-        goToBattleScene('play_max_scene', null, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
+        goToBattleScene('play_max_scene', null, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
         
         // Active input for play_max_scene
         currentGame.iaPlay = true;
@@ -525,6 +574,14 @@ $(function() {
     });
   }  
 
+  function pauseCreateKey() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pauseCreateKeyDialog);
+      });
+    });
+  }
+
   function keyPreGeneratedUpdateText() {
     if (score(currentGame.scenes.create_key_scene.game_box.message.getNumbers()) < 2) {
       keyPreGeneratedDialog['content'] = keyPreGeneratedErrorText;
@@ -552,7 +609,7 @@ $(function() {
     // Prepare the sceneName and set it as the current scene.
     var sceneName = 'play_chercheuse_scene';
     var hookName = 'playChercheuseSceneActive';
-    prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse');
+    prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse', 'pausePlayChercheuse');
     currentGame.scenes[sceneName].game_box.changeToAnimateEncryption();
     currentGame.iaPlay = false;
     currentGame[hookName] = false;
@@ -576,6 +633,14 @@ $(function() {
     });
   }
 
+  function pausePlayChercheuse() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pausePlayChercheuseDialog);
+      });
+    });
+  }
+
   function helpPlaySolo() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
@@ -592,13 +657,21 @@ $(function() {
     });
   }
 
+  function pausePlaySolo() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pausePlaySoloDialog);
+      });
+    });
+  }
+
   var testMessageTest = true;
   function messageTest() {
     if (testMessageTest === true) {
       testMessageTest = false;
       // Display the battle scene in background.
       currentGame.username = currentGame.saveUsername;
-      goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 4000);
+      goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 'playSoloPauseEvent', 4000);
     }
   }
 
@@ -651,9 +724,17 @@ $(function() {
     });
   }
 
+  function pausePlayMin() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pausePlayMinDialog);
+      });
+    });
+  }
+
   function serverAlsoTryingToBreakEncryption() {
     // Display the battle scene in background.
-    goToBattleScene('play_min_scene', null, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
+    goToBattleScene('play_min_scene', null, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent', 'playMinPauseEvent');
   }
 
   function cables1() {
@@ -698,6 +779,14 @@ $(function() {
       });
     });
   }
+  function pausePlayMedium() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pausePlayMediumDialog);
+      });
+    });
+  }
+
 
   function cables2() {
     // Disable the action on the key and switch to the waiting scene.
@@ -740,6 +829,14 @@ $(function() {
       });
     });
   }
+  function pausePlayMax() {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#bg-circuits', function() {
+        $(".wrapper.active .vertical-centering").dialog(pausePlayMaxDialog);
+      });
+    });
+  }
+
 
   function cables3() {
     // Disable the action on the key and switch to the waiting scene.
@@ -782,6 +879,15 @@ $(function() {
       deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }
   }]);
+  addControlToDialog(pauseCreateKeyDialog, [
+    {label: "Quitter", class: "button red", onClick: theEnd},
+    {label: labelResume, class: "button blue",
+    onClick: function() {
+      deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
+    }
+  }]);
+
+
   
   addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue", onClick: helpPlaySolo2}]);
   addControlToDialog(helpPlaySolo2Dialog, [{label: labelNext, class: "button blue",
@@ -789,10 +895,25 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }
   }]);
+  addControlToDialog(pausePlaySoloDialog, [
+    {label: "Quitter", class: "button red", onClick: theEnd},
+    {label: labelResume, class: "button blue",
+    onClick: function() {
+      deActivatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
+    }
+  }]);
+
   addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMin2}]);
   addControlToDialog(helpPlayMin2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
+    }
+  }]);
+  addControlToDialog(pausePlayMinDialog, [
+    {label: "Quitter", class: "button red", onClick: theEnd},
+    {label: labelResume, class: "button blue",
+    onClick: function() {
+      deActivatePause(currentGame.scenes.play_min_scene, "playMinSceneActive");
     }
   }]);
 
@@ -802,11 +923,25 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
     }
   }]);
+  addControlToDialog(pausePlayMediumDialog, [
+    {label: "Quitter", class: "button red", onClick: theEnd},
+    {label: labelResume, class: "button blue",
+    onClick: function() {
+      deActivatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
+    }
+  }]);
   
   addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMax2}]);
   addControlToDialog(helpPlayMax2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
       deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
+    }
+  }]);
+  addControlToDialog(pausePlayMaxDialog, [
+    {label: "Quitter", class: "button red", onClick: theEnd},
+    {label: labelResume, class: "button blue",
+    onClick: function() {
+      deActivatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }
   }]);
 

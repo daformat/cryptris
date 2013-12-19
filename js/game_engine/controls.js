@@ -159,7 +159,7 @@ function bindPadWithKeyboard(pad, director, hookSceneActive) {
 		}
 	});
 }
-
+/*
 function bindPauseButtonWithObjects(pauseButton, scene, objectsWithAnimation, director, hookSceneActive) {
 
 	var relativeY = 3;
@@ -193,6 +193,25 @@ function bindPauseButtonWithObjects(pauseButton, scene, objectsWithAnimation, di
 					}
 				}
 			}
+		}
+	}
+}*/
+
+function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, pauseEvent) {
+
+	var relativeY = 3;
+	pauseButton.mouseDown = function(mouseEvent) {
+		if (currentGame[hookSceneActive]) {
+			pauseButton.setBackgroundImage(director.getImage('pause-down')).setLocation(pauseButton.x, pauseButton.y + relativeY);
+		}
+	}
+
+	pauseButton.mouseUp = function(mouseEvent) {
+		if (currentGame[hookSceneActive]) {
+			console.log('ici');
+			pauseEvent ? $(document).trigger(pauseEvent) : null;
+			pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - relativeY);
+			pauseButton.isPressed = false;
 		}
 	}
 }

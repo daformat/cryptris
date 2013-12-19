@@ -165,7 +165,7 @@ function addKeySymbol(director, playScene) {
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
  */
-function createCreateKeyScene(director, current_length, empty_message, keyInfo, hookActive, helpEvent) {
+function createCreateKeyScene(director, current_length, empty_message, keyInfo, hookActive, helpEvent, pauseEvent) {
     /**
      * Create the dict to return.
      */
@@ -210,12 +210,13 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
     // Bind the key with keyboard controls.
     bindCKPlayerKeyWithKeyboard(ia_create_pk, resultScene.scene, gameBoxInfo, hookActive)
 
+
     // Bind infoColumn pad with controls.
     bindCKPadWithKey(infoColumn.pad, director, ia_create_pk, resultScene.scene, gameBoxInfo, hookActive);
     bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
     // Bind all objects with pause Buttons.
-    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, [gameBoxInfo.crypt_key, gameBoxInfo.message], director, hookActive);
+    bindPauseButtonWithObjects(infoColumn.pauseButton, director, hookActive, pauseEvent);
 
     // Bind default help button (do nothing).
     bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
