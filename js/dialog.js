@@ -245,15 +245,21 @@
 
   /**
    * Simulate text decryption
-   * @params: $e - jQuery element to use
-   *          text — final text to display
-   *          preshow - how many characters should be already revealed
+   * @params: (jQueryElem) $e - jQuery element to use
+   *          (String) text — final text to display
+   *          (Int) preshow - how many characters should already be revealed
+   *					(Int) offset - reveal characters starting at given position
    */
 
-  $.simulateDecrypt = function($e, text, preshow){
-      console.log(text);
+  $.simulateDecrypt = function($e, text, preshow, offset){
+  		if(!preshow) preshow = 0;
+  		else preshow = Math.abs(preshow);
+
       text = $('<div></div>').html(text).text();
-      console.log(text);
+
+  		if(!offset) offset = 0;
+  		if(offset<0) offset = text.length + offset;
+
 
       var n = text.length,
           textArray = text.split(''),
@@ -263,7 +269,8 @@
           for(var i in textArray){
               if(textArray.hasOwnProperty(i)) {
 
-                  var decrypted = (i < preshow);
+                  var decrypted = (i >= offset && i < offset+preshow && preshow>0);
+
                   textLetters.push({
                       letter: text.substr(i, 1),
                       decrypted: decrypted
