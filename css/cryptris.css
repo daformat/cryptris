@@ -790,7 +790,7 @@ border: 1px solid #0091BB;
 	background-color: #e5e5e5;
 	width: 860px;
 	height: 278px;
-	box-shadow: 5px 10px 0 rgba(0,0,0, 0.3);
+	box-shadow: 5px 10px 0 rgba(0, 0, 0, 0.3), inset 10px 10px 0px #FFF, inset -10px -10px 0px #FFF;
 	color: #284c63;
 	text-shadow: none;
 	line-height: 30px;
