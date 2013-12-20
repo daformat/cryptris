@@ -1,10 +1,24 @@
+/**
+ * Cryptris - Story mode
+ */
 
 var cryptrisSettings = {
     cryptoExplanations: [false, false, false],
     dialogWhatArePrivatePublicKey: [false, false, false]
 }
 
+
 $(function() {
+  var transitionTime = 1000,
+      game = cryptrisSettings;
+
+      game.getCurrentGamingTime = function(){
+        formatSeconds( (new Date().getTime()-game.startTime)*1000 );
+      }
+
+  // -- Hide .hidden elements and remove class.
+  $('.hidden').hide().removeClass('hidden');
+
 
   function specialOutInterpolator() {
     this.getPosition = function(time) {
@@ -18,7 +32,13 @@ $(function() {
     }
   }
 
+  /**
+   *  In-game help
+   */
+
   function activateHelp(dataScene, hookName, helpFunction) {
+    console.log(arguments);
+
     if (dataScene.scene.isPaused() === false) {
       dataScene.scene.setPaused(true);
       dataScene.needStopPaused = true;
@@ -40,58 +60,117 @@ $(function() {
     currentGame[hookName] = true;
   }
 
+
+  /**
+   *  Help dialog events
+   */
+
   $(document).on("helpCreateKeyEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
   });
 
   $(document).on("playChercheuseHelpEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Intro - Chercheuse crypte un message', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.play_chercheuse_scene, "playChercheuseSceneActive", helpPlayChercheuse);
   });
 
   $(document).on("playSoloHelpEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Intro - Tutoriel decryptage', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive", helpPlaySolo);
   });
 
   $(document).on("playMinHelpEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Niveau 1', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpPlayMin);
   });
 
   $(document).on("playMediumHelpEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Niveau 2', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpPlayMedium);
   });
 
   $(document).on("playMaxHelpEvent", function() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Niveau 3', 'Aide');
+
+    // Launch relevant help
     activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpPlayMax);
   });
 
 
+
+  /**
+   *  Public key creation
+   */
+
   function switchToCreateKey() {
+
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Début');
+
     $("body").closeAllDialogs();
+
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
 
+    // Timer function synchronizing with game engine
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
+
         if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
+          // Key is now created, we can cancel the timer and move on
           waitToContinue.cancel();
           currentGame.createKeySceneActive = false;
+
+          // Log to google analytics 
+          ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Fin');
           $(document).trigger('nextDialog');
         }
+
       }
     );
   }
 
+
+  /**
+   *  Public key correction
+   */
+
   function switchToFinishCreateKey() {
+    var score = score(currentGame.scenes.create_key_scene.game_box.message.getNumbers());
+
     $("body").closeAllDialogs();
+
     // Launch the ia.
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
 
-    if (score(currentGame.scenes.create_key_scene.game_box.message.getNumbers()) < 2) {
+    // Check for key score, if too low, we'll launch the ia to strengthen it
+    if ( score < 2) {
       ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, true);
-    } else {
+    }
+    // If key is strong enough, we'll skip to the next step.
+    else {
       ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, false);
+      ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Score de la clé : ' + score);
     }
 
+    // Timer to wait for continuing
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
         if (currentGame.goToNextDialog === true) {
@@ -125,6 +204,11 @@ $(function() {
     currentGame[currentGameOverData.hookName] = true;
     currentGame.iaPlay = true;
   }
+
+
+  /**
+   *  Setup the level to be played
+   */
 
   function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
 
@@ -186,7 +270,15 @@ $(function() {
     );
   }
 
+
+  /**
+   *  Tutorial: encrypt a message using the player's public key
+   */
+
   function playChercheuse() {
+    // Log to google analytics
+    ga('send', 'event', 'Jeu', 'Intro - Chercheuse crypte un message', 'Début');
+    
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
 
@@ -199,17 +291,29 @@ $(function() {
 
     currentGame.iaPlay = true;
 
+    // Timer to check when message is crypted
     var chercheuseAnimateTimer = currentGame.scenes.play_chercheuse_scene.scene.createTimer(0, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
+
         if (ia.moveList.length === 0 && key.keyInMove === false && key.keyFirstMove === false) {
           chercheuseAnimateTimer.cancel();
           currentGame.scenes.play_chercheuse_scene.game_box.closePadlock();
           $(document).trigger('endAnimate');
-          setTimeout(function() { $(document).trigger('nextDialog') }, 4000);
+
+          // Log to google analytics
+          ga('send', 'event', 'Jeu', 'Intro - Chercheuse crypte un message', 'Fin');
+
+          setTimeout(function() { $(document).trigger('nextDialog') }, 2250);
         }
+
       }
     );
   }
+
+
+  /**
+   *  Player unlocks the tutorial message
+   */
 
   function activatePlaySolo() {
     $("body").closeAllDialogs(function() {});
@@ -217,8 +321,16 @@ $(function() {
     currentGame.playSoloSceneActive = true;
   }
 
+
+  /**
+   * Start playing level 1
+   */
+
   function playLevel1() {
+    ga('send', 'event', 'Jeu', 'Niveau 1', 'Début');
+
     $("body").closeAllDialogs(function() {
+
       // Active input for play_min_scene
       currentGame.iaPlay = true;
       currentGame.scenes.play_min_scene.scene.setPaused(false);
@@ -226,8 +338,16 @@ $(function() {
     });
   }
 
+
+  /**
+   * Start playing level 2
+   */
+
   function playLevel2() {
+    ga('send', 'event', 'Jeu', 'Niveau 2', 'Début');
+
     $("body").closeAllDialogs(function() {
+
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
         goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
@@ -241,7 +361,14 @@ $(function() {
     });
   }
 
+
+  /**
+   * Start playing level 3
+   */
+
   function playLevel3() {
+    ga('send', 'event', 'Jeu', 'Niveau 3', 'Début');
+
     $("body").closeAllDialogs(function() {          
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
@@ -255,6 +382,34 @@ $(function() {
       });
     });
   }
+
+
+  /**
+   *  Convert seconds to Hh:Mm:Ss string
+   */
+
+  function formatSeconds(d) {
+    var sign = (d<0 ? "-" : "");
+    d = Math.abs(d);
+    var sec_num = parseInt(d, 10); // don't forget the second parm
+    var days   =  Math.floor(sec_num / 86400);
+    var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+    var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+    var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) { hours   = "0"+hours; }
+    if (minutes < 10) { minutes = "0"+minutes; }
+    if (seconds < 10) { seconds = "0"+seconds; }
+
+
+    var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
+    return ( d == 0 ? '0' : time);
+  }
+
+
+  /**
+   * Draw chart to compare playing time between player and ia
+   */
 
   function createChart() {
     // define dimensions of graph
@@ -277,22 +432,27 @@ $(function() {
 
     var options = {m: m, w: w, h: h, x: x, y: y, div: div };
 
-    // Add an SVG element with the desired dimensions and margin.
+    // Player graph 
+    // SVG element with the desired dimensions and margin.
     var graph = d3.select("#graph").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
     options.name = currentGame.username;
-
     populateChart(graph, dataPlayer, dataPlayerInitial, 'player', options);
 
+    // Graph for the ia
     var graph2 = d3.select("#graph").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
     y = d3.scale.linear().range([h, 0]).domain([0, dataIA[4].y]);
-
     options.y = y;
     options.name = 'Serveur';
 
     populateChart(graph2, dataIA, dataIAInitial, 'ia', options);
   }
+
+
+  /**
+   *  Plot chart data and apply behaviors
+   */
   
   function populateChart(graph, dataSet, dataInitial, appendClass, options) {
     var m = options.m;
@@ -335,24 +495,7 @@ $(function() {
                     return y(d.y); 
                   }).interpolate("cardinal");
 
-    var formatTime = d3.time.format("%Hh %Mm %Ss"),
-        formatSeconds = function(d) {
-                          var sign = (d<0 ? "-" : "");
-                          d = Math.abs(d);
-                          var sec_num = parseInt(d, 10); // don't forget the second parm
-                          var days   =  Math.floor(sec_num / 86400);
-                          var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
-                          var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
-                          var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
-
-                          if (hours   < 10) { hours   = "0"+hours; }
-                          if (minutes < 10) { minutes = "0"+minutes; }
-                          if (seconds < 10) { seconds = "0"+seconds; }
-
-
-                          var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
-                          return ( d == 0 ? '0' : time);
-                        };
+    var formatTime = d3.time.format("%Hh %Mm %Ss");
 
     graph.append("rect").attr("x", 0-20).attr("y", 0-20).attr("width", w+20).attr("height", h+40).attr("fill", "#93bcd7");
     graph.append("clipPath").attr("id", "clip").append("rect").attr("x", -15).attr("y", -15).attr("width", w+35).attr("height", h+25);
@@ -405,11 +548,10 @@ $(function() {
     $('.dialog.graph .content').append($('<div class="label '+appendClass+'"><h2>'+name+'</h2></div>'))
   }
 
-  var game = cryptrisSettings;
-  var transitionTime = 1000;
 
-  // -- Hide .hidden elements and remove class.
-  $('.hidden').hide().removeClass('hidden');
+  /**
+   *  Game over, computer won
+   */
 
   function gameOver() {
     $("body").closeAllDialogs(function() {
@@ -419,6 +561,11 @@ $(function() {
     });
   }
 
+
+  /**
+   *  Player is going the wrong direction by stockpiling blocks
+   */
+
   function tooManyBlocks() {
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
@@ -426,6 +573,11 @@ $(function() {
       });
     });
   }
+
+
+  /**
+   *  Game intro
+   */
 
   function intro() {
     // -- Make sure prompt is empty.
@@ -437,18 +589,27 @@ $(function() {
     });
   }
 
+
+  /**
+   *  Player type username
+   */
+
   function switchToNewLogin() {
+
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#new-login', function() {
         $('#login-name').focus();
 
+        // New username is submitted
         $('.new-login').submit(function(e) {
           currentGame.litteralName = $('#login-name').val();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
+
+          // Log event to google analytics
+          ga('send', 'event', 'Jeu', 'Intro - Nouveau nom d’utilisateur', currentGame.username);
+
           updateNameFunction();
-          /*
-          $.switchWrapper('#bg-institut', accountCreated);
-          */
+
           $(document).trigger('nextDialog');
           $('#login-name').blur();
           $('.new-login').unbind('submit').submit(function(e) {
@@ -458,7 +619,13 @@ $(function() {
         });
       });
     });
+
   }
+
+
+  /**
+   *  First multiple answer dialog sub-dialogs
+   */
 
   function cryptoExplanationsOpt1() {
     game.cryptoExplanations[0] = true;
@@ -478,9 +645,15 @@ $(function() {
     });
   }
 
+  // last option, continue game
   function goingToCreakeKeys() {
     game.cryptoExplanations[2] = true;
   }
+
+
+  /**
+   *  Second multiple answer dialog sub-dialogs
+   */
 
   function dialogWhatArePrivatePublicKeyOpt1() {
     game.dialogWhatArePrivatePublicKey[0] = true;
@@ -500,22 +673,27 @@ $(function() {
     });
   }       
 
+  // last option, continue game
   function hereYourPrivateKey() {
     game.dialogWhatArePrivatePublicKey[2] = true;
+
     // Set the createKeyScene as the current scene.
     currentGame.director.easeInOut(
-                                  currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene),
-                                  CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                  currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                  CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                  CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                  transitionTime,
-                                  true,
-                                  new specialInInterpolator(),
-                                  new specialOutInterpolator()
+      currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene),
+      CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+      currentGame.director.getSceneIndex(currentGame.director.currentScene),
+      CAAT.Foundation.Scene.prototype.EASE_SCALE,
+      CAAT.Foundation.Actor.ANCHOR_CENTER,
+      transitionTime,
+      true,
+      new specialInInterpolator(),
+      new specialOutInterpolator()
     );
+
     currentGame.scenes['create_key_scene'].add_key_symbol(currentGame.director, currentGame.scenes['create_key_scene']);
   }
+
+
 
   function helpCreateKey() {
     $("body").closeAllDialogs(function() {
@@ -617,6 +795,14 @@ $(function() {
     $('.cables').prepareCables(null, function() { $(document).trigger('nextDialog'); });
   }
 
+
+
+
+  /**
+   *  First Level
+   */
+
+
   function encryptedFirstCable() {
     // Prepare the first battle message
     currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
@@ -664,6 +850,13 @@ $(function() {
     $('.cables').prepareCables(24, function() { $(document).trigger('nextDialog'); });
   }   
 
+
+
+  /**
+   *  Second Level
+   */
+
+
   function encryptedSecondCable() {
 
     // Prepare the second battle message
@@ -707,6 +900,12 @@ $(function() {
     $('.cables').prepareCables(78, function() { $(document).trigger('nextDialog')});
   }   
 
+
+
+  /**
+   *  Third Level
+   */
+
   function encryptedThirdCable() {
     // Prepare the third battle message
     currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
@@ -748,11 +947,27 @@ $(function() {
     $('.cables').prepareCables(31, function() { $(document).trigger('nextDialog'); });
   }       
 
+
+
+  /**
+   *  End game
+   */
+
   function theEnd() {
     $("body").closeAllDialogs(function() {
+      // Log to google analytics
+      ga('send', 'event', 'Jeu', 'Fin du jeu', game.getCurrentGamingTime );
+
+      // Display end-game screen
       $.switchWrapper('#end-game', function() {});
     });
   }
+
+
+
+  /**
+   *  Dialog controls initialisation
+   */
 
   addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: theEnd}]);
   addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: theEnd}]);
@@ -809,6 +1024,12 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }
   }]);
+
+
+
+  /**
+   *  Setup
+   */
 
   var indexDialog = -1;
 
@@ -954,29 +1175,31 @@ $(function() {
 
   function addKeysExplanationsContent() {
     currentGame.director.easeInOut(
-                                  currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
-                                  CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                  currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                  CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                  CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                  transitionTime,
-                                  true,
-                                  new specialInInterpolator(),
-                                  new specialOutInterpolator()
+      currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+      CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+      currentGame.director.getSceneIndex(currentGame.director.currentScene),
+      CAAT.Foundation.Scene.prototype.EASE_SCALE,
+      CAAT.Foundation.Actor.ANCHOR_CENTER,
+      transitionTime,
+      true,
+      new specialInInterpolator(),
+      new specialOutInterpolator()
     );
+
     var keysExplanationsContent = [{
       label: keysExplanationsLabel0,
       onClick: dialogWhatArePrivatePublicKeyOpt1,
       class: game.dialogWhatArePrivatePublicKey[0] ? 'asked': 'not-asked'
-    }, {
-      label: keysExplanationsLabel1,
-      onClick: dialogWhatArePrivatePublicKeyOpt2,
-      class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
-    }, {
-      label: keysExplanationsLabel2,
-      onClick: function() { $(document).trigger('nextDialog') },
-      class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
+      }, {
+        label: keysExplanationsLabel1,
+        onClick: dialogWhatArePrivatePublicKeyOpt2,
+        class: game.dialogWhatArePrivatePublicKey[1] ? 'asked': 'not-asked'
+      }, {
+        label: keysExplanationsLabel2,
+        onClick: function() { $(document).trigger('nextDialog') },
+        class: game.dialogWhatArePrivatePublicKey[2] ? 'asked': 'not-asked'
     }];
+
     addInteractiveContentToDialog(keysExplanationsDialog, keysExplanationsContent);         
   }
 
@@ -988,5 +1211,12 @@ $(function() {
     addInteractiveContentToDialog(electricShockDialog, electricShockContent);
   }
 
+
+
+  // Log event to google analytics
+  ga('send', 'event', 'Jeu', 'Début du jeu', '');
+
+  // Start game
+  game.startTime = new Date().getTime();
   intro();
 });

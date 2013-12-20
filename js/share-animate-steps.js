@@ -10,6 +10,9 @@ $(function(){
 		$("#step1").animate({marginLeft: "-200%"});
 		$("#step2").animate({marginLeft: "0%"});
 
+	  ga('send', 'event', 'Partager', 'Chiffrer le message', $("textarea").val());
+
+
 		return false;
 	});
 
