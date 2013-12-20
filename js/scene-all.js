@@ -153,7 +153,7 @@ $(function() {
    */
 
   function switchToFinishCreateKey() {
-    var score = score(currentGame.scenes.create_key_scene.game_box.message.getNumbers());
+    var keyScore = score(currentGame.scenes.create_key_scene.game_box.message.getNumbers());
 
     $("body").closeAllDialogs();
 
@@ -161,13 +161,14 @@ $(function() {
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
 
     // Check for key score, if too low, we'll launch the ia to strengthen it
-    if ( score < 2) {
+    if ( keyScore < 2) {
       ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, true);
+      ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Clé trop faible, correction automatique');
     }
     // If key is strong enough, we'll skip to the next step.
     else {
       ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box, false);
-      ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Score de la clé : ' + score);
+      ga('send', 'event', 'Jeu', 'Intro - Création clé publique', 'Score de la clé : ' + keyScore);
     }
 
     // Timer to wait for continuing
