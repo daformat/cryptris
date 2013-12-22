@@ -12,10 +12,6 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				crypt_key.changeKeyType();
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				currentGame.keyDown = false;
-				crypt_key.keyDown();
-			}
 
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
 				crypt_key.keyDown();

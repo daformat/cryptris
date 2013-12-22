@@ -28,6 +28,8 @@ function game() {
 	this.username = "JOUEUR";
 	this.ianame = "LOGICIEL ESPION";
 
+	this.hookTest = {};
+
     this.director = null;
 	this.scenes = null;
 
