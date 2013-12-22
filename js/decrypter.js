@@ -59,8 +59,8 @@ function createMessageForPlayScene(boardLength, message) {
 /**
  * 
  */
-function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent, pauseEvent) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, pauseEvent);
 }
 
 function specialOutInterpolator() {
@@ -103,7 +103,7 @@ function keyInfoDeCrypt(cipher) {
 function createBoardScene(director) {
 
     var cryptedMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
-    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMaxSceneHelp');
+    preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMaxSceneHelp', 'playMaxScenePause');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
 
     currentGame.director.easeInOut(
