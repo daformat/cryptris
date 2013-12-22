@@ -52,6 +52,11 @@ function resize(director, newWidth, newHeight) {
  */
 function prepareCreateKeyScene(director) {
 
+    if (currentGame.scenes != null && currentGame.scenes.create_key_scene != null) {
+        currentGame.director.removeChild(currentGame.scenes.create_key_scene.scene);
+        currentGame.director.setClear(CAAT.Director.CLEAR_ALL);
+    }
+
     /**
      * Define the current length of the message (and of the keys).
      */
@@ -108,7 +113,7 @@ function createScenes(director) {
     // This scene is active between two scenes.
     currentGame.scenes['waiting_scene'] = director.createScene();
 
-    //prepareCreateKeyScene(director);
+    prepareCreateKeyScene(director);
 
 
 

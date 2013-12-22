@@ -48,7 +48,7 @@ $(function(){
 
   function announcePublicKey(){
 
-    prepareCreateKeyScene(currentGame.director);
+
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
 
@@ -64,6 +64,7 @@ $(function(){
                                     new specialInInterpolator(),
                                     new specialOutInterpolator()
     );
+    prepareCreateKeyScene(currentGame.director);
 
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
@@ -222,13 +223,16 @@ $(function(){
             {
               label: "Menu Principal",
               class: "button red",
-              onClick: menu
+              onClick: function() {
+                menu();
+                setTimeout(currentGame.scenes.create_key_scene.scene.setPaused(false), 1500);
+              }
             },
             {
             label: "Reprendre", 
             class: "button blue",
             onClick: function() {
-              deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+              deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
             }
           }]
 
