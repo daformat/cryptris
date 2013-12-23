@@ -638,6 +638,17 @@ $(function(){
     $("body").closeAllDialogs(function() {
 
       $.switchWrapper('#bg-circuits', function() {
+        var randLetter = null;
+        var o = "";
+        var t = "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -648,8 +659,21 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE,
-                
+          content: o,
+
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE, 2, -2);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
+
           controls: [{
             label: "Menu principal",
             class: "button red",
@@ -760,6 +784,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -769,7 +804,20 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE,
+          content: o,
+
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE, 2, -2);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal",
@@ -869,6 +917,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -878,8 +937,20 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
+          content: o,
                 
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE, 3, -3);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
           controls: [{
             label: "Menu principal",
             class: "button red",
@@ -985,6 +1056,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -994,7 +1076,19 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE,
+          content: o,
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE, 3, -3);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal",
@@ -1102,6 +1196,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -1111,7 +1216,19 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE,
+          content: o,
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE, 4, -4);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal", 
