@@ -126,7 +126,7 @@ var graphPredef = {
   title: "Comparaison du temps de décryptage"
 };
 
-function getDialog(predef, content) {
+function getDialog(predef, content, transitionCallback) {
   var newDialog = {};
 
   for (var key in predef) {
@@ -134,6 +134,21 @@ function getDialog(predef, content) {
   }
   newDialog['content'] = content;
 
+  if (transitionCallback) {
+    newDialog['transitionCallback'] = transitionCallback;
+  } else {
+    newDialog['transitionCallback'] = {
+      in: function() {
+        // alert("Dialog was added to the dom");
+      },
+      show: function() {
+        // alert("Dialog intro animation is complete");
+      },
+      out: function() {
+        // alert("Dialog outro animation is complete, html element will be removed now.");
+      }
+    };
+  }
   return newDialog;
 }
 var gameOverDialog = getDialog(chercheusePredef, "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !");
@@ -181,7 +196,35 @@ var pausePlaySoloDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
 
 var messageTestDialog = getDialog(chercheusePredef, "Voici le message que j'ai crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.");
 var tutorialDialog = getDialog(chercheusePredef, "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !");
-var decryptedMessage0Dialog = getDialog(decryptedPredef, "Ok, tu as réussi à lire ce message :)");
+
+var decryptedMessage0DialogText = "OK, tu as réussi à lire ce message.";
+var randLetter,
+  o,
+  t = decryptedMessage0DialogText;
+                
+  // we need to do it once more;
+  t = $('<div></div>').html(t).text();
+
+  for (var i = 0; i < t.length; i++) {
+    randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+    o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+}
+
+var decryptedMessage0TCallback = {
+  in: function() {
+    // alert("Dialog was added to the dom");
+  },
+  show: function() {
+    // alert("Dialog intro animation is complete");
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage0DialogText, 2);
+  },
+  out: function() {
+    // alert("Dialog outro animation is complete, html element will be removed now.");
+  }
+};
+
+var decryptedMessage0Dialog = getDialog(decryptedPredef, o, decryptedMessage0TCallback);
+
 var congratulationsOnCompletingTutorialDialog = getDialog(chercheusePredef, "Parfait ! Tu as compris <em>comment décrypter un message à l'aide de ta clé privée,</em> je n’en attendais pas <span>moins de toi !</span> Te voilà fin prêt et tu es maintenant un membre à part entière de l’Institut.");
 
 var aProblemOccursDialog = getDialog(chercheusePredef, "C'est bizarre, le serveur a signalé une panne, je dois aller en salle des machines pour vérifier que tout est en ordre. Il faudra que tu branches ou débranches certains câbles.");
@@ -197,7 +240,37 @@ var helpPlayMinDialog = getDialog(chercheusePredef, "Ta clé privée se trouve e
 var helpPlayMin2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var pausePlayMinDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
 var serverAlsoTryingToBreakEncryptionDialog = getDialog(chercheusePredef, "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.");
-var decryptedMessage1Dialog = getDialog(decryptedPredef, "Débranche le câble 24 du panneau électrique V");
+
+
+var decryptedMessage1DialogText = "Débranche le câble 24 du panneau électrique V";
+randLetter = null;
+o = "";
+t = decryptedMessage1DialogText;
+                
+// we need to do it once more;
+t = $('<div></div>').html(t).text();
+
+for (var i = 0; i < t.length; i++) {
+  randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+  o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+}
+
+var decryptedMessage1TCallback = {
+  in: function() {
+    // alert("Dialog was added to the dom");
+  },
+  show: function() {
+    // alert("Dialog intro animation is complete");
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage1DialogText, 21);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage1DialogText, 26, -26);
+  },
+  out: function() {
+    // alert("Dialog outro animation is complete, html element will be removed now.");
+  }
+};
+
+var decryptedMessage1Dialog = getDialog(decryptedPredef, o, decryptedMessage1TCallback);
+
 var cables1Dialog = getDialog(cablesPredef, null);
 var successCables1Dialog = getDialog(chercheusePredef, "Bravo, tu as débranché le bon câble ! Plus que deux panneaux électriques et&nbsp;ça devrait être bon !");
 var serverIsFasterDialog = getDialog(chercheusePredef, "Malheureusement, le serveur a accès à notre base de données, <span>et a appris</span> comment décrypter plus vite. Je fais ce que je peux pour le ralentir, mais sa capacité de calcul et son adresse ne font qu'augmenter !");
@@ -207,7 +280,37 @@ var secondBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMediumDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlayMedium2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var pausePlayMediumDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
-var decryptedMessage2Dialog = getDialog(decryptedPredef, "Débranche le câble 78 du panneau électrique M");
+
+
+var decryptedMessage2DialogText = "Débranche le câble 78 du panneau électrique M";
+randLetter = null;
+o = "";
+t = decryptedMessage2DialogText;
+                
+// we need to do it once more;
+t = $('<div></div>').html(t).text();
+
+for (var i = 0; i < t.length; i++) {
+  randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+  o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+}
+
+var decryptedMessage2TCallback = {
+  in: function() {
+    // alert("Dialog was added to the dom");
+  },
+  show: function() {
+    // alert("Dialog intro animation is complete");
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage2DialogText, 21);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage2DialogText, 26, -26);
+  },
+  out: function() {
+    // alert("Dialog outro animation is complete, html element will be removed now.");
+  }
+};
+
+var decryptedMessage2Dialog = getDialog(decryptedPredef, o, decryptedMessage2TCallback);
+
 var cables2Dialog = getDialog(cablesPredef, null);
 var successCables2Dialog = getDialog(chercheusePredef, "Très bien, tu as débranché le bon câble ! Plus qu'un panneau électrique et je pourrai enfin sortir !");
 
@@ -217,7 +320,36 @@ var thirdBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMaxDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlayMax2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
 var pausePlayMaxDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
-var decryptedMessage3Dialog = getDialog(decryptedPredef, "Débranche le câble 31 du panneau électrique N");
+
+var decryptedMessage3DialogText = "Débranche le câble 31 du panneau électrique N";
+randLetter = null;
+o = "";
+t = decryptedMessage3DialogText;
+                
+// we need to do it once more;
+t = $('<div></div>').html(t).text();
+
+for (var i = 0; i < t.length; i++) {
+  randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+  o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+}
+
+var decryptedMessage3TCallback = {
+  in: function() {
+    // alert("Dialog was added to the dom");
+  },
+  show: function() {
+    // alert("Dialog intro animation is complete");
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage3DialogText, 21);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage3DialogText, 26, -26);
+  },
+  out: function() {
+    // alert("Dialog outro animation is complete, html element will be removed now.");
+  }
+};
+
+var decryptedMessage3Dialog = getDialog(decryptedPredef, o, decryptedMessage3TCallback);
+
 var cables3Dialog = getDialog(cablesPredef, null);
 var successCables3Dialog = getDialog(chercheusePredef, "Mes félicitations ! Nous avons réussi à contenir la machine. Sa capacité de calcul augmentait de manière phénoménale, mais pas aussi rapidement que&nbsp;la difficulté du décryptage…");
 
