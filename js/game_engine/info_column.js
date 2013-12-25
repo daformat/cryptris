@@ -40,8 +40,10 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		}
 	});
 
+	this.titleColumnContainer = new CAAT.Foundation.ActorContainer();
 	this.infoColumnContainer = new CAAT.Foundation.ActorContainer();
 	this.resultScene['scene'].addChild(this.infoColumnContainer);
+	this.resultScene['scene'].addChild(this.titleColumnContainer);
 
 	this.cryptrisLogo = new CAAT.Foundation.Actor().setBackgroundImage(director.getImage('logo-board')).setSize(240, 110);
 
@@ -138,7 +140,7 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 	this.pad = new CAAT.Actor().setSize(155, 152)
 		.setBackgroundImage(director.getImage('pad-untouched'));
 
-	this.infoColumnContainer.addChild(this.cryptrisLogo);
+	this.titleColumnContainer.addChild(this.cryptrisLogo);
 	this.infoColumnContainer.addChild(this.pad);
 	this.infoColumnContainer.addChild(this.pauseButton);
 	this.infoColumnContainer.addChild(this.helpButton);
@@ -161,14 +163,15 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		}
 		if (this.withGauge === true) {
 			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
-									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y_WITH_GAUGE + this.resultScene.game_box.gameBox.height / 2 + 20);
+									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y_WITH_GAUGE + this.resultScene.game_box.gameBox.height / 2 + 30);
 		} else {
 			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
 									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
 		}
 
+		this.titleColumnContainer.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 15, 15)
 		this.cryptrisLogo.setLocation(0, 0);
-		this.leftTimer.setLocation(this.cryptrisLogo.x + 35, this.cryptrisLogo.y + this.cryptrisLogo.height + this.marge - 20);
+		this.leftTimer.setLocation(35, this.cryptrisLogo.height + this.marge - 20);
 		this.centerTimer.setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);
 		this.rightTimer.setLocation(this.centerTimer.x + this.centerTimer.width, this.centerTimer.y);
 
