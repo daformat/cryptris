@@ -209,9 +209,25 @@ $(document).ready(function() {
 $(function(){
     $(".select-key-type a").click(function(){
         var $t = $(this);
-
         $t.toggleClass("public").toggleClass("private");
-        $t.find(".key-desc").text( ( $t.hasClass("public") ? "clé publique" : "clé privée" ) );
 
+        if ($t.context.id === "player-key") {
+            if ($t.hasClass("public")) {
+                $t.find(".key-desc").text("clé publique");
+
+                currentGame.playerKeyType = "public";
+            } else {
+                $t.find(".key-desc").text("clé privée");
+                currentGame.playerKeyType = "private";
+            }
+        } else {
+            if ($t.hasClass("public")) {
+                $t.find(".key-desc").text("clé publique");
+                currentGame.iaKeyType = "public";
+            } else {
+                $t.find(".key-desc").text("clé privée");
+                currentGame.iaKeyType = "private";
+            }
+        }
     });
 })

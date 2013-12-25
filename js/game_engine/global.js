@@ -28,6 +28,9 @@ function game() {
 	this.username = "JOUEUR";
 	this.ianame = "LOGICIEL ESPION";
 
+	this.playerKeyType = "private";
+	this.iaKeyType = "public";
+
 	this.hookTest = {};
 
     this.director = null;

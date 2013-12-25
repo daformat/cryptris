@@ -12,7 +12,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var key = rivalBoxInfo.crypt_key;
     var currentLength = rivalBoxInfo.current_length;
 
-    var MINIMUM_STROKE = 100;
+    var MINIMUM_STROKE = 80;
     var lastModif = 0;
     var strokeNumber = 0;
     var rotationIndex = 0;
@@ -148,6 +148,12 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
     if (animatePlayScene === true) {
         gameKey = keyInfo.public_key[current_length];
         isActive = false;
+    } else {
+        if (currentGame.playerKeyType === "public") {
+            gameKey = keyInfo.public_key[current_length];
+        } else if (currentGame.playerKeyType === "private") {
+            gameKey = keyInfo.private_key[current_length];
+        }
     }
     var gameBoxInfo = new GameBox(director, playerBoxOption, getRelativeX(resultScene.resizeOption), resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, gameKey, message, true, true, true);
     resultScene['game_box'] = gameBoxInfo;
@@ -163,8 +169,15 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
      * Create the ia board if necessary.
      */
     if (withIaBoard) {
+        var iaGameKey = null;
+        if (currentGame.iaKeyType === "public") {
+            iaGameKey = keyInfo.public_key[current_length];
+        } else if (currentGame.iaKeyType === "private") {
+            iaGameKey = keyInfo.private_key[current_length];
+        }
+
         var rivalBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, iaBoardColorInfo, rivalPSceneTime);
-        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, keyInfo.public_key[current_length], message, false, true, true);
+        var rivalBoxInfo = new GameBox(director, rivalBoxOption, resultScene.game_box.gameBox.x + 260 + resultScene.game_box.gameBox.width, resultScene.resizeOption.DEFAULT_RELATIVE_Y, current_length, iaGameKey, message, false, true, true);
         resultScene['rival_box'] = rivalBoxInfo;
         resultScene.scene.addChild(resultScene['rival_box'].gameBox);
     }
