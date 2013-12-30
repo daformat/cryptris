@@ -1094,13 +1094,12 @@ $(function() {
       deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }
   }]);
-  addControlToDialog(pauseCreateKeyDialog, [
-    {label: "Quitter", class: "button red", onClick: theEnd},
-    {label: labelResume, class: "button blue",
-    onClick: function() {
+  addInteractiveContentToDialog(pauseCreateKeyDialog, [
+    {label: labelResume, class: "not-asked",
+      onClick: function() {
       deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
-    }
-  }]);
+    }},
+    {label: "Quitter", class: "not-asked", onClick: theEnd}]);
 
 
   
@@ -1110,13 +1109,13 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }
   }]);
-  addControlToDialog(pausePlaySoloDialog, [
-    {label: "Quitter", class: "button red", onClick: theEnd},
-    {label: labelResume, class: "button blue",
-    onClick: function() {
+  addInteractiveContentToDialog(pausePlaySoloDialog, [
+    {label: labelResume, class: "not-asked",
+      onClick: function() {
       deActivatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
-    }
-  }]);
+    }},
+    {label: "Quitter", class: "not-asked", onClick: theEnd}
+  ]);
 
   addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMin2}]);
   addControlToDialog(helpPlayMin2Dialog, [{label: labelNext, class: "button blue",
@@ -1124,13 +1123,13 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive");
     }
   }]);
-  addControlToDialog(pausePlayMinDialog, [
-    {label: "Quitter", class: "button red", onClick: theEnd},
-    {label: labelResume, class: "button blue",
-    onClick: function() {
+  addInteractiveContentToDialog(pausePlayMinDialog, [
+    {label: labelResume, class: "not-asked",
+      onClick: function() {
       deActivatePause(currentGame.scenes.play_min_scene, "playMinSceneActive");
-    }
-  }]);
+    }},
+    {label: "Quitter", class: "not-asked", onClick: theEnd}
+  ]);
 
   addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMedium2}]);
   addControlToDialog(helpPlayMedium2Dialog, [{label: labelNext, class: "button blue",
@@ -1138,13 +1137,13 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
     }
   }]);
-  addControlToDialog(pausePlayMediumDialog, [
-    {label: "Quitter", class: "button red", onClick: theEnd},
-    {label: labelResume, class: "button blue",
-    onClick: function() {
+  addInteractiveContentToDialog(pausePlayMediumDialog, [
+    {label: labelResume, class: "not-asked",
+      onClick: function() {
       deActivatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
-    }
-  }]);
+    }},
+    {label: "Quitter", class: "not-asked", onClick: theEnd}
+  ]);
   
   addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMax2}]);
   addControlToDialog(helpPlayMax2Dialog, [{label: labelNext, class: "button blue",
@@ -1152,13 +1151,13 @@ $(function() {
       deActivateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }
   }]);
-  addControlToDialog(pausePlayMaxDialog, [
-    {label: "Quitter", class: "button red", onClick: theEnd},
-    {label: labelResume, class: "button blue",
+  addInteractiveContentToDialog(pausePlayMaxDialog, [
+    {label: labelResume, class: "not-asked",
     onClick: function() {
       deActivatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive");
-    }
-  }]);
+    }},
+    {label: "Quitter", class: "not-asked", onClick: theEnd}
+  ]);
 
 
 

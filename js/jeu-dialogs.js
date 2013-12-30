@@ -95,6 +95,11 @@ var chercheusePredef = {
   title: "Chercheuse"
 };
 
+var pausePredef = {
+  type : "player",
+  title : "Pause"
+};
+
 var playerPredef = {
   type : "player",
   title : currentGame.username
@@ -186,7 +191,8 @@ var hereYourPrivateKeyDialog = getDialog(chercheusePredef, "Voici ta clé privé
 var fallSixTimesDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, fais tomber six fois ta clé privée. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
 
 var helpCreateKeyDialog = getDialog(chercheusePredef, "Pour générer ta clé publique, manipule ta clé privée avec <img src='img/icn-arrow-left.png' class='keyboard-key'>, <img src='img/icn-arrow-up.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png' class='keyboard-key'> puis fais-la tomber six fois avec la touche <img src='img/icn-arrow-down.png' class='keyboard-key'>. Si le niveau de sécurité est suffisant, ta clé publique sera sauvegardée, sinon l'ordinateur la complétera.");
-var pauseCreateKeyDialog = getDialog(chercheusePredef, "Le jeu est en pause");
+
+var pauseCreateKeyDialog = getDialog(pausePredef, null);
 
 var keyPreGeneratedErrorText = "Très bien, tu as compris ! Cependant la clé publique générée n'est pas suffisamment sécurisée, l'ordinateur va arranger cela.";
 var keyPreGeneratedSuccessText = "Félicitations, tu as compris le fonctionnement et la clé publique générée est efficace !";
@@ -195,12 +201,12 @@ var wellDoneDialog = getDialog(chercheusePredef, "Parfait ! Te voilà fin prêt!
 
 var letsGoToEncryptDialog = getDialog(chercheusePredef, "J'utilise ta clé publique pour crypter mon message.");
 var helpPlayChercheuseDialog = getDialog(chercheusePredef, "Je suis en train de crypter un message que tu pourras décrypter par la suite.");
-var pausePlayChercheuseDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
+var pausePlayChercheuseDialog = getDialog(pausePredef, null);
 
 var firstMessageDialog = getDialog(inriosPredef, null);
 var helpPlaySoloDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlaySolo2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
-var pausePlaySoloDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
+var pausePlaySoloDialog = getDialog(pausePredef, null);
 
 var messageTestDialog = getDialog(chercheusePredef, "Voici le message que j'ai crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.");
 var tutorialDialog = getDialog(chercheusePredef, "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !");
@@ -246,7 +252,7 @@ var sendingFirstCableDialog = getDialog(chercheusePredef, "Je t'envoie un messag
 var firstBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMinDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlayMin2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
-var pausePlayMinDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
+var pausePlayMinDialog = getDialog(pausePredef, null);
 var serverAlsoTryingToBreakEncryptionDialog = getDialog(chercheusePredef, "Zut, le serveur essaie lui aussi de décrypter le message, <em>heureusement il ne dispose que de ta clé publique !</em> Je t’envoie en temps réel les informations correspondant à son avancé, dépêche toi de décrypter le message avant qu’il n’arrive à casser le code.");
 
 
@@ -287,7 +293,7 @@ var sendingSecondCableDialog = getDialog(chercheusePredef, "Je t'envoie le deuxi
 var secondBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMediumDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlayMedium2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
-var pausePlayMediumDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
+var pausePlayMediumDialog = getDialog(pausePredef, null);
 
 
 var decryptedMessage2DialogText = "Débranche le câble 78 du panneau électrique M";
@@ -327,7 +333,7 @@ var sendingThirdCableDialog = getDialog(chercheusePredef, "Je t'envoie le dernie
 var thirdBattleMessageDialog = getDialog(inriosPredef, null);
 var helpPlayMaxDialog = getDialog(chercheusePredef, "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.");
 var helpPlayMax2Dialog = getDialog(chercheusePredef, "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !");
-var pausePlayMaxDialog = getDialog(chercheusePredef, "Le jeu est en pause.");
+var pausePlayMaxDialog = getDialog(pausePredef, null);
 
 var decryptedMessage3DialogText = "Débranche le câble 31 du panneau électrique N";
 randLetter = null;
