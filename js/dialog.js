@@ -29,7 +29,11 @@
 	    content: "(Missing dialog)",
 
 	    // Dialog identifier (used to log analytics events)
-	    identifier: "(Unknown dialog)",
+	    identifier: {
+	    	category: "(unkown category)",
+	    	action: "(unkown action)",
+	    	label: "(unkown label)",
+	    },
 
 	    // Controls available in the dialog
 	    controls: [ {
@@ -94,6 +98,15 @@
 
 		// Animate in dialog
 		$dialog.animate(settings.transition.show, function(){
+				// Log to google analytics
+				try{
+					var identifier = settings.identifier;
+					console.log(identifier.category, '-', identifier.action, '-', identifier.label);
+					ga('send', 'event', identifier.category, identifier.action, identifier.label);
+				} catch(e){
+					console.error('Error logging analytics event');
+				};
+
 				// Callback for 'show' state
 				if(settings.transitionCallback.show && typeof(settings.transitionCallback.show) == "function" ) {
 					settings.transitionCallback.show();
