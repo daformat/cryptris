@@ -357,27 +357,21 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
         $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Le jeu est en pause.",
-          controls: [{
-            label: "Menu Principal",
-            class: "button red",
-            onClick: function() {
-                window.location.href = '/';
-            }
+          type: "player",
+          title: "Pause",
+          content: [
+            {
+                label: "Reprendre", 
+                class: "not-asked",
+                onClick: stopPlayMaxPause
             },
             {
-            label: "Reprendre", 
-            class: "button blue",
-            onClick: stopPlayMaxPause
-          }]
+                label: "Menu Principal",
+                class: "not-asked",
+                onClick: function() {
+                    window.location.href = '/';
+                }
+            }]
 
         });
   

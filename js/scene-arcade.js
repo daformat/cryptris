@@ -210,31 +210,23 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
         $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Le jeu est en pause.",
-          controls: [
+          type: "player",
+          title: "Pause",
+          content: [
+            {
+            label: "Reprendre", 
+            class: "not-asked",
+            onClick: function() {
+              deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
+            }},
             {
               label: "Menu Principal",
-              class: "button red",
+              class: "not-asked",
               onClick: function() {
                 menu();
                 setTimeout(currentGame.scenes.create_key_scene.scene.setPaused(false), 1500);
               }
-            },
-            {
-            label: "Reprendre", 
-            class: "button blue",
-            onClick: function() {
-              deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
-            }
-          }]
+            }]
 
         });
   
@@ -589,32 +581,48 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       $.switchWrapper('#bg-circuits', function(){
+
+        /*
+         * To use analytics here, adapt below
+         */
+
+        if (pauseInfo.sceneName === currentGame.scenes.play_min_scene) {
+          // We are in the 8 blocks level.
+          console.log("8blocks");
+        } else if (pauseInfo.sceneName === currentGame.scenes.play_medium_scene) {
+          // We are in the 10 blocks level.
+          console.log("10blocks");
+        } else if (pauseInfo.sceneName === currentGame.scenes.play_max_scene) {
+          // We are in the 12 blocks level.
+          console.log("12blocks");
+        } else if (pauseInfo.sceneName === currentGame.scenes.play_super_max_scene) {
+          // We are in the 14 blocks level.
+          console.log("14blocks");
+        } else if (pauseInfo.sceneName === currentGame.scenes.play_mega_max_scene) {
+          // We are in the 16 blocks level.
+          console.log("16blocks");
+        }
+
         $(".wrapper.active .vertical-centering").dialog({
-          
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
-
-          type: "withAvatar",
-          avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
-          title: "Chercheuse",
-          content: "Le jeu est en pause.",
-          controls: [
+          type: "player",
+          title: "Pause",
+          content: [
+            {
+              label: "Reprendre", 
+              class: "not-asked",
+              onClick: function() {
+                deActivatePause(pauseInfo.sceneName, pauseInfo.hookName);
+              }
+            },
             {
               label: "Menu Principal",
-              class: "button red",
+              class: "not-asked",
               onClick: function() {
                 menu();
                 setTimeout(pauseInfo.sceneName.scene.setPaused(false), 1500);
               }
-            },
-            {
-            label: "Reprendre", 
-            class: "button blue",
-            onClick: function() {
-              deActivatePause(pauseInfo.sceneName, pauseInfo.hookName);
             }
-          }]
+          ]
 
         });
   
