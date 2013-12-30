@@ -126,7 +126,7 @@ var graphPredef = {
   title: "Comparaison du temps de décryptage"
 };
 
-function getDialog(predef, content, transitionCallback) {
+function getDialog(predef, content, transitionCallback, identifier) {
   var newDialog = {};
 
   for (var key in predef) {
@@ -149,8 +149,16 @@ function getDialog(predef, content, transitionCallback) {
       }
     };
   }
+
+  newDialog['identifier'] = identifier;
+
   return newDialog;
 }
+
+/**
+ * Game dialogs
+ */
+ 
 var gameOverDialog = getDialog(chercheusePredef, "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !");
 var tooManyBlocksDialog = getDialog(chercheusePredef, "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !");
 
