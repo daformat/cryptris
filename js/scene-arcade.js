@@ -47,6 +47,8 @@ $(function(){
 
 
   function announcePublicKey(){
+
+
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
 
@@ -62,6 +64,7 @@ $(function(){
                                     new specialInInterpolator(),
                                     new specialOutInterpolator()
     );
+    prepareCreateKeyScene(currentGame.director);
 
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#bg-circuits', function(){
@@ -133,8 +136,42 @@ $(function(){
     currentGame[hookName] = true;
   }
 
+
+  function activatePause(dataScene, hookName, pauseFunction) {
+    if (dataScene.scene.isPaused() === false) {
+      dataScene.scene.setPaused(true);
+      dataScene.needStopPaused = true;
+    } else {
+      dataScene.needStopPaused = false;
+    }
+    currentGame[hookName] = false;
+
+
+    var pauseInfo = {
+      'sceneName' : dataScene,
+      'hookName' : hookName
+    };
+    pauseFunction(pauseInfo);
+  }
+
+  function deActivatePause(dataScene, hookName) {
+    $("body").closeAllDialogs(function() {});
+
+    // Relaunch the board if necessary.
+    if (dataScene.needStopPaused === true) {
+      dataScene.scene.setPaused(false);
+    }
+    dataScene.needStopPaused = null;
+    currentGame[hookName] = true;
+  }
+
+
   $(document).on("helpCreateKeyEvent", function() {
     activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", helpCreateKey);
+  });
+
+  $(document).on("pauseCreateKeyEvent", function() {
+    activateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive", pauseCreateKey);
   });
 
   function helpCreateKey() {
@@ -157,6 +194,45 @@ $(function(){
             class: "button blue",
             onClick: function() {
               deActivateHelp(currentGame.scenes.create_key_scene, "createKeySceneActive");
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+  function pauseCreateKey() {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Le jeu est en pause.",
+          controls: [
+            {
+              label: "Menu Principal",
+              class: "button red",
+              onClick: function() {
+                menu();
+                setTimeout(currentGame.scenes.create_key_scene.scene.setPaused(false), 1500);
+              }
+            },
+            {
+            label: "Reprendre", 
+            class: "button blue",
+            onClick: function() {
+              deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
             }
           }]
 
@@ -342,10 +418,10 @@ $(function(){
     });
   }
 
-  function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, timeout) {
+  function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, pauseEvent, timeout) {
 
     // Prepare the sceneName and set it as the current scene.
-    preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent);
+    preparePlayScene(currentGame.director, sizeBoard, sceneName, message, hookName, withIaBoard, helpEvent, pauseEvent);
     currentGame.iaPlay = false;
     currentGame[hookName] = false;
     currentGame.gameOver = false;
@@ -407,7 +483,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
 
         // Display the battle scene in background.
-        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent');
+        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent', 'playMinPauseEvent');
         
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -504,6 +580,50 @@ $(function(){
     activateHelp(currentGame.scenes.play_min_scene, "playMinSceneActive", helpDialog1);
   });
 
+  $(document).on("playMinPauseEvent", function() {
+    activatePause(currentGame.scenes.play_min_scene, "playMinSceneActive", pauseDialog);
+  });
+
+  function pauseDialog(pauseInfo) {
+
+    $("body").closeAllDialogs(function(){
+
+      $.switchWrapper('#bg-circuits', function(){
+        $(".wrapper.active .vertical-centering").dialog({
+          
+          animateText: true,
+          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+          type: "withAvatar",
+          avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          title: "Chercheuse",
+          content: "Le jeu est en pause.",
+          controls: [
+            {
+              label: "Menu Principal",
+              class: "button red",
+              onClick: function() {
+                menu();
+                setTimeout(pauseInfo.sceneName.scene.setPaused(false), 1500);
+              }
+            },
+            {
+            label: "Reprendre", 
+            class: "button blue",
+            onClick: function() {
+              deActivatePause(pauseInfo.sceneName, pauseInfo.hookName);
+            }
+          }]
+
+        });
+  
+
+      });
+
+    });
+  }
+
   function playLevel1(){
     $("body").closeAllDialogs(function(){
       // Active input for play_min_scene
@@ -518,6 +638,17 @@ $(function(){
     $("body").closeAllDialogs(function() {
 
       $.switchWrapper('#bg-circuits', function() {
+        var randLetter = null;
+        var o = "";
+        var t = "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -528,8 +659,21 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE,
-                
+          content: o,
+
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Premier challenge décrypté : " + FIRST_CHALLENGE_MESSAGE, 2, -2);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
+
           controls: [{
             label: "Menu principal",
             class: "button red",
@@ -580,7 +724,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
 
         // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent');
+        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -620,6 +764,9 @@ $(function(){
   $(document).on("playMediumHelpEvent", function() {
     activateHelp(currentGame.scenes.play_medium_scene, "playMediumSceneActive", helpDialog1);
   });
+  $(document).on("playMediumPauseEvent", function() {
+    activatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive", pauseDialog);
+  });
 
 
   function playLevel2(){
@@ -637,6 +784,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -646,7 +804,20 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE,
+          content: o,
+
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Deuxième challenge décrypté : " + SECOND_CHALLENGE_MESSAGE, 2, -2);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal",
@@ -685,7 +856,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
 
         // Display the battle scene in background.
-        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent');
+        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
 
@@ -726,6 +897,10 @@ $(function(){
     activateHelp(currentGame.scenes.play_max_scene, "playMaxSceneActive", helpDialog1);
   });
 
+  $(document).on("playMaxPauseEvent", function() {
+    activatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive", pauseDialog);
+  });
+
 
   function playLevel3(){
     $("body").closeAllDialogs(function(){
@@ -742,6 +917,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -751,8 +937,20 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE,
+          content: o,
                 
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Troisième challenge décrypté : " + THIRD_CHALLENGE_MESSAGE, 3, -3);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
           controls: [{
             label: "Menu principal",
             class: "button red",
@@ -798,7 +996,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
 
         // Display the battle scene in background.
-        goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent');
+        goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent', 'playSuperMaxPauseEvent');
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -839,6 +1037,9 @@ $(function(){
     activateHelp(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive", helpDialog1);
   });
 
+  $(document).on("playSuperMaxPauseEvent", function() {
+    activatePause(currentGame.scenes.play_super_max_scene, "playSuperMaxSceneActive", pauseDialog);
+  });
 
   function playLevel4(){
     $("body").closeAllDialogs(function(){
@@ -855,6 +1056,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -864,7 +1076,19 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE,
+          content: o,
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Quatrième challenge décrypté : " + FOURTH_CHALLENGE_MESSAGE, 3, -3);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal",
@@ -913,7 +1137,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
 
         // Display the battle scene in background.
-        goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent');
+        goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent', "playMegaMaxPauseEvent");
 
         $(".wrapper.active .vertical-centering").dialog({
                 
@@ -953,6 +1177,9 @@ $(function(){
   $(document).on("playMegaMaxHelpEvent", function() {
     activateHelp(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive", helpDialog1);
   });
+  $(document).on("playMegaMaxPauseEvent", function() {
+    activatePause(currentGame.scenes.play_mega_max_scene, "playMegaMaxSceneActive", pauseDialog);
+  });
 
   function playLevel5(){
     $("body").closeAllDialogs(function(){
@@ -969,6 +1196,17 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        var randLetter = null;
+        var o = "";
+        var t = "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE;
+       
+        // we need to do it once more;
+        t = $('<div></div>').html(t).text();
+
+        for (var i = 0; i < t.length; i++) {
+          randLetter = String.fromCharCode(Math.round(Math.random() * 224) + 32);
+          o += "<span class='letter-block crypted'>" + randLetter + "</span>";
+        }
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -978,7 +1216,19 @@ $(function(){
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
           title: "Challenge réussi",
-          content: "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE,
+          content: o,
+          transitionCallback: {
+            in: function() {
+              // alert("Dialog was added to the dom");
+            },
+            show: function() {
+              // alert("Dialog intro animation is complete");
+              $.simulateDecrypt($(".dialog .content .text"), "Cinquième challenge décrypté : " + FIFTH_CHALLENGE_MESSAGE, 4, -4);
+            },
+            out: function() {
+              // alert("Dialog outro animation is complete, html element will be removed now.");
+            }
+          },
                 
           controls: [{
             label: "Menu principal", 

@@ -266,77 +266,6 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     this.displayValue.setSize(this.boxOption.SQUARE_WIDTH, 30);
     this.displayValue.cacheAsBitmap();
 
-    this.upMessagePaint = function(duration) {
-        var object = this;
-        this.column.stopCacheAsBitmap();
-
-        var newBoardColorInfo = iaBoardColorInfo;
-        if (this.type != COLUMN_TYPE_3) {
-            this.newGradient = director.ctx.createLinearGradient(0, 0, this.boxOption.SQUARE_WIDTH, 0);
-            this.newGradient.addColorStop(0, newBoardColorInfo.colorLeft[this.type]);
-            this.newGradient.addColorStop(1, newBoardColorInfo.colorRight[this.type]);
-        } else {
-            this.newGradient = null;
-        }
-
-        var myTime = null;
-
-        this.column.paint = function(director, time) {
-            if (this.isCached()) {
-                CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
-                return;
-            }
-
-            if (myTime === null) {
-                myTime = time;
-            }
-
-            // Custom paint method.
-            var ctx = director.ctx;
-            var x = 1.5;
-            ctx.lineWidth = 1;
-
-            ctx.globalAlpha = 1;
-
-            ctx.strokeStyle = newBoardColorInfo.strokeColor[object.type];
-            ctx.fillStyle = object.newGradient;
-
-            for (var i = 0; i < object.squareNumber; ++i) {
-                var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5;
-
-                if (y < 0) {
-                    break;
-                }
-
-                ctx.fillRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);            
-            }
-
-            if (myTime + duration - time > 0) {
-                ctx.globalAlpha = (myTime + duration - time) / duration;
-            } else {
-                ctx.globalAlpha = 0;
-            }
-
-
-            ctx.strokeStyle = object.boxOption.boardColorInfo.strokeColor[object.type];
-            ctx.fillStyle = object.gradient;
-
-            for (var i = 0; i < object.squareNumber; ++i) {
-                var y = object.column.height - object.boxOption.SQUARE_HEIGHT - i * (boxOption.SQUARE_HEIGHT + boxOption.SPACE_HEIGHT) - 0.5;
-
-                if (y < 0) {
-                    break;
-                }
-
-                ctx.fillRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);
-                ctx.strokeRect(x, y, object.boxOption.SQUARE_WIDTH, object.boxOption.SQUARE_HEIGHT);            
-            }
-        
-            object.boxOption.setDefaultColor();
-        }
-    }
-
 	this.column.paint = function(director, time) {
 		if (this.isCached()) {
 			CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
@@ -651,8 +580,6 @@ function Message(director, messageLength, message, container, boxOption, isActiv
         for (var i = 0; i < this.columnList.length; ++i) {
             ++msgOnMove;
             var msgColumn = this.columnList[i];
-
-            msgColumn.upMessagePaint(this.boxOption.timeInfo.messageUpTime);
 
             var path =  new CAAT.LinearPath().setInitialPosition(msgColumn.column.x, msgColumn.column.y).setFinalPosition(msgColumn.column.x, this.boxOption.BORDER_HEIGHT);
             var pb = new CAAT.PathBehavior().setPath(path).setFrameTime(msgColumn.column.time, this.boxOption.timeInfo.messageUpTime).setCycle(false);

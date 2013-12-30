@@ -12,17 +12,9 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				crypt_key.changeKeyType();
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				currentGame.keyDown = false;
-				crypt_key.keyDown();
-			}
 
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
-				if (currentGame.keyDown == null || currentGame.keyDown === false) {
-					currentGame.keyDown = true;
-				} else {
-					crypt_key.keyDown();
-				}
+				crypt_key.keyDown();
 			}
 		}
 	});
@@ -43,16 +35,8 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 			if ((key.getKeyCode() === CAAT.Keys.UP || key.getKeyCode() === 32) && key.getAction() === 'down') {
 				keyIsActive ? crypt_key.changeKeyType() : null;
 			}
-			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'up') {
-				currentGame.keyDown = false;
-				keyIsActive ? crypt_key.keyDown() : null;
-			}
 			if (key.getKeyCode() === CAAT.Keys.DOWN && key.getAction() === 'down') {
-				if (currentGame.keyDown == null || currentGame.keyDown === false) {
-					currentGame.keyDown = true;
-				} else {
-					keyIsActive ? crypt_key.keyDown() : null;
-				}
+				keyIsActive ? crypt_key.keyDown() : null;
 			}
 		}
 	});
@@ -160,39 +144,22 @@ function bindPadWithKeyboard(pad, director, hookSceneActive) {
 	});
 }
 
-function bindPauseButtonWithObjects(pauseButton, scene, objectsWithAnimation, director, hookSceneActive) {
+
+function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, pauseEvent) {
 
 	var relativeY = 3;
 	pauseButton.mouseDown = function(mouseEvent) {
 		if (currentGame[hookSceneActive]) {
-			if (pauseButton.isPressed === false) {
-				pauseButton.setBackgroundImage(director.getImage('pause-down')).setLocation(pauseButton.x, pauseButton.y + relativeY);
-				pauseButton.isPressed = true;
-			} else {
-				pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - relativeY);
-				pauseButton.isPressed = false;
-			}
+			pauseButton.setBackgroundImage(director.getImage('pause-down')).setLocation(pauseButton.x, pauseButton.y + relativeY);
 		}
 	}
 
 	pauseButton.mouseUp = function(mouseEvent) {
 		if (currentGame[hookSceneActive]) {
-			scene.setPaused(!scene.isPaused());
-			if (scene.isPaused() === true) {
-				for (var i = 0; i < objectsWithAnimation.length; ++i) {
-					var object = objectsWithAnimation[i];
-					if (typeof (object.stopAnimation) === "function") {
-						object.stopAnimation();
-					}
-				}
-			} else {
-				for (var i = 0; i < objectsWithAnimation.length; ++i) {
-					var object = objectsWithAnimation[i];
-					if (typeof (object.startAnimation) === "function") {
-						object.startAnimation();
-					}
-				}
-			}
+			console.log('ici');
+			pauseEvent ? $(document).trigger(pauseEvent) : null;
+			pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - relativeY);
+			pauseButton.isPressed = false;
 		}
 	}
 }

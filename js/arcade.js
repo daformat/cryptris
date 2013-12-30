@@ -52,6 +52,11 @@ function resize(director, newWidth, newHeight) {
  */
 function prepareCreateKeyScene(director) {
 
+    if (currentGame.scenes != null && currentGame.scenes.create_key_scene != null) {
+        currentGame.director.removeChild(currentGame.scenes.create_key_scene.scene);
+        currentGame.director.setClear(CAAT.Director.CLEAR_ALL);
+    }
+
     /**
      * Define the current length of the message (and of the keys).
      */
@@ -66,7 +71,7 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message, currentGame.playerKeyInfo.private_key[current_length].key);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent');
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent', 'pauseCreateKeyEvent');
 }
 
 function createMessageForPlayScene(boardLength, message) {
@@ -85,8 +90,8 @@ function createMessageForPlayScene(boardLength, message) {
 /**
  * 
  */
-function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent, pauseEvent) {
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, pauseEvent);
 }
 
 /**
@@ -204,9 +209,25 @@ $(document).ready(function() {
 $(function(){
     $(".select-key-type a").click(function(){
         var $t = $(this);
-
         $t.toggleClass("public").toggleClass("private");
-        $t.find(".key-desc").text( ( $t.hasClass("public") ? "clé publique" : "clé privée" ) );
 
+        if ($t.context.id === "player-key") {
+            if ($t.hasClass("public")) {
+                $t.find(".key-desc").text("clé publique");
+
+                currentGame.playerKeyType = "public";
+            } else {
+                $t.find(".key-desc").text("clé privée");
+                currentGame.playerKeyType = "private";
+            }
+        } else {
+            if ($t.hasClass("public")) {
+                $t.find(".key-desc").text("clé publique");
+                currentGame.iaKeyType = "public";
+            } else {
+                $t.find(".key-desc").text("clé privée");
+                currentGame.iaKeyType = "private";
+            }
+        }
     });
 })

@@ -63,7 +63,7 @@ function prepareCreateKeyScene(director) {
     }
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message, currentGame.playerKeyInfo.private_key[current_length].key);
 
-    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent');
+    currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent', 'pauseCreateKeyEvent');
 }
 
 function createMessageForPlayScene(boardLength, message) {
@@ -95,19 +95,19 @@ function createMessageForAnimateEncryption(boardLength, message) {
 /**
  * 
  */
-function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
+function preparePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent, pauseEvent) {
     playerBoardColorInfo['keychain'] = 'keychain-player';
     playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent);
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, pauseEvent);
 }
 
 /**
  * 
  */
-function prepareAnimatePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent) {
+function prepareAnimatePlayScene(director, boardLength, boardName, crypt_message, hookActive, withIaBoard, helpEvent, pauseEvent) {
     playerBoardColorInfo['keychain'] = 'keychain-ia-left';
     playerBoardColorInfo['key-symbol'] = 'key-ia-left';
-    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, true);
+    currentGame.scenes[boardName] = createPlayScene(director, boardLength, crypt_message, currentGame.playerKeyInfo, hookActive, withIaBoard, helpEvent, pauseEvent, true);
     currentGame.scenes[boardName].game_box.message.isActive = false;
 }
 
