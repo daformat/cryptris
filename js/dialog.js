@@ -28,6 +28,9 @@
 	    // Main content of the dialog
 	    content: "(Missing dialog)",
 
+	    // Dialog identifier (used to log analytics events)
+	    identifier: "(Unknown dialog)",
+
 	    // Controls available in the dialog
 	    controls: [ {
 	    	label: "ok", 
