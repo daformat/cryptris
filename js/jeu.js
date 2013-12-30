@@ -18,6 +18,12 @@ function resize(director, newWidth, newHeight) {
         return;
     }
 
+    if (director.height < 700) {
+        currentGame.miniScreen = true;
+    } else {
+        currentGame.miniScreen = false;
+    }
+
     if (resizeInProcess === false) {
         resizeInProcess = true;
 

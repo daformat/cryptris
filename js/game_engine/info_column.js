@@ -161,15 +161,27 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		else {
 			this.marge = 15 / 200 * this.director.height - 30;
 		}
-		if (this.withGauge === true) {
-			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
+		if (currentGame.miniScreen === true) {
+			this.titleColumnContainer.setScale(0.9, 0.9);
+			this.titleColumnContainer.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 25, 15);
+			if (this.withGauge === true) {
+				this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
 									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y_WITH_GAUGE + this.resultScene.game_box.gameBox.height / 2 + 30);
+			} else {
+				this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
+										.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
+			}
 		} else {
-			this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455)
-									.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 130, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 + 20);
+			this.titleColumnContainer.setScale(1, 1);
+			if (this.withGauge === true) {
+				this.titleColumnContainer.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 10, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 - 200);
+				this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455).setLocation(this.titleColumnContainer.x, this.titleColumnContainer.y + this.titleColumnContainer.height);
+			} else {
+				this.titleColumnContainer.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 10, this.crypt_key.boxOption.resizeOption.DEFAULT_RELATIVE_Y + this.resultScene.game_box.gameBox.height / 2 - 180);
+				this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455).setLocation(this.titleColumnContainer.x, this.titleColumnContainer.y + this.titleColumnContainer.height);
+			}
 		}
 
-		this.titleColumnContainer.centerAt(this.resultScene.game_box.gameBox.x + this.resultScene.game_box.gameBox.width + 15, 15)
 		this.cryptrisLogo.setLocation(0, 0);
 		this.leftTimer.setLocation(35, this.cryptrisLogo.height + this.marge - 20);
 		this.centerTimer.setLocation(this.leftTimer.x + this.leftTimer.width, this.leftTimer.y);

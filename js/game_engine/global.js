@@ -28,6 +28,8 @@ function game() {
 	this.username = "JOUEUR";
 	this.ianame = "LOGICIEL ESPION";
 
+	this.miniScreen = false;
+
 	this.playerKeyType = "private";
 	this.iaKeyType = "public";
 
