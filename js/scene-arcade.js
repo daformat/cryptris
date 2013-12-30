@@ -344,7 +344,7 @@ $(function(){
 
   function stopGameOverDialog() {
     var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
-    goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.timeout);
+    goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.pauseEvent, currentGameOverData.timeout);
     saveScene.setExpired(true);
     $("body").closeAllDialogs(function() {});
     currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
@@ -460,6 +460,7 @@ $(function(){
             'timeInfo' : timeInfo,
             'message' : message,
             'helpEvent' : helpEvent,
+            'pauseEvent' : pauseEvent,
             'timeout' : timeout
           };
           if (currentGame.gameOver === true) {
