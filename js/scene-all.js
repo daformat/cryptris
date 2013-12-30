@@ -1142,7 +1142,10 @@ $(function() {
     {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Création clé publique", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }]);
 
 
-  
+  /**
+   * Tutorial - player learns to decipher a message
+   */
+
   addControlToDialog(helpPlaySoloDialog, [{label: labelNext, class: "button blue", onClick: helpPlaySolo2}]);
   addControlToDialog(helpPlaySolo2Dialog, [{label: labelNext, class: "button blue",
     onClick: function() {
@@ -1154,8 +1157,12 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){abortGame()}}
+    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Tutoriel décryptage", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
+
+  /**
+   * Level 1
+   */
 
   addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMin2}]);
   addControlToDialog(helpPlayMin2Dialog, [{label: labelNext, class: "button blue",
@@ -1168,8 +1175,13 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_min_scene, "playMinSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: theEnd}
+    {label: "Quitter", class: "not-asked", onClick: function(){ abortGame({category: "Jeu", action: "Niveau 1", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
+
+
+  /**
+   * Level 2
+   */
 
   addControlToDialog(helpPlayMediumDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMedium2}]);
   addControlToDialog(helpPlayMedium2Dialog, [{label: labelNext, class: "button blue",
@@ -1182,8 +1194,13 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: theEnd}
+    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 2", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
+
+
+  /**
+   * Level 3
+   */
   
   addControlToDialog(helpPlayMaxDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMax2}]);
   addControlToDialog(helpPlayMax2Dialog, [{label: labelNext, class: "button blue",
@@ -1196,7 +1213,7 @@ $(function() {
     onClick: function() {
       deActivatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: theEnd}
+    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 3", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
 
 
