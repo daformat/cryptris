@@ -2,10 +2,9 @@
  * Cryptris - Story mode
  */
 
-var cryptrisSettings = {
-    cryptoExplanations: [false, false, false],
-    dialogWhatArePrivatePublicKey: [false, false, false]
-}
+cryptrisSettings.cryptoExplanations = [false, false, false];
+cryptrisSettings.dialogWhatArePrivatePublicKey = [false, false, false];
+
 
 
 $(function() {
@@ -13,8 +12,10 @@ $(function() {
       game = cryptrisSettings;
 
       game.getCurrentGamingTime = function(){
-        formatSeconds( (new Date().getTime()-game.startTime)*1000 );
+        return formatSeconds( (new Date().getTime()-game.startTime)/1000 );
       }
+
+      $.game = game;
 
   // -- Hide .hidden elements and remove class.
   $('.hidden').hide().removeClass('hidden');
@@ -437,6 +438,7 @@ $(function() {
    *  Convert seconds to Hh:Mm:Ss string
    */
 
+
   function formatSeconds(d) {
     var sign = (d<0 ? "-" : "");
     d = Math.abs(d);
@@ -454,6 +456,8 @@ $(function() {
     var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
     return ( d == 0 ? '0' : time);
   }
+
+  $.formatSeconds = formatSeconds;
 
 
   /**
@@ -1060,14 +1064,50 @@ $(function() {
     });
   }
 
+  /**
+   *  Abort Game
+   */
 
+  function abortGame(identifier) {
+    $("body").closeAllDialogs(function() {
+
+
+      var i = identifier;
+
+      if(!i){
+        i = {
+          category: "Jeu",
+          action: "Abandon",
+          label: "Temps de jeu : " + game.getCurrentGamingTime()
+        }
+      } else if(!i.category || !i.action || !i.label) {
+        
+        console.warn("No analytics identifier was passed !");
+
+        i = {
+          category: "Jeu",
+          action: "(Non spécifié)",
+          label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()
+        }
+      }
+      
+      // Log to google analytics
+      console.log(i.category, '-', i.action, '-', i.label);
+      ga('send', 'event', i.category, i.action, i.label);
+
+      // Go back to the index
+      //window.location = "/";
+    });
+  }
+
+  $.abortGame = abortGame;
 
   /**
    *  Dialog controls initialisation
    */
 
-  addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: theEnd}]);
-  addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: theEnd}]);
+  addControlToDialog(gameOverDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: abortGame}]);
+  addControlToDialog(tooManyBlocksDialog, [{label: labelNext, class: "button blue", onClick: stopGameOver}, {label: "Abandonner", class: "button red", onClick: abortGame}]);
 
   addControlToDialog(cryptoExplanationsOpt1Dialog, [{label: labelNext, class: "button blue", onClick:
     function () {
@@ -1099,7 +1139,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: theEnd}]);
+    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Création clé publique", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }]);
 
 
   
@@ -1114,7 +1154,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: theEnd}
+    {label: "Quitter", class: "not-asked", onClick: function(){abortGame()}}
   ]);
 
   addControlToDialog(helpPlayMinDialog, [{label: labelNext, class: "button blue", onClick: helpPlayMin2}]);

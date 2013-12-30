@@ -191,14 +191,26 @@ $(document).ready(function() {
     if(CAAT.DEBUG){
 
           var gui = new dat.GUI();
-          gui.add(CAAT, 'FPS', 1, 120);
+          var guiCaat = gui.addFolder('Caat');
+            guiCaat.add(CAAT, 'FPS', 1, 120);
 
           try{
-              gui.add(cryptrisSettings, 'readingDelay', 0, 10000);
-              gui.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
+            var guiDialogs = gui.addFolder('Dialogs');
+                guiDialogs.add(cryptrisSettings, 'readingDelay', 0, 10000);
+                guiDialogs.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
+
+                guiDialogs.open();
+
             } catch(e){
-                
+                console.error(e);
             }
+
+            var guiCurrentGame = gui.addFolder('Boards');
+                guiCurrentGame.add(currentGame, 'goToNextDialog').listen();
+
+
+            gui.add({triggerNextDialog: function() { $(document).trigger('nextDialog'); } }, 'triggerNextDialog');
+
     }
 
     

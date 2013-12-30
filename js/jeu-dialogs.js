@@ -1,5 +1,3 @@
-var animateTextDelayBetweenLetters = 20;
-var readingDelay = 4000;
 
 var youAreIntern = "Tu es stagiaire dans une équipe de recherche Inria";
 var firstDay = "Premier jour à l'institut";
@@ -33,19 +31,19 @@ var firstPrompt = function(welcome) {
     // First prompt
     $('.prompt .content').text('');
     setTimeout(function() {
-      $('.prompt .content').typeLetterByLetter(youAreIntern, animateTextDelayBetweenLetters, function() {
+      $('.prompt .content').typeLetterByLetter(youAreIntern, cryptrisSettings.animateTextDelayBetweenLetters, function() {
         // Second prompt
         setTimeout(function() {
           $('.prompt .content').text('');
           setTimeout(function() {
-            $('.prompt .content').typeLetterByLetter(firstDay, animateTextDelayBetweenLetters,function() {
+            $('.prompt .content').typeLetterByLetter(firstDay, cryptrisSettings.animateTextDelayBetweenLetters,function() {
               // Switch to institute
               setTimeout(function() { 
                 $(document).trigger('nextDialog');
-              }, readingDelay);
+              }, cryptrisSettings.readingDelay);
             });
           }, 2000)
-        }, readingDelay);
+        }, cryptrisSettings.readingDelay);
       });
     }, 2000);
   });
@@ -89,7 +87,6 @@ function updateNameFunction() {
 
 var chercheusePredef = {
   animateText: true,
-  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
   type: "withAvatar",
   avatar: "<img src='img/avatar-chercheuse.jpg'>",
   title: "Chercheuse"
@@ -114,7 +111,6 @@ var inriosPredef = {
 
 var decryptedPredef = {
   animateText: true,
-  animateTextDelayBetweenLetters: animateTextDelayBetweenLetters,
   type: "withAvatar",
   avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
   title: "Message décrypté"

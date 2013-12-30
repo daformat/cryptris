@@ -23,7 +23,7 @@
 	    animateText: false,
 
 	    // If so, the delay between each character can be changed to any millisecond value
-	    animateTextDelayBetweenLetters: 20,
+	    animateTextDelayBetweenLetters: cryptrisSettings.animateTextDelayBetweenLetters,
 
 	    // Main content of the dialog
 	    content: "(Missing dialog)",
