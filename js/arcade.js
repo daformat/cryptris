@@ -216,17 +216,25 @@ $(function(){
                 $t.find(".key-desc").text("clé publique");
 
                 currentGame.playerKeyType = "public";
+                playerBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol-left';
+                playerBoardColorInfo['keychain'] = 'keychain-ia-left';
             } else {
                 $t.find(".key-desc").text("clé privée");
                 currentGame.playerKeyType = "private";
+                playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
+                playerBoardColorInfo['keychain'] = 'keychain-player';
             }
         } else {
             if ($t.hasClass("public")) {
                 $t.find(".key-desc").text("clé publique");
                 currentGame.iaKeyType = "public";
+                iaBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol';
+                iaBoardColorInfo['keychain'] = 'keychain-ia';
             } else {
                 $t.find(".key-desc").text("clé privée");
                 currentGame.iaKeyType = "private";
+                iaBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol-right';
+                iaBoardColorInfo['keychain'] = 'keychain-player-right';
             }
         }
     });
