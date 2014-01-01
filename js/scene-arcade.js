@@ -46,8 +46,17 @@ $(function(){
   }
 
 
+  var key_symbol_save = null;
+  var keychain_save = null;
   function announcePublicKey(){
 
+
+    // Save the key and keychain img.
+    key_symbol_save = playerBoardColorInfo['key-symbol'];
+    keychain_save = playerBoardColorInfo['keychain'];
+
+    playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
+    playerBoardColorInfo['keychain'] = 'keychain-player';
 
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
@@ -309,6 +318,8 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        playerBoardColorInfo['key-symbol'] = key_symbol_save;
+        playerBoardColorInfo['keychain'] = keychain_save;
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
