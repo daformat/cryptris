@@ -16,6 +16,7 @@ function ia_create_pk(createKeyScene, gameBoxInfo, activateIa) {
   var key = gameBoxInfo.crypt_key;
 
   if (activateIa === true) {
+    console.log('1');
     var ia = new IA(createKeyScene, key, message, gameBoxInfo.boxOption);
     ia.blankMessageIsAllowed = true;
     

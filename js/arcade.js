@@ -38,6 +38,7 @@ function resize(director, newWidth, newHeight) {
                 currentGame.scenes['play_mega_max_scene']['resize'](director, currentGame.scenes['play_mega_max_scene']);
             }
             if (currentGame.scenes['create_key_scene'] != null) {
+                console.log('test');
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
         }
@@ -53,10 +54,11 @@ function resize(director, newWidth, newHeight) {
 function prepareCreateKeyScene(director) {
 
     if (currentGame.scenes != null && currentGame.scenes.create_key_scene != null) {
+        console.log('la');
         currentGame.director.removeChild(currentGame.scenes.create_key_scene.scene);
         currentGame.director.setClear(CAAT.Director.CLEAR_ALL);
     }
-
+    currentGame.displayKey = false;
     /**
      * Define the current length of the message (and of the keys).
      */

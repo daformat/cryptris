@@ -281,6 +281,7 @@ $(function(){
   function switchToFinishCreateKey() {
     $("body").closeAllDialogs();
     // Launch the ia.
+
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
     ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
 
