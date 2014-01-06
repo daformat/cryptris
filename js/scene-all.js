@@ -4,18 +4,17 @@
 
 cryptrisSettings.cryptoExplanations = [false, false, false];
 cryptrisSettings.dialogWhatArePrivatePublicKey = [false, false, false];
-
+cryptrisSettings.gamingTime = "0";
 
 
 $(function() {
-  var transitionTime = 1000,
-      game = cryptrisSettings;
+  var transitionTime = 1000;
 
-      game.getCurrentGamingTime = function(){
-        return formatSeconds( (new Date().getTime()-game.startTime)/1000 );
+      cryptrisSettings.getCurrentGamingTime = function(){
+        return formatSeconds( (new Date().getTime()-cryptrisSettings.startTime)/1000 );
       }
-
-      $.game = game;
+      game = cryptrisSettings;
+      
 
   // -- Hide .hidden elements and remove class.
   $('.hidden').hide().removeClass('hidden');
@@ -1139,7 +1138,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Création clé publique", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }]);
+    {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Création clé publique", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }]);
 
 
   /**
@@ -1157,7 +1156,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_solo_scene, "playSoloSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Tutoriel décryptage", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
+    {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Tutoriel décryptage", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
 
   /**
@@ -1175,7 +1174,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_min_scene, "playMinSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){ abortGame({category: "Jeu", action: "Niveau 1", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
+    {label: "Abandonner", class: "not-asked", onClick: function(){ abortGame({category: "Jeu", action: "Niveau 1", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
 
 
@@ -1194,7 +1193,7 @@ $(function() {
       onClick: function() {
       deActivatePause(currentGame.scenes.play_medium_scene, "playMediumSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 2", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
+    {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 2", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
 
 
@@ -1213,7 +1212,7 @@ $(function() {
     onClick: function() {
       deActivatePause(currentGame.scenes.play_max_scene, "playMaxSceneActive");
     }},
-    {label: "Quitter", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 3", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
+    {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Niveau 3", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
   ]);
 
 
@@ -1408,6 +1407,8 @@ $(function() {
   ga('send', 'event', 'Jeu', 'Début du jeu', '');
 
   // Start game
-  game.startTime = new Date().getTime();
+  cryptrisSettings.startTime = new Date().getTime();
+  // update time
+  var timer = window.setInterval(function(){cryptrisSettings.gamingTime = cryptrisSettings.getCurrentGamingTime()},1000);
   intro();
 });

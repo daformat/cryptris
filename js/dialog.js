@@ -32,7 +32,7 @@
 	    identifier: {
 	    	category: "(unkown category)",
 	    	action: "(unkown action)",
-	    	label: "(unkown label)",
+	    	label: "(unspecified dialog) - "+window.location.href+" - "+options.content,
 	    },
 
 	    // Controls available in the dialog

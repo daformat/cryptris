@@ -190,27 +190,33 @@ $(document).ready(function() {
 
     if(CAAT.DEBUG){
 
-          var gui = new dat.GUI();
-          var guiCaat = gui.addFolder('Caat');
-            guiCaat.add(CAAT, 'FPS', 1, 120);
+        try{
+              var gui = new dat.GUI();
 
-          try{
-            var guiDialogs = gui.addFolder('Dialogs');
-                guiDialogs.add(cryptrisSettings, 'readingDelay', 0, 10000);
-                guiDialogs.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
+              gui.add(cryptrisSettings, 'gamingTime').listen();
 
-                guiDialogs.open();
+              var guiCaat = gui.addFolder('Caat');
+                guiCaat.add(CAAT, 'FPS', 1, 120);
 
-            } catch(e){
-                console.error(e);
-            }
+              try{
+                var guiDialogs = gui.addFolder('Dialogs');
+                    guiDialogs.add(cryptrisSettings, 'readingDelay', 0, 10000);
+                    guiDialogs.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
 
-            var guiCurrentGame = gui.addFolder('Boards');
-                guiCurrentGame.add(currentGame, 'goToNextDialog').listen();
+                    guiDialogs.open();
+
+                } catch(e){
+                    console.error(e);
+                }
+
+                var guiCurrentGame = gui.addFolder('Boards');
+                    guiCurrentGame.add(currentGame, 'goToNextDialog').listen();
 
 
-            gui.add({triggerNextDialog: function() { $(document).trigger('nextDialog'); } }, 'triggerNextDialog');
+                gui.add({triggerNextDialog: function() { $(document).trigger('nextDialog'); } }, 'triggerNextDialog');
+        } catch(e) {
 
+        }
     }
 
     
