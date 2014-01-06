@@ -44,6 +44,7 @@ function resize(director, newWidth, newHeight) {
                 currentGame.scenes['play_mega_max_scene']['resize'](director, currentGame.scenes['play_mega_max_scene']);
             }
             if (currentGame.scenes['create_key_scene'] != null) {
+                console.log('test');
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
         }
@@ -59,10 +60,11 @@ function resize(director, newWidth, newHeight) {
 function prepareCreateKeyScene(director) {
 
     if (currentGame.scenes != null && currentGame.scenes.create_key_scene != null) {
+        console.log('la');
         currentGame.director.removeChild(currentGame.scenes.create_key_scene.scene);
         currentGame.director.setClear(CAAT.Director.CLEAR_ALL);
     }
-
+    currentGame.displayKey = false;
     /**
      * Define the current length of the message (and of the keys).
      */
@@ -78,6 +80,7 @@ function prepareCreateKeyScene(director) {
     var empty_message = chiffre(current_length, tmp_empty_message, tmp_empty_message, currentGame.playerKeyInfo.private_key[current_length].key);
 
     currentGame.scenes['create_key_scene'] = createCreateKeyScene(director, current_length, empty_message, currentGame.playerKeyInfo, 'createKeySceneActive', 'helpCreateKeyEvent', 'pauseCreateKeyEvent');
+
 }
 
 function createMessageForPlayScene(boardLength, message) {
@@ -222,17 +225,25 @@ $(function(){
                 $t.find(".key-desc").text("clé publique");
 
                 currentGame.playerKeyType = "public";
+                playerBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol-left';
+                playerBoardColorInfo['keychain'] = 'keychain-ia-left';
             } else {
                 $t.find(".key-desc").text("clé privée");
                 currentGame.playerKeyType = "private";
+                playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
+                playerBoardColorInfo['keychain'] = 'keychain-player';
             }
         } else {
             if ($t.hasClass("public")) {
                 $t.find(".key-desc").text("clé publique");
                 currentGame.iaKeyType = "public";
+                iaBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol';
+                iaBoardColorInfo['keychain'] = 'keychain-ia';
             } else {
                 $t.find(".key-desc").text("clé privée");
                 currentGame.iaKeyType = "private";
+                iaBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol-right';
+                iaBoardColorInfo['keychain'] = 'keychain-player-right';
             }
         }
     });

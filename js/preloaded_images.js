@@ -18,17 +18,30 @@ function getPreloadedImages() {
     imgs.push({id:'triangle-right', url: "img/assets/triangle-right.png"});
     imgs.push({id:'key-symbol', url: "img/key-symbol.png"});
     imgs.push({id:'icn-mini-ia-enveloppe', url: "img/icn-mini-ia-enveloppe.png.png"});
-    imgs.push({id:'icn-mini-ia-key-symbol', url: "img/key-keychain/key-pub-right.png"});
     imgs.push({id:'icn-mini-ia-padlock-closed', url: "img/icn-mini-ia-padlock-closed.png"});
     imgs.push({id:'icn-mini-ia-padlock-open', url: "img/icn-mini-ia-padlock-open.png"});
     imgs.push({id:'icn-mini-player-enveloppe', url: "img/icn-mini-player-enveloppe.png"});
-    imgs.push({id:'icn-mini-player-key-symbol', url: "img/key-keychain/key-priv-left.png"});
     imgs.push({id:'icn-mini-player-padlock-closed', url: "img/icn-mini-player-padlock-closed.png"});
     imgs.push({id:'icn-mini-player-padlock-open', url: "img/icn-mini-player-padlock-open.png"});
+    
+    imgs.push({id:'icn-mini-player-key-symbol', url: "img/key-keychain/key-priv-left.png"});
+    imgs.push({id:'icn-mini-player-key-symbol-right', url: "img/key-keychain/key-priv-right.png"});
+
+    imgs.push({id:'icn-mini-ia-key-symbol', url: "img/key-keychain/key-pub-right.png"});
+    imgs.push({id:'icn-mini-ia-key-symbol-left', url: "img/key-keychain/key-pub-left.png"});
+
     imgs.push({id:'keychain-ia', url: "img/key-keychain/key-pub-keychain-right.png"});
-    imgs.push({id:'keychain-player', url: "img/key-keychain/key-priv-keychain-left.png"});
-    imgs.push({id:'key-ia-left', url: "img/key-keychain/key-pub-left.png"});
     imgs.push({id:'keychain-ia-left', url: "img/key-keychain/key-pub-keychain-left.png"});
+
+    imgs.push({id:'keychain-player', url: "img/key-keychain/key-priv-keychain-left.png"});
+    imgs.push({id:'keychain-player-right', url: "img/key-keychain/key-priv-keychain-right.png"});
+
+    imgs.push({id:'key-ia-left', url: "img/key-keychain/key-pub-left.png"});
+    imgs.push({id:'key-ia-right', url: "img/key-keychain/key-pub-right.png"});
+
+    imgs.push({id:'keychain-ia-left', url: "img/key-keychain/key-pub-keychain-left.png"});
+    imgs.push({id:'keychain-ia-right', url: "img/key-keychain/key-pub-keychain-right.png"});
+
     imgs.push({id:'gauge0', url: "img/gauge/00.png"});
     imgs.push({id:'gauge1', url: "img/gauge/01.png"});
     imgs.push({id:'gauge2', url: "img/gauge/02.png"});

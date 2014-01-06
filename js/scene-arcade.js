@@ -46,8 +46,17 @@ $(function(){
   }
 
 
+  var key_symbol_save = null;
+  var keychain_save = null;
   function announcePublicKey(){
 
+
+    // Save the key and keychain img.
+    key_symbol_save = playerBoardColorInfo['key-symbol'];
+    keychain_save = playerBoardColorInfo['keychain'];
+
+    playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
+    playerBoardColorInfo['keychain'] = 'keychain-player';
 
     // -- Change the behavior when we have a 'resolved message' on create key screen.
     currentGame.stopCreateKeyAfterResolve = false;
@@ -264,6 +273,7 @@ $(function(){
   function switchToFinishCreateKey() {
     $("body").closeAllDialogs();
     // Launch the ia.
+
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
     ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
 
@@ -301,6 +311,8 @@ $(function(){
 
       $.switchWrapper('#bg-circuits', function(){
 
+        playerBoardColorInfo['key-symbol'] = key_symbol_save;
+        playerBoardColorInfo['keychain'] = keychain_save;
         $(".wrapper.active .vertical-centering").dialog({
                 
           animateText: true,
@@ -336,7 +348,7 @@ $(function(){
 
   function stopGameOverDialog() {
     var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
-    goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.timeout);
+    goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.pauseEvent, currentGameOverData.timeout);
     saveScene.setExpired(true);
     $("body").closeAllDialogs(function() {});
     currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
@@ -452,6 +464,7 @@ $(function(){
             'timeInfo' : timeInfo,
             'message' : message,
             'helpEvent' : helpEvent,
+            'pauseEvent' : pauseEvent,
             'timeout' : timeout
           };
           if (currentGame.gameOver === true) {

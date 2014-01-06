@@ -510,6 +510,35 @@ function Message(director, messageLength, message, container, boxOption, isActiv
             return symbol;
     }
 
+    this.createADisableDisplaySymbol = function(indexBegin) {
+            var symbol = new CAAT.Foundation.Actor();
+
+            symbol.paint = function(director, time) {
+                if (this.isCached()) {
+                    CAAT.Foundation.ActorContainer.prototype.paint.call(this, director, time);
+                    return;
+                }
+
+                var ctx = director.ctx;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = '#AAAAAA';
+                ctx.font = '15px Inconsolata';
+
+                ctx.strokeStyle = '#AAAAAA';
+                ctx.strokeRect(0.5, 0.5, this.width / 2, this.height);
+                ctx.fillStyle = '#AAAAAA';
+                ctx.textAlign = 'center';
+
+                var ternaries = [];
+
+                ctx.fillText('...', this.width / 4, this.height - 5);
+            }
+            this.container.addChild(symbol);
+            return symbol;
+    }
+
     this.createMessage = function() {
         for (var i = 0; i < this.length; ++i) {
             this.columnList.push(new MessageColumn(director, this.message['message_type'][i], this.message['message_number'][i], container, this.boxOption));
@@ -522,6 +551,9 @@ function Message(director, messageLength, message, container, boxOption, isActiv
             var object = this;
             for (var i = 0; i < this.length && i + 3 < this.length; i = i + 4) {
                 this.symbols.push(this.createADisplaySymbol(i));
+            }
+            if (this.length % 4 !== 0) {
+                this.symbols.push(this.createADisableDisplaySymbol(this.length - 2));
             }
         }
 
