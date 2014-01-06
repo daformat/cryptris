@@ -7,6 +7,17 @@ function resizeMiniBoard(director, playScene) {
     playScene.game_box.resize(playScene.scene);
 }
 
+  function specialOutInterpolator() {
+    this.getPosition = function(time) {
+      return {'x' : time, 'y' : 0};
+    }
+  }
+
+  function specialInInterpolator() {
+    this.getPosition = function(time) {
+      return {'x' : time, 'y' : 1};
+    }
+  }
 /**
  * This function all elements for the play scene.
  * @param director {CAAT.Director}
@@ -61,9 +72,18 @@ function createScenes(director, current_length, crypted_message) {
     currentGame.scenes = {};
 
     // This scene is active between two scenes.
-    //currentGame.scenes['waiting_scene'] = director.createScene();
+    currentGame.scenes['waiting_scene'] = director.createScene();
     currentGame.scenes['mini_board'] = createMiniBoardScene(director, current_length, crypted_message, currentGame.playerKeyInfo, 'mini-board');
-
+        currentGame.director.easeInOut(
+                                        currentGame.director.getSceneIndex(currentGame.scenes.mini_board.scene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        1000, true,
+                                        new specialInInterpolator(),
+                                        new specialOutInterpolator()
+        );
     /**
      * Define the framerate.
      */
@@ -169,9 +189,9 @@ function keyInfoCrypt(message) {
     return cipher;
 }
 
-$(document).ready(function() {
-	$("#share").submit(function() {
-		var text = $("textarea").val();
+function createCryptedMessage() {
+
+        var text = $("textarea").val();
 
         /*
             This allows to encode more charcaters, but there are still a few glitches, see:
@@ -185,46 +205,44 @@ $(document).ready(function() {
         });
         */
 
-        console.log(text);
-
-		while (text.length < 3) {
-			text += ' ';
-		}
-		var ternary_message = string_to_ternary(text);
+        while (text.length < 3) {
+            text += ' ';
+        }
+        var ternary_message = string_to_ternary(text);
 
         var total_crypt_message = easy_crypt(ternary_message);
 
-		var cipher_message = text[0] + text[1] + text[2];
+        var cipher_message = text[0] + text[1] + text[2];
 
-		var current_length = MAX_BOARD_LENGTH;
+        var current_length = MAX_BOARD_LENGTH;
 
-	    /**
-    	 * Define a default set of public/private key.
-     	 */
-    	currentGame.playerKeyInfo = getKeyInfo(current_length);
+        /**
+         * Define a default set of public/private key.
+         */
+        currentGame.playerKeyInfo = getKeyInfo(current_length);
 
-	    /**
-    	 * Change message to ternary
-     	 */
-    	var ternary_message = string_to_ternary(cipher_message);
+        /**
+         * Change message to ternary
+         */
+        var ternary_message = string_to_ternary(cipher_message);
 
-	    /**
-    	 * Return the crypted message
-    	 */
-    	var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key, currentGame.playerKeyInfo.private_key[current_length].key);
+        /**
+         * Return the crypted message
+         */
+        var crypted_message = chiffre(current_length, ternary_message, currentGame.playerKeyInfo.public_key[current_length].key, currentGame.playerKeyInfo.private_key[current_length].key);
 
-		createMiniBoard(current_length, crypted_message);
+        createMiniBoard(current_length, crypted_message);
 
-		var keyInfoPublicKey = currentGame.playerKeyInfo.public_key[current_length].key.toString();
-		var keyInfoPrivateKey = currentGame.playerKeyInfo.private_key[current_length].key.toString();
-		var keyInfoCipher = crypted_message.plain_message.toString();
-		var keyInfoCurrentLength = current_length.toString();
+        var keyInfoPublicKey = currentGame.playerKeyInfo.public_key[current_length].key.toString();
+        var keyInfoPrivateKey = currentGame.playerKeyInfo.private_key[current_length].key.toString();
+        var keyInfoCipher = crypted_message.plain_message.toString();
+        var keyInfoCurrentLength = current_length.toString();
 
         var url = baseHtml + '?data=' + total_crypt_message;
-		var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
-		var keyInfo = keyInfoCrypt(tmpKeyInfo);
-		url += "-";
-		url += keyInfo;
+        var tmpKeyInfo = keyInfoPublicKey + '|' + keyInfoPrivateKey + '|' + keyInfoCipher + '|' + keyInfoCurrentLength;
+        var keyInfo = keyInfoCrypt(tmpKeyInfo);
+        url += "-";
+        url += keyInfo;
 
         $('#share-tw').attr("href", "https://twitter.com/intent/tweet?text=Essaye de décrypter ce message sur Cryptris&url=" + url);
         $('#share-tw').attr("target", "_blank");
@@ -247,7 +265,11 @@ $(document).ready(function() {
                                          + 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600\'); return false;');
 
         console.log(url);
+}
 
+$(document).ready(function() {
+	$("#share").submit(function() {
+        setTimeout(createCryptedMessage, 500);
 		return false;
 	});
 
