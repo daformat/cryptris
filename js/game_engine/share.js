@@ -272,5 +272,16 @@ $(document).ready(function() {
         setTimeout(createCryptedMessage, 500);
 		return false;
 	});
-
+    $("#edit-message").bind('click', function() {
+                currentGame.director.easeInOut(
+                                        currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        1000, true,
+                                        new specialInInterpolator(),
+                                        new specialOutInterpolator()
+        );
+    });
 });
