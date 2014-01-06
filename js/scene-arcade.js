@@ -197,7 +197,7 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
           title: "Chercheuse",
-          content: "Help CREATE_KEY",
+          content: "Pour générer ta clé publique, manipule ta clé privée avec <img src='img/icn-arrow-left.png' class='keyboard-key'>, <img src='img/icn-arrow-up.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png' class='keyboard-key'> puis fais-la tomber six ou sept fois avec la touche <img src='img/icn-arrow-down.png' class='keyboard-key'>.",
           controls: [{
             label: "Suite", 
             class: "button blue",
@@ -213,6 +213,7 @@ $(function(){
 
     });
   }
+
   function pauseCreateKey() {
 
     $("body").closeAllDialogs(function(){
