@@ -1091,11 +1091,11 @@ $(function() {
       }
       
       // Log to google analytics
-      console.log(i.category, '-', i.action, '-', i.label);
+      //console.log(i.category, '-', i.action, '-', i.label);
       ga('send', 'event', i.category, i.action, i.label);
 
       // Go back to the index
-      //window.location = "/";
+      window.location = "/";
     });
   }
 
