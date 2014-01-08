@@ -241,6 +241,9 @@ $(function() {
   }
 
   function playChercheuse() {
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_chercheuse_scene.scene);
+
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
 
@@ -266,12 +269,18 @@ $(function() {
   }
 
   function activatePlaySolo() {
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_solo_scene.scene);
+
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_solo_scene.scene.setPaused(false);
     currentGame.playSoloSceneActive = true;
   }
 
   function playLevel1() {
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
+
     $("body").closeAllDialogs(function() {
       // Active input for play_min_scene
       currentGame.iaPlay = true;
@@ -281,10 +290,14 @@ $(function() {
   }
 
   function playLevel2() {
+
     $("body").closeAllDialogs(function() {
       $.switchWrapper('#bg-circuits', function() {
         // Display the battle scene in background.
         goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
+        
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_medium_scene.scene);
         
         // Active input for play_medium_scene
         currentGame.iaPlay = true;
@@ -301,6 +314,9 @@ $(function() {
         // Display the battle scene in background.
         goToBattleScene('play_max_scene', null, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
         
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
+
         // Active input for play_max_scene
         currentGame.iaPlay = true;
         currentGame.scenes.play_max_scene.scene.setPaused(false);
