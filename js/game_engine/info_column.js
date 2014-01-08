@@ -29,13 +29,24 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 	this.director = director;
 	this.crypt_key = crypt_key;
 	this.marge = 30;
-	this.gameIsInProgress = true;
+	this.gameIsInProgress = false;
 	this.currentTime = 0;
 	this.withGauge = withGauge;
+	this.timeElapseBeforeStart = 0;
 
 	var object = this;
-	$(document).on('fixTime', function(event, scene) {
+	$(document).on('startTime', function(event, scene) {
 		if (resultScene.scene === scene) {
+			object.timeElapseBeforeStart = scene.time;
+			object.gameIsInProgress = true;
+		}
+	});
+
+	$(document).on('fixTime', function(event, argsEvent) {
+		var scene = argsEvent['scene'];
+		var timeLabel = argsEvent['timeLabel'];
+		if (resultScene.scene === scene) {
+			currentGame[timeLabel] = scene.time - object.timeElapseBeforeStart;
 			object.gameIsInProgress = false;
 		}
 	});
@@ -75,7 +86,7 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		ctx.font = '700 22px Quantico';
 		ctx.fillStyle = 'white';
 		if (object.gameIsInProgress === true) {
-			object.currentTime = resultScene.scene.time;
+			object.currentTime = resultScene.scene.time - object.timeElapseBeforeStart;
 		}
 		ctx.fillText(convertTimeToString(object.currentTime), 0, 0);
 	}

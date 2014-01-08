@@ -33,6 +33,13 @@ function game() {
 
 	this.hookTest = {};
 
+    this.createKeySceneActiveTime = false;
+    this.playMinSceneActiveTime = false;
+    this.playMediumSceneActiveTime = false;
+    this.playMaxSceneActiveTime = false;
+    this.playSoloSceneActiveTime = false;
+    this.playChercheuseSceneActiveTime = false;
+
     this.director = null;
 	this.scenes = null;
 

@@ -119,6 +119,9 @@ $(function() {
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
 
+    // Start the increase of time.
+    $(document).trigger('startTime', currentGame.scenes.create_key_scene.scene);
+
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
         if (currentGame.scenes.create_key_scene.game_box.crypt_key.numberApplied === currentGame.maxNewKeyMove) {
@@ -148,13 +151,14 @@ $(function() {
           currentGame.goToNextDialog = false;
           currentGame.createKeySceneActive = false;
 
-          // Disable the action on the key.
+          // Switch the screen.
           setTimeout(function() {
             currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                            currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                            new specialInInterpolator(), new specialOutInterpolator());
             $(document).trigger('nextDialog');
             currentGame.dontShowKey = false;
+            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
           }, 2000);
         }
       }
@@ -739,6 +743,9 @@ $(function() {
   }
 
   function cables1() {
+    // Set the time passed in first level
+    currentGame.timeAfterFirstLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
@@ -790,6 +797,9 @@ $(function() {
 
 
   function cables2() {
+    // Set the time passed in second level
+    currentGame.timeAfterSecondLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
@@ -840,6 +850,9 @@ $(function() {
 
 
   function cables3() {
+    // Set the time passed in third level
+    currentGame.timeAfterThirdLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
