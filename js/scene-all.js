@@ -326,6 +326,8 @@ $(function() {
     });
   }
 
+
+
   function createChart() {
     // define dimensions of graph
     var m = [20, 25, 45, 130]; // margins
@@ -335,6 +337,16 @@ $(function() {
     var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
     var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
     var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
+
+    /**
+      * y8Player : time for first level
+      * y10Player : time for second level
+      * y12Player : time for third level
+      */
+    var y8Player = parseInt(currentGame.playMinSceneActiveTime / 1000);
+    var y10Player = parseInt(currentGame.playMediumSceneActiveTime / 1000);
+    var y12Player = parseInt(currentGame.playMaxSceneActiveTime / 1000);
+
     var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];      
 
     // X scale will fit all values from data[] within pixels 0-w
@@ -418,7 +430,6 @@ $(function() {
                           if (hours   < 10) { hours   = "0"+hours; }
                           if (minutes < 10) { minutes = "0"+minutes; }
                           if (seconds < 10) { seconds = "0"+seconds; }
-
 
                           var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
                           return ( d == 0 ? '0' : time);
