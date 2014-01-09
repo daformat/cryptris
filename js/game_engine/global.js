@@ -37,6 +37,8 @@ function game() {
     this.playMinSceneActiveTime = 0;
     this.playMediumSceneActiveTime = 0;
     this.playMaxSceneActiveTime = 0;
+    this.playSuperMaxSceneActiveTime = 0;
+    this.playMegaMaxSceneActiveTime = 0;
     this.playSoloSceneActiveTime = 0;
     this.playChercheuseSceneActiveTime = 0;
 
@@ -61,6 +63,8 @@ function game() {
     this.playMinSceneActive = false;
     this.playMediumSceneActive = false;
     this.playMaxSceneActive = false;
+    this.playSuperMaxSceneActive = false;
+    this.playMegaMaxSceneActive = false;
     this.playSoloSceneActive = false;
     this.playChercheuseSceneActive = false;
 
@@ -76,6 +80,12 @@ function game() {
 	    }
 	    if (hookActive !== 'playMaxSceneActive') {
 	    	this.playMaxSceneActive = false;
+	    }
+	    if (hookActive !== 'playSuperMaxSceneActive') {
+	    	this.playSuperMaxSceneActive = false;
+	    }
+	    if (hookActive !== 'playMegaMaxSceneActive') {
+	    	this.playMaxMegaSceneActive = false;
 	    }
 	    if (hookActive !== 'playSoloSceneActive') {
 	    	this.playSoloSceneActive = false;

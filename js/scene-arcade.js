@@ -255,6 +255,10 @@ $(function(){
   }
 
   function switchToCreateKey() {
+    // Start the increase of time.
+    $(document).trigger('startTime', currentGame.scenes.create_key_scene.scene);
+
+
     $("body").closeAllDialogs();
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
@@ -307,7 +311,9 @@ $(function(){
               new specialInInterpolator(),
               new specialOutInterpolator()
             );
-            endCreateKey();
+            endCreateKey();            
+            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
+
             currentGame.dontShowKey = false;
           }, 2000);
         }
@@ -645,6 +651,9 @@ $(function(){
   }
 
   function playLevel1(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_min_scene
       currentGame.iaPlay = true;
@@ -790,6 +799,9 @@ $(function(){
 
 
   function playLevel2(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_medium_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_medium_scene
       currentGame.iaPlay = true;
@@ -923,6 +935,9 @@ $(function(){
 
 
   function playLevel3(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_max_scene
       currentGame.iaPlay = true;
@@ -1062,6 +1077,9 @@ $(function(){
   });
 
   function playLevel4(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_super_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_super_max_scene
       currentGame.iaPlay = true;
@@ -1202,6 +1220,9 @@ $(function(){
   });
 
   function playLevel5(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_mega_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_super_max_scene
       currentGame.iaPlay = true;
