@@ -373,6 +373,8 @@ $(function() {
    */
 
   function activatePlaySolo() {
+    ga('send', 'event', 'Jeu', 'Intro - Tutoriel decryptage', 'Début');
+
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_solo_scene.scene);
 
