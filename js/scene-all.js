@@ -177,6 +177,9 @@ $(function() {
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
 
+    // Start the increase of time.
+    $(document).trigger('startTime', currentGame.scenes.create_key_scene.scene);
+    
     // Timer function synchronizing with game engine
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
@@ -227,13 +230,14 @@ $(function() {
           currentGame.goToNextDialog = false;
           currentGame.createKeySceneActive = false;
 
-          // Disable the action on the key.
+          // Switch the screen.
           setTimeout(function() {
             currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                            currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                            new specialInInterpolator(), new specialOutInterpolator());
             $(document).trigger('nextDialog');
             currentGame.dontShowKey = false;
+            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
           }, 2000);
         }
       }
@@ -329,6 +333,9 @@ $(function() {
     // Log to google analytics
     ga('send', 'event', 'Jeu', 'Intro - Chercheuse crypte un message', 'Début');
     
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_chercheuse_scene.scene);
+
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
 
@@ -366,6 +373,9 @@ $(function() {
    */
 
   function activatePlaySolo() {
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_solo_scene.scene);
+
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_solo_scene.scene.setPaused(false);
     currentGame.playSoloSceneActive = true;
@@ -378,6 +388,9 @@ $(function() {
 
   function playLevel1() {
     ga('send', 'event', 'Jeu', 'Niveau 1', 'Début');
+
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
 
     $("body").closeAllDialogs(function() {
 
@@ -402,6 +415,9 @@ $(function() {
         // Display the battle scene in background.
         goToBattleScene('play_medium_scene', null, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
         
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_medium_scene.scene);
+        
         // Active input for play_medium_scene
         currentGame.iaPlay = true;
         currentGame.scenes.play_medium_scene.scene.setPaused(false);
@@ -424,6 +440,9 @@ $(function() {
         // Display the battle scene in background.
         goToBattleScene('play_max_scene', null, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
         
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
+
         // Active input for play_max_scene
         currentGame.iaPlay = true;
         currentGame.scenes.play_max_scene.scene.setPaused(false);
@@ -432,7 +451,6 @@ $(function() {
       });
     });
   }
-
 
   /**
    *  Convert seconds to Hh:Mm:Ss string
@@ -463,7 +481,6 @@ $(function() {
   /**
    * Draw chart to compare playing time between player and ia
    */
-
   function createChart() {
     // define dimensions of graph
     var m = [20, 25, 45, 130]; // margins
@@ -473,6 +490,16 @@ $(function() {
     var dataIAInitial = [{x: 8, y: 0}, {x: 9, y: 0}, {x: 10, y: 0}, {x: 11, y: 0}, {x: 12, y: 0}];
     var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
     var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
+
+    /**
+      * y8Player : time for first level
+      * y10Player : time for second level
+      * y12Player : time for third level
+      */
+    var y8Player = parseInt(currentGame.playMinSceneActiveTime / 1000);
+    var y10Player = parseInt(currentGame.playMediumSceneActiveTime / 1000);
+    var y12Player = parseInt(currentGame.playMaxSceneActiveTime / 1000);
+
     var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];      
 
     // X scale will fit all values from data[] within pixels 0-w
@@ -928,6 +955,9 @@ $(function() {
   }
 
   function cables1() {
+    // Set the time passed in first level
+    currentGame.timeAfterFirstLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
@@ -986,6 +1016,9 @@ $(function() {
 
 
   function cables2() {
+    // Set the time passed in second level
+    currentGame.timeAfterSecondLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);
@@ -1042,6 +1075,9 @@ $(function() {
 
 
   function cables3() {
+    // Set the time passed in third level
+    currentGame.timeAfterThirdLevel = currentGame.lastFixTime;
+
     // Disable the action on the key and switch to the waiting scene.
     currentGame.playMinSceneActive = false;
     currentGame.director.switchToScene(currentGame.director.getSceneIndex(currentGame.scenes['waiting_scene']), transitionTime, true, false);

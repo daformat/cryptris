@@ -210,6 +210,8 @@ $(function(){
 
         $("body").closeAllDialogs(function(){});
 
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
         currentGame.playMaxSceneActive = true;
         currentGame.iaPlay = true;
         currentGame.gameOver = false;

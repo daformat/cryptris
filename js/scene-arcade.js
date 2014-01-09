@@ -197,7 +197,7 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
           title: "Chercheuse",
-          content: "Help CREATE_KEY",
+          content: "Pour générer ta clé publique, manipule ta clé privée avec <img src='img/icn-arrow-left.png' class='keyboard-key'>, <img src='img/icn-arrow-up.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png' class='keyboard-key'> puis fais-la tomber six ou sept fois avec la touche <img src='img/icn-arrow-down.png' class='keyboard-key'>.",
           controls: [{
             label: "Suite", 
             class: "button blue",
@@ -213,6 +213,7 @@ $(function(){
 
     });
   }
+
   function pauseCreateKey() {
 
     $("body").closeAllDialogs(function(){
@@ -246,6 +247,10 @@ $(function(){
   }
 
   function switchToCreateKey() {
+    // Start the increase of time.
+    $(document).trigger('startTime', currentGame.scenes.create_key_scene.scene);
+
+
     $("body").closeAllDialogs();
     // Enable the action on the key.
     currentGame.createKeySceneActive = true;
@@ -298,7 +303,9 @@ $(function(){
               new specialInInterpolator(),
               new specialOutInterpolator()
             );
-            endCreateKey();
+            endCreateKey();            
+            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
+
             currentGame.dontShowKey = false;
           }, 2000);
         }
@@ -362,6 +369,10 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       $.switchWrapper('#bg-circuits', function(){
+        var content = "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !";
+        if (currentGame.playerKeyType === 'public') {
+          content = "Tu n'y arrives pas ? C'est peut-être normal ! Je te rappelle le principe de la cryptographie asymétrique : la clé secrète rend le déchiffrement facile, mais c'est très difficile voire impossible avec la clé publique. Choisi bien à qui tu donnes quelle clé!";
+        }
         $(".wrapper.active .vertical-centering").dialog({
 
           animateText: true,
@@ -371,16 +382,16 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
           title: "Chercheuse",
-          content: "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !",
+          content: content,
           controls: [{
-            label: "Suite", 
+            label: "Recommencer", 
             class: "button blue",
             onClick: stopGameOverDialog
           },
           {
             label: "Abandonner",
             class: "button red",
-            onClick: ''
+            onClick: menu
           }]
 
         });
@@ -389,6 +400,8 @@ $(function(){
 
     });
   }
+
+
   function tooManyBlocksDialog() {
 
     $("body").closeAllDialogs(function(){
@@ -412,7 +425,7 @@ $(function(){
           {
             label: "Abandonner",
             class: "button red",
-            onClick: ''
+            onClick: menu
           }]
 
         });
@@ -646,6 +659,9 @@ $(function(){
   }
 
   function playLevel1(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_min_scene
       currentGame.iaPlay = true;
@@ -791,6 +807,9 @@ $(function(){
 
 
   function playLevel2(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_medium_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_medium_scene
       currentGame.iaPlay = true;
@@ -924,6 +943,9 @@ $(function(){
 
 
   function playLevel3(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_max_scene
       currentGame.iaPlay = true;
@@ -1063,6 +1085,9 @@ $(function(){
   });
 
   function playLevel4(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_super_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_super_max_scene
       currentGame.iaPlay = true;
@@ -1203,6 +1228,9 @@ $(function(){
   });
 
   function playLevel5(){
+    // Activate the timer.
+    $(document).trigger('startTime', currentGame.scenes.play_mega_max_scene.scene);
+
     $("body").closeAllDialogs(function(){
       // Active input for play_super_max_scene
       currentGame.iaPlay = true;
