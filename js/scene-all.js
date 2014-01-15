@@ -259,7 +259,7 @@ $(function() {
   }
 
 
-
+  var informationBoardIsResolved = null;
   /**
    *  Setup the level to be played
    */
@@ -285,8 +285,16 @@ $(function() {
     // Create a timer to catch the moment we have to go to the next scene.
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        if (currentGame.goToNextDialog === true) {
+        if (currentGame.goToNextDialog === true && currentGame.scenes[sceneName].info_column.gameIsInProgress === false) {
           waitToContinue.cancel();
+
+          if (informationBoardIsResolved !== null) {
+            console.log(currentGame.playSoloSceneActiveTime);
+            ga('send', 'event', informationBoardIsResolved.category, informationBoardIsResolved.action, "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
+            console.log(informationBoardIsResolved.category + ' - ' + informationBoardIsResolved.action + ' - ' + "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
+            informationBoardIsResolved = null;
+          }
+
           currentGame.goToNextDialog = false;
           if (onDecrypt === null) {
             onDecrypt = function() {
@@ -384,6 +392,16 @@ $(function() {
 
   function activatePlaySolo() {
     ga('send', 'event', 'Jeu', 'Intro - Tutoriel decryptage', 'Début');
+    console.log('Jeu - Intro - Tutoriel decryptage - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Jeu",
+      action: "Intro - Tutoriel decryptage",
+      timeLabel: "playSoloSceneActiveTime",
+    }
 
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_solo_scene.scene);
@@ -400,6 +418,16 @@ $(function() {
 
   function playLevel1() {
     ga('send', 'event', 'Jeu', 'Niveau 1', 'Début');
+    console.log('Jeu - Niveau 1 - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Jeu",
+      action: "Niveau 1",
+      timeLabel: "playMinSceneActiveTime",
+    }
 
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
@@ -420,6 +448,16 @@ $(function() {
 
   function playLevel2() {
     ga('send', 'event', 'Jeu', 'Niveau 2', 'Début');
+    console.log('Jeu - Niveau 2 - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Jeu",
+      action: "Niveau 2",
+      timeLabel: "playMediumSceneActiveTime",
+    }
 
     $("body").closeAllDialogs(function() {
 
@@ -446,6 +484,16 @@ $(function() {
 
   function playLevel3() {
     ga('send', 'event', 'Jeu', 'Niveau 3', 'Début');
+    console.log('Jeu - Niveau 3 - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Jeu",
+      action: "Niveau 3",
+      timeLabel: "playMaxSceneActiveTime",
+    }
 
     $("body").closeAllDialogs(function() {          
       $.switchWrapper('#bg-circuits', function() {
