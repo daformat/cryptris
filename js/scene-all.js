@@ -814,10 +814,7 @@ $(function() {
     currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                   currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                   new specialInInterpolator(), new specialOutInterpolator());
-  }
 
-
-  function letsGoToEncrypt() {
 
     // Change our player name for 'Chercheuse';
     currentGame.saveUsername = currentGame.username;
@@ -838,6 +835,16 @@ $(function() {
     currentGame.gameOver = false;
     currentGame.tooManyBlocksInAColumn = false;
 
+  }
+
+
+  function letsGoToEncrypt() {
+
+    console.log('letsGoToEncrypt');
+
+    // Prepare the sceneName and set it as the current scene.
+    var sceneName = 'play_chercheuse_scene';
+    var hookName = 'playChercheuseSceneActive';
     currentGame.director.currentScene.setPaused(false);
     currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                      currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
