@@ -205,6 +205,13 @@ $(document).ready(function() {
 
                     guiDialogs.open();
 
+                var guiTimes = gui.addFolder('Times');
+                    guiTimes.add(currentGame, 'playMinSceneActiveTime', 0, 100);
+                    guiTimes.add(currentGame, 'playMediumSceneActiveTime', 0, 100);
+                    guiTimes.add(currentGame, 'playMaxSceneActiveTime', 0, 100);
+
+                    guiTimes.open();
+
                 } catch(e){
                     console.error(e);
                 }
@@ -214,11 +221,11 @@ $(document).ready(function() {
 
 
                 gui.add({triggerNextDialog: function() { $(document).trigger('nextDialog'); } }, 'triggerNextDialog');
+                gui.add({triggerDisplayChart: function() { $.displayDialog($.dialogChart); }}, 'triggerDisplayChart');
         } catch(e) {
 
         }
     }
-
     
     /**
      * We use this to enable some fonts in our gameBox.

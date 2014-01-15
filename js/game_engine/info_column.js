@@ -46,7 +46,7 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		var scene = argsEvent['scene'];
 		var timeLabel = argsEvent['timeLabel'];
 		if (resultScene.scene === scene) {
-			currentGame[timeLabel] = scene.time - object.timeElapseBeforeStart;
+			currentGame[timeLabel] = parseInt((scene.time - object.timeElapseBeforeStart) / 1000);
 			object.gameIsInProgress = false;
 		}
 	});

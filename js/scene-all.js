@@ -503,22 +503,13 @@ $(function() {
     var dataIA = [{x: 8, y: 131072 * 3.75}, {x: 9, y: 524288 * 3.2}, {x: 10, y: 2097152 * 1.7}, {x: 11, y: 8388608 * 1.2}, {x: 12, y: 33554432}];
     var dataPlayerInitial = [{x: 8, y: 0}, {x: 10, y: 0}, {x: 12, y: 0}];
 
-    /**
-      * y8Player : time for first level
-      * y10Player : time for second level
-      * y12Player : time for third level
-      */
-    var y8Player = parseInt(currentGame.playMinSceneActiveTime / 1000);
-    var y10Player = parseInt(currentGame.playMediumSceneActiveTime / 1000);
-    var y12Player = parseInt(currentGame.playMaxSceneActiveTime / 1000);
-
-    var dataPlayer = [{x: 8, y: 120/2}, {x: 10, y: 240/2}, {x: 12, y: 360/2}];      
+    var dataPlayer = [{x: 8, y: parseInt(currentGame.playMinSceneActiveTime)}, {x: 10, y: parseInt(currentGame.playMediumSceneActiveTime)}, {x: 12, y: parseInt(currentGame.playMaxSceneActiveTime)}];      
 
     // X scale will fit all values from data[] within pixels 0-w
     var x = d3.scale.linear().domain([8, 12]).range([0, w]);
 
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-    var y = d3.scale.linear().range([h, 0]).domain([60, dataPlayer[2].y*1.3]);
+    var y = d3.scale.linear().range([h, 0]).domain([0, dataPlayer[2].y*1.3]);
 
     var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
@@ -541,6 +532,7 @@ $(function() {
     populateChart(graph2, dataIA, dataIAInitial, 'ia', options);
   }
 
+  currentGame.createChart = createChart;
 
   /**
    *  Plot chart data and apply behaviors
@@ -1374,6 +1366,9 @@ $(function() {
       });
     });
   }
+
+  $.displayDialog = displayDialog;
+  $.dialogChart = {'dialog' : comparePlayTimeChartDialog, 'background' : 'bg-institut', 'afterCallback' : function() { setTimeout(createChart, 100); }, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, theEnd)]};
 
   currentGame.switchDialog = function(newIndex) {
     indexDialog = newIndex;
