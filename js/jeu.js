@@ -217,7 +217,7 @@ $(document).ready(function() {
                 }
 
                 var guiCurrentGame = gui.addFolder('Boards');
-                    guiCurrentGame.add(currentGame, 'goToNextDialog').listen();
+                    guiCurrentGame.add(currentGame, 'forceNextDialog').listen();
 
 
                 gui.add({triggerNextDialog: function() { $(document).trigger('nextDialog'); } }, 'triggerNextDialog');

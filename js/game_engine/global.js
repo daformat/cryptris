@@ -29,6 +29,7 @@ function game() {
 	this.ianame = "LOGICIEL ESPION";
 
 	this.miniScreen = false;
+	this.forceNextDialog = false;
 
 	this.leavePauseActive = true;
 	this.leaveHelpActive = true;
