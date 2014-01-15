@@ -149,13 +149,13 @@ function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, paus
 
 	var relativeY = 3;
 	pauseButton.mouseDown = function(mouseEvent) {
-		if (currentGame[hookSceneActive]) {
+		if (currentGame[hookSceneActive] || currentGame.leavePauseActive === true) {
 			pauseButton.setBackgroundImage(director.getImage('pause-down')).setLocation(pauseButton.x, pauseButton.y + relativeY);
 		}
 	}
 
 	pauseButton.mouseUp = function(mouseEvent) {
-		if (currentGame[hookSceneActive]) {
+		if (currentGame[hookSceneActive] || currentGame.leavePauseActive === true) {
 			console.log('ici');
 			pauseEvent ? $(document).trigger(pauseEvent) : null;
 			pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - relativeY);
@@ -168,13 +168,13 @@ function bindHelpButtonByDefault(helpButton, director, hookSceneActive, helpEven
 
 	var relativeY = 3;
 	helpButton.mouseDown = function(mouseEvent) {
-		if (currentGame[hookSceneActive]) {
+		if (currentGame[hookSceneActive] || currentGame.leaveHelpActive === true) {
 			helpButton.setBackgroundImage(director.getImage('help-down')).setLocation(helpButton.x, helpButton.y + relativeY);
 		}
 	}
 
 	helpButton.mouseUp = function(mouseEvent) {
-		if (currentGame[hookSceneActive]) {
+		if (currentGame[hookSceneActive] || currentGame.leaveHelpActive === true) {
 			helpEvent ? $(document).trigger(helpEvent) : null;
 			helpButton.setBackgroundImage(director.getImage('help-up')).setLocation(helpButton.x, helpButton.y - relativeY);
 			helpButton.isPressed = false;

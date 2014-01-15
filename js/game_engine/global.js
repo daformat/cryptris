@@ -30,6 +30,9 @@ function game() {
 
 	this.miniScreen = false;
 
+	this.leavePauseActive = true;
+	this.leaveHelpActive = true;
+
 	this.playerKeyType = "private";
 	this.iaKeyType = "public";
 

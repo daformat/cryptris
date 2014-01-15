@@ -336,6 +336,10 @@ $(function() {
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_chercheuse_scene.scene);
 
+    // Leave pause and help button active.
+    currentGame.leavePauseActive = true;
+    currentGame.leaveHelpActive = true;
+
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
 
@@ -360,7 +364,13 @@ $(function() {
           // Log to google analytics
           ga('send', 'event', 'Jeu', 'Intro - Chercheuse crypte un message', 'Fin');
 
-          setTimeout(function() { $(document).trigger('nextDialog') }, 2250);
+          setTimeout(function() {
+           $(document).trigger('nextDialog');
+
+          // Give the normal behaviour to help and pause button.
+          currentGame.leavePauseActive = false;
+          currentGame.leaveHelpActive = false;
+         }, 2250);
         }
 
       }
@@ -808,6 +818,7 @@ $(function() {
 
 
   function letsGoToEncrypt() {
+
     // Change our player name for 'Chercheuse';
     currentGame.saveUsername = currentGame.username;
     currentGame.username = "Chercheuse";
@@ -820,7 +831,7 @@ $(function() {
     // Prepare the sceneName and set it as the current scene.
     var sceneName = 'play_chercheuse_scene';
     var hookName = 'playChercheuseSceneActive';
-    prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'helpPlayChercheuse', 'pausePlayChercheuse');
+    prepareAnimatePlayScene(currentGame.director, MIN_BOARD_LENGTH, 'play_chercheuse_scene', createMessageForAnimateEncryption(MIN_BOARD_LENGTH, FIRST_MESSAGE), 'playChercheuseSceneActive', false, 'playChercheuseHelpEvent', 'playChercheusePauseEvent');
     currentGame.scenes[sceneName].game_box.changeToAnimateEncryption();
     currentGame.iaPlay = false;
     currentGame[hookName] = false;
@@ -1179,6 +1190,22 @@ $(function() {
     }},
     {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Création clé publique", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }]);
 
+
+  /**
+   * Professor ciphers a message.
+   */
+   addControlToDialog(helpPlayChercheuseDialog, [{label: labelNext, class: "button blue",
+    onClick: function() {
+      deActivateHelp(currentGame.scenes.play_chercheuse_scene, "playChercheuseSceneActive");
+    }
+  }]);
+  addInteractiveContentToDialog(pausePlayChercheuseDialog, [
+    {label: labelResume, class: "not-asked",
+      onClick: function() {
+      deActivatePause(currentGame.scenes.play_chercheuse_scene, "playChercheuseSceneActive");
+    }},
+    {label: "Abandonner", class: "not-asked", onClick: function(){abortGame({category: "Jeu", action: "Intro - Chercheuse crypte un message", label: "Abandon - Temps de jeu : " + game.getCurrentGamingTime()}) } }
+  ]);
 
   /**
    * Tutorial - player learns to decipher a message
