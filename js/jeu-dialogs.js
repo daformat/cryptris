@@ -472,8 +472,7 @@ var decryptedMessage1TCallback = {
   },
   show: function() {
     // alert("Dialog intro animation is complete");
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage1DialogText, 21);
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage1DialogText, 26, -26);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage1DialogText, 2, 19);
   },
   out: function() {
     // alert("Dialog outro animation is complete, html element will be removed now.");
@@ -558,8 +557,7 @@ var decryptedMessage2TCallback = {
   },
   show: function() {
     // alert("Dialog intro animation is complete");
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage2DialogText, 21);
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage2DialogText, 26, -26);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage2DialogText, 2, 19);
   },
   out: function() {
     // alert("Dialog outro animation is complete, html element will be removed now.");
@@ -643,8 +641,7 @@ var decryptedMessage3TCallback = {
   },
   show: function() {
     // alert("Dialog intro animation is complete");
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage3DialogText, 21);
-    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage3DialogText, 26, -26);
+    $.simulateDecrypt($(".dialog .content .text"), decryptedMessage3DialogText, 2, 19);
   },
   out: function() {
     // alert("Dialog outro animation is complete, html element will be removed now.");
