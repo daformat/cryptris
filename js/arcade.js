@@ -182,6 +182,7 @@ $(document).ready(function() {
           try{
               gui.add(cryptrisSettings, 'readingDelay', 0, 10000);
               gui.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
+              gui.add(cryptrisSettings, 'slowdownIA', 0, 1);
             } catch(e){
                 
             }

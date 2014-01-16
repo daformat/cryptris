@@ -276,7 +276,7 @@ $(function() {
     currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes[sceneName].scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                    currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                    new specialInInterpolator(), new specialOutInterpolator());
-        
+
     setTimeout(function() {currentGame.scenes[sceneName].add_key_symbol(currentGame.director, currentGame.scenes[sceneName])}, 500);
 
     // set the speed of this scene.
@@ -287,10 +287,10 @@ $(function() {
       function(time, ttime, timerTask) {
         if ((currentGame.goToNextDialog === true && currentGame.scenes[sceneName].info_column.gameIsInProgress === false) || currentGame.validateCurrentBoard === true) {
           waitToContinue.cancel();
-
+ 
           if (currentGame.validateCurrentBoard === true) {
             currentGame.validateCurrentBoard = false;
-            
+            $(document).trigger('freezeTime', {'scene' : currentGame.scenes[sceneName].scene, 'timeLabel' : hookName + 'Time'});
           }
           if (informationBoardIsResolved !== null) {
             console.log(currentGame.playSoloSceneActiveTime);

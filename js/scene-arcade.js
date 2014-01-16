@@ -1,8 +1,3 @@
-var cryptrisSettings = {
-  readingDelay: 4000,
-  animateTextDelayBetweenLetters: 20,
-  player: {}
-}
 
 $(function(){
 
