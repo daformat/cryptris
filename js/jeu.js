@@ -194,6 +194,7 @@ $(document).ready(function() {
               var gui = new dat.GUI();
 
               gui.add(cryptrisSettings, 'gamingTime').listen();
+              gui.add(cryptrisSettings, 'slowdownIA', 0, 1);
 
               var guiCaat = gui.addFolder('Caat');
                 guiCaat.add(CAAT, 'FPS', 1, 120);
