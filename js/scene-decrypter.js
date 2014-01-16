@@ -21,11 +21,12 @@ $(function(){
         $("body").closeAllDialogs(function() {});
 
         currentGame.scenes.play_max_scene.scene.setExpired(true);
+
         currentGame.director.setExpired(true);
         loadGame();
         currentGame.playMaxSceneActive = false;
         currentGame.iaPlay = false;
-        launchGame();        
+        launchGame();
     }
 
     function gameOverDialog() {

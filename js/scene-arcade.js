@@ -370,6 +370,7 @@ $(function(){
     saveScene.setExpired(true);
     $("body").closeAllDialogs(function() {});
     currentGame.scenes[currentGameOverData.sceneName].scene.setPaused(false);
+    $(document).trigger('startTime', currentGame.scenes[currentGameOverData.sceneName].scene);
     currentGame.scenes[currentGameOverData.sceneName].add_key_symbol(currentGame.director, currentGame.scenes[currentGameOverData.sceneName]);
     currentGame[currentGameOverData.hookName] = true;
     currentGame.iaPlay = true;
