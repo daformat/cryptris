@@ -42,7 +42,7 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 		}
 	});
 
-	$(document).on('fixTime', function(event, argsEvent) {
+	$(document).on('freezeTime', function(event, argsEvent) {
 		var scene = argsEvent['scene'];
 		var timeLabel = argsEvent['timeLabel'];
 		if (resultScene.scene === scene) {

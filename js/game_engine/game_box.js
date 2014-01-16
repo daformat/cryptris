@@ -295,7 +295,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
               currentGame.iaPlay = false;
 
               /* Launch an event to stop the increase of time */
-              $(document).trigger('fixTime', {'scene' : scene, 'timeLabel' : hookActive + 'Time'});
+              $(document).trigger('freezeTime', {'scene' : scene, 'timeLabel' : hookActive + 'Time'});
 
               currentGame[hookActive] = false;
             }

@@ -237,7 +237,7 @@ $(function() {
                                            new specialInInterpolator(), new specialOutInterpolator());
             $(document).trigger('nextDialog');
             currentGame.dontShowKey = false;
-            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
+            $(document).trigger('freezeTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
           }, 2000);
         }
       }

@@ -313,7 +313,7 @@ $(function(){
               new specialOutInterpolator()
             );
             endCreateKey();            
-            $(document).trigger('fixTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
+            $(document).trigger('freezeTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
 
             currentGame.dontShowKey = false;
           }, 2000);
