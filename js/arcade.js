@@ -224,11 +224,20 @@ $(function(){
             if ($t.hasClass("public")) {
                 $t.find(".key-desc").text("clé publique");
 
+                // Log event to google analytics
+                ga('send', 'event', 'Arcade', 'Changement de clé du joueur', 'Clé Publique');
+                console.log('Arcade - Changement de clé du joueur - Clé Publique');
+
                 currentGame.playerKeyType = "public";
                 playerBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol-left';
                 playerBoardColorInfo['keychain'] = 'keychain-ia-left';
             } else {
                 $t.find(".key-desc").text("clé privée");
+
+                // Log event to google analytics
+                ga('send', 'event', 'Arcade', 'Changement de clé du joueur', 'Clé Privée');
+                console.log('Arcade - Changement de clé du joueur - Clé Privée');
+
                 currentGame.playerKeyType = "private";
                 playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
                 playerBoardColorInfo['keychain'] = 'keychain-player';
@@ -236,11 +245,21 @@ $(function(){
         } else {
             if ($t.hasClass("public")) {
                 $t.find(".key-desc").text("clé publique");
+
+                // Log event to google analytics
+                ga('send', 'event', 'Arcade', 'Changement de clé du serveur', 'Clé Publique');
+                console.log('Arcade - Changement de clé du serveur - Clé Publique');
+
                 currentGame.iaKeyType = "public";
                 iaBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol';
                 iaBoardColorInfo['keychain'] = 'keychain-ia';
             } else {
                 $t.find(".key-desc").text("clé privée");
+
+                // Log event to google analytics
+                ga('send', 'event', 'Arcade', 'Changement de clé du serveur', 'Clé Privée');
+                console.log('Arcade - Changement de clé du serveur - Clé Privée');
+
                 currentGame.iaKeyType = "private";
                 iaBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol-right';
                 iaBoardColorInfo['keychain'] = 'keychain-player-right';

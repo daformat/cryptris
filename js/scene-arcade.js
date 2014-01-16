@@ -25,6 +25,11 @@ $(function(){
   $('.hidden').hide().removeClass('hidden');
 
   function getName(level, isCK) {
+
+    // Log event to google analytics
+    ga('send', 'event', 'Arcade', 'Entrer son nom', '');
+    console.log('Arcade - Entrer son nom');
+
     $("body").closeAllDialogs( function(){
       $.switchWrapper('#new-login', function(){
         $('#login-name').focus();
@@ -33,6 +38,10 @@ $(function(){
           currentGame.litteralName = $('#login-name').val();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
           updateNameFunction();
+
+          // Log event to google analytics
+          ga('send', 'event', 'Arcade', 'Nom renseigné', currentGame.username);
+          console.log('Arcade - Nom renseigné - ' + currentGame.username);
 
           isCK ? level() : firstDialog(level);
           $('#login-name').blur();
@@ -1293,6 +1302,11 @@ $(function(){
 
   }       
 
+
+  // Log event to google analytics
+  ga('send', 'event', 'Arcade', 'Début du mode arcade', '');
+  console.log('Arcade - Début du mode arcade');
+
   menu();
 
   var firstLaunch = false;
@@ -1342,6 +1356,11 @@ $(function(){
   }
 
   function menu() {
+
+    // Log event to google analytics
+    ga('send', 'event', 'Arcade', 'Affichage du menu', '');
+    console.log('Arcade - Affichage du menu');
+  
     $("body").closeAllDialogs(function(){
       $.switchWrapper('#menu-view', function() {
         // -- switch to waiting scene.
