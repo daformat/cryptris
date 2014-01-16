@@ -31,8 +31,7 @@ function game() {
 	this.miniScreen = false;
 	this.validateCurrentBoard = false;
 
-	this.leavePauseActive = true;
-	this.leaveHelpActive = true;
+	this.professorScene = false;
 
 	this.playerKeyType = "private";
 	this.iaKeyType = "public";

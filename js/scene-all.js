@@ -57,7 +57,9 @@ $(function() {
       dataScene.scene.setPaused(false);
     }
     dataScene.needStopPaused = null;
-    currentGame[hookName] = true;
+    if (currentGame.professorScene === false) {
+      currentGame[hookName] = true;
+    }
   }
 
 
@@ -138,7 +140,9 @@ $(function() {
       dataScene.scene.setPaused(false);
     }
     dataScene.needStopPaused = null;
-    currentGame[hookName] = true;
+    if (currentGame.professorScene === false) {
+      currentGame[hookName] = true;
+    }
   }
 
   $(document).on("pauseCreateKeyEvent", function() {
@@ -349,9 +353,8 @@ $(function() {
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_chercheuse_scene.scene);
 
-    // Leave pause and help button active.
-    currentGame.leavePauseActive = true;
-    currentGame.leaveHelpActive = true;
+    // Set we are in a professor scene.
+    currentGame.professorScene = true;
 
     $("body").closeAllDialogs(function() {});
     currentGame.scenes.play_chercheuse_scene.scene.setPaused(false);
@@ -380,9 +383,8 @@ $(function() {
           setTimeout(function() {
            $(document).trigger('nextDialog');
 
-          // Give the normal behaviour to help and pause button.
-          currentGame.leavePauseActive = false;
-          currentGame.leaveHelpActive = false;
+          // Set we are not anymore in a professor scene.
+          currentGame.professorScene = false;
          }, 2250);
         }
 
