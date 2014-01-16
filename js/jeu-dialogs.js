@@ -265,7 +265,7 @@ var keyPreGeneratedSuccessText = "Félicitations, tu as compris le fonctionnemen
 var keyPreGeneratedDialog = getDialog(chercheusePredef, keyPreGeneratedSuccessText, null, {
         category: "Jeu",
         action: "Intro - Création clé publique",
-        label: "Clé crée avec succès",
+        label: "Clé créée avec succès",
       });
 
 var wellDoneDialog = getDialog(chercheusePredef, "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique... Vérifions que tout fonctionne. Je t’envoie un premier message crypté.", null, {

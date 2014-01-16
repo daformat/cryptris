@@ -27,8 +27,8 @@ $(function(){
   function getName(level, isCK) {
 
     // Log event to google analytics
-    ga('send', 'event', 'Arcade', 'Entrer son nom', '');
-    console.log('Arcade - Entrer son nom');
+    ga('send', 'event', 'Arcade', 'Renseignement du nom', 'Invite de commande');
+    console.log('Arcade - Renseignement du nom - Invite de commande');
 
     $("body").closeAllDialogs( function(){
       $.switchWrapper('#new-login', function(){
@@ -40,8 +40,8 @@ $(function(){
           updateNameFunction();
 
           // Log event to google analytics
-          ga('send', 'event', 'Arcade', 'Nom renseigné', currentGame.username);
-          console.log('Arcade - Nom renseigné - ' + currentGame.username);
+          ga('send', 'event', 'Arcade', 'Renseignement du nom', 'Nom choisi : ' + currentGame.username);
+          console.log('Arcade - Renseignement du nom - Nom choisi : ' + currentGame.username);
 
           isCK ? level() : firstDialog(level);
           $('#login-name').blur();
@@ -58,7 +58,6 @@ $(function(){
   var key_symbol_save = null;
   var keychain_save = null;
   function announcePublicKey(){
-
 
     // Save the key and keychain img.
     key_symbol_save = playerBoardColorInfo['key-symbol'];
@@ -291,6 +290,10 @@ $(function(){
     currentGame.scenes.create_key_scene.game_box.boxOption.timeInfo = createKeyIASceneTime;
     ia_create_pk(currentGame.scenes.create_key_scene.scene, currentGame.scenes.create_key_scene.game_box);
 
+    var keyScore = score(currentGame.scenes.create_key_scene.game_box.message.getNumbers());
+    ga('send', 'event', 'Arcade', 'Création clé publique', 'Score de la clé : ' + keyScore);
+    console.log('Arcade - Création clé publique - Score de la clé : ' + keyScore);
+    
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
         if (currentGame.goToNextDialog === true) {
@@ -339,7 +342,11 @@ $(function(){
 
           title: "Chercheuse",
           content: "Parfait ! Te voilà fin prêt! J’ai bien ta clé publique, nous pouvons passer à la suite.",
-                
+          identifier: {
+            category: "Arcade",
+            action: "Création clé publique",
+            label: "Dialogue 'J'ai bien ta clé publique' (Chercheuse)",
+          },
           controls: [{
             label: "Menu principal",
             class: "button red",

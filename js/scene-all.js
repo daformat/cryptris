@@ -285,10 +285,13 @@ $(function() {
     // Create a timer to catch the moment we have to go to the next scene.
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        if ((currentGame.goToNextDialog === true && currentGame.scenes[sceneName].info_column.gameIsInProgress === false) || currentGame.forceNextDialog === true) {
+        if ((currentGame.goToNextDialog === true && currentGame.scenes[sceneName].info_column.gameIsInProgress === false) || currentGame.validateCurrentBoard === true) {
           waitToContinue.cancel();
-          currentGame.forceNextDialog = false;
 
+          if (currentGame.validateCurrentBoard === true) {
+            currentGame.validateCurrentBoard = false;
+            
+          }
           if (informationBoardIsResolved !== null) {
             console.log(currentGame.playSoloSceneActiveTime);
             ga('send', 'event', informationBoardIsResolved.category, informationBoardIsResolved.action, "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
