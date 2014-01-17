@@ -361,7 +361,7 @@ $(function(){
             label: "Dialogue 'J'ai bien ta clé publique' (Chercheuse)",
           },
           controls: [{
-            label: "Menu principal",
+            label: "Menu arcade",
             class: "button red",
             onClick: menu
           },
@@ -408,6 +408,12 @@ $(function(){
           animateText: true,
           animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
+          identifier: {
+            category: "Arcade",
+            action: "Niveau non précisé",
+            label: "Game over (l’ordinateur a gagné)",
+          },
+
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
@@ -444,7 +450,11 @@ $(function(){
 
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
-
+          identifier: {
+            category: "Arcade",
+            action: "Niveau non précisé",
+            label: "Game over (le joueur ne joue pas correctement)",
+          },
           title: "Chercheuse",
           content: "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !",
           controls: [{
@@ -744,7 +754,7 @@ $(function(){
           },
 
           controls: [{
-            label: "Menu principal",
+            label: "Menu arcade",
             class: "button red",
             onClick: menu
           },{
@@ -892,7 +902,7 @@ $(function(){
           },
                 
           controls: [{
-            label: "Menu principal",
+            label: "Menu arcade",
             class: "button red",
             onClick: menu
           },{
@@ -1027,7 +1037,7 @@ $(function(){
             }
           },
           controls: [{
-            label: "Menu principal",
+            label: "Menu arcade",
             class: "button red",
             onClick: menu
           },{
@@ -1169,7 +1179,7 @@ $(function(){
           },
                 
           controls: [{
-            label: "Menu principal",
+            label: "Menu arcade",
             class: "button red",
             onClick: menu
           },{
@@ -1312,7 +1322,7 @@ $(function(){
           },
                 
           controls: [{
-            label: "Menu principal", 
+            label: "Menu arcade", 
             class: "button blue",
             onClick: menu
           }]
