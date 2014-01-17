@@ -244,11 +244,18 @@ $(function(){
               deActivatePause(currentGame.scenes.create_key_scene, "createKeySceneActive");
             }},
             {
-              label: "Menu Principal",
+              label: "Menu Arcade",
               class: "not-asked",
               onClick: function() {
                 menu();
                 setTimeout(currentGame.scenes.create_key_scene.scene.setPaused(false), 1500);
+              }
+            },
+            {
+              label: "Menu Principal",
+              class: "not-asked",
+              onClick: function() {
+                window.location = "/";
               }
             }]
 
@@ -659,11 +666,18 @@ $(function(){
               }
             },
             {
-              label: "Menu Principal",
+              label: "Menu Arcade",
               class: "not-asked",
               onClick: function() {
                 menu();
-                setTimeout(pauseInfo.sceneName.scene.setPaused(false), 1500);
+                setTimeout(currentGame.scenes.create_key_scene.scene.setPaused(false), 1500);
+              }
+            },
+            {
+              label: "Menu Principal",
+              class: "not-asked",
+              onClick: function() {
+                window.location = "/";
               }
             }
           ]
