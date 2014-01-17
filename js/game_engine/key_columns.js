@@ -291,8 +291,6 @@ function Key(keyInfo, keyLength, msgColumn, container, director, boxOption) {
 
 		this.boxOption.maxKeyNumber = 0;
 
-		console.log(this.msgColumn.resolved);
-		console.log(currentGame.stopCreateKeyAfterResolve);
 		if (this.keyHidden === false && !currentGame.dontShowKey && (this.msgColumn.resolved === false || currentGame.stopCreateKeyAfterResolve === false)) {
 			for (var i = 0; i < this.length; ++i) {
 				if (this.number[i] > this.boxOption.maxKeyNumber) {

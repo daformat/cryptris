@@ -59,7 +59,6 @@ function resize(director, newWidth, newHeight) {
 function prepareCreateKeyScene(director) {
 
     if (currentGame.scenes != null && currentGame.scenes.create_key_scene != null) {
-        console.log('la');
         currentGame.director.removeChild(currentGame.scenes.create_key_scene.scene);
         currentGame.director.setClear(CAAT.Director.CLEAR_ALL);
     }
@@ -150,7 +149,6 @@ function initGame(director) {
         imgs,
         function on_load(counter, images) {
             if (counter === images.length) {
-                console.log($.now() - time);
                 director.emptyScenes();
                 director.setImagesCache(images);
                 createScenes(director);

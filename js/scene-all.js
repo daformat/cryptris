@@ -37,8 +37,6 @@ $(function() {
    */
 
   function activateHelp(dataScene, hookName, helpFunction) {
-    console.log(arguments);
-
     if (dataScene.scene.isPaused() === false) {
       dataScene.scene.setPaused(true);
       dataScene.needStopPaused = true;
@@ -298,7 +296,6 @@ $(function() {
             $(document).trigger('freezeTime', {'scene' : currentGame.scenes[sceneName].scene, 'timeLabel' : hookName + 'Time'});
           }
           if (informationBoardIsResolved !== null) {
-            console.log(currentGame.playSoloSceneActiveTime);
             ga('send', 'event', informationBoardIsResolved.category, informationBoardIsResolved.action, "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
             console.log(informationBoardIsResolved.category + ' - ' + informationBoardIsResolved.action + ' - ' + "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
             informationBoardIsResolved = null;
@@ -910,9 +907,6 @@ $(function() {
 
 
   function letsGoToEncrypt() {
-
-    console.log('letsGoToEncrypt');
-
     // Prepare the sceneName and set it as the current scene.
     var sceneName = 'play_chercheuse_scene';
     var hookName = 'playChercheuseSceneActive';

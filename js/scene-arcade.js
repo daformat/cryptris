@@ -637,19 +637,14 @@ $(function(){
 
         if (pauseInfo.sceneName === currentGame.scenes.play_min_scene) {
           // We are in the 8 blocks level.
-          console.log("8blocks");
         } else if (pauseInfo.sceneName === currentGame.scenes.play_medium_scene) {
           // We are in the 10 blocks level.
-          console.log("10blocks");
         } else if (pauseInfo.sceneName === currentGame.scenes.play_max_scene) {
           // We are in the 12 blocks level.
-          console.log("12blocks");
         } else if (pauseInfo.sceneName === currentGame.scenes.play_super_max_scene) {
           // We are in the 14 blocks level.
-          console.log("14blocks");
         } else if (pauseInfo.sceneName === currentGame.scenes.play_mega_max_scene) {
           // We are in the 16 blocks level.
-          console.log("16blocks");
         }
 
         $(".wrapper.active .vertical-centering").dialog({
@@ -1337,6 +1332,12 @@ $(function(){
           animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+          identifier: {
+            category: "Arcade",
+            action: "Préparation du niveau de jeu",
+            label: "Dialogue 'Si tu as besoin d'aide (Chercheuse)",
+          },
 
           title: "Chercheuse",
           content: "Si tu as besoin d'aide, appuie sur le bouton '?' et je te donnerai toutes les informations nécessaires.",

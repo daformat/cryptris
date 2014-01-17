@@ -178,7 +178,6 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
    */
   this.addKeySymbol = function() {
     if (this.isActiveKeySymbol === true && this.keySymbol === null) {
-      console.log('test');
       this.key_symbol_img = director.getImage(this.boxOption.boardColorInfo['key-symbol']);
       this.keychain_img = director.getImage(this.boxOption.boardColorInfo['keychain']);
       this.keychainX = this.boxOption.boardColorInfo['keychainX'];

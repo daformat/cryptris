@@ -156,7 +156,6 @@ function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, paus
 
 	pauseButton.mouseUp = function(mouseEvent) {
 		if (currentGame[hookSceneActive] || currentGame.professorScene === true) {
-			console.log('ici');
 			pauseEvent ? $(document).trigger(pauseEvent) : null;
 			pauseButton.setBackgroundImage(director.getImage('pause-up')).setLocation(pauseButton.x, pauseButton.y - relativeY);
 			pauseButton.isPressed = false;

@@ -69,8 +69,6 @@ function handle_ia(playScene, rivalBoxInfo) {
                     var tmpDistSub = l2(tmpSubKey);
                     var tmpDistAdd = l2(tmpAddKey);
 
-                    console.log('[' +  tmpNumbers + '],' + l2_cmp + ' | [' + tmpSubKey + '],' + tmpDistSub + ' | [' + tmpAddKey + '],' + tmpDistAdd);
-
                     if (tmpDistSub < tmpDistAdd && tmpDistSub < l2_cmp) {
                         ia.addMoveInvert();
                         ia.addMoveDown();
