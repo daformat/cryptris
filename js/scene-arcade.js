@@ -475,6 +475,30 @@ $(function(){
     });
   }
 
+  /**
+   *  Convert seconds to Hh:Mm:Ss string
+   */
+
+
+  function formatSeconds(d) {
+    var sign = (d<0 ? "-" : "");
+    d = Math.abs(d);
+    var sec_num = parseInt(d, 10); // don't forget the second parm
+    var days   =  Math.floor(sec_num / 86400);
+    var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+    var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+    var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) { hours   = "0"+hours; }
+    if (minutes < 10) { minutes = "0"+minutes; }
+    if (seconds < 10) { seconds = "0"+seconds; }
+
+
+    var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
+    return ( d == 0 ? '0' : time);
+  }
+
+  var informationBoardIsResolved = null;
   function goToBattleScene(sceneName, onDecrypt, sizeBoard, hookName, withIaBoard, timeInfo, message, helpEvent, pauseEvent, timeout) {
 
     // Prepare the sceneName and set it as the current scene.
@@ -497,8 +521,20 @@ $(function(){
     // Create a timer to catch the moment we have to go to the next scene.
     var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
       function(time, ttime, timerTask) {
-        if (currentGame.goToNextDialog === true) {
+        if ((currentGame.goToNextDialog === true && currentGame.scenes[sceneName].info_column.gameIsInProgress === false) || currentGame.validateCurrentBoard === true) {
           waitToContinue.cancel();
+
+          if (currentGame.validateCurrentBoard === true) {
+            currentGame.validateCurrentBoard = false;
+            $(document).trigger('freezeTime', {'scene' : currentGame.scenes[sceneName].scene, 'timeLabel' : hookName + 'Time'});
+          }
+
+          if (informationBoardIsResolved !== null) {
+            ga('send', 'event', informationBoardIsResolved.category, informationBoardIsResolved.action, "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
+            console.log(informationBoardIsResolved.category + ' - ' + informationBoardIsResolved.action + ' - ' + "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
+            informationBoardIsResolved = null;
+          }
+
           currentGame.goToNextDialog = false;
           currentGame[hookName] = false;
           timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
@@ -750,6 +786,15 @@ $(function(){
 
     ga('send', 'event', 'Arcade', 'Challenge facile (8 blocs)', 'Début');
     console.log('Arcade - Challenge facile (8 blocs) - Début');
+    
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Arcade",
+      action: "Challenge facile (8 blocs)",
+      timeLabel: "playMinSceneActiveTime",
+    }
 
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
@@ -869,6 +914,12 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge novice (10 blocs)",
+            label: "Dialogue 'Message crypté' (InriOS)",
+          },
+
           title: "InriOS 3.14",
           content: (function(){
             var t = board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
@@ -905,6 +956,19 @@ $(function(){
 
 
   function playLevel2(){
+
+    ga('send', 'event', 'Arcade', 'Challenge novice (10 blocs)', 'Début');
+    console.log('Arcade - Challenge novice (10 blocs) - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Arcade",
+      action: "Challenge novice (10 blocs)",
+      timeLabel: "playMediumSceneActiveTime",
+    }
+
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_medium_scene.scene);
 
@@ -940,6 +1004,12 @@ $(function(){
 
           type: "withAvatar",
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+
+          identifier: {
+            category: "Arcade",
+            action: "Challenge  novice (10 blocs)",
+            label: "Dialogue 'Affichage du message décrypté' (InriOS)",
+          },
 
           title: "Challenge réussi",
           content: o,
