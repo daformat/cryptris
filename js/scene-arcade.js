@@ -621,6 +621,50 @@ $(function(){
   }
 
   function helpDialog1(helpInfo){
+
+
+    /*
+     * To use analytics here, adapt below
+     */
+
+    var identifier = null;
+    if (helpInfo.sceneName === currentGame.scenes.play_min_scene) {
+      // We are in the 8 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge facile (8 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 1/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_medium_scene) {
+      // We are in the 10 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge novice (10 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 1/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_max_scene) {
+      // We are in the 12 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge apprenti (12 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 1/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_super_max_scene) {
+      // We are in the 14 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge chercheur (14 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 1/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_mega_max_scene) {
+      // We are in the 16 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge expert (16 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 1/2'"
+      };
+    }
+
     $("body").closeAllDialogs(function(){
 
       $.switchWrapper('#bg-circuits', function(){
@@ -634,11 +678,7 @@ $(function(){
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge facile (8 blocs)",
-            label: "Dialogue 'Aide' (Chercheuse) 1/2",
-          },
+          identifier: identifier,
 
           title: "Chercheuse",
           content: "Chaque challenge est crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
@@ -655,6 +695,48 @@ $(function(){
   }
 
   function helpDialog2(helpInfo) {
+    /*
+     * To use analytics here, adapt below
+     */
+
+    var identifier = null;
+    if (helpInfo.sceneName === currentGame.scenes.play_min_scene) {
+      // We are in the 8 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge facile (8 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 2/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_medium_scene) {
+      // We are in the 10 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge novice (10 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 2/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_max_scene) {
+      // We are in the 12 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge apprenti (12 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 2/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_super_max_scene) {
+      // We are in the 14 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge chercheur (14 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 2/2"
+      };
+    } else if (helpInfo.sceneName === currentGame.scenes.play_mega_max_scene) {
+      // We are in the 16 blocks level.
+      identifier = {
+        category: 'Arcade',
+        action: 'Challenge expert (16 blocs)',
+        label: "Dialogue 'Aide' (Chercheuse) 2/2'"
+      };
+    }
+
     $("body").closeAllDialogs(function(){
 
       // Launch the timer and display private key.
@@ -667,11 +749,7 @@ $(function(){
         type: "withAvatar",
         avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-        identifier: {
-          category: "Arcade",
-          action: "Challenge facile (8 blocs)",
-          label: "Dialogue 'Aide' (Chercheuse) 2/2",
-        },
+        identifier: identifier,
 
         title: "Chercheuse",
         content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !",
@@ -1007,7 +1085,7 @@ $(function(){
 
           identifier: {
             category: "Arcade",
-            action: "Challenge  novice (10 blocs)",
+            action: "Challenge novice (10 blocs)",
             label: "Dialogue 'Affichage du message décrypté' (InriOS)",
           },
 
@@ -1074,6 +1152,12 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge apprenti (12 blocs)",
+            label: "Dialogue 'Message crypté' (InriOS)",
+          },
+
           title: "InriOS 3.14",
           content: (function(){
             var t = board_message_to_string(currentGame.play_max_scene_msg.plain_message),
@@ -1111,6 +1195,18 @@ $(function(){
 
 
   function playLevel3(){
+    ga('send', 'event', 'Arcade', 'Challenge apprenti (12 blocs)', 'Début');
+    console.log('Arcade - Challenge apprenti (12 blocs) - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Arcade",
+      action: "Challenge apprenti (12 blocs)",
+      timeLabel: "playMaxSceneActiveTime",
+    }
+
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
 
@@ -1150,6 +1246,12 @@ $(function(){
           title: "Challenge réussi",
           content: o,
                 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge apprenti (12 blocs)",
+            label: "Dialogue 'Affichage du message décrypté' (InriOS)",
+          },
+
           transitionCallback: {
             in: function() {
               // alert("Dialog was added to the dom");
@@ -1217,6 +1319,12 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge chercheur (14 blocs)",
+            label: "Dialogue 'Message crypté' (InriOS)",
+          },
+
           title: "InriOS 3.14",
           content: (function(){
             var t = board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
@@ -1253,6 +1361,18 @@ $(function(){
   });
 
   function playLevel4(){
+    ga('send', 'event', 'Arcade', 'Challenge chercheur (14 blocs)', 'Début');
+    console.log('Arcade - Challenge chercheur (14 blocs) - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Arcade",
+      action: "Challenge chercheur (14 blocs)",
+      timeLabel: "playSuperMaxSceneActiveTime",
+    }
+
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_super_max_scene.scene);
 
@@ -1289,6 +1409,11 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge chercheur (14 blocs)",
+            label: "Dialogue 'Affichage du message décrypté' (InriOS)",
+          },
           title: "Challenge réussi",
           content: o,
           transitionCallback: {
@@ -1361,6 +1486,11 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge expert (16 blocs)",
+            label: "Dialogue 'Message crypté' (InriOS)",
+          },
           title: "InriOS 3.14",
           content: (function(){
             var t = board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
@@ -1396,6 +1526,17 @@ $(function(){
   });
 
   function playLevel5(){
+    ga('send', 'event', 'Arcade', 'Challenge expert (16 blocs)', 'Début');
+    console.log('Arcade - Challenge expert (16 blocs) - Début');
+
+    /**
+     * Prepare information if the board is resolved.
+     */
+    informationBoardIsResolved = {
+      category: "Arcade",
+      action: "Challenge expert (16 blocs)",
+      timeLabel: "playMegaMaxSceneActiveTime",
+    }
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_mega_max_scene.scene);
 
@@ -1432,6 +1573,11 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message decrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-open.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge expert (16 blocs)",
+            label: "Dialogue 'Affichage du message décrypté' (InriOS)",
+          },
           title: "Challenge réussi",
           content: o,
           transitionCallback: {
