@@ -542,7 +542,31 @@ $(function() {
     return ( d == 0 ? '0' : time);
   }
 
+
   $.formatSeconds = formatSeconds;
+
+  /**
+   *  prevent long strings by cutting seconds if hours > 0
+   */
+
+  function formatSeconds2(d) {
+    var sign = (d<0 ? "-" : "");
+    d = Math.abs(d);
+    var sec_num = parseInt(d, 10); // don't forget the second parm
+    var days   =  Math.floor(sec_num / 86400);
+    var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+    var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+    var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) { hours   = "0"+hours; }
+    if (minutes < 10) { minutes = "0"+minutes; }
+    if (seconds < 10) { seconds = "0"+seconds; }
+
+
+
+    var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+ (hours>0 ?  "":seconds+ 's') ) );
+    return ( d == 0 ? '0' : time);
+  }
 
 
   /**
@@ -647,7 +671,7 @@ $(function() {
     graph.append("svg:g").attr("class", "x axis").attr("transform", "translate(0," + h + ")").call(xAxis);
 
     // create left yAxis
-    var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds).orient("left");
+    var yAxis = d3.svg.axis().scale(y).ticks(4).tickSize(-w - m[1]).tickFormat(formatSeconds2).orient("left");
     // Add the y-axis to the left
     graph.append("svg:g").attr("class", "y axis").attr("transform", "translate(-25,0)").call(yAxis);
     graph.append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", w+10).attr("y", h + m[2]-6).text("Taille de la clé (blocs)");
