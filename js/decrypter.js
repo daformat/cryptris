@@ -146,7 +146,7 @@ function createScenes(director) {
      */
     currentGame.scenes = {};
 
-    var waiting_scene = director.createScene();
+    currentGame.scenes.waiting_scene = director.createScene();
 
 }
 

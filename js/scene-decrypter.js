@@ -6,6 +6,18 @@ var cryptrisSettings = {
     dialogWhatArePrivatePublicKey: [false, false, false]
 }
 
+function specialOutInterpolator() {
+    this.getPosition = function(time) {
+        return {'x' : time, 'y' : 0};
+    }
+}
+
+function specialInInterpolator() {
+    this.getPosition = function(time) {
+        return {'x' : time, 'y' : 1};
+    }
+}
+
 $(function(){
   var game = cryptrisSettings;
   var transitionTime = 1000;
@@ -20,13 +32,25 @@ $(function(){
     function stopGameOverDialog() {
         $("body").closeAllDialogs(function() {});
 
+        currentGame.director.currentScene.setPaused(false);
+        currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    1000,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+        );
+
         currentGame.scenes.play_max_scene.scene.setExpired(true);
 
-        currentGame.director.setExpired(true);
-        loadGame();
-        currentGame.playMaxSceneActive = false;
-        currentGame.iaPlay = false;
-        launchGame();
+        createBoardScene(currentGame.director);
+
+        // Activate the timer.
+        $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
     }
 
     function gameOverDialog() {
