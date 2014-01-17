@@ -55,9 +55,9 @@ $(function(){
 
     function gameOverDialog() {
 
-        $("body").closeAllDialogs(function(){
+        $("body").closeAllDialogs(function() {
 
-          $.switchWrapper('#bg-circuits', function(){
+          $.switchWrapper('#bg-circuits', function() {
             $(".wrapper.active .vertical-centering").dialog({
 
                 animateText: true,
@@ -65,11 +65,17 @@ $(function(){
 
                 type: "withAvatar",
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
+          
+                identifier: {
+                    category: "Décrypter",
+                    action: "Décryptage d'un message partagé",
+                    label: "Game over (l’ordinateur a gagné)",
+                },
 
                 title: "Chercheuse",
                 content: "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !",
                 controls: [{
-                    label: "Suite", 
+                    label: "Suite",
                     class: "button blue",
                     onClick: stopGameOverDialog
                 },
@@ -77,7 +83,6 @@ $(function(){
                     label: "Abandonner",
                     class: "button red",
                     onClick: ''
-
                 }]
 
             });
@@ -99,6 +104,11 @@ $(function(){
                 type: "withAvatar",
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+                identifier: {
+                    category: "Décrypter",
+                    action: "Décryptage d'un message partagé",
+                    label: "Game over (le joueur ne joue pas correctement)"
+                },
                 title: "Chercheuse",
                 content: "Pour décrypter le message tu dois détruire les blocs, tu es en train de les accumuler. Reprennons de zéro !",
                 controls: [{
@@ -127,6 +137,12 @@ $(function(){
             
           		animateText: true,
           		animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+
+                identifier: {
+                    category: 'Décrypter',
+                    action: "Décryptage d'un message partagé",
+                    label: "Dialogue 'Bienvenue' (Chercheuse)"
+                },
 
 	            type: "withAvatar",
       		    avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -158,6 +174,12 @@ $(function(){
 	          type: "withAvatar",
     	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+              identifier: {
+                category: 'Décrypter',
+                action: "Décryptage d'un message partagé",
+                label: "Dialogue 'Ta clé privée se trouve en haut' (Chercheuse)"
+              },
+
         	  title: "Chercheuse",
         	  content: "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
         	    
@@ -182,6 +204,11 @@ $(function(){
 	          type: "withAvatar",
     	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+              identifier: {
+                category: 'Décrypter',
+                action: "Décryptage d'un message partagé",
+                label: "Dialogue 'Lorsque deux blocs de même couleur se touchent' (Chercheuse)"
+              },
         	  title: "Chercheuse",
         	  content: "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !",
         	    
@@ -206,6 +233,11 @@ $(function(){
     	        type: "withAvatar",
         	    avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+                identifier: {
+                  category: 'Décrypter',
+                  action: "Décryptage d'un message partagé",
+                  label: "Dialogue 'Message crypté' (InriOS)"
+                },
 	            title: "InriOS 3.14",
     	        content: (function(){
                     var t = board_message_to_string(currentGame.keyInfoCipher),
@@ -231,7 +263,33 @@ $(function(){
 
     }
 
+  /**
+   *  Convert seconds to Hh:Mm:Ss string
+   */
+
+
+  function formatSeconds(d) {
+    var sign = (d<0 ? "-" : "");
+    d = Math.abs(d);
+    var sec_num = parseInt(d, 10); // don't forget the second parm
+    var days   =  Math.floor(sec_num / 86400);
+    var hours   = Math.floor((sec_num - (days * 86400)) / 3600);
+    var minutes = Math.floor((sec_num - (days * 86400 + hours * 3600)) / 60);
+    var seconds = sec_num - (days * 86400 + hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) { hours   = "0"+hours; }
+    if (minutes < 10) { minutes = "0"+minutes; }
+    if (seconds < 10) { seconds = "0"+seconds; }
+
+
+    var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
+    return ( d == 0 ? '0' : time);
+  }
     function launchGame() {
+
+
+        ga('send', 'event', 'Décrypter', "Décryptage d'un message partagé", 'Début');
+        console.log("Décrypter - Décryptage d'un message partagé - Début");
 
         $("body").closeAllDialogs(function(){});
 
@@ -243,8 +301,19 @@ $(function(){
         // Create a timer to catch the moment we have to go to the next scene.
         var waitToContinue = currentGame.director.createTimer(currentGame.director.time, Number.MAX_VALUE, null,
             function(time, ttime, timerTask) {
-                if (currentGame.goToNextDialog === true) {
+                if ((currentGame.goToNextDialog === true && currentGame.scenes.play_max_scene.info_column.gameIsInProgress === false) || currentGame.validateCurrentBoard === true) {
                     waitToContinue.cancel();
+
+
+                    if (currentGame.validateCurrentBoard === true) {
+                        currentGame.validateCurrentBoard = false;
+                        $(document).trigger('freezeTime', {'scene' : currentGame.scenes.play_max_scene.scene, 'timeLabel' : 'playMaxSceneActiveTime'});
+                    }
+
+                    ga('send', 'event', 'Décrypter', "Décryptage d'un message partagé", "Jeu terminé en " + formatSeconds(currentGame.playMaxSceneActiveTime));
+                    console.log("Décrypter - Décryptage d'un message partagé - " + "Jeu terminé en " + formatSeconds(currentGame.playMaxSceneActiveTime));
+
+
                     currentGame.goToNextDialog = false;
                     currentGame.iaPlay = false;
 
@@ -294,6 +363,11 @@ $(function(){
 	            title: "InriOS 3.14",
     	        content: o, // krDencodeEntities(easy_decrypt(currentGame.cryptedMessage))
         	    
+                identifier: {
+                  category: 'Décrypter',
+                  action: "Décryptage d'un message partagé",
+                  label: "Dialogue 'Affichage du message décrypté' (InriOS)"
+                },
 	            controls: [{
     	          label: "Suite", 
         	      class: "button blue",
@@ -358,6 +432,12 @@ $(function(){
           
           animateText: true,
           animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+          
+          identifier: {
+            category: "Décrypter",
+            action: "Décryptage d'un message partagé",
+            label: "Dialogue 'Aide' (Chercheuse) 1/2",
+          },
 
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
@@ -386,6 +466,12 @@ $(function(){
         $(".wrapper.active .vertical-centering").dialog({
           type: "player",
           title: "Pause",
+
+          identifier: {
+            category: "Décrypter",
+            action: "Décryptage d'un message partagé",
+            label: "Pause",
+          },
           content: [
             {
                 label: "Reprendre", 
@@ -417,6 +503,11 @@ $(function(){
 	          type: "withAvatar",
     	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+              identifier: {
+                category: "Décrypter",
+                action: "Décryptage d'un message partagé",
+                label: "Dialogue 'Aide' (Chercheuse) 2/2",
+              },
         	  title: "Chercheuse",
         	  content: "Lorsque deux blocs de même couleur se touchent : ils s'additionnent, sinon ils se détruisent. Ton message est décrypté lorsqu'il ne reste qu'une seule ligne au message. A toi de jouer !",
         	    
@@ -466,6 +557,11 @@ $(function(){
                 type: "withAvatar",
                 avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+                identifier: {
+                  category: "Décrypter",
+                  action: "Décryptage d'un message partagé",
+                  label: "Dialogue 'Félicitations' (Chercheuse)",
+                },
                 title: "Chercheuse",
     	        content: 'Félicitations ! Tu as décrypté plus rapidement que l’ordinateur. Si tu veux découvrir la cryptographie, essaie de faire une nouvelle partie complète.',
         	    
@@ -504,15 +600,24 @@ $(function(){
     currentGame.keyInfoCipher = keyInfoElement[2].split(',').map(Number);
     currentGame.keyInfoCurrentLength = parseInt(keyInfoElement[3]);
 
-	    $("body").closeAllDialogs( function(){
+    // Log event to google analytics
+    ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Invite de commande');
+    console.log('Décrypter - Renseignement du nom - Invite de commande');
 
-    	  $.switchWrapper('#new-login', function(){
+    $("body").closeAllDialogs( function(){
+
+    	$.switchWrapper('#new-login', function(){
 
 	        $('#login-name').focus();
 
 	        $('.new-login').submit(function(e){
     	      game.player.name = $('#login-name').val();
         	  currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
+              // Log event to google analytics
+              ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Nom choisi : ' + currentGame.username);
+              console.log('Décrypter - Renseignement du nom - Nom choisi : ' + currentGame.username);
+
+
 	          $.switchWrapper('#bg-circuits', welcome);
     	      $('#login-name').blur();
         	  $('.new-login').unbind('submit').submit(function(e){
