@@ -551,6 +551,12 @@ $(function(){
           type: "withAvatar",
           avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Challenge facile (8 blocs)",
+            label: "Dialogue 'Message crypté' (InriOS)",
+          },
+
           title: "InriOS 3.14",
           content: (function(){
             var t = board_message_to_string(currentGame.play_min_scene_msg.plain_message),
@@ -591,6 +597,13 @@ $(function(){
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+
+          identifier: {
+            category: "Arcade",
+            action: "Challenge facile (8 blocs)",
+            label: "Dialogue 'Aide' (Chercheuse) 1/2",
+          },
+
           title: "Chercheuse",
           content: "Chaque challenge est crypté à l’aide de ta <em>clé publique</em>, pour le décrypter tu dois utiliser ta <em>clé privée.</em> Manipule ta clé comme tout à l’heure avec <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour déplacer les colonnes et <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'>. pour inverser les couleurs des blocs.",
           controls: [{
@@ -617,6 +630,12 @@ $(function(){
 
         type: "withAvatar",
         avatar: "<img src='img/avatar-chercheuse.jpg'>",
+
+        identifier: {
+          category: "Arcade",
+          action: "Challenge facile (8 blocs)",
+          label: "Dialogue 'Aide' (Chercheuse) 2/2",
+        },
 
         title: "Chercheuse",
         content: "Lorsque tu appuies sur <img src='img/icn-arrow-down.png' class='keyboard-key'> ta clé est envoyée sur le message à décrypter et les blocs vont s’annuler s’ils sont de couleurs opposées ou s’empiler s’ils sont de même couleur. Le message est décrypté lorsque tu n’as plus qu’une seule ligne de blocs en bas. À toi de jouer !",
@@ -652,21 +671,48 @@ $(function(){
          * To use analytics here, adapt below
          */
 
+        var identifier = null;
         if (pauseInfo.sceneName === currentGame.scenes.play_min_scene) {
           // We are in the 8 blocks level.
+          identifier = {
+            category: 'Arcade',
+            action: 'Challenge facile (8 blocs)',
+            label: 'Pause'
+          };
         } else if (pauseInfo.sceneName === currentGame.scenes.play_medium_scene) {
           // We are in the 10 blocks level.
+          identifier = {
+            category: 'Arcade',
+            action: 'Challenge novice (10 blocs)',
+            label: 'Pause'
+          };
         } else if (pauseInfo.sceneName === currentGame.scenes.play_max_scene) {
           // We are in the 12 blocks level.
+          identifier = {
+            category: 'Arcade',
+            action: 'Challenge apprenti (12 blocs)',
+            label: 'Pause'
+          };
         } else if (pauseInfo.sceneName === currentGame.scenes.play_super_max_scene) {
           // We are in the 14 blocks level.
+          identifier = {
+            category: 'Arcade',
+            action: 'Challenge chercheur (14 blocs)',
+            label: 'Pause'
+          };
         } else if (pauseInfo.sceneName === currentGame.scenes.play_mega_max_scene) {
           // We are in the 16 blocks level.
+          identifier = {
+            category: 'Arcade',
+            action: 'Challenge expert (16 blocs)',
+            label: 'Pause'
+          };
         }
 
         $(".wrapper.active .vertical-centering").dialog({
           type: "player",
           title: "Pause",
+          identifier: identifier,
           content: [
             {
               label: "Reprendre", 
@@ -701,6 +747,10 @@ $(function(){
   }
 
   function playLevel1(){
+
+    ga('send', 'event', 'Arcade', 'Challenge facile (8 blocs)', 'Début');
+    console.log('Arcade - Challenge facile (8 blocs) - Début');
+
     // Activate the timer.
     $(document).trigger('startTime', currentGame.scenes.play_min_scene.scene);
 
@@ -739,6 +789,12 @@ $(function(){
 
           title: "Challenge réussi",
           content: o,
+
+          identifier: {
+            category: "Arcade",
+            action: "Challenge facile (8 blocs)",
+            label: "Dialogue 'Affichage du message décrypté' (InriOS)",
+          },
 
           transitionCallback: {
             in: function() {
