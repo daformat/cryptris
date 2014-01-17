@@ -199,6 +199,12 @@ $(function(){
           type: "withAvatar",
           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
+          identifier: {
+            category: "Arcade",
+            action: "Création clé publique",
+            label: "Dialogue 'Aide création de clé publique' (Chercheuse)",
+          },
+
           title: "Chercheuse",
           content: "Pour générer ta clé publique, manipule ta clé privée avec <img src='img/icn-arrow-left.png' class='keyboard-key'>, <img src='img/icn-arrow-up.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png' class='keyboard-key'> puis fais-la tomber six ou sept fois avec la touche <img src='img/icn-arrow-down.png' class='keyboard-key'>.",
           controls: [{
@@ -225,6 +231,11 @@ $(function(){
         $(".wrapper.active .vertical-centering").dialog({
           type: "player",
           title: "Pause",
+          identifier: {
+            category: "Arcade",
+            action: "Création clé publique",
+            label: "Pause",
+          },
           content: [
             {
             label: "Reprendre", 

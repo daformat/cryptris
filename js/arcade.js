@@ -44,7 +44,6 @@ function resize(director, newWidth, newHeight) {
                 currentGame.scenes['play_mega_max_scene']['resize'](director, currentGame.scenes['play_mega_max_scene']);
             }
             if (currentGame.scenes['create_key_scene'] != null) {
-                console.log('test');
                 currentGame.scenes['create_key_scene']['resize'](director, currentGame.scenes['create_key_scene']);
             }
         }
