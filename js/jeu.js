@@ -207,9 +207,9 @@ $(document).ready(function() {
                     guiDialogs.open();
 
                 var guiTimes = gui.addFolder('Times');
-                    guiTimes.add(currentGame, 'playMinSceneActiveTime', 0, 100);
-                    guiTimes.add(currentGame, 'playMediumSceneActiveTime', 0, 100);
-                    guiTimes.add(currentGame, 'playMaxSceneActiveTime', 0, 100);
+                    guiTimes.add(currentGame, 'playMinSceneActiveTime', 0, 10000);
+                    guiTimes.add(currentGame, 'playMediumSceneActiveTime', 0, 10000);
+                    guiTimes.add(currentGame, 'playMaxSceneActiveTime', 0, 10000);
 
                     guiTimes.open();
 
