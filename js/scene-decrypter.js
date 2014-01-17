@@ -51,6 +51,7 @@ $(function(){
 
         // Activate the timer.
         $(document).trigger('startTime', currentGame.scenes.play_max_scene.scene);
+        launchGame();
     }
 
     function gameOverDialog() {
@@ -285,6 +286,7 @@ $(function(){
     var time    = sign + (days>0 ? days+'j ' : '' ) + (days>10 ? '' : (hours == "00" ? "": hours)+(days>0 ? (hours == "00" ? "": "h ") : (hours == "00" ? "": "h ")+minutes+'m '+seconds+ 's'));
     return ( d == 0 ? '0' : time);
   }
+
     function launchGame() {
 
 
