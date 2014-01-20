@@ -237,6 +237,11 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
      */
     resultScene['resize'] = resizeCreateKeyScene;
 
+    if (director.height < 700) {
+        currentGame.miniScreen = true;
+    } else {
+        currentGame.miniScreen = false;
+    }
     resizeCreateKeyScene(director, resultScene);
     return resultScene;
 }

@@ -251,6 +251,11 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
             gameBoxInfo.addWinScreen("Message crypté.", 200, 50, true, resultScene.scene, hookActive);
         });
     }
+    if (director.height < 700) {
+        currentGame.miniScreen = true;
+    } else {
+        currentGame.miniScreen = false;
+    }
     resizePlayScene(director, resultScene);
     return resultScene;
 }

@@ -192,6 +192,9 @@ function InfoColumn(director, resultScene, crypt_key, withGauge) {
 				this.infoColumnContainer.setSize(240, this.marge * 3 - 10 + 455).setLocation(this.titleColumnContainer.x, this.titleColumnContainer.y + this.titleColumnContainer.height);
 			}
 		}
+		if (this.infoColumnContainer.y <= 90) {
+			this.infoColumnContainer.setLocation(this.infoColumnContainer.x, 90);
+		}
 
 		this.cryptrisLogo.setLocation(0, 0);
 		this.leftTimer.setLocation(35, this.cryptrisLogo.height + this.marge - 20);
