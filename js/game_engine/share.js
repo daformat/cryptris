@@ -36,6 +36,7 @@ function createMiniBoardScene(director, current_length, message, keyInfo, hookAc
      * Define the board resize option.
      */
     resultScene.resizeOption = new ResizeMiniBoardOption(current_length);
+    resultScene.resizeOption.DEFAULT_BOTTOM_MARGIN = 70;
 
     /**
      * Set a blank key.
@@ -52,7 +53,7 @@ function createMiniBoardScene(director, current_length, message, keyInfo, hookAc
      * Create the player game board.
      */
     var playerBoxOption = new BoxOption(resultScene.scene, resultScene.resizeOption, playerBoardColorInfo, playerPSceneTime);
-    var gameBoxInfo = new GameBox(director, playerBoxOption, 0, 0, current_length, blank_key, message, true, true);
+    var gameBoxInfo = new GameBox(director, playerBoxOption, 0, 10, current_length, blank_key, message, true, true, false, false);
     resultScene['game_box'] = gameBoxInfo;
     resultScene.scene.addChild(resultScene['game_box'].gameBox);
 
@@ -73,16 +74,21 @@ function createScenes(director, current_length, crypted_message) {
 
     // This scene is active between two scenes.
     currentGame.scenes['waiting_scene'] = director.createScene();
+
+    $('#spinner-img').fadeOut(500);
+    setTimeout(function() {
+      $('#mini_board').fadeIn(1000);
+    }, 500);
     currentGame.scenes['mini_board'] = createMiniBoardScene(director, current_length, crypted_message, currentGame.playerKeyInfo, 'mini-board');
-        currentGame.director.easeInOut(
-                                        currentGame.director.getSceneIndex(currentGame.scenes.mini_board.scene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        1000, true,
-                                        new specialInInterpolator(),
-                                        new specialOutInterpolator()
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.mini_board.scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    1000, true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
         );
     /**
      * Define the framerate.
@@ -117,13 +123,24 @@ function initGame(director, current_length, crypted_message) {
     );
 }
 
+function getQuerystring(key, default_) {
+  if (default_==null) default_=""; 
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href);
+  if(qs == null)
+    return default_;
+  else
+    return qs[1];
+}
+
 
 function createMiniBoard(current_length, crypted_message) {
 
     /**
      * Debug flag, turn it off to production version.
      */
-    CAAT.DEBUG = 0;//parseInt(getQuerystring('dbg', 0)) == 1;
+    CAAT.DEBUG = parseInt(getQuerystring('dbg', 0)) == 1;
 
     /* DAT.GUI */
 
@@ -140,19 +157,11 @@ function createMiniBoard(current_length, crypted_message) {
             }
     }
 
-    
-    /**
-     * We use this to enable some fonts in our gameBox.
-     *//*
-    $('.trick-font').each(function() {
-        $(this).attr('style', 'display: none;');
-    });*/
-
     /**
      * Declare our main caat director.
      */
     var onScreenCanvas  = $('#mini_board');
-	currentGame.director = new CAAT.Director().initialize(456, 291, onScreenCanvas[0]).setClear(false);
+    currentGame.director = new CAAT.Director().initialize(456, 275, onScreenCanvas[0]).setClear(false);
 
     /**
      * Init the game
@@ -273,6 +282,7 @@ $(document).ready(function() {
 		return false;
 	});
     $("#edit-message").bind('click', function() {
+
                 currentGame.director.easeInOut(
                                         currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
                                         CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
@@ -283,5 +293,7 @@ $(document).ready(function() {
                                         new specialInInterpolator(),
                                         new specialOutInterpolator()
         );
+        $('#mini_board').fadeOut(100);
+        $('#spinner-img').fadeIn(100);
     });
 });

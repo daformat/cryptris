@@ -701,6 +701,22 @@ border: 1px solid #0091BB;
 	margin: 28px;
 }
 
+.share .encrypted-message .message-spinner{
+	display: table;
+	height: 280px;
+	width: 700px;
+}
+
+.share .encrypted-message .message-spinner .message-spinner-cell{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.share .encrypted-message .message-spinner .message-spinner-cell .img-spin{
+	margin: auto;
+}
+
 .share .social-actions a img{
 	transition: all 0.25s ease;
 }

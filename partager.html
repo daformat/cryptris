@@ -73,6 +73,7 @@
 
 
     <!--LOAD EXTERNAL JS FILE-->
+    <script type="text/javascript" src="./vendor/dat.gui.min.js"></script>
     <script type="text/javascript" src="./vendor/caat.js"></script>
 
     <!--LOAD CUSTOM JS FILE-->
@@ -141,8 +142,12 @@
               <div class="encrypted-message">
                   <div class="message">
                     <!-- Include canvas here-->
-                    <canvas id="mini_board"></canvas>
-                    <!--<img class="img" src="img/temp-encrypted-message.png">-->
+                    <canvas id="mini_board" style="display:none"></canvas>
+                    <div class="message-spinner" id="spinner-img">
+                      <div class="message-spinner-cell">
+                        <img class="img-spin" style="display: block" src="img/assets/spinner.gif">
+                      </div>
+                    </div>
                   </div>
                   <div class="social-actions">
                     <p><a id="share-fb" href="#"><img src="img/icn-facebook-large.png"> Partager sur facebook</a></p>

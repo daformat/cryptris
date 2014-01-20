@@ -49,6 +49,7 @@ function getPreloadedImages() {
     imgs.push({id:'gauge4', url: "img/gauge/04.png"});
     imgs.push({id:'gauge5', url: "img/gauge/05.png"});
     imgs.push({id:'gauge6', url: "img/gauge/06.png"});
+    imgs.push({id:'spinner', url: "img/assets/spinner.gif"});
 
     var assets = ["img/apple-touch-startup-image-1536x2008.png",
 		"img/icn-facebook-large@2x.png",

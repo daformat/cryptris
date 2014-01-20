@@ -1,4 +1,4 @@
-function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive, isActiveKeySymbol) {
+function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive, isActiveKeySymbol, withName) {
   this.director = director;
   this.boxOption = boxOption;
   this.relativeX = relativeX;
@@ -16,6 +16,11 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
   this.keySymbol = null;
   this.lastLevel = 0;
   this.isActiveKeySymbol = isActiveKeySymbol;
+  this.withName = true;
+
+  if (withName === false) {
+    this.withName = false;
+  }
 
   /*
    * This function returns the computed width size of the gameBox
@@ -128,9 +133,11 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
     /**
      * Add all the name box to the scene.
      */
-    this.boxOption.scene.addChild(this.leftName);
-    this.boxOption.scene.addChild(this.centerName);
-    this.boxOption.scene.addChild(this.rightName);
+    if (this.withName === true) {
+      this.boxOption.scene.addChild(this.leftName);
+      this.boxOption.scene.addChild(this.centerName);
+      this.boxOption.scene.addChild(this.rightName);
+    }
 
     /**
      * Display all icons if this gameBox is active (to be active means we want to display the icons).
@@ -395,10 +402,12 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
      * Else at the right (IA board).
      */
     if (this.player === true) {
-      this.leftName.setLocation(this.gameBox.x - 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
-      this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
-      this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
-
+      if (this.withName === true) {
+        this.leftName.setLocation(this.gameBox.x - 12, this.gameBox.y - this.director.getImage('left-board').height - 10);
+        this.centerName.setLocation(this.leftName.x + this.leftName.width, this.leftName.y);
+        this.rightName.setLocation(this.centerName.x + this.centerName.width, this.centerName.y);
+      }
+      
       if (this.isActiveKeySymbol === true) {
 
         if (this.keySymbol != null) {
