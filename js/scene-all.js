@@ -965,7 +965,7 @@ $(function() {
       testMessageTest = false;
       // Display the battle scene in background.
       currentGame.username = currentGame.saveUsername;
-      goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 'playSoloPauseEvent', 4000);
+      goToBattleScene('play_solo_scene', null, MIN_BOARD_LENGTH, 'playSoloSceneActive', false, false, currentGame.play_solo_scene_msg, 'playSoloHelpEvent', 'playSoloPauseEvent', 2000);
     }
   }
 
