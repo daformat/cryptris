@@ -713,8 +713,10 @@ border: 1px solid #0091BB;
 	text-align: center;
 }
 
+/* Circle spinner */
 .share .encrypted-message .message-spinner .message-spinner-cell .img-spin{
 	margin: auto;
+
 }
 
 .share .social-actions a img{
@@ -1272,6 +1274,31 @@ border: 1px solid #0091BB;
 	-webkit-animation: preload-blinking-smooth 1.5s infinite ease-in;
 	animation: preload-blinking-smooth 1.5s infinite ease-in;
 }
+
+
+/*
+	Object rotation (used for circle spinner)
+*/
+
+
+@-webkit-keyframes rotate-spinner
+{
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+
+@keyframes rotate-spinner
+{
+	0% {transform: rotate(0deg);}
+	50%  {transform: rotate(180deg);}
+	100% {transform: rotate(360deg);}
+}
+
+.rotate-spinner{
+	-webkit-animation: rotate-spinner 0.75s infinite linear;
+	animation: rotate-spinner 0.75s infinite linear;
+}
+
 
 
 /*
