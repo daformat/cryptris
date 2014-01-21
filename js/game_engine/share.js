@@ -206,14 +206,18 @@ function createCryptedMessage() {
             This allows to encode more charcaters.  
         */
 
-        text = original_text.replace(/[\u001F-\u99999<>\&]/gim, function(i) {
+        var text = original_text.replace(/[\u001F-\u99999<>\&]/gim, function(i) {
            return '&#'+i.charCodeAt(0)+';';
         });
-        
 
         while (text.length < 3) {
             text += ' ';
         }
+
+        while (original_text.length < 3) {
+          original_text += 'a';
+        }
+
         var ternary_message = string_to_ternary(text);
 
         var total_crypt_message = easy_crypt(ternary_message);
