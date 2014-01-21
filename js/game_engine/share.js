@@ -278,19 +278,22 @@ $(document).ready(function() {
         setTimeout(createCryptedMessage, 500);
 		return false;
 	});
-    $("#edit-message").bind('click', function() {
+  $("#edit-message").bind('click', function() {
 
-                currentGame.director.easeInOut(
-                                        currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                        1000, true,
-                                        new specialInInterpolator(),
-                                        new specialOutInterpolator()
-        );
-        $('#mini_board').fadeOut(100);
-        $('#spinner-img').fadeIn(100);
-    });
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    1000, true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
+
+    setTimeout(function() {
+      $('#mini_board').fadeOut(100);
+      $('#spinner-img').fadeIn(100);
+    }, 1000);
+  });
 });
