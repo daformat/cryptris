@@ -1440,6 +1440,22 @@ $(function() {
     });
   }
 
+  function displayPassDialog(dialog) {
+    $("body").closeAllDialogs(function() {
+      $.switchWrapper('#' + dialog['background'], function() {
+        setTimeout(function() {
+          if (dialog['callback']) {
+            dialog['callback']();
+          }
+          $(".wrapper.active .vertical-centering").dialog(dialog['dialog']);
+          if (dialog['afterCallback']) {
+            dialog['afterCallback']();
+          }
+        }, 100);
+      });
+    });
+  }
+
   $.displayDialog = displayDialog;
   $.dialogChart = {'dialog' : comparePlayTimeChartDialog, 'background' : 'bg-institut', 'afterCallback' : function() { setTimeout(createChart, 100); }, 'controlsList' : [getControl(controlPrev, null), getControl(controlNext, theEnd)]};
 
@@ -1484,7 +1500,7 @@ $(function() {
 
   $(document).on('passDialog', function() {
     indexDialog = indexDialog + jumpDialog;
-    displayDialog(dialogsList[indexDialog]);
+    displayPassDialog(dialogsList[indexDialog]);
   });
 
   function addCryptoExplanationsContent() {
