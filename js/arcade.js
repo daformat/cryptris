@@ -180,7 +180,85 @@ $(document).ready(function() {
               gui.add(cryptrisSettings, 'readingDelay', 0, 10000);
               gui.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
               gui.add(cryptrisSettings, 'slowdownIA', 0, 1);
+
+              var guiColors = gui.addFolder('Player colors');
+
+              var guiColorsType1 = guiColors.addFolder('Positive blocks')
+
+                guiColorsType1.addColor(playerBoardColorInfo.colorLeft,          'type1').name('colorLeft');
+                guiColorsType1.addColor(playerBoardColorInfo.colorRight,          'type1').name('colorRight');
+                guiColorsType1.addColor(playerBoardColorInfo.blurColorLeft,      'type1').name('blurColorLeft');
+                guiColorsType1.addColor(playerBoardColorInfo.blurColorRight,     'type1').name('blurColorRight');
+                guiColorsType1.addColor(playerBoardColorInfo.strokeColor,        'type1').name('strokeColor');
+                guiColorsType1.addColor(playerBoardColorInfo.blurStrokeColor,    'type1').name('blurStrokeColor');
+                guiColorsType1.addColor(playerBoardColorInfo.defaultStrokeColor, 'type1').name('defaultStrokeColor');
+                guiColorsType1.addColor(playerBoardColorInfo.fullStrokeColor,    'type1').name('fullStrokeColor');
+
+              var guiColorsType2 = guiColors.addFolder('Negative blocks')
+
+                guiColorsType2.addColor(playerBoardColorInfo.colorLeft,          'type2').name('colorLeft');
+                guiColorsType2.addColor(playerBoardColorInfo.colorRight,          'type2').name('colorRight');
+                guiColorsType2.addColor(playerBoardColorInfo.blurColorLeft,      'type2').name('blurColorLeft');
+                guiColorsType2.addColor(playerBoardColorInfo.blurColorRight,     'type2').name('blurColorRight');
+                guiColorsType2.addColor(playerBoardColorInfo.strokeColor,        'type2').name('strokeColor');
+                guiColorsType2.addColor(playerBoardColorInfo.blurStrokeColor,    'type2').name('blurStrokeColor');
+                guiColorsType2.addColor(playerBoardColorInfo.defaultStrokeColor, 'type2').name('defaultStrokeColor');
+                guiColorsType2.addColor(playerBoardColorInfo.fullStrokeColor,    'type2').name('fullStrokeColor');
+
+              var guiColorsCommon = guiColors.addFolder('Common settings')
+
+                guiColorsCommon.addColor(playerBoardColorInfo, 'columnColor');
+                guiColorsCommon.addColor(playerBoardColorInfo, 'numberColor');
+                guiColorsCommon.addColor(playerBoardColorInfo, 'numberGrow');
+                guiColorsCommon.addColor(playerBoardColorInfo, 'letterBoxColor');
+                guiColorsCommon.addColor(playerBoardColorInfo, 'letterColor'); 
+
+
+              /*
+               IA
+              */
+              var guiColors2 = gui.addFolder('IA colors');
+
+              var guiColors2Type1 = guiColors2.addFolder('Positive blocks')
+
+                guiColors2Type1.addColor(iaBoardColorInfo.colorLeft,          'type1').name('colorLeft');
+                guiColors2Type1.addColor(iaBoardColorInfo.colorRight,          'type1').name('colorRight');
+                guiColors2Type1.addColor(iaBoardColorInfo.blurColorLeft,      'type1').name('blurColorLeft');
+                guiColors2Type1.addColor(iaBoardColorInfo.blurColorRight,     'type1').name('blurColorRight');
+                guiColors2Type1.addColor(iaBoardColorInfo.strokeColor,        'type1').name('strokeColor');
+                guiColors2Type1.addColor(iaBoardColorInfo.blurStrokeColor,    'type1').name('blurStrokeColor');
+                guiColors2Type1.addColor(iaBoardColorInfo.defaultStrokeColor, 'type1').name('defaultStrokeColor');
+                guiColors2Type1.addColor(iaBoardColorInfo.fullStrokeColor,    'type1').name('fullStrokeColor');
+
+              var guiColors2Type2 = guiColors2.addFolder('Negative blocks')
+
+                guiColors2Type2.addColor(iaBoardColorInfo.colorLeft,          'type2').name('colorLeft');
+                guiColors2Type2.addColor(iaBoardColorInfo.colorRight,          'type2').name('colorRight');
+                guiColors2Type2.addColor(iaBoardColorInfo.blurColorLeft,      'type2').name('blurColorLeft');
+                guiColors2Type2.addColor(iaBoardColorInfo.blurColorRight,     'type2').name('blurColorRight');
+                guiColors2Type2.addColor(iaBoardColorInfo.strokeColor,        'type2').name('strokeColor');
+                guiColors2Type2.addColor(iaBoardColorInfo.blurStrokeColor,    'type2').name('blurStrokeColor');
+                guiColors2Type2.addColor(iaBoardColorInfo.defaultStrokeColor, 'type2').name('defaultStrokeColor');
+                guiColors2Type2.addColor(iaBoardColorInfo.fullStrokeColor,    'type2').name('fullStrokeColor');
+
+              var guiColors2Common = guiColors2.addFolder('Common settings')
+
+                guiColors2Common.addColor(iaBoardColorInfo, 'columnColor');
+                guiColors2Common.addColor(iaBoardColorInfo, 'numberColor');
+                guiColors2Common.addColor(iaBoardColorInfo, 'numberGrow');
+                guiColors2Common.addColor(iaBoardColorInfo, 'letterBoxColor');
+                guiColors2Common.addColor(iaBoardColorInfo, 'letterColor'); 
+
+              /*
+                Redraw current boards
+              */
+
+              gui.add({forceRedraw: function() { resize(currentGame.director, currentGame.director.width, currentGame.director.height) } }, 'forceRedraw');
+
+
+
             } catch(e){
+
                 
             }
     }
