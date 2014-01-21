@@ -215,7 +215,7 @@ function createCryptedMessage() {
         }
 
         while (original_text.length < 3) {
-          original_text += 'a';
+          original_text += ' ';
         }
 
         var ternary_message = string_to_ternary(text);
