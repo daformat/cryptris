@@ -180,7 +180,7 @@ var playerBoardColorInfo = {
 	'colorLeft' : { 'type1' : 'rgba(107, 141, 167, 1)', 'type2' : 'rgba(20, 115, 158, 1)', 'empty' : null },
 	'colorRight' : { 'type1' : 'rgba(53, 120, 157, 1)', 'type2' : 'rgba(1, 76, 131, 1)', 'empty' : null },
 	'blurColorLeft' : { 'type1' : '#e6e6e6', 'type2' : '#4dd0ff', 'empty' : null },
-	'blurColorRight' : { 'type1' : '#8ac7e6', 'type2' : ' #0099ff', 'empty' : null },
+	'blurColorRight' : { 'type1' : '#8ac7e6', 'type2' : '#0099ff', 'empty' : null },
 	'strokeColor' : { 'type1' : 'rgba(178, 190, 201, 1)', 'type2' : 'rgba(0, 143, 148, 1)', 'empty' : null },
 	'blurStrokeColor' : { 'type1' : 'rgba(255, 255, 255, 1)', 'type2' : 'rgba(0, 187, 178, 1)', 'empty' : null },
 	'defaultStrokeColor' : { 'type1' : 'rgba(178, 190, 201, 1)', 'type2' : 'rgba(0, 143, 148, 1)', 'empty' : null },
