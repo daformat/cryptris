@@ -108,23 +108,25 @@ function keyInfoDeCrypt(cipher) {
 
 function createBoardScene(director) {
 
-    var cryptedMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
+    var cryptedMessage = currentGame.cryptedDataMessage;
     preparePlayScene(director, MAX_BOARD_LENGTH, 'play_max_scene', cryptedMessage, 'playMaxSceneActive', true, 'playMaxSceneHelp', 'playMaxScenePause');
     currentGame.scenes['play_max_scene'].scene.setPaused(false);
 
-    currentGame.director.easeInOut(
-                                    currentGame.director.getSceneIndex(currentGame.scenes.play_max_scene.scene),
-                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
-                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
-                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                    1000,
-                                    true,
-                                    new specialInInterpolator(),
-                                    new specialOutInterpolator()
-    );
+    setTimeout(function() {
+        currentGame.director.easeInOut(
+                                        currentGame.director.getSceneIndex(currentGame.scenes.play_max_scene.scene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                        CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                        CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                        1000,
+                                        true,
+                                        new specialInInterpolator(),
+                                        new specialOutInterpolator()
+        );
 
-    currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene);
+        setTimeout(function() { currentGame.scenes.play_max_scene.add_key_symbol(currentGame.director, currentGame.scenes.play_max_scene); }, 500);
+    }, 500);
 
     /**
      * Define the framerate.

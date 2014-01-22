@@ -165,33 +165,37 @@ $(function(){
 
     function explain1(){
         $("body").closeAllDialogs(function(){
+            var before = $.now();
             createBoardScene(currentGame.director);
         	currentGame.playMaxSceneActive = false;
             currentGame.iaPlay = false;
-        	$(".wrapper.active .vertical-centering").dialog({
-	          animateText: true,
-    	      animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+            var after = $.now();
+        	
+            setTimeout(function() {
+                $(".wrapper.active .vertical-centering").dialog({
+	             animateText: true,
+    	         animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-	          type: "withAvatar",
-    	      avatar: "<img src='img/avatar-chercheuse.jpg'>",
+	              type: "withAvatar",
+    	           avatar: "<img src='img/avatar-chercheuse.jpg'>",
 
-              identifier: {
-                category: 'Décrypter',
-                action: "Décryptage d'un message partagé",
-                label: "Dialogue 'Ta clé privée se trouve en haut' (Chercheuse)"
-              },
+                  identifier: {
+                    category: 'Décrypter',
+                    action: "Décryptage d'un message partagé",
+                    label: "Dialogue 'Ta clé privée se trouve en haut' (Chercheuse)"
+                },
 
-        	  title: "Chercheuse",
-        	  content: "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
+            	  title: "Chercheuse",
+            	  content: "Ta clé privée se trouve en haut. Utilise les touches <img src='img/icn-arrow-left.png' class='keyboard-key'> et <img src='img/icn-arrow-right.png'  class='keyboard-key'> pour la manipuler selon ton envie. Appuie sur la touche <img src='img/icn-arrow-up.png' class='keyboard-key'> ou <img src='img/icn-space.png' class='keyboard-key'> pour inverser ta clé et lorsque tu seras prêt, appuie sur la touche <img src='img/icn-arrow-down.png' class='keyboard-key'> pour valider ton choix.",
         	    
-	            controls: [{
-    	          label: "Suite", 
-        	      class: "button blue",
-            	  onClick: explain2
-            	}]
+	               controls: [{
+    	              label: "Suite", 
+        	          class: "button blue",
+            	   onClick: explain2
+            	   }]
 
-	          });   
-
+    	          });   
+                }, 1000 + (after - before));
     	    });
 
     }
@@ -583,6 +587,7 @@ $(function(){
 
 	$(document).ready(function() {
 
+
     // Load the game and load assets.
     loadGame();
 
@@ -602,6 +607,9 @@ $(function(){
     currentGame.keyInfoCipher = keyInfoElement[2].split(',').map(Number);
     currentGame.keyInfoCurrentLength = parseInt(keyInfoElement[3]);
 
+    // Adapt our crypted message to our data structure.
+    currentGame.cryptedDataMessage = createADataMessage(currentGame.keyInfoCipher, currentGame.keyInfoCurrentLength);
+    
     // Log event to google analytics
     ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Invite de commande');
     console.log('Décrypter - Renseignement du nom - Invite de commande');
