@@ -575,7 +575,7 @@ $(function(){
                                     currentGame.director.getSceneIndex(currentGame.director.currentScene),
                                     CAAT.Foundation.Scene.prototype.EASE_SCALE,
                                     CAAT.Foundation.Actor.ANCHOR_CENTER,
-                                    300,
+                                    500,
                                     true,
                                     new specialInInterpolator(),
                                     new specialOutInterpolator()

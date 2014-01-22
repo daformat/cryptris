@@ -638,25 +638,6 @@ function chiffre(dim, message, pk, sk) {
                 break;
             }
         }
-
-        // -- Check if the player could decrypted it easily
-        if (glouton(dim, cipher, sk, 100) === false && limitTestDifficulty < 1000) {
-            testIfIsCrypted = false;
-
-            // -- the first step of the crypted message is the uncrypted message.
-            var cipher = []
-            for (var i = 0; i < message.length; ++i) {
-                cipher.push(message[i]);
-            }
-
-            /**
-             * If message is not a multiple of dim, we add some padding to cipher
-             */
-            while (cipher.length % dim !== 0) {
-                cipher.push(0);
-            }
-        }
-        limitTestDifficulty++;
     }
 
     currentGame.animateEncryptionMove = move;
