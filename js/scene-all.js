@@ -10,6 +10,8 @@ cryptrisSettings.gamingTime = "0";
 $(function() {
   var transitionTime = 1000;
 
+  var lockDialog = false;
+
       cryptrisSettings.getCurrentGamingTime = function(){
         return formatSeconds( (new Date().getTime()-cryptrisSettings.startTime)/1000 );
       }
@@ -232,14 +234,22 @@ $(function() {
           currentGame.goToNextDialog = false;
           currentGame.createKeySceneActive = false;
 
+          
           // Switch the screen.
           setTimeout(function() {
             currentGame.director.easeInOut(currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
                                            currentGame.director.getSceneIndex(currentGame.scenes.create_key_scene.scene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                            new specialInInterpolator(), new specialOutInterpolator());
-            $(document).trigger('nextDialog');
+
             currentGame.dontShowKey = false;
             $(document).trigger('freezeTime', {'scene' : currentGame.scenes.create_key_scene.scene, 'timeLabel' : 'createKeySceneActiveTime'});
+
+            // Prepare the tutorial battle message
+            currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
+          
+            // Prepare the first battle message
+            currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
+            $(document).trigger('passDialog');
           }, 2000);
         }
       }
@@ -883,15 +893,30 @@ $(function() {
                                   currentGame.director.getSceneIndex(currentGame.director.currentScene), CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER, transitionTime, true,
                                   new specialInInterpolator(), new specialOutInterpolator());
 
-
     // Change our player name for 'Chercheuse';
     currentGame.saveUsername = currentGame.username;
     currentGame.username = "Chercheuse";
 
+
     // Prepare the tutorial message
     currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
+    
+    // Prepare the first battle message
+    currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
+
     // Set the tutorial message to the dialog box.
-    addInteractiveContentToDialog(firstMessageDialog, board_message_to_string(currentGame.play_solo_scene_msg.plain_message));
+    addInteractiveContentToDialog(firstMessageDialog, (function(){
+    var t = board_message_to_string(currentGame.play_solo_scene_msg.plain_message),
+      a = t.split(' '),
+      o = '';
+
+      for (var i = 0; i < a.length; i++) {
+        if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+      }
+
+      return o;
+    }()));
+
 
     // Prepare the sceneName and set it as the current scene.
     var sceneName = 'play_chercheuse_scene';
@@ -993,8 +1018,6 @@ $(function() {
 
 
   function encryptedFirstCable() {
-    // Prepare the first battle message
-    currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
     
     // Set the first battle message to the dialog box.
     addInteractiveContentToDialog(firstBattleMessageDialog, (function(){
@@ -1059,8 +1082,6 @@ $(function() {
 
   function encryptedSecondCable() {
 
-    // Prepare the second battle message
-    currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
 
     // Set the first battle message to the dialog box.
     addInteractiveContentToDialog(secondBattleMessageDialog, (function(){
@@ -1118,8 +1139,6 @@ $(function() {
    */
 
   function encryptedThirdCable() {
-    // Prepare the third battle message
-    currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_BATTLE_MESSAGE);
     
     // Set the third battle message to the dialog box.
     addInteractiveContentToDialog(thirdBattleMessageDialog, (function(){
@@ -1467,7 +1486,6 @@ $(function() {
   currentGame.displayDialog = displayDialog;
   currentGame.dialogsList = dialogsList;
 
-  var lockDialog = false;
   var lockTime = 1000;
   $(document).on('nextDialog', function() {
     if (lockDialog === false) {
@@ -1568,4 +1586,5 @@ $(function() {
   // update time
   var timer = window.setInterval(function(){cryptrisSettings.gamingTime = cryptrisSettings.getCurrentGamingTime()},1000);
   intro();
+
 });
