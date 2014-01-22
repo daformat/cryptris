@@ -229,7 +229,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                     currentGame.gameOver = true;
                     rivalMessage.boxOption.endResolved = rivalBoxInfo.gameBox.time;
                     rivalBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
-                    gameBoxInfo.addWinScreen("Time Out.", 200, 50, false);
+                    gameBoxInfo.addWinScreen("Échec.", 200, 50, false);
                 }
             }
 
@@ -241,7 +241,7 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
                 gameBoxInfo.addWinScreen("Message décrypté.", 200, 50, true, resultScene.scene, hookActive);
 
                 if (withIaBoard) {
-                    rivalBoxInfo.addWinScreen("Time Out", 200, 50, false);
+                    rivalBoxInfo.addWinScreen("Échec", 200, 50, false);
                 }
             }
         });
