@@ -569,6 +569,17 @@ $(function(){
   }
 
   function challenge1(){
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    300,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
     $("body").closeAllDialogs(function(){
 
       // Prepare the first battle message
@@ -577,6 +588,7 @@ $(function(){
       var after = $.now();
 
       setTimeout(function() {
+
         $.switchWrapper('#bg-circuits', function(){
 
           // Display the battle scene in background.
@@ -978,6 +990,18 @@ $(function(){
 
 
   function challenge2(){
+
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    300,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
@@ -1141,6 +1165,18 @@ $(function(){
 
 
   function challenge3(){
+
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    300,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
@@ -1313,6 +1349,18 @@ $(function(){
 
 
   function challenge4(){
+
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    300,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
@@ -1484,6 +1532,18 @@ $(function(){
 
 
   function challenge5(){
+
+    currentGame.director.easeInOut(
+                                    currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    currentGame.director.getSceneIndex(currentGame.director.currentScene),
+                                    CAAT.Foundation.Scene.prototype.EASE_SCALE,
+                                    CAAT.Foundation.Actor.ANCHOR_CENTER,
+                                    300,
+                                    true,
+                                    new specialInInterpolator(),
+                                    new specialOutInterpolator()
+    );
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
@@ -1696,6 +1756,7 @@ $(function(){
       $.switchWrapper('#menu-view', function() {
         // -- switch to waiting scene.
         if (currentGame.scenes != null) {
+          currentGame.director.currentScene.setPaused(false);
           currentGame.director.easeInOut(
                                       currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
                                       CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
