@@ -572,49 +572,54 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       // Prepare the first battle message
+      var before = $.now();
       currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_CHALLENGE_MESSAGE);
+      var after = $.now();
 
-      $.switchWrapper('#bg-circuits', function(){
+      setTimeout(function() {
+        $.switchWrapper('#bg-circuits', function(){
 
-        // Display the battle scene in background.
-        goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent', 'playMinPauseEvent');
+          // Display the battle scene in background.
+          goToBattleScene('play_min_scene', dialogDecryptedMessage1, MIN_BOARD_LENGTH, 'playMinSceneActive', true, false, currentGame.play_min_scene_msg, 'playMinHelpEvent', 'playMinPauseEvent');
         
-        $(".wrapper.active .vertical-centering").dialog({
+          setTimeout(function() {
+            $(".wrapper.active .vertical-centering").dialog({
                 
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+              animateText: true,
+              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-          type: "withAvatar",
-          avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+              type: "withAvatar",
+              avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge facile (8 blocs)",
-            label: "Dialogue 'Message crypté' (InriOS)",
-          },
+              identifier: {
+                category: "Arcade",
+                action: "Challenge facile (8 blocs)",
+                label: "Dialogue 'Message crypté' (InriOS)",
+              },
 
-          title: "InriOS 3.14",
-          content: (function(){
-            var t = board_message_to_string(currentGame.play_min_scene_msg.plain_message),
-                a = t.split(' '),
-                o = '';
+              title: "InriOS 3.14",
+              content: (function(){
+                var t = board_message_to_string(currentGame.play_min_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
 
-                for (var i = 0; i<a.length; i++) {
-                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
-                }
+                    for (var i = 0; i<a.length; i++) {
+                        if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                    }
 
-                return o;
-          }()),
+                    return o;
+              }()),
                 
-          controls: [{
-            label: "Décrypter le message", 
-            class: "button blue",
-            onClick: playLevel1
-          }]
+              controls: [{
+                label: "Décrypter le message", 
+                class: "button blue",
+                onClick: playLevel1
+              }]
 
-        });   
-
-      });
+            });
+          }, 500);
+        });
+      }, 100 + (after - before));
 
     });
 
@@ -976,53 +981,56 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
+      var before = $.now();
       currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_CHALLENGE_MESSAGE);
+      var after = $.now();
 
+      setTimeout(function() {
+        $.switchWrapper('#bg-circuits', function(){
 
-      $.switchWrapper('#bg-circuits', function(){
+          // Display the battle scene in background.
+          goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
 
-        // Display the battle scene in background.
-        goToBattleScene('play_medium_scene', dialogDecryptedMessage2, MEDIUM_BOARD_LENGTH, 'playMediumSceneActive', true, false, currentGame.play_medium_scene_msg, 'playMediumHelpEvent', 'playMediumPauseEvent');
-
-        $(".wrapper.active .vertical-centering").dialog({
+          setTimeout(function() {
+            $(".wrapper.active .vertical-centering").dialog({
                 
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+              animateText: true,
+              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-          type: "withAvatar",
-          avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+              type: "withAvatar",
+              avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge novice (10 blocs)",
-            label: "Dialogue 'Message crypté' (InriOS)",
-          },
+              identifier: {
+                category: "Arcade",
+                action: "Challenge novice (10 blocs)",
+                label: "Dialogue 'Message crypté' (InriOS)",
+              },
 
-          title: "InriOS 3.14",
-          content: (function(){
-            var t = board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
-                a = t.split(' '),
-                o = '';
+              title: "InriOS 3.14",
+              content: (function(){
+                var t = board_message_to_string(currentGame.play_medium_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
 
                 for (var i = 0; i<a.length; i++) {
-                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                  if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
                 }
 
                 return o;
-          }()),
+              }()),
                 
-          controls: [{
-            label: "Décrypter le message", 
-            class: "button blue",
-            onClick: playLevel2
-          }]
+              controls: [{
+                label: "Décrypter le message", 
+                class: "button blue",
+                onClick: playLevel2
+              }]
+            });
+          }, 500);
 
-        });   
+        });
 
-      });
-
+      }, 100 + (after - before));
     });
-
   }
 
   $(document).on("playMediumHelpEvent", function() {
@@ -1136,50 +1144,54 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
+      var before = $.now();
       currentGame.play_max_scene_msg = createMessageForPlayScene(MAX_BOARD_LENGTH, THIRD_CHALLENGE_MESSAGE);
+      var after = $.now();
 
+      setTimeout(function() {
+        $.switchWrapper('#bg-circuits', function(){
 
-      $.switchWrapper('#bg-circuits', function(){
+          // Display the battle scene in background.
+          goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
 
-        // Display the battle scene in background.
-        goToBattleScene('play_max_scene', dialogDecryptedMessage3, MAX_BOARD_LENGTH, 'playMaxSceneActive', true, false, currentGame.play_max_scene_msg, 'playMaxHelpEvent', 'playMaxPauseEvent');
+          setTimeout(function() {
+            $(".wrapper.active .vertical-centering").dialog({
 
-        $(".wrapper.active .vertical-centering").dialog({
+              animateText: true,
+              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+              type: "withAvatar",
+              avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-          type: "withAvatar",
-          avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+              identifier: {
+                category: "Arcade",
+                action: "Challenge apprenti (12 blocs)",
+                label: "Dialogue 'Message crypté' (InriOS)",
+              },
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge apprenti (12 blocs)",
-            label: "Dialogue 'Message crypté' (InriOS)",
-          },
-
-          title: "InriOS 3.14",
-          content: (function(){
-            var t = board_message_to_string(currentGame.play_max_scene_msg.plain_message),
-                a = t.split(' '),
-                o = '';
+              title: "InriOS 3.14",
+              content: (function(){
+                var t = board_message_to_string(currentGame.play_max_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
 
                 for (var i = 0; i<a.length; i++) {
-                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                  if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
                 }
 
                 return o;
-          }()),
+              }()),
             
-          controls: [{
-            label: "Décrypter le message", 
-            class: "button blue",
-            onClick: playLevel3
-          }]
+              controls: [{
+                label: "Décrypter le message", 
+                class: "button blue",
+                onClick: playLevel3
+              }]
 
-        });   
-
-      });
+            });
+          }, 500);   
+        });
+      }, 100 + (after - before));
 
     });
 
@@ -1304,50 +1316,54 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
+      var before = $.now();
       currentGame.play_super_max_scene_msg = createMessageForPlayScene(SUPER_MAX_BOARD_LENGTH, FOURTH_CHALLENGE_MESSAGE);
+      var after = $.now();
 
-      $.switchWrapper('#bg-circuits', function(){
+      setTimeout(function() {
+        $.switchWrapper('#bg-circuits', function(){
 
-        // Display the battle scene in background.
-        goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent', 'playSuperMaxPauseEvent');
+          // Display the battle scene in background.
+          goToBattleScene('play_super_max_scene', dialogDecryptedMessage4, SUPER_MAX_BOARD_LENGTH, 'playSuperMaxSceneActive', true, false, currentGame.play_super_max_scene_msg, 'playSuperMaxHelpEvent', 'playSuperMaxPauseEvent');
 
-        $(".wrapper.active .vertical-centering").dialog({
+          setTimeout(function() {
+            $(".wrapper.active .vertical-centering").dialog({
                 
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+              animateText: true,
+              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-          type: "withAvatar",
-          avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+              type: "withAvatar",
+              avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge chercheur (14 blocs)",
-            label: "Dialogue 'Message crypté' (InriOS)",
-          },
+              identifier: {
+                category: "Arcade",
+                action: "Challenge chercheur (14 blocs)",
+                label: "Dialogue 'Message crypté' (InriOS)",
+              },
 
-          title: "InriOS 3.14",
-          content: (function(){
-            var t = board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
-                a = t.split(' '),
-                o = '';
+              title: "InriOS 3.14",
+              content: (function(){
+                var t = board_message_to_string(currentGame.play_super_max_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
 
                 for (var i = 0; i<a.length; i++) {
-                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                  if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
                 }
 
                 return o;
-          }()),
-                
-          controls: [{
-            label: "Décrypter le message", 
-            class: "button blue",
-            onClick: playLevel4
-          }]
+              }()),
+        
+              controls: [{
+                label: "Décrypter le message", 
+                class: "button blue",
+                onClick: playLevel4
+              }]
 
-        });   
-
-      });
-
+            });   
+          }, 500);
+        });
+      }, 100 + (after - before));
     });
 
   }
@@ -1471,49 +1487,53 @@ $(function(){
     $("body").closeAllDialogs(function(){
 
       // Prepare the second battle message
+      var before = $.now();
       currentGame.play_mega_max_scene_msg = createMessageForPlayScene(MEGA_MAX_BOARD_LENGTH, FIFTH_CHALLENGE_MESSAGE);
+      var after = $.now();
 
-      $.switchWrapper('#bg-circuits', function(){
+      setTimeout(function() {
+        $.switchWrapper('#bg-circuits', function(){
 
-        // Display the battle scene in background.
-        goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent', "playMegaMaxPauseEvent");
+          // Display the battle scene in background.
+          goToBattleScene('play_mega_max_scene', dialogDecryptedMessage5, MEGA_MAX_BOARD_LENGTH, 'playMegaMaxSceneActive', true, false, currentGame.play_mega_max_scene_msg, 'playMegaMaxHelpEvent', "playMegaMaxPauseEvent");
 
-        $(".wrapper.active .vertical-centering").dialog({
+          setTimeout(function() {
+            $(".wrapper.active .vertical-centering").dialog({
                 
-          animateText: true,
-          animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
+              animateText: true,
+              animateTextDelayBetweenLetters: game.animateTextDelayBetweenLetters,
 
-          type: "withAvatar",
-          avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
+              type: "withAvatar",
+              avatar: "<div class='new-message encrypted'><img src='img/avatar-new-message-background.jpg' class='background'><img src='img/avatar-new-message-envelope.png' class='envelope blinking-smooth'><img src='img/avatar-new-message-padlock-closed.png' class='padlock rotating'><img src='img/avatar-new-message-ring.png' class='ring blinking-smooth'></div>",
 
-          identifier: {
-            category: "Arcade",
-            action: "Challenge expert (16 blocs)",
-            label: "Dialogue 'Message crypté' (InriOS)",
-          },
-          title: "InriOS 3.14",
-          content: (function(){
-            var t = board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
-                a = t.split(' '),
-                o = '';
+              identifier: {
+                category: "Arcade",
+                action: "Challenge expert (16 blocs)",
+                label: "Dialogue 'Message crypté' (InriOS)",
+              },
+              title: "InriOS 3.14",
+              content: (function(){
+                var t = board_message_to_string(currentGame.play_mega_max_scene_msg.plain_message),
+                    a = t.split(' '),
+                    o = '';
 
                 for (var i = 0; i<a.length; i++) {
-                    if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
+                  if(a[i] != '') o += "<span class='letter-block crypted crypted-message'>"+a[i]+"</span>";
                 }
 
                 return o;
-          }()),
+              }()),
                 
-          controls: [{
-            label: "Décrypter le message", 
-            class: "button blue",
-            onClick: playLevel5
-          }]
+              controls: [{
+                label: "Décrypter le message", 
+                class: "button blue",
+                onClick: playLevel5
+              }]
 
-        });   
-
-      });
-
+            });   
+          }, 500);
+        });
+      }, 100 + (before - after));
     });
 
   }
