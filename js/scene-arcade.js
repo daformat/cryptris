@@ -383,6 +383,7 @@ $(function(){
   var currentGameOverData = null;
 
   function stopGameOverDialog() {
+    console.log(currentGameOverData);
     var saveScene = currentGame.scenes[currentGameOverData.sceneName].scene;
     goToBattleScene(currentGameOverData.sceneName, currentGameOverData.onDecrypt, currentGameOverData.sizeBoard, currentGameOverData.hookName, currentGameOverData.withIaBoard, currentGameOverData.timeInfo, currentGameOverData.message, currentGameOverData.helpEvent, currentGameOverData.pauseEvent, currentGameOverData.timeout);
     saveScene.setExpired(true);
@@ -539,8 +540,10 @@ $(function(){
           currentGame[hookName] = false;
           timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
         }
-        if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
+        
+        if ((currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) && currentGame.director.currentScene === currentGame.scenes[sceneName].scene) {
           waitToContinue.cancel();
+          console.log('gameOver : ' + sceneName);
           currentGame.scenes[sceneName].scene.setPaused(true);
           currentGame[hookName] = false;
 
@@ -1756,7 +1759,8 @@ $(function(){
       $.switchWrapper('#menu-view', function() {
         // -- switch to waiting scene.
         if (currentGame.scenes != null) {
-          currentGame.director.currentScene.setPaused(false);
+          var currentScene = currentGame.director.currentScene;
+          currentScene.setPaused(false);
           currentGame.director.easeInOut(
                                       currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),
                                       CAAT.Foundation.Scene.prototype.EASE_SCALE, CAAT.Foundation.Actor.ANCHOR_CENTER,
@@ -1768,6 +1772,7 @@ $(function(){
                                       new specialInInterpolator(),
                                       new specialOutInterpolator()
           );
+          currentScene.setExpired(true);
         }
         deactivateMenu();
         $('#item-public-key').addClass('active');
