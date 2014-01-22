@@ -319,7 +319,7 @@ $(function() {
           }
           timeout ? setTimeout(onDecrypt, timeout) : onDecrypt();
         }
-        if (currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) {
+        if ((currentGame.gameOver === true || currentGame.tooManyBlocksInAColumn === true) && currentGame.director.currentScene === currentGame.scenes[sceneName].scene) {
           waitToContinue.cancel();
           currentGame.scenes[sceneName].scene.setPaused(true);
           currentGame[hookName] = false;
