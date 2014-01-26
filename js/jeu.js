@@ -129,16 +129,8 @@ function createScenes(director) {
     currentGame.playerKeyInfo = getKeyInfo(MAX_BOARD_LENGTH);
 
     /**
-     * For optimization reasons, we prepare all messages first.
-     * If the associated key changed during the game we will adapt them.
+     * For optimization reasons, we prepare the two last messages (it won't change later).
      */
-  
-    // Prepare the tutorial message
-    currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
-    
-    // Prepare the first battle message
-    currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
-
     // Prepare the second battle message
     currentGame.play_medium_scene_msg = createMessageForPlayScene(MEDIUM_BOARD_LENGTH, SECOND_BATTLE_MESSAGE);
 

@@ -37,6 +37,8 @@ function game() {
 	this.iaKeyType = "public";
 
 	this.hookTest = {};
+	this.animateEncryptionMove = null;
+	this.lastAnimateEncryptionMove = null;
 
     this.createKeySceneActiveTime = 0;
     this.playMinSceneActiveTime = 0;

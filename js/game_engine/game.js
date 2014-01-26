@@ -640,7 +640,7 @@ function chiffre(dim, message, pk, sk) {
         }
     }
 
-    currentGame.animateEncryptionMove = move;
+    currentGame.lastAnimateEncryptionMove = move;
 
     var result = {};
     result['message_type'] = [];

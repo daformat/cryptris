@@ -897,13 +897,14 @@ $(function() {
     currentGame.saveUsername = currentGame.username;
     currentGame.username = "Chercheuse";
 
-
     // Prepare the tutorial message
     currentGame.play_solo_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_MESSAGE);
+    currentGame.animateEncryptionMove = currentGame.lastAnimateEncryptionMove;
     
     // Prepare the first battle message
     currentGame.play_min_scene_msg = createMessageForPlayScene(MIN_BOARD_LENGTH, FIRST_BATTLE_MESSAGE);
 
+    
     // Set the tutorial message to the dialog box.
     addInteractiveContentToDialog(firstMessageDialog, (function(){
     var t = board_message_to_string(currentGame.play_solo_scene_msg.plain_message),
