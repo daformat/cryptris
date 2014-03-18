@@ -2,7 +2,8 @@
  *	Cryptris dialogs plugin
  *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
  *	@desc:	Handle the display of game dialogs
- *	@dependencies: jQuery
+ *	@dependencies: jQuery, cryptrisSettings
+ *  @opt_dependencies: Google Analytics
  */
 
 (function($) {
@@ -16,7 +17,10 @@
 
 	$.fn.dialog = function(options){
 
-    // Defaults settings
+    /**
+     * Defaults settings
+     */
+
     settings = $.extend({
 
     	// Define if we want the text to be displayed one character at a time
@@ -73,12 +77,16 @@
 
     }, options );
 
-    // Create html element and set it up
+
+    /**
+     * Create html element and set it up
+     */
+
 		var $dialog = $(dialog[settings.type].template);
 				$dialog.css(settings.transition.in);
 				$dialog.data('settings', settings);
 
-		// Not a cable dialog
+		// Not an entangled cables dialog
 		if(settings.type != 'cables') {
 			populateContent($dialog);
 			populateControls($dialog);
@@ -98,6 +106,7 @@
 
 		// Animate in dialog
 		$dialog.animate(settings.transition.show, function(){
+
 				// Log to google analytics
 				try{
 					var identifier = settings.identifier;
@@ -125,7 +134,7 @@
 
 
 	/**
-	 * Close all dialogs
+	 * Close all dialogs - closes all dialogs that belongs to the matched element's DOM
 	 */
 
 	$.fn.closeAllDialogs = function(_callback) {
@@ -174,7 +183,7 @@
 
 			if( !settings.animateText ) {
 				
-				// Add text now
+				// Add text now, doesn't need to be animated
 				$('.content .text', $dialog).html(settings.content)
 
 			} else {
@@ -186,16 +195,16 @@
 
 
 		/**
-		 * If content is an array
+		 * If content is an array (we test for object type, as arrays tend to be problematic in JS)
+     * Display a list of dialog choices for the player to pick whichever he wants
 		 */
 
 		} else if( typeof(settings.content) === "object") {
 		
-			var $list = $('<ul class="selectable"></ul>');
+			var $list = $('<ul class="selectable"></ul>'),
+          i = 0;
 
-			// Loop through the array and create the list elements
-			var i = 0;
-
+      // Loop through the array and create the list elements
 	    for (key in settings.content) {
 
 	    	if (settings.content.hasOwnProperty(key)) {
@@ -211,7 +220,7 @@
 	  	  }
     	}
 
-    	// Replace .content children with generated list
+    	// Replace .content's html by the generated list
     	$('.content', $dialog).html($list);
 		
 		}
@@ -243,7 +252,7 @@
 
 
 	/**
-	 * loop through controls and create appropriate elements
+	 * Loop through controls and create appropriate html elements
 	 */
 
 	var populateControls = function($dialog){
@@ -268,14 +277,14 @@
    */
 
   $.simulateDecrypt = function($e, text, preshow, offset){
-  		// Preshow cannot be negative
+  		// Preshow cannot be negative nor null/undefined
   		if(!preshow) preshow = 0;
   		else preshow = Math.abs(preshow);
 
-  		// Convert any given html to text (useful for entities)
+  		// Convert any given html to text (useful for converting html entities easily)
       text = $('<div></div>').html(text).text();
 
-      // Offset default and negative handling
+      // Offset default and negative offset handling
   		if(!offset) offset = 0;
   		if(offset<0) offset = text.length + offset;
 

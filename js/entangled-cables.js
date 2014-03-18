@@ -1,5 +1,5 @@
 /**
- *	Plugin for the Cryptris entangled cables scene
+ *	Plugin for the Cryptris entangled cables scenes
  *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
  *	@desc:	Randomizes cable number and images.
  *					Apply electrification behavior to wrong cables.

@@ -192,7 +192,7 @@ function initGame(director) {
 }
 
 /**
- * Startup it all up when the document is ready.
+ * Start it all up when the document is ready.
  */
 function loadGame() {
 

@@ -5,15 +5,18 @@
  */
 
 $(function(){
-	var $textarea = $("#share textarea");
-	var $counter = $(".characters-left .count");
-	var $text = $(".characters-left .text");
+	var $textarea = $("#share textarea"),
+			$counter = $(".characters-left .count"),
+			$text = $(".characters-left .text");
 
+	/**
+	 * CountCharactersLeft: waits for a small amount of time, then fires a change event on the textarea
+	 */
 
 	var countCharactersLeft = function(){
-
 		// To make sure the value was updated, we need a small timeout
 		setTimeout(function() {
+			// Then we just fire a change event on the textarea
 			$textarea.change();
 		}, 40);
 
@@ -28,7 +31,6 @@ $(function(){
 		$counter.text(n);
 		
 		// Css classes
-
 		if(n<0) {
 			$counter.addClass('red');
 			$textarea.addClass('warning');
@@ -38,8 +40,7 @@ $(function(){
 			$textarea.removeClass('warning');
 		}
 
-		// Pluralize
-
+		// Pluralize text
 		if(Math.abs(n)>1){
 			$text.text("Caractères restants");
 		} else {
@@ -50,20 +51,23 @@ $(function(){
 
 
 	/**
-	 * asign event handlers
+	 * Assign event handlers
 	 */
 
-	$textarea.keydown(countCharactersLeft);
-	$textarea.on('paste', countCharactersLeft);
-	$textarea.on('cut', countCharactersLeft);
+	// Count characters left on keydown, paste or cut event
+	$textarea.keydown(countCharactersLeft).on('paste', countCharactersLeft).on('cut', countCharactersLeft);
 
+	// Let's just make sure we count characters no matter where the focus is
 	$(document).keydown(countCharactersLeft);
 
+	// Finally, make sure character count is updated when clicking the submit button
 	$('.button').click(countCharactersLeft);
 
+	// Count characters
 	$textarea.change(function() {
-		var $t = $(this);
-		var v = $t.val();
+		var $t = $(this),
+				v = $t.val();
+
 		updateCount(140-v.length);
 	});
 
