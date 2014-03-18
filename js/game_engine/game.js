@@ -1,11 +1,3 @@
-var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
-    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
-var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
-    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
-var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z"];
-var separator = ["(",")","+","-","*","/","|","&"];
-
-
 // Encode/decode htmlentities
 function krEncodeEntities(s){
     return $("<div/>").text(s).html();
@@ -15,7 +7,33 @@ function krDencodeEntities(s){
     return $("<div/>").html(s).text();
 }
 
-function easy_crypt(message) {
+
+
+/**
+ * SUPER CRYPTOGRAPHY BY VM :)
+ * The aim is to pseudo crypt a message
+ */
+
+// NSA can just suck that
+
+// All these symbols are used to represent a -1 value
+var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
+    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"];
+
+// All these symbols are used to represent a 0 value
+var symbols2 = ["q","r","s","t","u","v","w","x","y","z",
+    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"]
+
+// All these symbols are used to represent a 1 value
+var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z"];
+
+// S3p4rat0rz FTW :)
+var separator = ["(",")","+","-","*","/","|","&"];
+
+// We could just have named that function pseudo_crypt ^^
+// what it does is it takes a ternary number (we use -1, 0 and 1)
+// then converts it to a string by picking a random symbol in the corresponding list
+function easy_crypt(message) { 
     var crypt_message = "";
     for (var i = 0; i < message.length; ++i) {
         var character = '';
@@ -31,6 +49,7 @@ function easy_crypt(message) {
     return crypt_message;
 }
 
+// Does the inverse, takes a string and get back to it's original ternary representation
 function easy_decrypt(crypt_message) {
 
     var ternary_message = [];
@@ -67,25 +86,38 @@ function easy_decrypt(crypt_message) {
     return message;
 }
 
-// & # ; are needed for entities.
+/**
+ * These are the symbols we can display on the game boards
+ * 1 character is coded with 4 ternary symbols
+ * hence we can display up to (3^4 =) 81 different characters
+ * for out of range characters we try to use html entities when possible
+ * As a last resort, we use the "□"" (last charcater in the list) for any 
+ * other unsupported character
+ */
 
 var symbols = [" ", "0","1","2","3","4","5","6","7","8","9",
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
     ";", ".", ",","!","?","&","#","'","\\","\"","(",")","+","-","*","/","|","□"];
 
+// We need to make sure that we only get positive modulos (remember we are using ternary representations, 
+// and we chose -1 as a possible digit, we want to get rid of that 'negativeness' when computing modulos)
 function positive_modulo(x1, nbr) {
     return ((x1 % nbr) + nbr) % nbr;
 }
 
+// Helper shortcut
 var pm = positive_modulo;
 
+// Convert a group of 4 ternary digits to the matching character
 function ternary_to_symbol(x1, x2, x3, x4) {
     var i = pm(x1, 3) + 3 * pm(x2, 3) + 9 * pm(x3, 3) + 27 * pm(x4, 3);
 
     return symbols[i];
 }
 
+// Return a ternary from an integer, based on it's positive modulo 3 value
+// This is used when displaying a character representation of an encrypted message
 function integer_mod3_to_ternary(x) {
     var y = pm(x, 3);
     if (y === 2) {
@@ -97,6 +129,8 @@ function integer_mod3_to_ternary(x) {
 
 var i3t = integer_mod3_to_ternary;
 
+// Convert a symbol to it's ternary representation
+// returns an array containing the 4 ternary digits
 function symbol_to_ternary(s) {
     var i = symbols.indexOf(s);
     console.log(i);
@@ -111,6 +145,8 @@ function symbol_to_ternary(s) {
     return [i3t(x1), i3t(x2), i3t(x3), i3t(x4)];
 }
 
+// Convert a whole string to it's ternary representation, returns an array of arrays
+// each child array has a length of 4 and is the ternary representation of a character
 function string_to_ternary(string) {
     var html_string = string;
     var ternaries = [];
@@ -126,37 +162,59 @@ function string_to_ternary(string) {
 }
 
 /**
- * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ * Return the board_message numerical values as a string eg: [5, -13, 3] -> "5 -13 3"
  */
-function message_number_to_string(board_message) {
 
-    var newString = "";
-    for (var i = 0; i < board_message.length; ++i) {
-        newString = newString + " " + board_message[i];
-    }
-    return newString;
+function message_number_to_string(board_message) {
+    /*
+        TODO: remove this or comment it in the cleanup commit
+        var newString = "";
+        for (var i = 0; i < board_message.length; ++i) {
+            newString = newString + " " + board_message[i];
+        }
+        return newString;
+    */
+    return board_message.join(" ");
+
 }
 
 /**
  * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ * Aka yeah, exactly the same thing as the previous function ^^
  */
+
 function board_message_to_string(board_message) {
+    /*
+    SERIOUSLY WE DON'T KNOW WHAT THIS DOES
+    TODO: remove this or comment it in the cleanup commit
+    */
     var beginString = "";
     for (var i = 0; i < board_message.length && i + 3 < board_message.length; i = i + 4) {
         beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
     }
 
+    /* The rest should stay */
     return message_number_to_string(board_message);
 }
 
 /**
+ * THIS IS PROBABLY DEPRECATED
+ * TODO: remove this or comment it in the cleanup commit
+
  * Take a string and return a string represented its ternary encrypted version.
  * To encrypt a string to use in the board, please use 'chiffre' function.
+ 
+ * @param   dim: expected length for the ecnrypted message
+ * @param   string: the string to encrypt
+ * @param   pk: public key to be used
+ * @param   truncate_number: <todo>
  */
+
 function encrypt_string(dim, string, pk, truncate_number) {
     html_string = krEncodeEntities(string);
     var split_string = string_to_ternary(html_string);
 
+    // add 0s until we reach a multiple of dim
     while (split_string.length % dim !== 0) {
         split_string.push(0);
     }
@@ -193,6 +251,12 @@ function encrypt_string(dim, string, pk, truncate_number) {
     return crypt_msg;
 }
 
+/**/
+
+
+/**
+ *  Compute current keys data
+ */
 
 function generateKeyInfo(public_key, private_key, current_length) {
     var keyInfo = {};
@@ -239,6 +303,8 @@ function generateKeyInfo(public_key, private_key, current_length) {
     return keyInfo;
 }
 
+
+
 function createADataMessage(crypted_message, current_length) {
     var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
 
@@ -263,6 +329,7 @@ function createADataMessage(crypted_message, current_length) {
 
 
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
+
 var repeatGenPublicKeyList = {
     8 : 6,
     10 : 7,
