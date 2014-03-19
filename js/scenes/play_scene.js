@@ -12,7 +12,7 @@ function handle_ia(playScene, rivalBoxInfo) {
     var key = rivalBoxInfo.crypt_key;
     var currentLength = rivalBoxInfo.current_length;
 
-    var MINIMUM_STROKE = ralentiNumber[currentLength] * cryptrisSettings.slowdownIA;
+    var MINIMUM_STROKE = ralentiNumber[currentLength] * cryptrisSettings.AI.slowdownAI;
     if (currentGame.iaKeyType === 'private') {
         MINIMUM_STROKE = 0;
     }

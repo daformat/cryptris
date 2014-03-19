@@ -23,7 +23,7 @@
 		// cancel any previous animation if not complete;
 		clearTimeout(unfinished);
 
-		// Initialise
+		// Initialize
 		_callback = callback;
 		n = 0;
 		nn = 0;	

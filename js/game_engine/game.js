@@ -1,4 +1,7 @@
-// Encode/decode htmlentities
+/**
+ * Encode/decode htmlentities
+ */
+
 function krEncodeEntities(s){
     return $("<div/>").text(s).html();
 }
@@ -8,13 +11,14 @@ function krDencodeEntities(s){
 }
 
 
-
 /**
  * SUPER CRYPTOGRAPHY BY VM :)
- * The aim is to pseudo crypt a message
+ * The aim is to pseudo crypt a ternary message
  */
 
 // NSA can just suck that
+// Old school correspondance table
+// kept out of cryptrisSettings because there's no way someone would wanna change that right? :)
 
 // All these symbols are used to represent a -1 value
 var symbols1 = ["0","1","2","3","4","5","6","7","8","9",
@@ -29,6 +33,11 @@ var symbols3 = ["Q","R","S","T","U","V","W","X","Y","Z"];
 
 // S3p4rat0rz FTW :)
 var separator = ["(",")","+","-","*","/","|","&"];
+
+
+/**
+ *  Pseudo crypt a message to hide it in urls, so you know, the game makes sense
+ */
 
 // We could just have named that function pseudo_crypt ^^
 // what it does is it takes a ternary number (we use -1, 0 and 1)
@@ -49,7 +58,10 @@ function easy_crypt(message) {
     return crypt_message;
 }
 
-// Does the inverse, takes a string and get back to it's original ternary representation
+/**
+ * Does the opposite: takes a string and get back to it's original ternary representation
+ */
+
 function easy_decrypt(crypt_message) {
 
     var ternary_message = [];
@@ -91,17 +103,19 @@ function easy_decrypt(crypt_message) {
  * 1 character is coded with 4 ternary symbols
  * hence we can display up to (3^4 =) 81 different characters
  * for out of range characters we try to use html entities when possible
- * As a last resort, we use the "□"" (last charcater in the list) for any 
+ * As a last resort, we use the "□"" (last character in the list) for any 
  * other unsupported character
  */
 
-var symbols = [" ", "0","1","2","3","4","5","6","7","8","9",
-    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
-    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-    ";", ".", ",","!","?","&","#","'","\\","\"","(",")","+","-","*","/","|","□"];
+var symbols = cryptrisSettings.boardSymbols;
 
-// We need to make sure that we only get positive modulos (remember we are using ternary representations, 
-// and we chose -1 as a possible digit, we want to get rid of that 'negativeness' when computing modulos)
+
+/**
+ * Positive modulo
+ * We need to make sure that we only get positive modulos (remember we are using ternary representations, 
+ * and we chose -1 as a possible digit, we want to get rid of that 'negativeness' when computing modulos)
+ */
+
 function positive_modulo(x1, nbr) {
     return ((x1 % nbr) + nbr) % nbr;
 }
@@ -109,15 +123,23 @@ function positive_modulo(x1, nbr) {
 // Helper shortcut
 var pm = positive_modulo;
 
-// Convert a group of 4 ternary digits to the matching character
+
+/**
+ * Convert a group of 4 ternary digits to the matching character
+ */
+
 function ternary_to_symbol(x1, x2, x3, x4) {
     var i = pm(x1, 3) + 3 * pm(x2, 3) + 9 * pm(x3, 3) + 27 * pm(x4, 3);
 
     return symbols[i];
 }
 
-// Return a ternary from an integer, based on it's positive modulo 3 value
-// This is used when displaying a character representation of an encrypted message
+
+/**
+ * Return a ternary from an integer, based on it's positive modulo 3 value
+ * This is used when displaying a character representation of an encrypted message
+ */
+
 function integer_mod3_to_ternary(x) {
     var y = pm(x, 3);
     if (y === 2) {
@@ -129,8 +151,12 @@ function integer_mod3_to_ternary(x) {
 
 var i3t = integer_mod3_to_ternary;
 
-// Convert a symbol to it's ternary representation
-// returns an array containing the 4 ternary digits
+
+/**
+ * Convert a symbol to it's ternary representation
+ * returns an array containing the 4 ternary digits
+ */
+
 function symbol_to_ternary(s) {
     var i = symbols.indexOf(s);
     console.log(i);
@@ -145,8 +171,12 @@ function symbol_to_ternary(s) {
     return [i3t(x1), i3t(x2), i3t(x3), i3t(x4)];
 }
 
-// Convert a whole string to it's ternary representation, returns an array of arrays
-// each child array has a length of 4 and is the ternary representation of a character
+
+/**
+ * Convert a whole string to it's ternary representation, returns an array of arrays
+ * each child array has a length of 4 and is the ternary representation of a character
+ */
+
 function string_to_ternary(string) {
     var html_string = string;
     var ternaries = [];
@@ -346,13 +376,22 @@ var repeatChiffreMsgList = {
     16 : 11
 };
 
-var ralentiNumber = {
-    8 : 90,
-    10 : 250,
-    12 : 500,
-    14 : 600,
-    16 : 700
-};
+/**
+ *  Slow down the AI
+ *
+ *  For each level, we define a number of random moves the AI will play
+ *  before really trying to crack the encryption
+ *  This setting can be adjusted to impact the game's difficulty
+ *  NOTE-1: Another setting is used as a multiplicator to adjust this parameter: slowdownIA
+ *  NOTE-2: if the computer is set to play with the private key, we don't slow it down at all
+ */
+
+var ralentiNumber = cryptrisSettings.AI.randomMovesBeforeStartingCrackingAlgorithm;
+
+/**
+ * shuffle an array, this is a duplicate, and no variable declaration is made,
+ * YOU'RE FUCKING WITH THE GLOBAL SCOPE HERE! (no variable declaration == variables in global scope)
+ */
 
 function shuffleList(l) {
     for (var i = 0; i < l.length * l.length; ++i) {

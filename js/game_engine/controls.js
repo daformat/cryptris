@@ -1,3 +1,9 @@
+
+
+/**
+ *  TODO
+ */
+
 function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 	var scene = crypt_key.boxOption.scene;
 
@@ -20,6 +26,11 @@ function bindPlayerKeyWithKeyboard(crypt_key, hookSceneActive) {
 	});
 }
 
+
+/**
+ *  TODO
+ */
+
 function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive) {
 	var crypt_key = gameBox.crypt_key;
 
@@ -41,6 +52,11 @@ function bindCKPlayerKeyWithKeyboard(ia_process, scene, gameBox, hookSceneActive
 		}
 	});
 }
+
+
+/**
+ *  TODO
+ */
 
 function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 
@@ -73,6 +89,11 @@ function bindPadWithKey(pad, director, crypt_key, hookSceneActive) {
 		}
 	}
 }
+
+
+/**
+ *  TODO
+ */
 
 function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneActive) {
 	pad.mouseUp = function(mouseEvent) {
@@ -107,6 +128,10 @@ function bindCKPadWithKey(pad, director, ia_process, scene, gameBox, hookSceneAc
 	}
 }
 
+
+/**
+ *  TODO
+ */
 
 function bindPadWithKeyboard(pad, director, hookSceneActive) {
 
@@ -145,6 +170,10 @@ function bindPadWithKeyboard(pad, director, hookSceneActive) {
 }
 
 
+/**
+ *  TODO
+ */
+
 function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, pauseEvent) {
 
 	var relativeY = 3;
@@ -162,6 +191,11 @@ function bindPauseButtonWithObjects(pauseButton, director, hookSceneActive, paus
 		}
 	}
 }
+
+
+/**
+ *  TODO
+ */
 
 function bindHelpButtonByDefault(helpButton, director, hookSceneActive, helpEvent) {
 
