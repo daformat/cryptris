@@ -402,7 +402,7 @@ $(function(){
       $.switchWrapper('#bg-circuits', function(){
         var content = "Il faut vraiment que tu puisses décrypter ce message avant l'ordinateur. Reprennons de zéro !";
         if (currentGame.playerKeyType === 'public' || currentGame.iaKeyType === 'private') {
-          content = "Tu n'y arrives pas ? C'est peut-être normal ! Je te rappelle le principe de la cryptographie asymétrique : la clé secrète rend le déchiffrement facile, mais c'est très difficile voire impossible avec la clé publique. Choisis bien à qui tu donnes quelle clé!";
+          content = "Tu n'y arrives pas ? C'est peut-être normal ! Je te rappelle le principe de la cryptographie asymétrique : la clé secrète rend le déchiffrement facile, mais c'est très difficile voire impossible avec la clé publique. Choisis bien à&nbsp;qui tu donnes quelle clé!";
         }
         $(".wrapper.active .vertical-centering").dialog({
 
