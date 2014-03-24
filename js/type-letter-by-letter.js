@@ -2,8 +2,8 @@
  *	Type letter by letter effect for cryptris
  *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
  *	@desc:	display any given html string letter by letter,
- *				html tags are displayed as a character
- * @dependencies: jQuery
+ *					html tags are displayed as a character
+ * 	@dependencies: jQuery
  */
 
 (function($){

@@ -1,4 +1,9 @@
 /**
+ * Game.js
+ * Core crypto functions
+ */
+
+/**
  * Encode/decode htmlentities
  */
 
@@ -12,8 +17,9 @@ function krDencodeEntities(s){
 
 
 /**
- * SUPER CRYPTOGRAPHY BY VM :)
- * The aim is to pseudo crypt a ternary message
+ * Pseudo crypto
+ * The aim is to pseudo crypt a ternary message, the result will be used in urls when sharing
+ * the game with a message.
  */
 
 // NSA can just suck that
@@ -334,6 +340,9 @@ function generateKeyInfo(public_key, private_key, current_length) {
 }
 
 
+/**
+ *  TODO
+ */
 
 function createADataMessage(crypted_message, current_length) {
     var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
@@ -358,23 +367,27 @@ function createADataMessage(crypted_message, current_length) {
 }
 
 
+/**
+ *  Store the sizes of the keys that we'll during the game
+ */
+
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
 
-var repeatGenPublicKeyList = {
-    8 : 6,
-    10 : 7,
-    12 : 8,
-    14 : 9,
-    16 : 10
-};
 
-var repeatChiffreMsgList = {
-    8 : 7,
-    10 : 8,
-    12 : 9,
-    14 : 10,
-    16 : 11
-};
+/**
+ *  How many times should the private key be applied in order to create a public key
+ *  (aka rep1 in lducas' examples)
+ */
+
+var repeatGenPublicKeyList = cryptrisSettings.crypto.repeatGenPublicKeyList;
+
+
+/**
+ *  How many times should the public key be applied to encrypt a message 
+ *  (aka rep2 in lducas' examples)
+ */
+
+var repeatChiffreMsgList = cryptrisSettings.crypto.repeatChiffreMsgList;
 
 /**
  *  Slow down the AI
@@ -388,29 +401,39 @@ var repeatChiffreMsgList = {
 
 var ralentiNumber = cryptrisSettings.AI.randomMovesBeforeStartingCrackingAlgorithm;
 
+
 /**
- * shuffle an array, this is a duplicate, and no variable declaration is made,
- * YOU'RE FUCKING WITH THE GLOBAL SCOPE HERE! (no variable declaration == variables in global scope)
+ *  Proxy for Array.shuffle()
+ *  If possible we should completely remove it because it's polluting the global scope
+ *  Replace any occurence by arrayToShuffle.shuffle();
  */
 
 function shuffleList(l) {
+/*
     for (var i = 0; i < l.length * l.length; ++i) {
         tmpValue = l[l.length - 1];
         randomIndex = Math.floor(Math.random(1) * l.length);
         l[l.length - 1] = l[randomIndex];
         l[randomIndex] = tmpValue;
     }
-    return l;
+*/
+    return l.shuffle();
 };
 
-var sks = {
-    8 : shuffleList([7, 1, -1, -1, 0, 0, 0, 0]),
-    10 : shuffleList([11, 1, 1, -1, -2, -1, 0, 0, 0, 0]),
-    12 : shuffleList([15, 1, 2, 1, -1, -2, -1, -1, 0, 0, 0, 0]),
-    14 : shuffleList([18, 1, 4, 1, 1, -1, -3, -2, -1, -1, 0, 0, 0, 0]),
-    16 : shuffleList([19, 1, 5, 1, 1, 1, -1, -4, -2, -1, -1, -1, 0, 0, 0, 0])
-};
 
+/**
+ *  Private keys
+ *  Those were carefully generated to adjust the game difficulty and avoid blocking situations
+ */
+
+var sks = cryptrisSettings.pregeneratedPrivateKeys;
+
+
+
+/**
+ *  "Rotate" columns to the left (i) times
+ *   According to the size (dim) of the current board
+ */
 
 function rotate(dim, l, i) {
     var new_l = [];
@@ -425,6 +448,11 @@ function rotate(dim, l, i) {
     return new_l;
 }
 
+
+/**
+ *  TODO
+ */
+
 function sum(l1, l2) {
     var sum_l = [];
 
@@ -435,6 +463,11 @@ function sum(l1, l2) {
     return sum_l;
 }
 
+
+/**
+ *  TODO
+ */
+
 function mult(a, l1) {
     var mult_l = [];
 
@@ -443,6 +476,11 @@ function mult(a, l1) {
     }
     return mult_l;
 }
+
+
+/**
+ *  TODO
+ */
 
 function score(publicKey) {
     var maxPk = Math.max.apply(null, publicKey);
@@ -458,6 +496,11 @@ function score(publicKey) {
     }
 }
 
+
+/**
+ *  TODO
+ */
+
 function genPublicKey(dim, sk, repet) {
     var pk = sk;
 
@@ -471,6 +514,11 @@ function genPublicKey(dim, sk, repet) {
     }
     return pk;
 }
+
+
+/**
+ *  Generate public keys for the different board length
+ */
 
 function genPublicKeys() {
 
@@ -486,6 +534,11 @@ function genPublicKeys() {
 
     return pk;
 }
+
+
+/**
+ *  TODO
+ */
 
 function getKeyInfo(dim) {
     var pk = genPublicKeys();
@@ -549,6 +602,11 @@ function getKeyInfo(dim) {
     return result;
 }
 
+
+/**
+ *  TODO
+ */
+
 function resetPublicKey(newPk, index) {
 
     if (currentGame.playerKeyInfo !== null && currentGame.playerKeyInfo !== undefined) {
@@ -576,6 +634,11 @@ function resetPublicKey(newPk, index) {
         }
     }
 }
+
+
+/**
+ *  TODO
+ */
 
 function glouton(dim, cipher, secretKey, limit) {
     var tmpCipher = cipher;
@@ -606,6 +669,11 @@ function glouton(dim, cipher, secretKey, limit) {
     return false;
 }
 
+
+/**
+ *  TODO
+ */
+
 function l2(v) {
     var result = 0;
 
@@ -615,6 +683,11 @@ function l2(v) {
 
     return result;
 }
+
+
+/**
+ *  TODO
+ */
 
 function recuit_simule_ralenti(dim, cipher, publicKey, limit, p) {
     var publicKeyInitial = publicKey;
@@ -666,6 +739,11 @@ function recuit_simule_ralenti(dim, cipher, publicKey, limit, p) {
 
     return false;
 }
+
+
+/**
+ *  TODO
+ */
 
 function chiffre(dim, message, pk, sk) {
 
@@ -768,6 +846,11 @@ function chiffre(dim, message, pk, sk) {
 
     return result;
 }
+
+
+/**
+ *  TODO
+ */
 
 function no_chiffre(dim, message) {
 

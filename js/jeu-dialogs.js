@@ -1,3 +1,7 @@
+/**
+ *  Story mode game dialogs,
+ *  Most dialogs are set here, please refer to dialog.js for parameters
+ */
 
 var youAreIntern = "Tu es stagiaire dans une équipe de recherche Inria";
 var firstDay = "Premier jour à l'institut";

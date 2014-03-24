@@ -1,3 +1,13 @@
+/**
+ *  Game_box.js
+ *  Prepare a board for the player or the AI
+ */
+
+/**
+ *  TODO
+ */
+
+
 function GameBox(director, boxOption, relativeX, relativeY, current_length, key_info, my_message, player, isActive, isActiveKeySymbol, withName) {
   this.director = director;
   this.boxOption = boxOption;
