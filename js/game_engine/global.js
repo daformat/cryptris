@@ -219,8 +219,8 @@ function getRelativeX(resizeOption) {
 
 /**
  * For information:
- * type1 : white blocks
- * type2 : colored blocks
+ * type1 : white blocks (positive)
+ * type2 : colored blocks (negative)
  * colorLeft : In a block, this is the left color of the linearGradient.
  * colorRight : In a block, this is the right color of the linearGradient.
  */
