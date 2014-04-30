@@ -215,7 +215,7 @@ function message_number_to_string(board_message) {
 }
 
 /**
- * Take a board message (a list of number of blocks) and return a string representated its encrypted version.
+ * Return the board_message numerical values as a string eg: [5, -13, 3] -> "5 -13 3"
  * Aka yeah, exactly the same thing as the previous function ^^
  */
 
@@ -224,10 +224,12 @@ function board_message_to_string(board_message) {
     SERIOUSLY WE DON'T KNOW WHAT THIS DOES
     TODO: remove this or comment it in the cleanup commit
     */
+    /*
     var beginString = "";
     for (var i = 0; i < board_message.length && i + 3 < board_message.length; i = i + 4) {
         beginString += ternary_to_symbol(board_message[i], board_message[i + 1], board_message[i + 2], board_message[i + 3]);
     }
+    */
 
     /* The rest should stay */
     return message_number_to_string(board_message);
@@ -246,6 +248,7 @@ function board_message_to_string(board_message) {
  * @param   truncate_number: <todo>
  */
 
+/*
 function encrypt_string(dim, string, pk, truncate_number) {
     html_string = krEncodeEntities(string);
     var split_string = string_to_ternary(html_string);
@@ -287,11 +290,17 @@ function encrypt_string(dim, string, pk, truncate_number) {
     return crypt_msg;
 }
 
-/**/
+*/
 
 
 /**
  *  Compute current keys data
+ *  Iterate on each key element for both private and public key
+ *  We store the following data as arrays
+ *  - the key element value
+ *  - the 'normal' type of the corresponding column (e.g negative, positive, or empty)
+ *  - the 'reverse' type of the corresponding column (e.g negative, positive, or empty)
+ *  - the absolute value of the column
  */
 
 function generateKeyInfo(public_key, private_key, current_length) {
@@ -303,9 +312,11 @@ function generateKeyInfo(public_key, private_key, current_length) {
     keyInfo['private_key'][current_length] = {'key' : [], 'normal_key' : [], 'reverse_key' : [], 'number' : []};
 
     for (var i = 0; i < current_length; ++i) {
+        // Store raw value
         keyInfo.public_key[current_length].key[i] = public_key[i];
         keyInfo.private_key[current_length].key[i] = private_key[i];
 
+        // Compute public key data
         if (public_key[i] > 0) {
             keyInfo.public_key[current_length].normal_key[i] = COLUMN_TYPE_1;
             keyInfo.public_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
@@ -320,7 +331,7 @@ function generateKeyInfo(public_key, private_key, current_length) {
             keyInfo.public_key[current_length].number[i] = public_key[i] * (-1);
         }
 
-
+        // Compute private key data
         if (private_key[i] > 0) {
             keyInfo.private_key[current_length].normal_key[i] = COLUMN_TYPE_1;
             keyInfo.private_key[current_length].reverse_key[i] = COLUMN_TYPE_2;
@@ -341,25 +352,28 @@ function generateKeyInfo(public_key, private_key, current_length) {
 
 
 /**
- *  TODO
+ *  Compute current message data
+ *  Iterate on each message element, and store the following data as arrays
+ *  - the message element
+ *  - the absolute value of the message element
+ *  - the type of block (e.g negative, positive, or empty)
  */
 
 function createADataMessage(crypted_message, current_length) {
     var dataMessage = {'message_number' : [], 'message_type' : [], 'plain_message' : []};
 
     for (var i = 0; i < current_length; ++i) {
+        dataMessage.plain_message[i] = crypted_message[i];
+
         if (crypted_message[i] > 0) {
             dataMessage.message_number[i] = crypted_message[i];
             dataMessage.message_type[i] = COLUMN_TYPE_1;
-            dataMessage.plain_message[i] = crypted_message[i];
         } else if (crypted_message[i] === 0) {
             dataMessage.message_number[i] = crypted_message[i];
             dataMessage.message_type[i] = COLUMN_TYPE_3;
-            dataMessage.plain_message[i] = crypted_message[i];
         } else {
             dataMessage.message_number[i] = crypted_message[i] * (-1);
             dataMessage.message_type[i] = COLUMN_TYPE_2;
-            dataMessage.plain_message[i] = crypted_message[i];
         }
     }
 
@@ -368,7 +382,7 @@ function createADataMessage(crypted_message, current_length) {
 
 
 /**
- *  Store the sizes of the keys that we'll during the game
+ *  Store the sizes of the keys that we'll use during the game
  */
 
 var authorizedLength = [MIN_BOARD_LENGTH, MEDIUM_BOARD_LENGTH, MAX_BOARD_LENGTH, SUPER_MAX_BOARD_LENGTH, MEGA_MAX_BOARD_LENGTH];
@@ -450,7 +464,9 @@ function rotate(dim, l, i) {
 
 
 /**
- *  TODO
+ *  Sum array elements together ( so that sum(l1, l2) == l3 where l3[i] = l1[i] + l2[i] )
+ *  We assert that l1 has the same length than l2
+ *  We use this when applying the key, to get the resulting column value
  */
 
 function sum(l1, l2) {
@@ -465,7 +481,8 @@ function sum(l1, l2) {
 
 
 /**
- *  TODO
+ *  Multiply each array element by 'a'
+ *  We use this when applying the key multiple times (when not animating it)
  */
 
 function mult(a, l1) {
@@ -479,7 +496,10 @@ function mult(a, l1) {
 
 
 /**
- *  TODO
+ *  In order for the game to be 'playable' without too much frustration
+ *  When the player is done creating the public key, we give it a score,
+ *  if that score is too low, we generate another key
+ *  (this time we do it for the player)
  */
 
 function score(publicKey) {
@@ -498,7 +518,7 @@ function score(publicKey) {
 
 
 /**
- *  TODO
+ *  Generate public key (When not animated)
  */
 
 function genPublicKey(dim, sk, repet) {
@@ -517,7 +537,7 @@ function genPublicKey(dim, sk, repet) {
 
 
 /**
- *  Generate public keys for the different board length
+ *  Prepare every public keys (one for each board length)
  */
 
 function genPublicKeys() {
@@ -537,14 +557,15 @@ function genPublicKeys() {
 
 
 /**
- *  TODO
+ *  Create public keys and compute key info (for each board length)
  */
 
 function getKeyInfo(dim) {
+
     var pk = genPublicKeys();
 
     /**
-     * Make to coincide inria's model with dc's model.
+     * Made to coincide inria's model with dc's model.
      */
     var result = {};
 
@@ -604,7 +625,9 @@ function getKeyInfo(dim) {
 
 
 /**
- *  TODO
+ *  Unless the player chooses to skip the public key creation step,
+ *  a new key will be created, either by the player, or by the computer
+ *  Once a new key is created, we need update the public key infos.
  */
 
 function resetPublicKey(newPk, index) {
@@ -637,7 +660,16 @@ function resetPublicKey(newPk, index) {
 
 
 /**
- *  TODO
+ *  This function can be used to test if the player can easily decrypt a message.
+ *  Easily means in less moves than the limit we specified
+ *  This is a port of Léo Ducas's algorithm
+ *
+ *  WE DON'T USE IT IN THE GAME, because we already pre-computed playable values
+ *
+ *  @param dim - board length
+ *  @param cipher - encrypted message
+ *  @param secretKey - the private key
+ *  @param limit - maximum moves before aborting
  */
 
 function glouton(dim, cipher, secretKey, limit) {

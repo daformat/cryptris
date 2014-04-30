@@ -1,3 +1,7 @@
+/**
+ *  Game assets to be loaded
+ */
+
 function getPreloadedImages() {
 	var imgs = [];
     imgs.push({id:'logo-board', url: "img/assets/board-assets_03.png"});

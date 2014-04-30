@@ -216,10 +216,10 @@ function createCreateKeyScene(director, current_length, empty_message, keyInfo, 
     bindPadWithKeyboard(infoColumn.pad, director, hookActive);
 
     // Bind all objects with pause Buttons.
-    bindPauseButtonWithObjects(infoColumn.pauseButton, director, hookActive, pauseEvent);
+    bindPauseButton(infoColumn.pauseButton, director, hookActive, pauseEvent);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
+    bindHelpButton(infoColumn.helpButton, director, hookActive, helpEvent);
 
 
     /**

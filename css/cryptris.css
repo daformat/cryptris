@@ -25,6 +25,9 @@ html, body {
 
 }
 
+html{
+	-moz-transform: transale3d(0,0,0); 
+}
 
 ul{
 	list-style-type: none

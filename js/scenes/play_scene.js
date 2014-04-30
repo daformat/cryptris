@@ -198,12 +198,12 @@ function createPlayScene(director, current_length, message, keyInfo, hookActive,
     /*
     // Bind all objects with pause Buttons.
     var objectsWithAnimation = withIaBoard ? [gameBoxInfo.crypt_key, gameBoxInfo.message, rivalBoxInfo.crypt_key, rivalBoxInfo.message] : [gameBoxInfo.crypt_key, gameBoxInfo.message];
-    bindPauseButtonWithObjects(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
+    bindPauseButton(infoColumn.pauseButton, resultScene.scene, objectsWithAnimation, director, hookActive);
     */
-    bindPauseButtonWithObjects(infoColumn.pauseButton, director, hookActive, pauseEvent);
+    bindPauseButton(infoColumn.pauseButton, director, hookActive, pauseEvent);
 
     // Bind default help button (do nothing).
-    bindHelpButtonByDefault(infoColumn.helpButton, director, hookActive, helpEvent);
+    bindHelpButton(infoColumn.helpButton, director, hookActive, helpEvent);
 
     /**
      * Set the resize callback to call.
