@@ -56,7 +56,7 @@ ul{
 }
 
 /*
-
+	Preloader
 */
 #preloader-view {
 	font-size:0.9em;
@@ -219,6 +219,7 @@ ul{
 p{
 	font-size: 1.2em;
 }
+
 /*
 	Utils
 */
@@ -270,6 +271,9 @@ p{
 		box-shadow: 0 1px 0 #666;
 }
 
+
+
+
 .characters-left{
 	line-height: 46px;
 	margin: 15px 10px 30px;
@@ -307,6 +311,10 @@ p{
   vertical-align:middle;
   overflow-x: hidden;
   position: relative;
+}
+
+.warning{
+
 }
 
 
@@ -705,15 +713,15 @@ border: 1px solid #0091BB;
 }
 
 .share .encrypted-message .message-spinner{
-	display: table;
-	height: 280px;
-	width: 700px;
+	display: inline-block;
+	text-align: center;
+	height: 275px;
+	width: 456px;
 }
 
 .share .encrypted-message .message-spinner .message-spinner-cell{
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
+	display: inline-block;
+	margin-top: 80px;
 }
 
 /* Circle spinner */
@@ -729,6 +737,61 @@ border: 1px solid #0091BB;
 	-webkit-transform: translateX(-10px) rotate(-360deg);
 	transform: translateX(-10px) rotate(-360deg);
 }
+
+/* Disclaimer */
+.share .warning{
+	display: inline-block;
+
+	background-color: #000;
+	background-color: rgba(0,0,0, 0.8);
+
+	border: 10px solid #0071bb;
+	border: 10px solid rgba(0, 150, 237, 0.2);
+
+	border-radius: 3px;
+	-webkit-box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
+	box-shadow: -1px -1px 0 rgba(15,155,255, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(15,155,255, 0.3) , 1px 1px 0 rgba(0,0,0, 0.5);
+
+	border-color: rgb(156, 5, 0);
+	border-color: rgba(255, 55, 50, 0.5);
+	-webkit-box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
+	box-shadow: -1px -1px 0 rgba(255,155,155, 0.3) inset, 1px 1px 0 rgba(0,0,0, 0.5) inset, -1px -1px 0 rgba(255,155,155, 0.3) , 1px 1px 0 rgba(0,0,0, 0.1), 0 0 25px rgb(156, 5, 0);
+
+
+	width: 80%;
+	max-width: 530px;
+	
+
+	font-size: 1em;
+	color: #eee;
+
+	font-family: inherit;
+	text-shadow: inherit;
+	font-weight: normal;
+	padding:15px 20px;
+
+	margin-bottom: 30px;
+
+	-webkit-font-smoothing: antialiased;
+	resize: none;
+
+	transition: border-color 0.35s ease, box-shadow 0.45s ease;
+	-webkit-appearance: none;	
+
+}
+
+.share .warning .avatar-small{
+	width: 30%;
+	max-width: 70px;
+	float: left;
+	margin-right: 15px;
+	vertical-align: middle;
+
+}
+
+
+
+
 /*
 	New login screen
 */
