@@ -179,7 +179,7 @@ $(document).ready(function() {
           try{
               gui.add(cryptrisSettings, 'readingDelay', 0, 10000);
               gui.add(cryptrisSettings, 'animateTextDelayBetweenLetters', 0, 1000);
-              gui.add(cryptrisSettings, 'slowdownIA', 0, 1);
+              gui.add(cryptrisSettings.AI, 'slowdownAI', 0, 2);
 
               var guiColors = gui.addFolder('Player colors');
 
@@ -217,7 +217,7 @@ $(document).ready(function() {
               /*
                IA
               */
-              var guiColors2 = gui.addFolder('IA colors');
+              var guiColors2 = gui.addFolder('AI colors');
 
               var guiColors2Type1 = guiColors2.addFolder('Positive blocks')
 
@@ -265,7 +265,7 @@ $(document).ready(function() {
 
     
     /**
-     * We use this to enable some fonts in our gameBox.
+     * We use this to enable web fonts in our gameBox.
      */
     $('.trick-font').each(function() {
         $(this).attr('style', 'display: none;');

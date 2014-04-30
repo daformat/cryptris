@@ -78,6 +78,8 @@
     }, options );
 
 
+    settings.animateText = false;
+
     /**
      * Create html element and set it up
      */
@@ -122,9 +124,9 @@
 				}
 
 				// Animate letter by letter if needed
-				if (settings.animateText) {
+				if (settings.animateText != false) {
 					$('.content .text', $dialog).typeLetterByLetter(settings.content, settings.animateTextDelayBetweenLetters);
-				}
+        }
 		});
 
 
@@ -181,7 +183,7 @@
 
 		if ( typeof(settings.content) === "string" ){
 
-			if( !settings.animateText ) {
+			if( !settings.animateText || settings.animateText === false) {
 				
 				// Add text now, doesn't need to be animated
 				$('.content .text', $dialog).html(settings.content)

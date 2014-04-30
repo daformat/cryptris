@@ -21,7 +21,7 @@ $(function(){
 
 	var $scroll = $('.autoscrolling');	
 
-  // We add some margins to the autoscrolling element	
+  // Add some margins to the autoscrolling element	
 	$scroll.prepend('<div id="spacer" style="height:'+($( window ).height()-160)+'px"></div>');
 	$scroll.append('<div style="height:'+($( window ).height()/4)+'px"></div>');
 

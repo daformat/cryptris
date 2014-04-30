@@ -1,6 +1,13 @@
+/**
+ *  decrypter.js
+ *  Play with a user encrypted message, passed in the url.
+ */
+
 /********************************************************************
  * Ensure that below files are included (in the same order) for the *
  * good behavior of this piece of code :                            *
+ *     - prototpye-additions.js                                     *
+ *     - cryptris-settings.js                                       *
  *     - game.js                                                    *
  *     - splash_screen.js                                           *
  *     - menu_screen.js                                             *

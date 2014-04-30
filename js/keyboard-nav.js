@@ -1,5 +1,6 @@
 /**
- *	Binds <Esc> to clicking .btn-close
+ *	Binds <Esc> to clicking .btn-close, obviously won't work if 
+ *  no .btn-close element is found
  *	@author: Mathieu Jouhet <mathieu@digitalcuisine.fr>
  *	@dependencies: jQuery
  */

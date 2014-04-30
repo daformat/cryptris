@@ -77,6 +77,8 @@
     <script type="text/javascript" src="./vendor/caat.js"></script>
 
     <!--LOAD CUSTOM JS FILE-->
+    <script type="text/javascript" src="js/prototype-additions.js"></script>
+    <script type="text/javascript" src="js/cryptris-settings.js"></script>
     <script type="text/javascript" src="./js/game_engine/global.js"></script>
     <script type="text/javascript" src="./js/game_engine/game.js"></script>
     <script type="text/javascript" src="./js/game_engine/controls.js"></script>
@@ -125,6 +127,7 @@
                   <div class="characters-left"><span class="count lcd">140</span> <span class="text">Caractères restants</span></div>
                   <input type="reset" value="Annuler" class="button red"><input type="submit" value="Suivant" class="button blue">
               </form>
+
         
             </div>
           </div>
@@ -138,6 +141,10 @@
             <div class="text-content no-max-width">
               <h2>Partager le jeu</h2>
               <p>Voici votre message chiffré, partagez le sur les sites de votre choix.</p>
+
+              <p class="warning"><img src='img/avatar-chercheuse.jpg' class='avatar-small'>Attention ! Cryptris n'est qu'un jeu: nous donnerons la clef privée a tout ceux qui cliqueront sur votre lien et votre message ne restera pas secret bien longtemps...<br/>
+              Pour envoyer de vrais messages chiffrés, <a href='bonus.html'>utilisez PGP</a></p>
+
               
               <div class="encrypted-message">
                   <div class="message">

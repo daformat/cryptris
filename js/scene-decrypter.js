@@ -1,10 +1,11 @@
-var cryptrisSettings = {
-    readingDelay: 4000,
-    animateTextDelayBetweenLetters: 20,
-    player: {},
-    dialog4: [false, false, false],
-    dialogWhatArePrivatePublicKey: [false, false, false]
-}
+/**
+ *  TODO
+ */
+
+/**
+ *  TODO - make this extend cryptrisSettings
+ */
+
 
 function specialOutInterpolator() {
     this.getPosition = function(time) {
@@ -20,6 +21,10 @@ function specialInInterpolator() {
 
 $(function(){
   var game = cryptrisSettings;
+      game.player = game.player || {};
+      game.dialog4 = [false, false, false];
+      game.dialogWhatArePrivatePublicKey = [false, false, false];
+
   var transitionTime = 1000;
 
 

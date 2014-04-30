@@ -1,20 +1,57 @@
+
+
+/**
+ *  Level board width (in columns)
+ */
+
 var MIN_BOARD_LENGTH = 8;
 var MEDIUM_BOARD_LENGTH = 10;
 var MAX_BOARD_LENGTH = 12;
 var SUPER_MAX_BOARD_LENGTH = 14;
 var MEGA_MAX_BOARD_LENGTH = 16;
 
+
+
+/**
+ *  Columns identifiers
+ */
+
 var COLUMN_TYPE_1 = 'type1';
 var COLUMN_TYPE_2 = 'type2';
 var COLUMN_TYPE_3 = 'empty';
+
+
+
+/**
+ *  Maximum allowed column value, if any column reaches a greater 
+ *  (absolute) value than this setting, we'll throw a dialog explaining
+ *  that the player is doing it wrong and give the option to restart 
+ *  the game or to give up
+ */
+
 var MAX_BLOCKS_IN_A_COLUMN = 600;
+
+/**
+ *  Key type identifiers
+ */
 
 var KEY_TYPE_NORMAL = 0;
 var KEY_TYPE_REVERSE = 1;
+
+
+/**
+ *  In-game level messages
+ */
+
 var FIRST_MESSAGE = "OK";
 var FIRST_BATTLE_MESSAGE = "24";
 var SECOND_BATTLE_MESSAGE = "78";
 var THIRD_BATTLE_MESSAGE = " 31";
+
+
+/**
+ *  Arcade messages
+ */
 
 var FIRST_CHALLENGE_MESSAGE = "24";
 var SECOND_CHALLENGE_MESSAGE = "74";
@@ -22,7 +59,17 @@ var THIRD_CHALLENGE_MESSAGE = "131";
 var FOURTH_CHALLENGE_MESSAGE = "435";
 var FIFTH_CHALLENGE_MESSAGE = "1337";
 
+
+/**
+ *  TODO
+ */
+
 var indexToReset = MIN_BOARD_LENGTH;
+
+
+/**
+ *
+ */
 
 function game() {
 	this.username = "JOUEUR";
@@ -172,8 +219,8 @@ function getRelativeX(resizeOption) {
 
 /**
  * For information:
- * type1 : white blocks
- * type2 : colored blocks
+ * type1 : white blocks (positive)
+ * type2 : colored blocks (negative)
  * colorLeft : In a block, this is the left color of the linearGradient.
  * colorRight : In a block, this is the right color of the linearGradient.
  */
