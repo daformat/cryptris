@@ -3,9 +3,16 @@
  *  Please create a backup before modifying anything here
  *  and Read The Fucking Manual! (Well, comments)
  *  More settings can be found in game_engine/global.js
+ *  The file prototype-additions.js must be included BEFORE this file
  */
 
 var cryptrisSettings = cryptrisSettings || {};
+
+/**
+ *  Cryptris main url used for sharing links
+ */
+ 
+cryptrisSettings.appUrl = "http://daformat.github.io/cryptris"
 
 /**
  *  Pseudo-prompt animation, displays a text character by character.

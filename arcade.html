@@ -1,7 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html itemscope itemtype="http://schema.org/Article">
   <head>
     <title>Cryptris</title>
+
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="Cryptris - Un jeu sur la cryptographie asymétrique">
+    <meta itemprop="description" content="Découvrez l'univers de la cryptographie: jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement. De nombreux défis vous attendent, êtes-vous prêts ?">
+    <meta itemprop="image" content="http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@digital_cuisine">
+    <meta name="twitter:title" content="Cryptris">
+    <meta name="twitter:description" content="Découvrez l'univers de la cryptographie: jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.">
+    <meta name="twitter:creator" content="@digital_cuisine">
+    <!-- Twitter summary card with large image must be at least 280x150px -->
+    <meta name="twitter:image:src" content="http://www.example.com/image.html">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="Cryptris - Un jeu sur la cryptographie asymétrique" />
+    <!--<meta property="og:type" content="article" />-->
+    <meta property="og:url" content="http://daformat.github.io/cryptris" />
+    <meta property="og:image" content="http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png" />
+    <meta property="og:description" content="Découvrez l'univers de la cryptographie: jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement. De nombreux défis vous attendent, êtes-vous prêts ?" />
+    <meta property="og:site_name" content="Cryptris" />
+    <meta property="article:published_time" content="2014-05-12T11:39:00+01:00" />
+    <meta property="article:modified_time" content="2014-05-12T11:39:00+01:00" />
+    <!--<meta property="fb:admins" content="Facebook numberic ID" />-->
     <meta name="viewport" content="" id="viewport"/>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-title" content="Cryptris">
@@ -111,7 +137,7 @@
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-46578010-1', 'cryptris.net');
+    ga('create', 'UA-46578010-1', cryptrisSettings.appUrl);
     ga('send', 'pageview');
 
   </script>    
@@ -186,7 +212,7 @@
 
       </div>
 
-      <a href="./index.html" class="btn-close"><img src="img/btn-close.png"></a>
+      <a href="./" class="btn-close"><img src="img/btn-close.png"></a>
     </div>
 
 
@@ -210,7 +236,7 @@
         <p class="share-game">
           <a href="#"><img src="img/icn-facebook-large.png"></a>
           <a href="#"><img src="img/icn-twitter-large.png"></a>
-          <a href="#"><img src="img/icn-google-plus-large.png"></a>
+          <a href="#"><img src="img/icn-gp-large.png"></a>
         </p>
         <p><a href="credits.html" class="button blue">Suite</a></p>
       </div>

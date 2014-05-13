@@ -1237,7 +1237,7 @@ $(function() {
       ga('send', 'event', i.category, i.action, i.label);
 
       // Go back to the index
-      window.location = "/";
+      window.location.href = './'
     });
   }
 
