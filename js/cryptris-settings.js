@@ -8,6 +8,11 @@
 var cryptrisSettings = cryptrisSettings || {};
 
 /**
+ *  Ceyptris main url
+ */
+cryptrisSettings.appUrl = "http://daformat.github.io/cryptris"
+
+/**
  *  Pseudo-prompt animation, displays a text character by character.
  *  This sets the delay to wait before displaying the next character
  *  Used for any non-player dialog, and during the intro.

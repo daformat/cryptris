@@ -169,8 +169,10 @@ function createMiniBoard(current_length, crypted_message) {
     initGame(currentGame.director, current_length, crypted_message);
 }
 
-var href = window.location.href;
-var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
+//
+var href = cryptrisSettings.appUrl;
+// var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
+var hrefPath = href + '/';
 var baseHtml = hrefPath + 'decrypter.html';
 
 function keyInfoCrypt(message) {
