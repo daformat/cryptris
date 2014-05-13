@@ -23,7 +23,7 @@
 
     settings = $.extend({
 
-    	// Define if we want the text to be displayed one character at a time
+    	// Define if we want the text to be displayed one character at a time - /!\ OVERRIDEN l.82 /!\
 	    animateText: false,
 
 	    // If so, the delay between each character can be changed to any millisecond value
@@ -78,7 +78,8 @@
     }, options );
 
 
-    settings.animateText = false;
+ 	// FORCE TEXT TO NOT ANIMATE, as the animation is slowing firefox too much :(
+    	settings.animateText = false;
 
     /**
      * Create html element and set it up
