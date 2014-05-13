@@ -171,7 +171,7 @@ function createMiniBoard(current_length, crypted_message) {
 
 //
 var href = cryptrisSettings.appUrl;
-// var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
+//var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
 var hrefPath = href + '/';
 var baseHtml = hrefPath + 'decrypter.html';
 

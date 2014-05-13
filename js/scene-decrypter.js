@@ -577,7 +577,7 @@ $(function(){
     	          label: "Suite", 
         	      class: "button blue",
             	  onClick: function(){
-                    window.location.href = '../';
+                    window.location.href = './';
                   }
             	}]
 
