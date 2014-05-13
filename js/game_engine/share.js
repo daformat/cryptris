@@ -256,6 +256,7 @@ function createCryptedMessage() {
         url += "-";
         url += keyInfo;
 
+        // Setup sharing urls
         $('#share-tw').attr("href", "https://twitter.com/intent/tweet?text=Essaye de décrypter ce message sur Cryptris&url=" + url);
         $('#share-tw').attr("target", "_blank");
 

@@ -67,12 +67,17 @@
     <![endif]-->
 
     <script src="vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/prototype-additions.js"></script>
+    <script src="js/cryptris-settings.js"></script>
+
     <script src="js/viewport.js"></script>
     <script src="js/mobile-detection.js"></script>
     <script src="js/selectable-list.js"></script>
     <script src="vendor/caat.js"></script>
     <script src="js/preloaded_images.js"></script>
     <script src="js/preloader.js"></script>
+
+    <script src="js/index.js"></script>
 
 
   </head>
@@ -146,16 +151,38 @@
 
       <div class='social-icons'>
 
+
+
         <!-- Facebook -->
           
+<!--
           <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
-        
+-->
+        <a id="share-fb"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
+        <a id="share-tw"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
+        <span
+          id="share-gp"
+          class="g-interactivepost"
+          data-contenturl="https://cryptris.com"
+          data-contentdeeplinkid="/"
+          data-clientid="303615069411.apps.googleusercontent.com"
+          data-cookiepolicy="single_host_origin"
+          data-prefilltext="Cryptris, un jeu sur la cryptographie asymétrique. Venez défier l’ordinateur."
+          data-calltoactionlabel="PLAY"
+          data-calltoactiondeeplinkid="/">
+
+                        <a id="share-gp"><img class="retina" src="img/icn-gp@2x.png" data-at2x="img/icn-gp@2x.png" alt=""></a>
+
+        </span>
+
         <!-- Twitter -->
 
+<!--
           <a onclick='javascript:window.open("https://twitter.com/intent/tweet?text=Cryptris - un jeu sur l’univers de la cryptographie asymétrique. Affrontez l’ordinateur sur&url=http://cryptris.com","_blank","toolbar=no, scrollbars=yes, resizable=yes, top=500, left=500, width=400, height=400");' href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
-
+-->
 
         <!-- Google plus -->  
+<!--
         <span
           class="g-interactivepost"
           data-contenturl="https://cryptris.com/"
@@ -166,8 +193,9 @@
           data-calltoactionlabel="PLAY"
           data-calltoactionurl="http://crytptis.com"
           data-calltoactiondeeplinkid="/">
-          <a href="#"><img class="retina" src="img/icn-google-plus@2x.png" data-at2x="img/icn-google-plus@2x.png" alt=""></a>
+          <a href="#"><img class="retina" src="img/icn-gp@2x.png" data-at2x="img/icn-gp@2x.png" alt=""></a>
         </span>
+-->
 
       </div>
     </div>

@@ -8,8 +8,9 @@
 var cryptrisSettings = cryptrisSettings || {};
 
 /**
- *  Ceyptris main url
+ *  Cryptris main url used for sharing links
  */
+ 
 cryptrisSettings.appUrl = "http://daformat.github.io/cryptris"
 
 /**
