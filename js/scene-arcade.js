@@ -255,7 +255,7 @@ $(function(){
               label: "Menu Principal",
               class: "not-asked",
               onClick: function() {
-                window.location = "/";
+                window.location.href = './'
               }
             }]
 
@@ -867,7 +867,7 @@ $(function(){
               label: "Menu Principal",
               class: "not-asked",
               onClick: function() {
-                window.location = "/";
+                window.location.href = './'
               }
             }
           ]
