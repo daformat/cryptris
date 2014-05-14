@@ -124,7 +124,8 @@ ul{
 	display: table;
 	min-width: 400px;
 	font-size: 1em;
-  overflow-x: hidden;
+  	overflow-x: hidden;
+	box-shadow: 0px 0px 31px rgba(0, 113, 187, 0.5) inset, 0 0 1px rgb(0, 113, 187) inset;
 
 }
 .wrapper.fixed{
