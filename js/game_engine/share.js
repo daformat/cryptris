@@ -288,7 +288,7 @@ function createCryptedMessage() {
 
     // facebook - doesn't work because the url is too long :/
     var fbBase = "https://www.facebook.com/dialog/feed?&app_id=525890597495827&display=popup";
-    var fbUrl = fbBase+"&caption=" + title + "&description=" + text + code + "&link=" + url + "&picture=" + preview + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
+    var fbUrl = fbBase+"&caption=" + title + "&description=" + text + code + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
 
 
