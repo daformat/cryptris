@@ -604,6 +604,8 @@ $(function(){
 
     var dataElement = data.split('-');
     var keyInfo = keyInfoDeCrypt(dataElement[1]);
+    
+    // url encrypted message
     currentGame.cryptedMessage = dataElement[0];
 
     var keyInfoElement = keyInfo.split('|');

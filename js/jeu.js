@@ -268,7 +268,7 @@ $(document).ready(function() {
     var url         = cryptrisSettings.appUrl,
         hrefPath    = url,
         title       = "Cryptris, un jeu gratuit sur la cryptographie asymétrique",
-        text        = "Je viens de terminer Cryptris - un jeu sur l’univers de la cryptographie asymétrique. Affrontez l’ordinateur sur ",
+        text        = "Je viens de terminer Cryptris - un jeu sur l’univers de la cryptographie asymétrique. Affrontez l’ordinateur",
         preview     = "http://daformat.github.io/cryptris/img/cryptis-social-preview-600x600.png";
         preview_xl  = "http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png";
 
@@ -293,7 +293,6 @@ $(document).ready(function() {
     var fbBase = "https://www.facebook.com/dialog/feed?&app_id=525890597495827&display=popup";
     var fbUrl = fbBase+"&caption=" + title + "&description=" + text + "&link=" + url + "&picture=" + preview + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
-
 
 
 });
