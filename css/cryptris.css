@@ -113,6 +113,20 @@ ul{
   overflow-x: hidden;
 
 }
+
+
+.wrapperbis{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow-y: auto;
+	display: table;
+	min-width: 400px;
+	font-size: 1em;
+  overflow-x: hidden;
+
+}
 .wrapper.fixed{
 	position: fixed;
 }
