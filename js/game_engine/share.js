@@ -222,7 +222,8 @@ function createCryptedMessage() {
 
         var ternary_message = string_to_ternary(text);
 
-        var total_crypt_message = easy_crypt(ternary_message);
+        // Url encrypted message
+        var total_crypt_message = encodeURIComponent(original_text.toBase64());
 
         var cipher_message = original_text[0] + original_text[1] + original_text[2];
 
@@ -256,28 +257,41 @@ function createCryptedMessage() {
         url += "-";
         url += keyInfo;
 
-        // Setup sharing urls
-        $('#share-tw').attr("href", "https://twitter.com/intent/tweet?text=Essaye de décrypter ce message sur Cryptris&url=" + url);
-        $('#share-tw').attr("target", "_blank");
 
-        $('#share-gp').attr('data-contenturl', hrefPath);
-        $('#share-gp').attr('data-calltoactionurl', url);
+    /**
+     * SHARING
+     */
 
-        (function() {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/client:plusone.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
+    var hrefPath    = url,
+        title       = "Défi! Cryptris, un jeu gratuit sur la cryptographie asymétrique",
+        text        = "Déchiffrez le message: ",
+        preview     = "http://daformat.github.io/cryptris/img/cryptis-social-preview-600x600.png",
+        preview_xl  = "http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png",
+        code        = string_to_ternary(crypted_message.plain_message.toString()).join('').substr(0,80);
 
-        $('#share-fb').attr('href', 'http://www.facebook.com/sharer.php?s=100&p[url]=' + url + '&p[title]=Essaye de décrypter ce message sur Cryptris');
-        $('#share-fb').attr('target', '_blank');
-        $('#share-fb').attr('onclick', 'javascript:window.open(\'http://www.facebook.com/sharer.php?s=100&p[url]='
-                                         + url 
-                                         + '&p[title]=Cryptris, un jeu sur la cryptographie asymétrique' 
-                                         + '&p[summary]=Essaye de décrypter ce message sur Cryptris.\', \'\', \''
-                                         + 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600\'); return false;');
+    /** Setup sharing urls **/
 
-        console.log(url);
+    // twitter
+    $('#share-tw').attr("href", "https://twitter.com/intent/tweet?text="+text+code+"&url=" + url);
+    $('#share-tw').attr("target", "_blank");
+
+    // google+
+    $('#share-gp').attr('data-contenturl', hrefPath);
+    $('#share-gp').attr('data-calltoactionurl', url);
+    $('#share-gp').attr('data-prefilltext', text+code);
+          
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/client:plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+
+    // facebook - doesn't work because the url is too long :/
+    var fbBase = "https://www.facebook.com/dialog/feed?&app_id=525890597495827&display=popup";
+    var fbUrl = fbBase+"&caption=" + title + "&description=" + text + code + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
+    $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
+
+
 }
 
 $(document).ready(function() {

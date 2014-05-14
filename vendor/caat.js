@@ -176,12 +176,12 @@ TIME: 04:58:32
         visited:        false,
 
         status : function() {
-            console.log("  Module: "+this.name+
-                (this.dependencies.length ?
-                    (" unsolved_deps:["+this.dependencies+"]") :
-                    " no dependencies.")+
-                ( this.solved ? " solved" : " ------> NOT solved.")
-            );
+            //console.log("  Module: "+this.name+
+            //    (this.dependencies.length ?
+            //        (" unsolved_deps:["+this.dependencies+"]") :
+            //        " no dependencies.")+
+            //    ( this.solved ? " solved" : " ------> NOT solved.")
+            //);
         },
 
         removeDependency : function( modulename ) {
@@ -202,7 +202,7 @@ TIME: 04:58:32
                 if ( this.dependencies[i] === node.name ) {
                     this.children.push( node );
                     this.dependencies.splice(i,1);
-//                    console.log("Added dependency: "+node.name+" on "+this.name);
+//                    //console.log("Added dependency: "+node.name+" on "+this.name);
                     break;
                 }
             }
@@ -251,7 +251,7 @@ TIME: 04:58:32
                 c= findClass( this.baseClass );
 
                 if ( !c ) {
-                    console.log("  "+this.name+" -> Can't extend non-existant class: "+this.baseClass );
+                    //console.log("  "+this.name+" -> Can't extend non-existant class: "+this.baseClass );
                     return;
                 }
 
@@ -261,7 +261,7 @@ TIME: 04:58:32
 
             c= c.extend( this.extendWith, this.constants, this.name, this.aliases, { decorated : this.decorated } );
 
-            console.log("Created module: "+this.name);
+            //console.log("Created module: "+this.name);
 
             if ( this.callback ) {
                 this.callback();
@@ -377,16 +377,16 @@ TIME: 04:58:32
             var node, nnode, i;
 
             if ( this.isModuleScheduledToSolve( obj.defines ) ) {
-//                console.log("Discarded module: "+obj.class+" (already loaded)");
+//                //console.log("Discarded module: "+obj.class+" (already loaded)");
                 return this;
             }
 
             if ( obj.onPreCreate ) {
-//                console.log("  --> "+obj.defines+" onPrecreation");
+//                //console.log("  --> "+obj.defines+" onPrecreation");
                 try {
                     obj.onPreCreate();
                 } catch(e) {
-                    console.log("  -> catched "+e+" on module "+obj.defines+" preCreation.");
+                    //console.log("  -> catched "+e+" on module "+obj.defines+" preCreation.");
                 }
             }
 
@@ -640,12 +640,12 @@ TIME: 04:58:32
 
         moduleErrored : function(e) {
             var node = e.currentTarget || e.srcElement;
-            console.log("Error loading module: "+ node.getAttribute("module-name") );
+            //console.log("Error loading module: "+ node.getAttribute("module-name") );
         },
 
         solvedInOrder : function() {
             for( var i=0; i<this.orderedSolvedModules.length; i++ ) {
-                console.log(this.orderedSolvedModules[i].name);
+                //console.log(this.orderedSolvedModules[i].name);
             }
         },
 
@@ -689,7 +689,7 @@ TIME: 04:58:32
         var _global= global;
         for( var i=0; i<ns.length-1; i++ ) {
             if ( !_global[ns[i]] ) {
-                console.log("    Error assigning value to namespace :"+namespace+". '"+ns[i]+"' does not exist.");
+                //console.log("    Error assigning value to namespace :"+namespace+". '"+ns[i]+"' does not exist.");
                 return null;
             }
 
@@ -3951,7 +3951,7 @@ CAAT.Module({
                 return behavior;
 
             } catch(e) {
-                console.log("Error parsing behavior: "+e);
+                //console.log("Error parsing behavior: "+e);
             }
 
             return null;
@@ -6476,7 +6476,7 @@ CAAT.Module({
                     var res= audio.canPlayType( this.audioTypes[this.audioFormatExtensions[i]]).toLowerCase();
                     if ( res!=="no" && res!=="" ) {
                         this.currentAudioFormatExtension= this.audioFormatExtensions[i];
-                        console.log("Audio type set to: "+this.currentAudioFormatExtension);
+                        //console.log("Audio type set to: "+this.currentAudioFormatExtension);
                         return;
                     }
                 }
@@ -6492,7 +6492,7 @@ CAAT.Module({
 
                 var lio= url.lastIndexOf( "." );
                 if ( lio<0 ) {
-                    console.log("Audio w/o extension: "+url);
+                    //console.log("Audio w/o extension: "+url);
                     lio= url.length()-1;
                 }
 
@@ -6516,7 +6516,7 @@ CAAT.Module({
                 if (null !== audio) {
 
                     audio.src = this.__getAudioUrl(url);
-                    console.log("Loading audio: "+audio.src);
+                    //console.log("Loading audio: "+audio.src);
                     audio.preload = "auto";
                     audio.load();
                     if (endplaying_callback) {
@@ -6728,7 +6728,7 @@ CAAT.Module({
                     channel.play();
                     this.workingChannels.push(channel);
                 } else {
-                    console.log("Can't play audio: "+id);
+                    //console.log("Can't play audio: "+id);
                 }
 
                 return audio;
@@ -13196,7 +13196,7 @@ CAAT.Module({
             if (cpos < 0) {
                 cpos = 0;
             }
-            console.log("parse error near ..." + pathInfo.substr(cpos, 20));
+            //console.log("parse error near ..." + pathInfo.substr(cpos, 20));
         }
 
         return {
@@ -16745,7 +16745,7 @@ CAAT.Module({
             initialize:function (image, rows, columns) {
 
                 if (!image) {
-                    console.log("Null image for SpriteImage.");
+                    //console.log("Null image for SpriteImage.");
                 }
 
                 if ( isString(image) ) {
@@ -22139,7 +22139,7 @@ CAAT.Module({
                     if ( isString(canvas) ) {
                         canvas= document.getElementById(canvas);
                     } else if ( !(canvas instanceof HTMLCanvasElement ) ) {
-                        console.log("Canvas is a: "+canvas+" ???");
+                        //console.log("Canvas is a: "+canvas+" ???");
                     }
                 }
 

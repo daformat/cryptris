@@ -307,7 +307,7 @@ $(function() {
           }
           if (informationBoardIsResolved !== null) {
             ga('send', 'event', informationBoardIsResolved.category, informationBoardIsResolved.action, "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
-            console.log(informationBoardIsResolved.category + ' - ' + informationBoardIsResolved.action + ' - ' + "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
+            //console.log(informationBoardIsResolved.category + ' - ' + informationBoardIsResolved.action + ' - ' + "Jeu terminé en " + formatSeconds(currentGame[informationBoardIsResolved.timeLabel]));
             informationBoardIsResolved = null;
           }
 
@@ -406,7 +406,7 @@ $(function() {
 
   function activatePlaySolo() {
     ga('send', 'event', 'Jeu', 'Intro - Tutoriel decryptage', 'Début');
-    console.log('Jeu - Intro - Tutoriel decryptage - Début');
+    //console.log('Jeu - Intro - Tutoriel decryptage - Début');
 
     /**
      * Prepare information if the board is resolved.
@@ -432,7 +432,7 @@ $(function() {
 
   function playLevel1() {
     ga('send', 'event', 'Jeu', 'Niveau 1', 'Début');
-    console.log('Jeu - Niveau 1 - Début');
+    //console.log('Jeu - Niveau 1 - Début');
 
     /**
      * Prepare information if the board is resolved.
@@ -462,7 +462,7 @@ $(function() {
 
   function playLevel2() {
     ga('send', 'event', 'Jeu', 'Niveau 2', 'Début');
-    console.log('Jeu - Niveau 2 - Début');
+    //console.log('Jeu - Niveau 2 - Début');
 
     /**
      * Prepare information if the board is resolved.
@@ -498,7 +498,7 @@ $(function() {
 
   function playLevel3() {
     ga('send', 'event', 'Jeu', 'Niveau 3', 'Début');
-    console.log('Jeu - Niveau 3 - Début');
+    //console.log('Jeu - Niveau 3 - Début');
 
     /**
      * Prepare information if the board is resolved.
@@ -1233,7 +1233,7 @@ $(function() {
       }
       
       // Log to google analytics
-      //console.log(i.category, '-', i.action, '-', i.label);
+      ////console.log(i.category, '-', i.action, '-', i.label);
       ga('send', 'event', i.category, i.action, i.label);
 
       // Go back to the index

@@ -297,7 +297,7 @@ $(function(){
 
 
         ga('send', 'event', 'Décrypter', "Décryptage d'un message partagé", 'Début');
-        console.log("Décrypter - Décryptage d'un message partagé - Début");
+        //console.log("Décrypter - Décryptage d'un message partagé - Début");
 
         $("body").closeAllDialogs(function(){});
 
@@ -319,7 +319,7 @@ $(function(){
                     }
 
                     ga('send', 'event', 'Décrypter', "Décryptage d'un message partagé", "Jeu terminé en " + formatSeconds(currentGame.playMaxSceneActiveTime));
-                    console.log("Décrypter - Décryptage d'un message partagé - " + "Jeu terminé en " + formatSeconds(currentGame.playMaxSceneActiveTime));
+                    //console.log("Décrypter - Décryptage d'un message partagé - " + "Jeu terminé en " + formatSeconds(currentGame.playMaxSceneActiveTime));
 
 
                     currentGame.goToNextDialog = false;
@@ -350,7 +350,7 @@ $(function(){
         $("body").closeAllDialogs(function(){
             var randLetter,
                 o,
-                t = krDencodeEntities(easy_decrypt(currentGame.cryptedMessage));
+                t = currentGame.cryptedMessage.fromBase64();
                 
                 // we need to do it once more;
                 t = $('<div></div>').html(t).text();
@@ -389,7 +389,7 @@ $(function(){
                     },
                     show: function() {
                         // alert("Dialog intro animation is complete");
-                        $.simulateDecrypt($(".dialog .content .text"), krDencodeEntities(easy_decrypt(currentGame.cryptedMessage)), 3);
+                        $.simulateDecrypt($(".dialog .content .text"), currentGame.cryptedMessage.fromBase64(), 3);
                     },
                     out: function() {
                         // alert("Dialog outro animation is complete, html element will be removed now.");
@@ -604,7 +604,9 @@ $(function(){
 
     var dataElement = data.split('-');
     var keyInfo = keyInfoDeCrypt(dataElement[1]);
-    currentGame.cryptedMessage = dataElement[0];
+    
+    // url encrypted message
+    currentGame.cryptedMessage = decodeURIComponent(dataElement[0]);
 
     var keyInfoElement = keyInfo.split('|');
 
@@ -618,7 +620,7 @@ $(function(){
     
     // Log event to google analytics
     ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Invite de commande');
-    console.log('Décrypter - Renseignement du nom - Invite de commande');
+    //console.log('Décrypter - Renseignement du nom - Invite de commande');
 
     $("body").closeAllDialogs( function(){
 
@@ -631,7 +633,7 @@ $(function(){
         	  currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
               // Log event to google analytics
               ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Nom choisi : ' + currentGame.username);
-              console.log('Décrypter - Renseignement du nom - Nom choisi : ' + currentGame.username);
+              //console.log('Décrypter - Renseignement du nom - Nom choisi : ' + currentGame.username);
 
 
 	          $.switchWrapper('#bg-circuits', welcome);
