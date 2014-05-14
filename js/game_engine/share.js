@@ -223,7 +223,7 @@ function createCryptedMessage() {
         var ternary_message = string_to_ternary(text);
 
         // Url encrypted message
-        var total_crypt_message = original_text.toBase64();
+        var total_crypt_message = encodeURIComponent(original_text.toBase64());
 
         var cipher_message = original_text[0] + original_text[1] + original_text[2];
 
