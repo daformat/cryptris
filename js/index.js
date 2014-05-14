@@ -25,6 +25,6 @@ $(function(){
     })();
 
     // facebook
-    $('#share-fb').attr('onclick', "javascript:window.open('https://www.facebook.com/dialog/feed?&app_id=525890597495827&display" + title + "&description=" + text + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html', '', 'toolbar=0,status=0,width=626,height=436');");
+    $('#share-fb').attr('onclick', "javascript:window.open('https://www.facebook.com/dialog/feed?&app_id=525890597495827&display=popup&caption=" + title + "&description=" + text + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html', '', 'toolbar=0,status=0,width=626,height=436');");
 
 })
