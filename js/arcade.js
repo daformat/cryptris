@@ -302,7 +302,7 @@ $(function(){
 
                 // Log event to google analytics
                 ga('send', 'event', 'Arcade', 'Changement de clé du joueur', 'Clé Publique');
-                console.log('Arcade - Changement de clé du joueur - Clé Publique');
+                //console.log('Arcade - Changement de clé du joueur - Clé Publique');
 
                 currentGame.playerKeyType = "public";
                 playerBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol-left';
@@ -312,7 +312,7 @@ $(function(){
 
                 // Log event to google analytics
                 ga('send', 'event', 'Arcade', 'Changement de clé du joueur', 'Clé Privée');
-                console.log('Arcade - Changement de clé du joueur - Clé Privée');
+                //console.log('Arcade - Changement de clé du joueur - Clé Privée');
 
                 currentGame.playerKeyType = "private";
                 playerBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol';
@@ -324,7 +324,7 @@ $(function(){
 
                 // Log event to google analytics
                 ga('send', 'event', 'Arcade', 'Changement de clé du serveur', 'Clé Publique');
-                console.log('Arcade - Changement de clé du serveur - Clé Publique');
+                //console.log('Arcade - Changement de clé du serveur - Clé Publique');
 
                 currentGame.iaKeyType = "public";
                 iaBoardColorInfo['key-symbol'] = 'icn-mini-ia-key-symbol';
@@ -334,7 +334,7 @@ $(function(){
 
                 // Log event to google analytics
                 ga('send', 'event', 'Arcade', 'Changement de clé du serveur', 'Clé Privée');
-                console.log('Arcade - Changement de clé du serveur - Clé Privée');
+                //console.log('Arcade - Changement de clé du serveur - Clé Privée');
 
                 currentGame.iaKeyType = "private";
                 iaBoardColorInfo['key-symbol'] = 'icn-mini-player-key-symbol-right';

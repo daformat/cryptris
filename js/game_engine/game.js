@@ -49,6 +49,7 @@ var separator = ["(",")","+","-","*","/","|","&"];
 // what it does is it takes a ternary number (we use -1, 0 and 1)
 // then converts it to a string by picking a random symbol in the corresponding list
 function easy_crypt(message) { 
+    
     var crypt_message = "";
     for (var i = 0; i < message.length; ++i) {
         var character = '';
@@ -62,6 +63,7 @@ function easy_crypt(message) {
         crypt_message = crypt_message + character;
     }
     return crypt_message;
+ //   return message.toBase64();
 }
 
 /**
@@ -69,6 +71,7 @@ function easy_crypt(message) {
  */
 
 function easy_decrypt(crypt_message) {
+
 
     var ternary_message = [];
     for (var i = 0; i < crypt_message.length; ++i) {
@@ -100,8 +103,9 @@ function easy_decrypt(crypt_message) {
     for (var i = 0; i < ternary_message.length; i = i + 4) {
         message += ternary_to_symbol(ternary_message[i], ternary_message[i + 1], ternary_message[i + 2], ternary_message[i + 3]);
     }
-
     return message;
+
+//    return crypt_message.fromBase64();
 }
 
 /**
@@ -165,7 +169,7 @@ var i3t = integer_mod3_to_ternary;
 
 function symbol_to_ternary(s) {
     var i = symbols.indexOf(s);
-    console.log(i);
+    //console.log(i);
     var x1 = pm(i, 3);
     i = (i - x1) / 3;
     var x2 = pm(i, 3);
@@ -196,6 +200,37 @@ function string_to_ternary(string) {
     }
     return ternaries;
 }
+
+// switch between 1, -1, 0, to 1, 2, 0 ternary representations;
+function ternary_to_ternary_alt(ternary){
+    var ternary_alt = [], t;
+    for (var i = 0; i < ternary.length; i++) {
+        t = ternary[i];
+        if(t==-1){
+            ternary_alt[i]=2;
+        } else{
+            ternary_alt[i]=t;
+        }
+    };
+
+    return ternary_alt;
+}
+
+// switch between 1, 2, 0, to 1, -1, 0 ternary representations;
+function ternary_alt_to_ternary(ternary_alt){
+    var ternary =[], t;
+    for (var i = 0; i < ternary_alt.length; i++) {
+        t = ternary_alt[i];
+        if(t==2){
+            ternary[i]=-1;
+        } else{
+            ternary[i]=t;
+        }
+    };
+
+    return ternary;
+}
+
 
 /**
  * Return the board_message numerical values as a string eg: [5, -13, 3] -> "5 -13 3"

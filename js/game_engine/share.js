@@ -223,7 +223,7 @@ function createCryptedMessage() {
         var ternary_message = string_to_ternary(text);
 
         // Url encrypted message
-        var total_crypt_message = easy_crypt(ternary_message);
+        var total_crypt_message = original_text.toBase64();
 
         var cipher_message = original_text[0] + original_text[1] + original_text[2];
 
@@ -278,7 +278,8 @@ function createCryptedMessage() {
                                          + '&p[summary]=Essaye de décrypter ce message sur Cryptris.\', \'\', \''
                                          + 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600\'); return false;');
 
-        console.log(url, crypted_message, text, ternary_message, total_crypt_message, tmpKeyInfo);
+        //console.log(url);
+        //console.log(total_crypt_message);
 
 
 
