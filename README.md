@@ -1,22 +1,30 @@
 Cryptris  
 ========
 
-###A game about asymetric cryptography
+### A game about asymetric cryptography
 
-Cryptris is a game designed to help people in getting a grasp about how cryptography works.
+Cryptris is a game designed to help people in getting a grasp about how cryptography works, by playing an arguably tetris-like game.
 
 The game was developped by [Digital Cuisine][digital-cuisine] for [Inria][inria] and is based on a concept created by Léo Ducas.
 
-###Technology
+
+### Technology
+
 This game uses html, css and javascript. No server were harmed during the developpment process.
 
+
 ### Installation
+
 The whole application is designed to be a serverless application, hence the installation is pretty straightforward: simply clone this repository or download it as an archive.
 
+
 ### Launching the game
+
 To launch the game, simply open the `index.html` file in a compatible web browser.
 
+
 ### Configuring the game for using on a custom domain / url
+
 Changin the app's url is just a matter of changing the url that social networks will use to fetch data about Cryptris (title, descriptions, picture previews…). Unfortunately, due to the serverless nature of this project, a few occurences of this url _had to be_ hard-coded in the html files' meta tags. A global configuration variable is used everywhere else where the app's url is needed, this variable can be found in the `js/cryptris-settings.js` file.
 
 **Before publishing the game,** make sure that you proceed to the following:
@@ -31,38 +39,35 @@ Changin the app's url is just a matter of changing the url that social networks 
 Be sure to update the app settings for facebook (facebook apps) and google+ (google API console), as of may 2014, twitter doesn't ask for this.
 
 
+### Hosting the game on github
 
-#### Test the game
-
-'r'  =>  Generate a key.
-
-'b'  =>  Load a 8 column board with the message 24
-
-'c'  =>  Load a 10 column board with the message 78
-
-'d'  =>  Load a 12 column board with the message 31
+To publish on github the only thing you need to do is to make sure that your `gh-pages` branch is up-to-date and push it to your github account. You should be able to access it via http://[username].github.io/cryptris where [username] should be replaced by your actual github username.
 
 
+### Credits
 
-Test the Create Key test
+Basé sur une idée originale de Léo Ducas
 
-'a'  =>  load the create_key screen.
+#### Scénario
+Mathieu Jouhet & Nicolas Pelletier
 
-'e'  =>  launch the computer process
+#### Inria
+* *Coordination :* Service communication du centre de recherche Inria Paris - Rocquencourt
+* *Référents médiation :* Thierry Vieville et Laurent Viennot
+* *Référent scientifique :* Léo Ducas
 
-
-
-To switch at a specific dialog, in the console :
-
-currentGame.switchDialog(dialogNumber);
-
-To know the current dialog number :
-
-currentGame.currentDialog();
+#### Digital Cuisine
+* *Directeur Artistique :* Mathieu Jouhet ([@daformat](https://twitter.com/daformat))
+* *Graphiste :* Nicolas Pelletier
+* *Game engine :* Vincent Mézino
+* *Intégration html, développement javascript:* Mathieu Jouhet
+* *Test :* Olivier Lance, Pierre-Jean Quilleré
 
 ___
 
 ### Links & references
-
+[Digital Cuisine][digital-cuisine]
 [digital-cuisine]: www.digitalcuisine.fr
+
+[Inria][inria]
 [inria]: www.inria.fr
