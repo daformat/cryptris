@@ -269,8 +269,8 @@ $(document).ready(function() {
         hrefPath    = url,
         title       = "Cryptris, un jeu gratuit sur la cryptographie asymétrique",
         text        = "Je viens de terminer Cryptris - un jeu sur l’univers de la cryptographie asymétrique. Affrontez l’ordinateur",
-        preview     = "http://daformat.github.io/cryptris/img/cryptis-social-preview-600x600.png";
-        preview_xl  = "http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png";
+        preview     = cryptrisSettings.appUrl + "/img/cryptis-social-preview-600x600.png";
+        preview_xl  = cryptrisSettings.appUrl + "/img/cryptis-social-preview-1200x630.png";
 
     /** Setup sharing urls **/
 
