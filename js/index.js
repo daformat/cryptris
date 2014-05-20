@@ -4,8 +4,8 @@ $(function(){
         hrefPath    = url,
         title       = "Cryptris, un jeu gratuit sur la cryptographie asymétrique",
         text        = "Défiez l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement. De nombreux défis cryptologiques vous attendent, êtes-vous prêts ?",
-        preview     = "http://daformat.github.io/cryptris/img/cryptis-social-preview-600x600.png";
-        preview_xl  = "http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png";
+        preview     = cryptrisSettings.appUrl + "/img/cryptis-social-preview-600x600.png";
+        preview_xl  = cryptrisSettings.appUrl + "/img/cryptis-social-preview-1200x630.png";
 
     /** Setup sharing urls **/
 
