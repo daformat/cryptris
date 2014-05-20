@@ -52,16 +52,16 @@ Basé sur une idée originale de Léo Ducas
 Mathieu Jouhet & Nicolas Pelletier
 
 #### Inria
-* *Coordination :* Service communication du centre de recherche Inria Paris - Rocquencourt
-* *Référents médiation :* Thierry Vieville et Laurent Viennot
-* *Référent scientifique :* Léo Ducas
+* **Coordination :** Service communication du centre de recherche Inria Paris - Rocquencourt
+* **Référents médiation :** Thierry Vieville et Laurent Viennot
+* **Référent scientifique :** Léo Ducas
 
 #### Digital Cuisine
-* *Directeur Artistique :* Mathieu Jouhet ([@daformat](https://twitter.com/daformat))
-* *Graphiste :* Nicolas Pelletier
-* *Game engine :* Vincent Mézino
-* *Intégration html, développement javascript:* Mathieu Jouhet
-* *Test :* Olivier Lance, Pierre-Jean Quilleré
+* **Directeur Artistique :** Mathieu Jouhet ([@daformat](https://twitter.com/daformat))
+* **Graphiste :** Nicolas Pelletier
+* **Game engine :** Vincent Mézino
+* **Intégration html, développement javascript:** Mathieu Jouhet
+* **Test :** Olivier Lance, Pierre-Jean Quilleré
 
 ___
 
