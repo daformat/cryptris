@@ -266,7 +266,7 @@ function createCryptedMessage() {
         title       = "Défi! Cryptris, un jeu gratuit sur la cryptographie asymétrique",
         text        = "Déchiffrez le message: ",
         preview     = cryptrisSettings.appUrl + "/img/cryptis-social-preview-600x600.png",
-        preview_xl  = cryptrisSettings.appUrl + "http://daformat.github.io/cryptris/img/cryptis-social-preview-1200x630.png",
+        preview_xl  = cryptrisSettings.appUrl + "/img/cryptis-social-preview-1200x630.png",
         code        = string_to_ternary(crypted_message.plain_message.toString()).join('').substr(0,80);
 
     /** Setup sharing urls **/
