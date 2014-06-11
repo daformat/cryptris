@@ -50,5 +50,4 @@ $(function(){
 		$("#step2").animate({marginLeft: "200%"});
 	});
 
-
 });

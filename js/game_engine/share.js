@@ -1,4 +1,11 @@
+var timeouts = [],
+    clearTimeouts = function () {
+      $.each(timeouts, function(i){
+        clearTimeout(timeouts[i])
+      });
 
+      timeouts = [];
+    };
 var currentGame = new game();
 
 function resizeMiniBoard(director, playScene) {
@@ -331,4 +338,25 @@ $(document).ready(function() {
       $('#spinner-img').fadeIn(100);
     }, 1000);
   });
+
+  // close modals
+  $(".window .btn-close").click(function(){
+    $(this).closest('.window').removeClass('visible');
+    clearTimeouts();
+    timeouts.push(window.setTimeout(function(){
+      $('.modal').removeClass('visible');
+    }, 200))
+  });
+
+  function showModal(){
+    $('.modal').addClass('visible');
+      
+    clearTimeouts();
+    timeouts.push(window.setTimeout(function(){
+      $('.window').addClass('visible');
+    }, 100))
+  }
+
+
+  $('#share-em').click(showModal);
 });
