@@ -169,11 +169,10 @@ function createMiniBoard(current_length, crypted_message) {
     initGame(currentGame.director, current_length, crypted_message);
 }
 
-//
-var href = cryptrisSettings.appUrl;
-//var hrefPath = href.substr(0, href.lastIndexOf('/') + 1);
-var hrefPath = href + '/';
-var baseHtml = hrefPath + 'decrypter.html';
+// Prepare url for sharing
+var href = cryptrisSettings.appUrl,
+    hrefPath = href + '/',
+    baseHtml = hrefPath + 'decrypter.html';
 
 function keyInfoCrypt(message) {
     var cipher = "";
@@ -259,7 +258,7 @@ function createCryptedMessage() {
 
 
     /**
-     * SHARING
+     * SHARING options
      */
 
     var hrefPath    = url,
@@ -286,7 +285,7 @@ function createCryptedMessage() {
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
     })();
 
-    // facebook - doesn't work because the url is too long :/
+    // facebook - using feed dialog for customization purposes
     var fbBase = "https://www.facebook.com/dialog/feed?&app_id=525890597495827&display=popup";
     var fbUrl = fbBase+"&caption=" + title + "&description=" + text + code + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
@@ -296,10 +295,25 @@ function createCryptedMessage() {
 
 $(document).ready(function() {
 	$("#share").submit(function() {
-        setTimeout(createCryptedMessage, 500);
+        
+        // when the form is submited we check if the length is valid (less than 140 chars)
+        var $t = $(this).find('textarea'),
+            v = $t.val();
+    
+        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength){
+          // if it is, we can create our crypted message, but we add some delay
+          // for the transition to be completed before we start doing anything
+          setTimeout(createCryptedMessage, 500);
+        }
+
 		return false;
 	});
+
+
   $("#edit-message").bind('click', function() {
+
+    // If the user decides to edit back his message, fade out everything but the spinner
+    // so we are ready for the next encryption round
 
     currentGame.director.easeInOut(
                                     currentGame.director.getSceneIndex(currentGame.scenes.waiting_scene),

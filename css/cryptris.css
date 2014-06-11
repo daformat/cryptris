@@ -754,7 +754,7 @@ border: 1px solid #0091BB;
 }
 
 /* Disclaimer */
-.share .warning{
+.share p.warning, .share div.warning{
 	display: inline-block;
 
 	background-color: #000;

@@ -5,9 +5,10 @@
  */
 
 $(function(){
-	var $textarea = $("#share textarea"),
-			$counter = $(".characters-left .count"),
-			$text = $(".characters-left .text");
+	var maxChars = cryptrisSettings.socialEncryptedMessageMaxLength || 140,
+		$textarea = $("#share textarea"),
+		$counter = $(".characters-left .count"),
+		$text = $(".characters-left .text");
 
 	/**
 	 * CountCharactersLeft: waits for a small amount of time, then fires a change event on the textarea
@@ -68,7 +69,7 @@ $(function(){
 		var $t = $(this),
 				v = $t.val();
 
-		updateCount(140-v.length);
+		updateCount(maxChars-v.length);
 	});
 
 })
