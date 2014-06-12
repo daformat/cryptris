@@ -518,6 +518,10 @@ border: 1px solid #0091BB;
 	font-size: 1.1em;
 }
 
+.entry .link{
+	color: inherit;
+}
+
 .credits-logos img{
 	margin: 15px 20px;
 }
