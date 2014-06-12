@@ -274,6 +274,7 @@ function createCryptedMessage() {
         preview     = cryptrisSettings.appUrl + "/img/cryptis-social-preview-600x600.png",
         preview_xl  = cryptrisSettings.appUrl + "/img/cryptis-social-preview-1200x630.png",
         code        = string_to_ternary(crypted_message.plain_message.toString()).join('').substr(0,80);
+        code_full   = string_to_ternary(crypted_message.plain_message.toString()).join('');
 
     /** Setup sharing urls **/
 
@@ -298,17 +299,19 @@ function createCryptedMessage() {
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
 
     $('#share-url').val(url);
+    $('#mailto-share-url').attr('href', 'mailto:?subject='+encodeURIComponent('Défi : déchiffrer le message sur Cryptris !')+'&body='+encodeURIComponent('Viens essayer de déchiffrer ce message en jouant à Cryptris : \n\n')+code_full+encodeURIComponent('\n\nPour jouer va sur l’adresse : ')+url);
 
 }
 
 $(document).ready(function() {
 	$("#share").submit(function() {
         
-        // when the form is submited we check if the length is valid (less than 140 chars)
+        // when the form is submited we check if the length is valid 
+        // (less than 140 chars && more than 0)
         var $t = $(this).find('textarea'),
             v = $t.val();
     
-        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength){
+        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength && v.length>0){
           // if it is, we can create our crypted message, but we add some delay
           // for the transition to be completed before we start doing anything
           setTimeout(createCryptedMessage, 500);
