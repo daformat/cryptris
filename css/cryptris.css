@@ -838,6 +838,8 @@ border: 1px solid #0091BB;
 	width: auto;
 	height: auto;
 	opacity: 1;
+
+	max-width: 600px;
 	
 	display: inline-block;
 	-webkit-transition: all ease 0.3s;
@@ -854,7 +856,9 @@ border: 1px solid #0091BB;
 
 }
 
-
+.modal h1, .modal h2, .modal h3, .modal h4, .modal h5, .modal h6{
+	margin-top: 0px;
+}
 
 .modal .window.visible{
 	-webkit-transform: scale(1);
@@ -885,6 +889,17 @@ border: 1px solid #0091BB;
 	
 	text-align: center;
 
+}
+
+.modal .window input, .modal .window textarea{
+	border: 1px solid rgba(175, 238, 247, 0.5);
+	background-color: rgba(0, 0, 0, 0);
+	color: #80C9C3;
+	text-align: center;
+	width: 550px;
+	padding: 8px 6px;
+	font-size: 1em;
+	font-family: Inconsolata;
 }
 /*
 	New login screen

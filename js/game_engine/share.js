@@ -297,6 +297,7 @@ function createCryptedMessage() {
     var fbUrl = fbBase+"&caption=" + title + "&description=" + text + code + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
 
+    $('#share-url').val(url);
 
 }
 
@@ -339,7 +340,13 @@ $(document).ready(function() {
     }, 1000);
   });
 
-  // close modals
+
+  /**
+   *  Share via email
+   */
+  
+  // close modals (the only modal we use is for sharing via email)
+
   $(".window .btn-close").click(function(){
     $(this).closest('.window').removeClass('visible');
     clearTimeouts();
@@ -357,6 +364,10 @@ $(document).ready(function() {
     }, 100))
   }
 
+  // setup handlers
 
   $('#share-em').click(showModal);
+  $('#share-url').click(function(){
+    this.select()
+  });
 });
