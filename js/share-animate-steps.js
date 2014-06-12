@@ -23,11 +23,12 @@ $(function(){
 
 	// Move step1 out and animate step2 in only if the message length
 	// is less than cryptrisSettings.socialEncryptedMessageMaxLength value
+	// and more than 0
 	$("#share").submit(function(){
 		var v = $t.val();
     	clearTimeouts();
 
-        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength){
+        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength && v.length > 0){
 			$("#step1").animate({marginLeft: "-200%"});
 			$("#step2").animate({marginLeft: "0%"});
 
