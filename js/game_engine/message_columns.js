@@ -1,4 +1,13 @@
-function levelMessage(director, x, y, number, container, boxOption) {
+
+/**
+ *  a levelMessage is the animated value of the current operation that we draw
+ *  ontop of the column that got hit. This value slowly moves up and fades out
+ *  
+ */
+
+function levelMessage(director, x, y, number, container, boxOption, column) {
+    console.log(arguments);
+
     this.isVisible = true;
     this.container = container;
     this.msg = new CAAT.Foundation.ActorContainer();
@@ -40,6 +49,7 @@ function levelMessage(director, x, y, number, container, boxOption) {
         }
     }
 
+
     this.msg.paint = function(director, time) {
 
         var clearTime = object.clearTime;
@@ -51,12 +61,18 @@ function levelMessage(director, x, y, number, container, boxOption) {
             return;
         }
         var signe = "";
-        if (number > 0) {
+
+        if (column.type === COLUMN_TYPE_1) {
             signe = "+";
+        } else if (column.type === COLUMN_TYPE_2) {
+            signe = "-";
         }
         var ctx = director.ctx;
 
         if (object.delta <= clearTime) {
+
+            // draw the animated current operation value
+
             ctx.globalAlpha = 1 - object.delta / clearTime;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
@@ -75,6 +91,11 @@ function levelMessage(director, x, y, number, container, boxOption) {
         }
     }
 }
+
+
+
+/********/
+
 
 function blockToDestroy(director, msgType, keyType, x, y, squareNumber, keyNumber, msgNumber, container, boxOption) {
     this.director = director;
@@ -388,6 +409,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 
     this.addSquares = function(column) {
+        console.log('\nAdding squares...\n--------------------');
         if (column.squareNumber > 0) {
             var y = 0;
             if (this.type === COLUMN_TYPE_3) {
@@ -401,7 +423,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             }
 	        
             if (this.levelMsg === null) {
-                this.levelMsg = new levelMessage(this.director, this.column.x, y - this.boxOption.SPACE_HEIGHT, column.squareNumber, this.container, this.boxOption);
+                console.log('message column:', this, '\n\nKey column:', column, '\n');
+                this.levelMsg = new levelMessage(this.director, this.column.x, y - this.boxOption.SPACE_HEIGHT, column.squareNumber, this.container, this.boxOption, column);
             }
 
             this.blurSquareNumber = 0;
@@ -409,8 +432,9 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 
     this.subSquares = function(keyColumn) {
+        console.log('\nSubstracting squares...\n--------------------');
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
-        var diffNumber = -1 * keyColumn.squareNumber;
+        var number = keyColumn.squareNumber;
 
         if (newSquareNumber < 0) {
             this.keySquareNumber = this.squareNumber;
@@ -435,7 +459,8 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
 	   
         if (this.levelMsg === null) {
-            this.levelMsg = new levelMessage(this.director, this.column.x, keyColumn.column.y - this.boxOption.SPACE_HEIGHT, diffNumber, this.container, this.boxOption);
+            console.log('message column:', this, '\n\nKey column:', keyColumn, '\n');
+            this.levelMsg = new levelMessage(this.director, this.column.x, keyColumn.column.y - this.boxOption.SPACE_HEIGHT, number, this.container, this.boxOption, keyColumn);
         }
     }
 

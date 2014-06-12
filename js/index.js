@@ -29,4 +29,44 @@ $(function(){
     var fbUrl = fbBase+"&caption=" + title + "&description=" + text + "&link=" + url + "&picture=" + preview_xl + "&redirect_uri="+cryptrisSettings.appUrl+"/merci.html";
     $('#share-fb').attr('onclick', "javascript:window.open('"+fbUrl+"', '', 'toolbar=0,status=0,width=626,height=436');");
 
+
+  /**
+   *  Share via email
+   */
+    var timeouts = [],
+        clearTimeouts = function () {
+          $.each(timeouts, function(i){
+            clearTimeout(timeouts[i])
+          });
+
+          timeouts = [];
+        };  
+
+    $('#share-url').val(cryptrisSettings.appUrl);
+
+  // close modals (the only modal we use is for sharing via email)
+
+  $(".window .btn-close").click(function(){
+    $(this).closest('.window').removeClass('visible');
+    clearTimeouts();
+    timeouts.push(window.setTimeout(function(){
+      $('.modal').removeClass('visible');
+    }, 200))
+  });
+
+  function showModal(){
+    $('.modal').addClass('visible');
+      
+    clearTimeouts();
+    timeouts.push(window.setTimeout(function(){
+      $('.window').addClass('visible');
+    }, 100))
+  }
+
+  // setup handlers
+
+  $('#share-em').click(showModal);
+  $('#share-url').click(function(){
+    this.select()
+  });
 })

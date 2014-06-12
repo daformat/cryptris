@@ -4,15 +4,42 @@
  */
 
 $(function(){
-	
-	// Move step1 out and animate step2 in
+	var $t = $('#share textarea'),
+		timeouts = [],
+		clearTimeouts = function () {
+			$.each(timeouts, function(i){
+				clearTimeout(timeouts[i])
+			});
+
+			timeouts = [];
+		};
+
+	$t.jrumble({
+		x: 16,
+		y: 0,
+		rotation: 0,
+		speed: 1
+	});		
+
+	// Move step1 out and animate step2 in only if the message length
+	// is less than cryptrisSettings.socialEncryptedMessageMaxLength value
 	$("#share").submit(function(){
-		$("#step1").animate({marginLeft: "-200%"});
-		$("#step2").animate({marginLeft: "0%"});
+		var v = $t.val();
+    	clearTimeouts();
 
-		// log to google analytics
-	  ga('send', 'event', 'Partager', 'Chiffrer le message', $("textarea").val());
+        if(v.length <= cryptrisSettings.socialEncryptedMessageMaxLength){
+			$("#step1").animate({marginLeft: "-200%"});
+			$("#step2").animate({marginLeft: "0%"});
 
+			// log to google analytics
+			ga('send', 'event', 'Partager', 'Chiffrer le message', $("textarea").val());
+
+		} else {
+			$t.trigger('startRumble');
+			timeouts.push(window.setTimeout(function(){
+				$('#share textarea').trigger('stopRumble')
+			}, 1000));
+		}
 
 		return false;
 	});
@@ -22,6 +49,5 @@ $(function(){
 		$("#step1").animate({marginLeft: "0%"});
 		$("#step2").animate({marginLeft: "200%"});
 	});
-
 
 });

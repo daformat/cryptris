@@ -724,7 +724,7 @@ border: 1px solid #0091BB;
 }
 
 .share .encrypted-message .social-actions p{
-	margin: 28px;
+	margin: 11px;
 }
 
 .share .encrypted-message .message-spinner{
@@ -754,7 +754,7 @@ border: 1px solid #0091BB;
 }
 
 /* Disclaimer */
-.share .warning{
+.share p.warning, .share div.warning{
 	display: inline-block;
 
 	background-color: #000;
@@ -805,8 +805,102 @@ border: 1px solid #0091BB;
 }
 
 
+/*modal screen */
+.modal{
+	position: absolute;
+	z-index: 1000;
+	background-color: rgba(0,0,0,0.75);
+	display: block;
+	height: 0;
+	width: 0;
+	overflow: hidden;
+	min-height: 0;
+	min-width: 0;
 
+	-webkit-transition: opacity ease 0.35s;
+	-moz-transition: opacity ease 0.35s;
+	transition: opacity ease 0.35s;
 
+	opacity: 0;
+}
+
+.modal.visible{
+	display: table;
+	height: 100%;
+	width: 100%;
+	opacity: 1;
+	
+}
+
+.modal .window{
+	position: relative;
+	padding: 50px;
+	width: auto;
+	height: auto;
+	opacity: 1;
+
+	max-width: 600px;
+	
+	display: inline-block;
+	-webkit-transition: all ease 0.3s;
+	-moz-transition: all ease 0.3s;
+	transition: all ease 0.3s;
+
+	-webkit-transform-origin: center;
+	-moz-transform-origin: center;
+	transform-origin: center;
+
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	transform: scale(0);
+
+}
+
+.modal h1, .modal h2, .modal h3, .modal h4, .modal h5, .modal h6{
+	margin-top: 0px;
+}
+
+.modal .window.visible{
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	transform: scale(1);
+}
+
+.modal .window .header{
+	position: absolute;
+	width: 100%;
+	height: 0px;
+	top: 0;
+}
+.modal .window .header .btn-close{
+	position: absolute;
+	top: -28px;
+	right: 23px;
+}
+
+.modal .window{
+	background-color: rgba(0,0,0,0.75);
+
+	border-radius: 8px;
+
+	border: 1px solid rgba(175, 238, 247, 0.5);
+	-webkit-box-shadow: 0 0 10px rgba(15, 231, 255, 0.75);
+	box-shadow:  0 0  10px rgba(15, 231, 255, 0.75);
+	
+	text-align: center;
+
+}
+
+.modal .window input, .modal .window textarea{
+	border: 1px solid rgba(175, 238, 247, 0.5);
+	background-color: rgba(0, 0, 0, 0);
+	color: #80C9C3;
+	text-align: center;
+	width: 550px;
+	padding: 8px 6px;
+	font-size: 1em;
+	font-family: Inconsolata;
+}
 /*
 	New login screen
 */

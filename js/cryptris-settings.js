@@ -1,7 +1,6 @@
 /**
  *  Cryptris configuration file
  *  Please create a backup before modifying anything here
- *  and Read The Fucking Manual! (Well, comments)
  *  More settings can be found in game_engine/global.js
  *  The file prototype-additions.js must be included BEFORE this file
  */
@@ -17,14 +16,15 @@ cryptrisSettings.appUrl = "http://daformat.github.io/cryptris"
 /**
  *  Pseudo-prompt animation, displays a text character by character.
  *  This sets the delay to wait before displaying the next character
- *  Used for any non-player dialog, and during the intro.
+ *  Used during the intro.
+ *  (we deactivated the effect on dialogs as it was too slow on ffox)
  */
 
 cryptrisSettings.animateTextDelayBetweenLetters = 20;
 
 
 /**
- *  Delay between scenes when a reading delay is needed 
+ *  Delay between scenes where a pause is needed 
  *  (mostly the two initial pseudo-prompt animations)
  */
 
@@ -47,10 +47,14 @@ cryptrisSettings.boardSymbols = [" ", "0","1","2","3","4","5","6","7","8","9",
     "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
     ";", ".", ",","!","?","&","#","'","\\","\"","(",")","+","-","*","/","|","□"];
 
+/**
+ *  Maximum length of the message one can share on social networks
+ */
 
+cryptrisSettings.socialEncryptedMessageMaxLength = 140;
 
 /**
- *  Cryptography settings, adjust public key generation and message encyrption
+ *  Cryptography settings, used to adjust public key generation and message encryption
  */
 
 cryptrisSettings.crypto = cryptrisSettings.crypto || {}
