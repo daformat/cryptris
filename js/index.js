@@ -44,6 +44,8 @@ $(function(){
 
     $('#share-url').val(cryptrisSettings.appUrl);
 
+    $('#mailto-share-url').attr('href', 'mailto:?subject='+encodeURIComponent(title)+'&body='+encodeURIComponent(text+'\n\n')+cryptrisSettings.appUrl);
+
   // close modals (the only modal we use is for sharing via email)
 
   $(".window .btn-close").click(function(){
