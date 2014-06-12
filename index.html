@@ -188,9 +188,10 @@
 
         <!-- Facebook -->
           
-<!--
+        <!--
           <a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique" target="_blank" onclick="javascript:window.open('http://www.facebook.com/sharer.php?s=100&p[url]=http://cryptris.com&p[title]=Cryptris, un jeu sur la cryptographie asymétrique&p[summary]=Jouez contre l’ordinateur pour savoir qui arrivera à décrypter le plus rapidement.','', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
--->
+        -->
+        <a id="share-em"><img class="retina" src="img/icn-ml@2x.png" data-at2x="img/icn-ml@2x.png" alt=""></a>
         <a id="share-fb"><img class="retina" src="img/icn-facebook@2x.png" data-at2x="img/icn-facebook@2x.png" alt=""></a>
         <a id="share-tw"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
         <span
@@ -208,12 +209,12 @@
 
         <!-- Twitter -->
 
-<!--
+        <!--
           <a onclick='javascript:window.open("https://twitter.com/intent/tweet?text=Cryptris - un jeu sur l’univers de la cryptographie asymétrique. Affrontez l’ordinateur sur&url=http://cryptris.com","_blank","toolbar=no, scrollbars=yes, resizable=yes, top=500, left=500, width=400, height=400");' href="https://twitter.com/intent/tweet?text=Cryptris - un jeu sur la cryptographie asymétrique&url=http://cryptris.com" target="_blank"><img class="retina" src="img/icn-twitter@2x.png" data-at2x="img/icn-twitter@2x.png" alt=""></a>
--->
+        -->
 
         <!-- Google plus -->  
-<!--
+        <!--
         <span
           class="g-interactivepost"
           data-contenturl="https://cryptris.com/"
@@ -226,11 +227,27 @@
           data-calltoactiondeeplinkid="/">
           <a href="#"><img class="retina" src="img/icn-gp@2x.png" data-at2x="img/icn-gp@2x.png" alt=""></a>
         </span>
--->
+        -->
 
       </div>
     </div>
 
+
+
+    <div class="wrapper modal">
+      <div class="vertical-centering">
+        <div class="window">
+        
+        <header class="header"><a href="#" class="btn-close"><img src="img/btn-close.png"></a></header>
+
+        <h2>Partager par email</h2>
+          <p>Copiez-collez cette adresse pour partager le jeu par email&nbsp;:</p>
+          <input id="share-url" value="[...]">
+        </div>
+      </div>
+    </div>
+
+    
     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
     <script type="text/javascript">
