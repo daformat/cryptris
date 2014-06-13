@@ -12,7 +12,7 @@ var cryptrisSettings = cryptrisSettings || {};
  */
  
 cryptrisSettings.appUrl = "http://daformat.github.io/cryptris";
-
+ 
 /**
  *  Google analytics ID
  */
