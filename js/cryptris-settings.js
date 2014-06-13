@@ -16,7 +16,7 @@ cryptrisSettings.appUrl = "http://daformat.github.io/cryptris";
 /**
  *  Google analytics ID
  */
-cryptrisSettings.appAnalyticsId = 'UA-51901115-2';
+cryptrisSettings.appAnalyticsId = 'UA-51901115-1';
 
 /**
  *  Pseudo-prompt animation, displays a text character by character.
