@@ -17,6 +17,7 @@ cryptrisSettings.appUrl = "http://inriamecsci.github.io/cryptris"
  *  Google analytics ID
  */
 cryptrisSettings.appAnalyticsId = 'UA-51901115-1';
+
 /**
  *  Pseudo-prompt animation, displays a text character by character.
  *  This sets the delay to wait before displaying the next character
