@@ -10,7 +10,7 @@ The game was developped by [Digital Cuisine][digital-cuisine] for [Inria][inria]
 
 ### Technology
 
-This game uses html, css and javascript. No server were harmed during the developpment process.
+This game uses html, css and javascript. No server were harmed during the development process.
 
 
 ### Installation

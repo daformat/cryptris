@@ -11,12 +11,12 @@ var cryptrisSettings = cryptrisSettings || {};
  *  Cryptris main url used for sharing links
  */
  
-cryptrisSettings.appUrl = "http://daformat.github.io/cryptris";
+cryptrisSettings.appUrl = "http://inriamecsci.github.io/cryptris"
 
 /**
  *  Google analytics ID
  */
-cryptrisSettings.appAnalyticsId = 'UA-51901115-2';
+cryptrisSettings.appAnalyticsId = 'UA-51901115-1';
 
 /**
  *  Pseudo-prompt animation, displays a text character by character.
