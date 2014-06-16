@@ -604,7 +604,7 @@ $(function() {
     var x = d3.scale.linear().domain([8, 12]).range([0, w]);
 
     // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-    var y = d3.scale.linear().range([h, 0]).domain([0, dataPlayer[2].y*1.3]);
+    var y = d3.scale.linear().range([h, 0]).domain([0, getMaximumValue(dataPlayer)*1.3]);
 
     var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
@@ -620,7 +620,7 @@ $(function() {
     // Graph for the ia
     var graph2 = d3.select("#graph").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-    y = d3.scale.linear().range([h, 0]).domain([0, dataIA[4].y]);
+    y = d3.scale.linear().range([h, 0]).domain([0, getMaximumValue(dataIA)]);
     options.y = y;
     options.name = 'Serveur';
 
