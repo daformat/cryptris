@@ -30,7 +30,7 @@ $(function(){
         $('#login-name').focus();
         $('.new-login').submit(function(e){
           
-          currentGame.litteralName = $('#login-name').val();
+          currentGame.litteralName = $('#login-name').val().escape();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
           updateNameFunction();
 

@@ -10,7 +10,7 @@ The game was developped by [Digital Cuisine][digital-cuisine] for [Inria][inria]
 
 ### Technology
 
-This game uses html, css and javascript. No server were harmed during the developpment process.
+This game uses html, css and javascript. No server were harmed during the development process.
 
 
 ### Installation
@@ -31,7 +31,7 @@ Changin the app's url is just a matter of changing the url that social networks 
 
 * open up `js/cryptris-settings.js`.
 * look for the line where `cryptrisSettings.appUrl` is defined.
-* copy `appUrl`'s actual value (e.g. http://daformat.github.io/cryptris)
+* copy `appUrl`'s actual value (e.g. http://inriamecsci.github.io/cryptris)
 * search and replace this url in the game's `.html` files.
 * set `cryptrisSettings.appUrl` to whatever your new url is.
 * upload to your new url and carefully test that every sharing function still works as expected.

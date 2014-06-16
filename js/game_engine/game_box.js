@@ -129,7 +129,7 @@ function GameBox(director, boxOption, relativeX, relativeY, current_length, key_
       ctx.font = '700 22px Quantico';
       ctx.textAlign = 'center';
       ctx.fillStyle = 'white';
-      ctx.fillText(object.player ? currentGame.username : currentGame.ianame, this.width / 2, this.height / 2 + 7);
+      ctx.fillText(object.player ? currentGame.username.substring(0, 14) : currentGame.ianame, this.width / 2, this.height / 2 + 7);
     }
 
     this.centerName.addChild(this.nameText);
