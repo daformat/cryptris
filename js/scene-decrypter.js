@@ -629,7 +629,7 @@ $(function(){
 	        $('#login-name').focus();
 
 	        $('.new-login').submit(function(e){
-    	      game.player.name = $('#login-name').val();
+    	      game.player.name = $('#login-name').val().escape();
         	  currentGame.username = game.player.name !== "" ? game.player.name : 'Joueur';
               // Log event to google analytics
               ga('send', 'event', 'Décrypter', 'Renseignement du nom', 'Nom choisi : ' + currentGame.username);

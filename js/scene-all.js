@@ -576,6 +576,15 @@ $(function() {
   }
 
 
+  function getMaximumValue(arr){
+    var tmp = []
+    for (var i = 0; i < arr.length; i++) {
+      var e = arr[i];
+      tmp.push(e.y);
+    };
+
+    return  Math.max.apply(null, tmp);
+  }
   /**
    * Draw chart to compare playing time between player and ia
    */
@@ -772,7 +781,7 @@ $(function() {
 
         // New username is submitted
         $('.new-login').submit(function(e) {
-          currentGame.litteralName = $('#login-name').val();
+          currentGame.litteralName = $('#login-name').val().escape();
           currentGame.username = currentGame.litteralName !== "" ? currentGame.litteralName : 'Joueur';
 
           // Log event to google analytics
@@ -1223,7 +1232,7 @@ $(function() {
         }
       } else if(!i.category || !i.action || !i.label) {
         
-        console.warn("No analytics identifier was passed !");
+        //console.warn("No analytics identifier was passed !");
 
         i = {
           category: "Jeu",

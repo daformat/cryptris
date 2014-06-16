@@ -3,6 +3,27 @@
  *  Should be included before doing anything else
  */
 
+if(!String.prototype.escape){
+  String.prototype.escape = function(){
+    var lt = /</g, 
+    gt = />/g, 
+    ap = /'/g, 
+    ic = /"/g;
+    var tag = /<(.*)>/;
+    if(tag.test(this)){
+      try{
+          //console.error("Possible XSS detected in user input");
+          ga('send', 'event', 'possible XSS?', 'in user input', '');
+      }catch(e){
+
+      }      
+      return this.toString().replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;");
+    } else {  
+      return this.toString().replace(ap, "&#39;").replace(ic, "&#34;");
+    }
+  }
+}
+
 /**
  *  Array shuffle prototype
  *  Randomizes an array
@@ -94,9 +115,17 @@
      // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
      var base64test = /[^A-Za-z0-9\+\/\=]/g;
      if (base64test.exec(input)) {
-        alert("There were invalid base64 characters in the input text.\n" +
+        /*
+              alert("There were invalid base64 characters in the input text.\n" +
               "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
               "Expect errors in decoding.");
+        */
+        try{
+            //console.error("Possible XSS detected while executing b64 decode");
+            ga('send', 'event', 'possible XSS?', 'while trying to decode b64 string from url', '');
+        }catch(e){
+
+        }
      }
      input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 

@@ -6,7 +6,7 @@
  */
 
 function levelMessage(director, x, y, number, container, boxOption, column) {
-    console.log(arguments);
+    //console.log(arguments);
 
     this.isVisible = true;
     this.container = container;
@@ -409,7 +409,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 
     this.addSquares = function(column) {
-        console.log('\nAdding squares...\n--------------------');
+        //console.log('\nAdding squares...\n--------------------');
         if (column.squareNumber > 0) {
             var y = 0;
             if (this.type === COLUMN_TYPE_3) {
@@ -423,7 +423,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
             }
 	        
             if (this.levelMsg === null) {
-                console.log('message column:', this, '\n\nKey column:', column, '\n');
+                //console.log('message column:', this, '\n\nKey column:', column, '\n');
                 this.levelMsg = new levelMessage(this.director, this.column.x, y - this.boxOption.SPACE_HEIGHT, column.squareNumber, this.container, this.boxOption, column);
             }
 
@@ -432,7 +432,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
     }
 
     this.subSquares = function(keyColumn) {
-        console.log('\nSubstracting squares...\n--------------------');
+        //console.log('\nSubstracting squares...\n--------------------');
         newSquareNumber = this.squareNumber - keyColumn.squareNumber;
         var number = keyColumn.squareNumber;
 
@@ -459,7 +459,7 @@ function MessageColumn(director, type, initialNumber, container, boxOption) {
         }
 	   
         if (this.levelMsg === null) {
-            console.log('message column:', this, '\n\nKey column:', keyColumn, '\n');
+            //console.log('message column:', this, '\n\nKey column:', keyColumn, '\n');
             this.levelMsg = new levelMessage(this.director, this.column.x, keyColumn.column.y - this.boxOption.SPACE_HEIGHT, number, this.container, this.boxOption, keyColumn);
         }
     }

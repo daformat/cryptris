@@ -116,7 +116,7 @@
 					//console.log(identifier.category, '-', identifier.action, '-', identifier.label);
 					ga('send', 'event', identifier.category, identifier.action, identifier.label);
 				} catch(e){
-					console.error('Error logging analytics event');
+					//console.error('Error logging analytics event');
 				};
 
 				// Callback for 'show' state
