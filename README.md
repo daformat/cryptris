@@ -5,7 +5,7 @@ Cryptris
 
 Cryptris is a game designed to help people in getting a grasp about how cryptography works, by playing an arguably tetris-like game.
 
-The game was developped by [Digital Cuisine][digital-cuisine] for [Inria][inria] and is based on a concept created by Léo Ducas.
+The game was developped by [Digital Cuisine](http://www.digitalcuisine.fr) for [Inria](http://www.inria.fr) and is based on a concept created by Léo Ducas.
 
 
 ### Technology
@@ -66,8 +66,5 @@ Mathieu Jouhet & Nicolas Pelletier
 ___
 
 ### Links & references
-[Digital Cuisine][digital-cuisine]
-[digital-cuisine]: www.digitalcuisine.fr
-
-[Inria][inria]
-[inria]: www.inria.fr
+[Digital Cuisine](http://www.digitalcuisine.fr)  
+[Inria](http://www.inria.fr)
